@@ -16,7 +16,7 @@ echo "Elasticsearch is ready!"
 
 echo "⏳ Waiting for Node server to be ready..."
 
-until curl -s http://localhost:3000 | grep -q 'server is up and running here now' ; do
+until curl -s http://localhost:3001 | grep -q 'server is up and running here now' ; do
   echo "🔄 Node server not ready yet..."
   sleep 2
 done
