@@ -5,7 +5,7 @@ async function createMetadataIndex() {
   try {
     const indexName = 'metadata';
 
-    const response = await axios.put(`http://shopping_assistant-elasticsearch-1:9200/${indexName}`, {
+    const response = await axios.put(`http://payoorv2-elasticsearch-1:9200/${indexName}`, {
       mappings: {
         properties: {
           metadata: {

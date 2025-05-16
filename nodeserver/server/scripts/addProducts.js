@@ -33,7 +33,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
             bulkPayload += JSON.stringify(product) + '\n';
         });
 
-        axios.post('hhttp://shopping_assistant-elasticsearch-1:9200/products/_bulk?refresh', bulkPayload, {
+        axios.post('http://payoorv2-elasticsearch-1:9200/products/_bulk?refresh', bulkPayload, {
             headers: { 'Content-Type': 'application/x-ndjson' }
         })
         .then(response => {

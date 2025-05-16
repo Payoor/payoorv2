@@ -19,7 +19,7 @@ function _createProductsIndex() {
           _context.prev = 0;
           indexName = 'products';
           _context.next = 4;
-          return axios.put("http://shopping_assistant-elasticsearch-1:9200".concat(indexName), {
+          return axios.put("http://payoorv2-elasticsearch-1:9200/".concat(indexName), {
             mappings: {
               properties: {
                 _mongooseid: {
