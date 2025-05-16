@@ -1,0 +1,27 @@
+.slide-fade-in-up {
+    animation: slideFadeInUp 0.3s ease-out forwards;
+}
+
+.slide-in-left {
+    animation: slide-in-left 0.5s ease-out forwards;
+}
+
+.button-primary {
+    background: $primary-color;
+    padding: 1rem;
+    color: $white;
+    border: none;
+    outline: none;
+    border-radius: 1rem;
+    font-weight: 500;
+}
+
+.transparent-button {
+    background: transparent;
+    border: 1px solid $primary-color;
+    color: $primary-color;
+}
+
+.disabled-btn {
+    opacity: .4;
+}

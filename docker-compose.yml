@@ -1,0 +1,88 @@
+version: '3'
+
+services:
+
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    networks:
+      - shopping_assistant
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  redisdb:
+    container_name: redisdb
+    image: redis:5
+    command: redis-server --appendonly yes --save 900 1 300 10 60 10000
+    restart: always
+    networks:
+      - shopping_assistant
+
+  # MongoDB service
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    restart: always
+    networks:
+      - shopping_assistant
+  # Node.js application service
+  nodeserver:
+    container_name: nodeserver
+    build: ./nodeserver  # Node.js app directory
+    networks:
+      - shopping_assistant
+    volumes:
+      - ./nodeserver:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - redisdb
+      - mongodb
+    restart: always
+
+  # NGINX reverse proxy service
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    ports:
+      - "80:80"  # Expose port 80 on the host
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/data/certs
+    depends_on:
+      - nodeserver
+    networks:
+      - shopping_assistant
+    restart: always
+  
+  shopui:
+    container_name: shopui
+    build:
+      context: ./ui
+    command: npm run dev
+    depends_on:
+      - nodeserver
+    volumes:
+      - ./ui:/var/www/dockerize-nuxt/nuxt-app
+      - /var/www/dockerize-nuxt/nuxt-app/node_modules
+    ports:
+      - "3000:8082"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - shopping_assistant
+    restart: always
+
+# Define the network
+networks:
+  shopping_assistant:
+    driver: bridge

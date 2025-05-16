@@ -1,0 +1,2428 @@
+[
+  {
+    "_id": "67a3e90d8f76755bc9adc621",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739212546567-6u2c1d9wieu.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Rice (long grain)",
+      "Rice (long grain)",
+      "Rice (long grain)",
+      "Rice (long grain)",
+      "Rice (long grain)"
+    ],
+    "name": "rice (long grain)",
+    "createdAt": "2025-02-05T22:41:17.492Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 5,
+    "metadata": "grains staple side long grain rice staple grain pantry essential versatile cooking grain everyday meal base affordable pantry staple white rice brown rice basmati alternative fluffy grains rice bowl ingredient side dish"
+  },
+  {
+    "_id": "67a3e90d8f76755bc9adc627",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230188359-4hi1261thmy.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Rice (short grain)",
+      "Rice (short grain)",
+      "Rice (short grain)",
+      "Rice (short grain)",
+      "Rice (short grain)"
+    ],
+    "name": "rice (short grain)",
+    "createdAt": "2025-02-05T22:41:17.822Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 5,
+    "metadata": "grains staple side short grain rice sushi japanese sticky sweet glutinous premium grain cooking versatile asian cuisine fluffy delicious authentic traditional rice"
+  },
+  {
+    "_id": "67a3e90e8f76755bc9adc62d",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230230658-td754x485kp.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ofada rice - White",
+      "Ofada rice - White",
+      "Ofada rice - White"
+    ],
+    "name": "ofada rice - white",
+    "createdAt": "2025-02-05T22:41:18.101Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "rice staple grain ofada rice white grain nigerian staple aromatic naturallyunrefined longgrain nutty traditional authentic africanflavor unique texture wholesome unprocessed hearty flavorful rustic nigeria"
+  },
+  {
+    "_id": "67a3e90e8f76755bc9adc631",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230257875-wpdzgb8hqzf.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ofada rice - brown",
+      "Ofada rice - brown",
+      "Ofada rice - brown"
+    ],
+    "name": "ofada rice - brown",
+    "createdAt": "2025-02-05T22:41:18.380Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "whole grain staple food traditional cuisine ofada rice brown grain nigeria african traditional unprocessed nutty aroma wholesome healthy unprocessed natural rustic authentic unprocessed delicious earthy flavorful sustainable unique nigerian"
+  },
+  {
+    "_id": "67a3e90e8f76755bc9adc635",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230285248-6cpfbmuaej.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ofada rice (Abakaliki)"
+    ],
+    "name": "ofada rice (abakaliki)",
+    "createdAt": "2025-02-05T22:41:18.659Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "nigerian staple grain ofada rice abakaliki nigeria staple grain aromatic nutty brown unpolished natural authentic flavorful traditional nigerian rice hearty wholesome rich taste african cuisine healthy grain.\n"
+  },
+  {
+    "_id": "67a3e90e8f76755bc9adc637",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739651180536-0vzlpozh5ur.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      " Basmati Rice - Tropical Sun Golden Stella ",
+      " Basmati Rice - Tropical Sun Golden Stella "
+    ],
+    "name": "basmati rice - tropical sun golden stella",
+    "createdAt": "2025-02-05T22:41:18.969Z",
+    "updatedAt": "2025-02-15T20:26:22.114Z",
+    "variantCount": 2,
+    "metadata": "grains rice staple basmati rice aromatic longgrain indian premium fluffy fragrant grains golden nutty flavorful delicious wholesome natural authentic traditional aged parboiled tender perfectrice"
+  },
+  {
+    "_id": "67a3e90f8f76755bc9adc63a",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739651233599-e9ca5hi2x45.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      " Basmati Rice - Tilda golden sella"
+    ],
+    "name": "basmati rice - tilda golden sella",
+    "createdAt": "2025-02-05T22:41:19.248Z",
+    "updatedAt": "2025-02-15T20:27:15.425Z",
+    "variantCount": 1,
+    "metadata": "grains rice staple basmati rice tilda golden sella aromatic longgrain indian premium fragrant fluffy delicious grains fluffy texture nutty flavor authentic indian cooking versatile rice"
+  },
+  {
+    "_id": "67a3e90f8f76755bc9adc63c",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739651368252-br8iib9x1we.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Beans - oloyin"
+    ],
+    "name": "beans - oloyin",
+    "createdAt": "2025-02-05T22:41:19.531Z",
+    "updatedAt": "2025-02-15T20:29:30.100Z",
+    "variantCount": 1,
+    "metadata": "legume protein staple beans oloyin nigerian staple food protein rich fiber hearty traditional african cuisine delicious savory flavorful filling nutritious wholesome earthy protein source"
+  },
+  {
+    "_id": "67a3e90f8f76755bc9adc63e",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739651408406-t0u5e9uroio.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Beans - White",
+      "Beans - white",
+      "Beans - white",
+      "Beans - white",
+      "Beans - white"
+    ],
+    "name": "beans - white",
+    "createdAt": "2025-02-05T22:41:19.809Z",
+    "updatedAt": "2025-02-15T20:30:11.087Z",
+    "variantCount": 5,
+    "metadata": "legume vegetable protein white beans dried pulses legume protein fiber plantbased healthy versatile cooking baking soup stew vegetarian vegan pantry staple baking ingredient"
+  },
+  {
+    "_id": "67a3e9108f76755bc9adc644",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739651331543-8rqn7tr6q5y.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Chicken - meat",
+      "Chicken - meat",
+      "Chicken - meat",
+      "Chicken - meat"
+    ],
+    "name": "chicken - meat",
+    "createdAt": "2025-02-05T22:41:20.088Z",
+    "updatedAt": "2025-02-15T20:28:53.169Z",
+    "variantCount": 4,
+    "metadata": "poultry protein meat chicken meat protein poultry dinner grilling baking roasting healthy versatile delicious lean protein source meal ingredient cooking"
+  },
+  {
+    "_id": "67a3e9108f76755bc9adc649",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230323497-o8uncr5qel.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Chicken Lap- meat",
+      "Chicken Lap- meat",
+      "Chicken Lap- meat"
+    ],
+    "name": "chicken lap- meat",
+    "createdAt": "2025-02-05T22:41:20.369Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "poultry protein savory chickenlap meat poultry protein delicacy african cuisine traditional nigerian flavorful savory rich texture authentic homemade"
+  },
+  {
+    "_id": "67a3e9108f76755bc9adc64d",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230346536-cwi7jvht2i.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Chicken Lap - meat"
+    ],
+    "name": "chicken lap - meat",
+    "createdAt": "2025-02-05T22:41:20.650Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "meat poultry savory chicken lap meat offal organmeat poultry delicacy african cuisine traditional dish flavorful protein rich affordable unique texture savory"
+  },
+  {
+    "_id": "67a3e9108f76755bc9adc64f",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230384316-kyd7k1fjiz.png",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Chicken wings - meat"
+    ],
+    "name": "chicken wings - meat",
+    "createdAt": "2025-02-05T22:41:20.930Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "meat appetizer snack chicken wings appetizer snack fingerfood juicy savory spicy buffalo bbq teriyaki crispy wings bonein flavorful meaty comfortfood party food shareable delicious appetizer"
+  },
+  {
+    "_id": "67a3e9118f76755bc9adc651",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230427630-kj68cc8tgg.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Chicken wings- meat",
+      "Chicken wings- meat"
+    ],
+    "name": "chicken wings- meat",
+    "createdAt": "2025-02-05T22:41:21.211Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "meat appetizer snack chicken wings appetizer snack fingerfood spicy buffalo bbq honey garlic savory juicy crispy meaty comfortfood party food shareable delicious flavorful"
+  },
+  {
+    "_id": "67a3e9118f76755bc9adc654",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230455052-gowi8ui1f4k.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Turkey  - meat",
+      "Turkey  - meat"
+    ],
+    "name": "turkey - meat",
+    "createdAt": "2025-02-05T22:41:21.492Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "poultry protein savory turkey meat poultry protein dinner roast bake holiday festive autumn delicious savory wholesome natural lean source"
+  },
+  {
+    "_id": "67a3e9118f76755bc9adc657",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230482588-ovb4kbs8m4g.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Goat meat (male)"
+    ],
+    "name": "goat meat (male)",
+    "createdAt": "2025-02-05T22:41:21.771Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "meat protein red goat meat chevon male delicious protein rich lean savory flavorful hearty robust gamey african caribbean asian ethnic grilling roasting stewing barbecue"
+  },
+  {
+    "_id": "67a3e9128f76755bc9adc659",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230506736-jwp9ol1a4e.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Goat meat (female)"
+    ],
+    "name": "goat meat (female)",
+    "createdAt": "2025-02-05T22:41:22.049Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "meat protein red goat meat female chevon caprine protein lean muscle gamey flavorful african caribbean asian latin heritage sustainable delicious nutritious grilling roasting stewing barbecue"
+  },
+  {
+    "_id": "67a3e9128f76755bc9adc65b",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739651522350-pkfuv5ikgl.png",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Fish - Kote ",
+      "Fish - Kote ",
+      "Fish - Kote "
+    ],
+    "name": "fish - kote",
+    "createdAt": "2025-02-05T22:41:22.328Z",
+    "updatedAt": "2025-02-15T20:32:04.809Z",
+    "variantCount": 3,
+    "metadata": "seafood protein delicacy fish kote seasoning blend seafood spice african flavor umami savory delicious authentic nigerian cooking ingredient natural vibrant aromatic traditional"
+  },
+  {
+    "_id": "67a3e9128f76755bc9adc65f",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230594692-whbmuqqij18.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Fish - Titus",
+      "Fish - Titus",
+      "Fish - Titus"
+    ],
+    "name": "fish - titus",
+    "createdAt": "2025-02-05T22:41:22.606Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "canned seafood protein fresh fish seafood tilapia delicious mild flaky white protein healthy omega3 sustainable farmraised fillets grilling baking panfrying"
+  },
+  {
+    "_id": "67a3e9128f76755bc9adc663",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230652104-fhcpkbbfu4r.png",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Fish - Hake ",
+      "Fish - Hake ",
+      "Fish - Hake "
+    ],
+    "name": "fish - hake",
+    "createdAt": "2025-02-05T22:41:22.886Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "seafood protein fish hake whitefish sustainable seafood atlantic northatlantic mildflavor flaky delicious versatile mildsweet proteinrich healthy lowfat grilling baking panfrying fishing"
+  },
+  {
+    "_id": "67a3e9138f76755bc9adc667",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230761151-46iy58bt8lm.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Fish - Sawa"
+    ],
+    "name": "fish - sawa",
+    "createdAt": "2025-02-05T22:41:23.165Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "seafood fresh delicacy fresh fish african delicacy protein rich savory delicious unique flavor african cuisine tilapia alternative sustainable sourced aquaculture farmraised"
+  },
+  {
+    "_id": "67a3e9138f76755bc9adc669",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230786831-98q7zwzyklh.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Fish - Croaker",
+      "Fish - Croaker",
+      "Fish - Croaker"
+    ],
+    "name": "fish - croaker",
+    "createdAt": "2025-02-05T22:41:23.443Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "seafood fish protein fresh seafood croaker fish brackishwater estuarine delicious panfried grilled baked sustainable protein omega3 tasty local delicacy"
+  },
+  {
+    "_id": "67a3e9138f76755bc9adc66d",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230838766-yn7flyvcgo.JPG",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Crayfish ",
+      "Crayfish ",
+      "Crayfish "
+    ],
+    "name": "crayfish",
+    "createdAt": "2025-02-05T22:41:23.722Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "seafood shellfish delicacy crayfish freshwater crustacean seafood delicacy louisiana crawfish etouffee bisque boil cajun boil seasoning spicy boil crawfish boil crayfish tails appetizer delicious sustainable aquatic harvest"
+  },
+  {
+    "_id": "67a3e9148f76755bc9adc671",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230871565-zthwjvlkhwa.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Vegetable oil (Kings)",
+      "Vegetable oil (Kings)",
+      "Vegetable oil (Kings)",
+      "Vegetable oil (Kings)"
+    ],
+    "name": "vegetable oil (kings)",
+    "createdAt": "2025-02-05T22:41:24.000Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 4,
+    "metadata": "cooking oil vegetable fat culinary ingredient cooking oil vegetable oil culinary baking frying versatile neutral flavor kitchen staple affordable pantry essential healthy cooking"
+  },
+  {
+    "_id": "67a3e9148f76755bc9adc676",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230909963-q0t9ayyzkq.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Vegetable oil (power oil)",
+      "Vegetable oil (power oil)",
+      "Vegetable oil (power oil)",
+      "Vegetable oil (power oil)"
+    ],
+    "name": "vegetable oil (power oil)",
+    "createdAt": "2025-02-05T22:41:24.278Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 4,
+    "metadata": "cooking oil vegetable fat culinary ingredient cooking oil vegetable oil refined neutral flavor versatile baking frying deepfrying healthy neutral taste kitchen essential pantry staple food ingredient"
+  },
+  {
+    "_id": "67a3e9148f76755bc9adc67b",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230949478-6hh4yllis3j.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Palm Oil - Local",
+      "Palm Oil - Local",
+      "Palm Oil - Local"
+    ],
+    "name": "palm oil - local",
+    "createdAt": "2025-02-05T22:41:24.566Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "cooking oil vegetable fat culinary ingredient local sustainable vegetable oil tropical ingredient cooking baking food processing malaysia indonesia indonesiaorigin natural fatty acids plantbased traditional ingredient"
+  },
+  {
+    "_id": "67a3e9148f76755bc9adc67f",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231054010-kx8c0tnq5cg.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato",
+      "Tomato"
+    ],
+    "name": "tomato",
+    "createdAt": "2025-02-05T22:41:24.846Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 6,
+    "metadata": "vegetable fruit ingredient tomato fruit vegetable garden fresh juicy red ripe sweet tangy antioxidant healthy organic seasonal versatile cooking ingredient sauce canning"
+  },
+  {
+    "_id": "67a3e9158f76755bc9adc686",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231079607-5z8sca4t4tv.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Tomato paste - Gino original",
+      "Tomato paste - Gino original",
+      "Tomato paste - Gino original"
+    ],
+    "name": "tomato paste - gino original",
+    "createdAt": "2025-02-05T22:41:25.126Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "sauce condiment ingredient tomato paste gino original italian authentic rich flavor concentrated umami savory pantry staple cooking ingredient versatile mediterranean classic"
+  },
+  {
+    "_id": "67a3e9158f76755bc9adc68a",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231128305-k7ubjo3ezw.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Tomato paste - Gino jollof",
+      "Tomato paste - Gino Jollof",
+      "Tomato paste - Gino Jollof"
+    ],
+    "name": "tomato paste - gino jollof",
+    "createdAt": "2025-02-05T22:41:25.404Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "sauce condiment ingredient tomato paste gino jollof authentic african flavor rich concentrated savory umami intensely flavored vibrant red cooking ingredient spice seasoning westafrican cuisine delicious hearty flavorful"
+  },
+  {
+    "_id": "67a3e9158f76755bc9adc68e",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231159770-gv9w19rr5vk.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Pepper soup mix - Payoor special "
+    ],
+    "name": "pepper soup mix - payoor special",
+    "createdAt": "2025-02-05T22:41:25.695Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "spice blend soup base seasoning mix pepper soup spice blend payoor special nigeria authentic flavorful aromatic spicy comforting hearty warming traditional nigerian soup base seasoning mix"
+  },
+  {
+    "_id": "67a3e9158f76755bc9adc690",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231192942-staioi7tqp9.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Grinded red pepper "
+    ],
+    "name": "grinded red pepper",
+    "createdAt": "2025-02-05T22:41:25.975Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "spice seasoning condiment red pepper flakes chili powder spicy seasoning heat flavor italian cajun korean mexican vibrant aromatic natural ingredient cooking baking"
+  },
+  {
+    "_id": "67a3e9168f76755bc9adc692",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231258738-jcxeyjd5qvf.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Grinded cameroun pepper "
+    ],
+    "name": "grinded cameroun pepper",
+    "createdAt": "2025-02-05T22:41:26.256Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "spice seasoning flavor cameroun pepper ground spice african westafrican pungent aromatic flavorful heat spicy unique natural authentic gourmet culinary ingredient"
+  },
+  {
+    "_id": "67a3e9168f76755bc9adc694",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231337443-ni017vnroo.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Pepper - Ata Rodo",
+      "Pepper - Ata Rodo",
+      "Pepper - Ata Rodo",
+      "Pepper - Ata Rodo",
+      "Pepper - Ata Rodo",
+      "Pepper - Ata Rodo",
+      "Pepper - Ata Rodo"
+    ],
+    "name": "pepper - ata rodo",
+    "createdAt": "2025-02-05T22:41:26.534Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 7,
+    "metadata": "spice seasoning vegetable bell pepper ata rodo roasted chili spanish paprika smoky sweet heat african spice seasoning vegetable vibrant red flavourful cooking"
+  },
+  {
+    "_id": "67a3e9168f76755bc9adc69c",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231476228-s4n2cl76q3.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Pepper - Tatase ",
+      "Pepper - Tatase ",
+      "Pepper - Tatase ",
+      "Pepper - Tatase ",
+      "Pepper - Tatase ",
+      "Pepper - Tatase ",
+      "Pepper - Tatase "
+    ],
+    "name": "pepper - tatase",
+    "createdAt": "2025-02-05T22:41:26.814Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 7,
+    "metadata": "spice seasoning flavor pepper tatase hot chili spice westafrican nigeria savory flavorful aromatic vibrant culinary ingredient heat seasoning"
+  },
+  {
+    "_id": "67a3e9178f76755bc9adc6a4",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231514101-keffj7niln.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Yam",
+      "Yam"
+    ],
+    "name": "yam",
+    "createdAt": "2025-02-05T22:41:27.096Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "root vegetable starchy food healthy carb yam root vegetable tuber african caribbean tropical orange purple starchy sweet carbohydrate energy rich nutritious versatile cooking baking roasting boiling mash fries side dish healthy natural wholesome traditional antioxidant fiber"
+  },
+  {
+    "_id": "67a3e9178f76755bc9adc6a7",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231556575-i4zlgndyt0r.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Iris Potato",
+      "Iris Potato",
+      "Iris Potato"
+    ],
+    "name": "iris potato",
+    "createdAt": "2025-02-05T22:41:27.377Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "vegetable tuber starch purple potato heirloom vegetable irish variety creamy texture subtly sweet earthy flavor nutritious antioxidant rich unique flavor heirloompotato irishpotato hearty comfortfood german potato"
+  },
+  {
+    "_id": "67a3e9178f76755bc9adc6ab",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231590639-qlcawpq6vtb.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Sweet potato",
+      "Sweet potato"
+    ],
+    "name": "sweet potato",
+    "createdAt": "2025-02-05T22:41:27.657Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable starch healthy sweet potato root vegetable orange vibrant earthy nutritious antioxidant fiber rich versatile baking roasting mashing baking powder creamy antioxidant source vitamin a healthy side dish autumn harvest fall season"
+  },
+  {
+    "_id": "67a3e9178f76755bc9adc6ae",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231619965-zkwsald5bco.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "EGG"
+    ],
+    "name": "egg",
+    "createdAt": "2025-02-05T22:41:27.935Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "protein breakfast versatile breakfast protein breakfastfood baking cooking ingredient versatile nutritious breakfast staple organic brown white free range farmfresh delicious wholesome"
+  },
+  {
+    "_id": "67a3e9188f76755bc9adc6b0",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232009725-hd9vtta51lt.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Onions - Red",
+      "Onions - Red"
+    ],
+    "name": "onions - red",
+    "createdAt": "2025-02-05T22:41:28.216Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable aromatic ingredient red onion allium vegetable savory pungent flavorful cooking baking roasting grilling salads tangy vibrant earthy heirloom organic fresh"
+  },
+  {
+    "_id": "67a3e9188f76755bc9adc6b3",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232035777-0trltaj5e1b.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Garri - yellow",
+      "Garri - yellow",
+      "Garri - yellow",
+      "Garri - yellow",
+      "Garri - yellow"
+    ],
+    "name": "garri - yellow",
+    "createdAt": "2025-02-05T22:41:28.496Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 5,
+    "metadata": "staple food grain product african cuisine garri yellow cassava granules african staple food westafrican snack glutenfree versatile grainy textured traditional snack energy boost carbohydrate rich\n\n\n\n"
+  },
+  {
+    "_id": "67a3e9188f76755bc9adc6b9",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232062394-3ti3o5ivz0h.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Garri - white",
+      "Garri - white",
+      "Garri - white"
+    ],
+    "name": "garri - white",
+    "createdAt": "2025-02-05T22:41:28.776Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "staple food grain product african cuisine garri white cassava granules african staple food nigeria westafrica processed cassava glutenfree fiberrich snack traditional food carbohydrate baking frying eba fufu"
+  },
+  {
+    "_id": "67a3e9198f76755bc9adc6bd",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232092446-n5oukocpmmr.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Garri - Ijebu ",
+      "Garri - Ijebu "
+    ],
+    "name": "garri - ijebu",
+    "createdAt": "2025-02-05T22:41:29.056Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "staple food grain product african cuisine garri ijebu cassava granules african staple food nigeria westafrica traditional snack glutenfree versatile grainy snack tasty affordable rustic textured carbohydrate"
+  },
+  {
+    "_id": "67a3e9198f76755bc9adc6c0",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232124199-xc4eptz74a.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Salt - Mr chef"
+    ],
+    "name": "salt - mr chef",
+    "createdAt": "2025-02-05T22:41:29.338Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "seasoning condiment flavor enhancer salt mr chef seasoning culinary essential flavor enhancer gourmet cooking ingredient premium quality fine grain mineral rich table salt baking spice"
+  },
+  {
+    "_id": "67a3e9198f76755bc9adc6c2",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232145650-zvpj9qxdhx.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Curry Powder - Spice Supreme "
+    ],
+    "name": "curry powder - spice supreme",
+    "createdAt": "2025-02-05T22:41:29.632Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "spice seasoning flavor curry powder spice blend aromatic indian flavor warm savory versatile cooking seasoning exotic fragrant flavorful authentic traditional"
+  },
+  {
+    "_id": "67a3e9198f76755bc9adc6c4",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232169364-7qds5cxgz8u.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Curry Powder - Durcos "
+    ],
+    "name": "curry powder - durcos",
+    "createdAt": "2025-02-05T22:41:29.924Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "spice blend seasoning mix flavor enhancer curry powder spice blend indian aromatic flavorful warm savory versatile cooking seasoning authentic traditional exotic fragrant vibrant delicious"
+  },
+  {
+    "_id": "67a3e91a8f76755bc9adc6c6",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232191030-39ii5bfpa66.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Thyme - Spice supreme"
+    ],
+    "name": "thyme - spice supreme",
+    "createdAt": "2025-02-05T22:41:30.216Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "herb seasoning flavor culinary herb thyme spice supreme aromatic mediterranean european savory flavorful versatile cooking baking seasoning garden fresh fragrant earthy"
+  },
+  {
+    "_id": "67a3e91a8f76755bc9adc6c8",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232214545-q60nwabpar.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Plantain unripe ",
+      "Plantain unripe "
+    ],
+    "name": "plantain unripe",
+    "createdAt": "2025-02-05T22:41:30.496Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable starch ingredient plantain unripe green savory starchy tropical caribbean african cooking baking frying grilling side dish vegetable potassium fiber nutritious versatile.\n"
+  },
+  {
+    "_id": "67a3e91a8f76755bc9adc6cb",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232237209-14lwhjqv0p8.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Plantain ripe "
+    ],
+    "name": "plantain ripe",
+    "createdAt": "2025-02-05T22:41:30.777Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "fruit snack tropical ripe plantain sweet starchy tropical caribbean latin american dessert snack baking frying grilling bakingingredient yellow brown flavorful naturally sweet nutritious potassium source"
+  },
+  {
+    "_id": "67a3e91b8f76755bc9adc6cd",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Noodles Indomie"
+    ],
+    "name": "noodles indomie",
+    "createdAt": "2025-02-05T22:41:31.056Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "instant noodles snack noodles indomie instant savory spicy flavorful asian southeastasian comfortfood snack quickmeal affordable convenient authentic indonesia halal vegetarian easyprepare"
+  },
+  {
+    "_id": "67a3e91b8f76755bc9adc6cf",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232301175-i6o26qup6jo.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Shrimp",
+      "Shrimp"
+    ],
+    "name": "shrimp",
+    "createdAt": "2025-02-05T22:41:31.336Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "seafood protein delicacy fresh seafood delicious pink succulent tasty gulf gulfshrimp farmed wildcaught protein lowcarb healthy grilling baking eating appetizer entree seafood boil dinner party"
+  },
+  {
+    "_id": "67a3e91b8f76755bc9adc6d2",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232347477-yonapcjmg0q.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Prawn",
+      "Prawn"
+    ],
+    "name": "prawn",
+    "createdAt": "2025-02-05T22:41:31.617Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "seafood protein delicacy seafood crustacean shrimp prawn shellfish delicious protein ocean fresh tasty savory appetizer maincourse grilling baking asian european tropical"
+  },
+  {
+    "_id": "67a3e91b8f76755bc9adc6d5",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232369818-cmlqfrqy92q.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Green Apples ",
+      "Green Apples ",
+      "Green Apples "
+    ],
+    "name": "green apples",
+    "createdAt": "2025-02-05T22:41:31.923Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "fruits snacks healthy crisp tart juicy sweet green refreshing healthy snack orchard fresh vibrant tangy delicious bite sized"
+  },
+  {
+    "_id": "67a3e91c8f76755bc9adc6d9",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232431239-kxhvgc9132.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Grape ",
+      "Grape "
+    ],
+    "name": "grape",
+    "createdAt": "2025-02-05T22:41:32.203Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "fruit snack healthy fruit sweet juicy purple green red snack healthy delicious antioxidant vineyard fresh organic tablewine grapejuice refreshing flavorful natural"
+  },
+  {
+    "_id": "67a3e91c8f76755bc9adc6dc",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232465433-ylu046mm4u.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Pineapple (Cotonou -ripe & ready) "
+    ],
+    "name": "pineapple (cotonou -ripe & ready)",
+    "createdAt": "2025-02-05T22:41:32.483Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "tropical fruit sweet snack fresh produce pineapple cotonou ripe ready tropical sweet juicy golden exotic fruit fresh delicious vibrant tangy refreshing flavorful tropicalorigin"
+  },
+  {
+    "_id": "67a3e91c8f76755bc9adc6de",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232496259-j9afzgbejcf.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Pineapple (Cotonou unripe) "
+    ],
+    "name": "pineapple (cotonou unripe)",
+    "createdAt": "2025-02-05T22:41:32.763Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "tropical fruit fresh produce exotic snack pineapple cotonou unripe tart acidic tropical fruit green firm refreshing juicy sweet tangy african import fresh produce healthy snack"
+  },
+  {
+    "_id": "67a3e91d8f76755bc9adc6e0",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232521084-gspwjk15clh.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Banana (Regular bunch -ripe)"
+    ],
+    "name": "banana (regular bunch -ripe)",
+    "createdAt": "2025-02-05T22:41:33.057Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "fruit snack healthy banana fruit ripe sweet yellow potassium tropical healthy snack breakfast smoothie dessert naturallydelicious potassiumrich"
+  },
+  {
+    "_id": "67a3e91d8f76755bc9adc6e2",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232670257-suuisbidmg.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Pineapple ( Bendel unripe)"
+    ],
+    "name": "pineapple ( bendel unripe)",
+    "createdAt": "2025-02-05T22:41:33.338Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "tropical fruit unripe produce exotic snack pineapple bendel unripe tart acidic tropical juicy sweet vibrant yellow green tangy refreshing exotic fruit bendelvariety"
+  },
+  {
+    "_id": "67a3e91d8f76755bc9adc6e4",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232698742-tui085844y8.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Pineapple ( Bendel ripe)"
+    ],
+    "name": "pineapple ( bendel ripe)",
+    "createdAt": "2025-02-05T22:41:33.647Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "tropical fruit sweet snack healthy dessert tropical fruit sweet juicy tangy yellow vibrant refreshing exotic bendel ripe tropicalsweetness summery delicious bendel cultivar"
+  },
+  {
+    "_id": "67a3e91d8f76755bc9adc6e6",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232781978-7570irca14b.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Banana  (Regular bunch -unripe)"
+    ],
+    "name": "banana (regular bunch -unripe)",
+    "createdAt": "2025-02-05T22:41:33.926Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "fruit snack healthy banana unripe green firm starchy tropical fruit potassium healthy snack baking unripeplantain cooking ingredient breakfast smoothie unripebanana"
+  },
+  {
+    "_id": "67a3e91e8f76755bc9adc6e8",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232835280-j2hmrv532le.png",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Lemon (Foreign) ",
+      "Lemon (Foreign) ",
+      "Lemon (Foreign) "
+    ],
+    "name": "lemon (foreign)",
+    "createdAt": "2025-02-05T22:41:34.206Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "citrus fruit sour lemon foreign citrus fruit tangy aromatic refreshing zesty yellow fruit juice ingredient mediterranean european italian sicilian premium quality sweet sour"
+  },
+  {
+    "_id": "67a3e91e8f76755bc9adc6ec",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232896102-cc232hufjpm.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Dates ",
+      "Dates ",
+      "Dates ",
+      "Dates "
+    ],
+    "name": "dates",
+    "createdAt": "2025-02-05T22:41:34.499Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 4,
+    "metadata": "dried fruit natural sweetener healthy snack fresh fruit sweet natural seasonal delicious healthy dessert baking snack treat organic tropical orchard summer autumn winter juicy ripe flavorful"
+  },
+  {
+    "_id": "67a3e91e8f76755bc9adc6f1",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232924049-7b85cd2b38m.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Carrot",
+      "Carrot",
+      "Carrot"
+    ],
+    "name": "carrot",
+    "createdAt": "2025-02-05T22:41:34.779Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "vegetable healthy crunchy orange root vegetable crunchy sweet nutritious vitamin a antioxidant healthy snack garden fresh organic natural earthy fiber rich versatile cooking baking roasting juicing"
+  },
+  {
+    "_id": "67a3e91f8f76755bc9adc6f5",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739232973532-gv5roexjq6.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Black Amala Flour [Elubo] - "
+    ],
+    "name": "black amala flour [elubo] -",
+    "createdAt": "2025-02-05T22:41:35.059Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "gluten-free traditional flour black amala flour elubo yam cassava african staple glutenfree nutritious fiberrich versatile native africanorigin traditional westafrican dough"
+  },
+  {
+    "_id": "67a3e91f8f76755bc9adc6f7",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233005868-vkp6r7vxbro.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Black Amala Flour [Elubo]"
+    ],
+    "name": "black amala flour [elubo]",
+    "createdAt": "2025-02-05T22:41:35.341Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "gluten-free traditional flour black amala flour elubo yam cassava staple african nigeria westafrica glutenfree nutritious fiberrich versatile traditional native africanorigin grainy texture earthy flavor authentic cooking"
+  },
+  {
+    "_id": "67a3e91f8f76755bc9adc6f9",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233026829-k2seqoxiqa.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "White Amala Flour [Elubo]",
+      "White Amala Flour [Elubo]"
+    ],
+    "name": "white amala flour [elubo]",
+    "createdAt": "2025-02-05T22:41:35.639Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "gluten-free traditional flour white amala flour elubo cassava staple african food glutenfree traditional native nigeria westafrica creamy texture smooth consistency unprocessed natural authentic dietaryfiber grain"
+  },
+  {
+    "_id": "67a3e91f8f76755bc9adc6fc",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233090471-vas4dwinn2.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Sweet Bell pepper mix [Green, red and yellow]",
+      "Sweet Bell pepper mix [Green, red and yellow]"
+    ],
+    "name": "sweet bell pepper mix [green, red and yellow]",
+    "createdAt": "2025-02-05T22:41:35.920Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable fresh colorful bell peppers colorful vegetables fresh produce sweet crunchy vibrant green red yellow healthy snack salad cooking grilling roasting versatile"
+  },
+  {
+    "_id": "67a3e9208f76755bc9adc6ff",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233170080-bh3mucaaxbm.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "sweet bell pepper [green]"
+    ],
+    "name": "sweet bell pepper [green]",
+    "createdAt": "2025-02-05T22:41:36.208Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable fresh healthy green bell pepper vegetable crisp juicy sweet fresh crunchy versatile salad cooking grilling roasting healthy antioxidant"
+  },
+  {
+    "_id": "67a3e9208f76755bc9adc702",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233216914-flq0gn9rzhh.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "sweet bell pepper [red]"
+    ],
+    "name": "sweet bell pepper [red]",
+    "createdAt": "2025-02-05T22:41:36.501Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable fresh healthy red bell pepper sweet crisp juicy crunchy vibrant colorful vegetable fresh produce healthy antioxidant vitaminc grilling roasting salad"
+  },
+  {
+    "_id": "67a3e9208f76755bc9adc705",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233265431-ljdzqjvkez.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "sweet bell pepper  [yellow]"
+    ],
+    "name": "sweet bell pepper  [yellow]",
+    "createdAt": "2025-02-05T22:41:36.781Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable fresh healthy yellow bell pepper sweet crisp juicy vegetable fresh produce healthy vibrant colorful mild flavor cooking ingredient garden harvest"
+  },
+  {
+    "_id": "67a3e9218f76755bc9adc708",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233318098-rws2yct0agm.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ogbono UNBlended ",
+      "Ogbono UNBlended ",
+      "Ogbono UNBlended "
+    ],
+    "name": "ogbono unblended",
+    "createdAt": "2025-02-05T22:41:37.062Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "soup ingredient african cuisine thickener ogbono seed unblended african staple soup thickener traditional nigerian delicious authentic natural wholesome fiber rich hearty flavor"
+  },
+  {
+    "_id": "67a3e9218f76755bc9adc70c",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233342211-694ecv9p36v.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ogbono  Blended ",
+      "Ogbono  Blended "
+    ],
+    "name": "ogbono blended",
+    "createdAt": "2025-02-05T22:41:37.370Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "soup ingredient african cuisine thickener ogbono seed african spice thickener soup base flavorful traditional nigerian authentic aromatic hearty savory delicious ingredient"
+  },
+  {
+    "_id": "67a3e9218f76755bc9adc70f",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233376050-yvsv1zg31c.png",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Egusi [seed],Egusi [seed],Egusi [seed] hand peeled"
+    ],
+    "name": "egusi [seed]",
+    "createdAt": "2025-02-05T22:41:37.651Z",
+    "updatedAt": "2025-03-20T08:32:45.657Z",
+    "variantCount": 3,
+    "metadata": "nutritious seed ingredient egusi seed nigerian westafrican staple ingredient cooking seed protein fiber rich flavorful soup stew ingredient african cuisine traditional cooking"
+  },
+  {
+    "_id": "67a3e9218f76755bc9adc713",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233434203-fad00tmz2hr.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Naija Stew Combo [Tomato + Tatashe + Shombo] ",
+      "Naija Stew Combo [Tomato + Tatashe + Shombo] "
+    ],
+    "name": "naija stew combo [tomato + tatashe + shombo]",
+    "createdAt": "2025-02-05T22:41:37.932Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "nigerian stew combo nigerian stew base tomato tatashe shombo authentic naija flavor rich savory aromatic spicy blend traditional cooking essential fresh ingredients homemade taste african cuisine"
+  },
+  {
+    "_id": "67a3e9228f76755bc9adc718",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233637071-7g21ytdl01v.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Pepper - Tatashe "
+    ],
+    "name": "pepper - tatashe",
+    "createdAt": "2025-02-05T22:41:38.494Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "vegetable spice ingredient pepper tatashe african nigeria westafrica vegetable spice flavor heat vibrant red green fresh grilling roasting stewing flavorful seasoning"
+  },
+  {
+    "_id": "67a3e9228f76755bc9adc71a",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233680479-smf80j292n.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Pepper - Shombo",
+      "Pepper - Shombo"
+    ],
+    "name": "pepper - shombo",
+    "createdAt": "2025-02-05T22:41:38.775Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "spice seasoning flavor pepper shombo spicy hot african caribbean fruit vegetable vibrant flavorful aromatic heat ingredient cooking seasoning"
+  },
+  {
+    "_id": "67a3e9238f76755bc9adc71d",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233730210-3wcqqkk7hhd.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Cow meat - beef",
+      "Cow meat - beef"
+    ],
+    "name": "cow meat - beef",
+    "createdAt": "2025-02-05T22:41:39.059Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "red meat protein source animal product beef red meat protein steak ground beef roast ribeye tenderloin hearty flavorful grilling barbecue steakhouse premium delicious nutritious iron zinc essential amino acids healthy savory robust rich satisfying"
+  },
+  {
+    "_id": "67a3e9238f76755bc9adc720",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233764765-7b6z3g35xvf.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      " Chicken breast  - meat "
+    ],
+    "name": "chicken breast - meat",
+    "createdAt": "2025-02-05T22:41:39.340Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "lean protein poultry fresh meat chicken breast meat protein lean healthy grilling baking cooking versatile poultry dinner recipe delicious affordable fresh premium"
+  },
+  {
+    "_id": "67a3e9238f76755bc9adc722",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233809780-rtujeyuhaq.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Chi Premium Chicken Sausage"
+    ],
+    "name": "chi premium chicken sausage",
+    "createdAt": "2025-02-05T22:41:39.620Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "chicken sausage premium premium chicken sausage savory juicy grilled panfried breakfast lunch dinner protein packed flavorful delicious versatile easy cooking mild spicy italian herb seasoned"
+  },
+  {
+    "_id": "67a3e9238f76755bc9adc724",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233869107-fgy7tuly5ds.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Smoked panla - fish ",
+      "Smoked panla - fish ",
+      "Smoked panla - fish "
+    ],
+    "name": "smoked panla - fish",
+    "createdAt": "2025-02-05T22:41:39.901Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "smoked fish seafood smoked fish panla philippine seafood delicacy savory authentic traditional regional cuisine delicious filipino appetizer snack appetizer appetizer"
+  },
+  {
+    "_id": "67a3e9248f76755bc9adc728",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233990922-qvi0u82grte.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Stock fish - [Dice flesh]"
+    ],
+    "name": "stock fish - [dice flesh]",
+    "createdAt": "2025-02-05T22:41:40.184Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "seafood dried protein dried fish norway cod sustainable protein seafood traditional norwegian delicacy flavorful authentic cured fish premium quality artisanal ingredient coastal cuisine."
+  },
+  {
+    "_id": "67a3e9248f76755bc9adc72a",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234038039-1z18t2ktb6q.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ponmo - meat [brown]",
+      "Ponmo - meat [brown]"
+    ],
+    "name": "ponmo - meat [brown]",
+    "createdAt": "2025-02-05T22:41:40.495Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "meat protein delicacy ponmo meat chewy flavorful african delicacy cowhide tripe savory traditional nigeria westafrica protein rich texture rich taste"
+  },
+  {
+    "_id": "67a3e9248f76755bc9adc72d",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234073265-hbhs4x9srlq.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Snail [small]",
+      "Snail [small]"
+    ],
+    "name": "snail [small]",
+    "createdAt": "2025-02-05T22:41:40.776Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "seafood delicacy protein snail small escargot delicacy protein source african cuisine sustainable gourmet appetizer slowcooked tender richflavor unique"
+  },
+  {
+    "_id": "67a3e9258f76755bc9adc730",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234150833-israfa03bpf.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Stock fish - head [okporoko]"
+    ],
+    "name": "stock fish - head [okporoko]",
+    "createdAt": "2025-02-05T22:41:41.057Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "dried fish seafood protein stockfish head okporoko nigerian dried fish smoky savory protein rich traditional african delicacy umami flavor appetizer snack ingredient seasoning robust authentic flavor"
+  },
+  {
+    "_id": "67a3e9258f76755bc9adc732",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234188037-rpxrre975f.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Periwinkle  [with shell]",
+      "Periwinkle  [with shell]",
+      "Periwinkle  [with shell]"
+    ],
+    "name": "periwinkle [with shell]",
+    "createdAt": "2025-02-05T22:41:41.344Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "seafood shellfish delicacy periwinkle shellfish seafood edible mollusk african delicacy coastal nigeria brackishwater sustainable protein savory umami tasty unique ingredient traditional cuisine local delicacy flavorful oceanic"
+  },
+  {
+    "_id": "67a3e9258f76755bc9adc736",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234216230-hh26d2ns7vc.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Bay leaf "
+    ],
+    "name": "bay leaf",
+    "createdAt": "2025-02-05T22:41:41.625Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "herb seasoning flavoring bay leaf aromatic herb culinary spice flavoring savory dishes mediterranean cooking italian cuisine bay laurel fragrant leaves essential oil dried herb natural flavor enhancer traditional cooking"
+  },
+  {
+    "_id": "67a3e9258f76755bc9adc738",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234364958-6xru08t0um2.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Tiger Nutmeg Powder",
+      "Tiger Nutmeg Powder"
+    ],
+    "name": "tiger nutmeg powder",
+    "createdAt": "2025-02-05T22:41:41.905Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "spice seasoning natural tiger nutmeg spice aromatic warm fragrant baking curry indian asian premium quality flavorful natural authentic fresh ground"
+  },
+  {
+    "_id": "67a3e9268f76755bc9adc73b",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234439602-9ty8dxpz4ps.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Goat Meat",
+      "Goat Meat"
+    ],
+    "name": "goat meat",
+    "createdAt": "2025-02-05T22:41:42.198Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "meat protein red goat meat red meat protein source flavorful savory hearty african cuisine gamey lean sustainable pasture raised delicious grilling roasting stewing ethnic food"
+  },
+  {
+    "_id": "67a3e9268f76755bc9adc73e",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234467422-skbmh83u95.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ugu (pumpkin) leaves "
+    ],
+    "name": "ugu (pumpkin) leaves",
+    "createdAt": "2025-02-05T22:41:42.480Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "vegetable leafy nutritious ugu leaves african vegetable leafygreen nutritious vitamin rich antioxidant fiber healthy greens soup stew egusi spinach traditional african cuisine fresh organic delicious"
+  },
+  {
+    "_id": "67a3e9268f76755bc9adc740",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234542839-avh4l0y0789.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Knorr Chicken Seasoning Cubes"
+    ],
+    "name": "knorr chicken seasoning cubes",
+    "createdAt": "2025-02-05T22:41:42.760Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "seasoning cubes chicken chicken seasoning cubes savory flavor enhancer umami bouillon cube cooking ingredient taste enhancer convenient affordable versatile delicious pantry staple seasoning"
+  },
+  {
+    "_id": "67a3e9278f76755bc9adc742",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234646770-8jty41ro02t.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Maggi Star Tablet Chicken Flavour"
+    ],
+    "name": "maggi star tablet chicken flavour",
+    "createdAt": "2025-02-05T22:41:43.039Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "instant noodles chicken flavor convenience food instant noodles chicken flavour savoury convenient quick meal snack tasty comfortfood easyprepare flavorful seasoning cookingbase"
+  },
+  {
+    "_id": "67a3e9278f76755bc9adc744",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234680477-gw83gtihblh.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Okazi"
+    ],
+    "name": "okazi",
+    "createdAt": "2025-02-05T22:41:43.326Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "leafy vegetable traditional okazi leafygreen vegetable nigerian soup ingredient traditional african delicacy healthy nutritious fiberrich antioxidant leafy vibrant green flavorful\n\n\n\n"
+  },
+  {
+    "_id": "67a3e9278f76755bc9adc746",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234713622-ol0ug39iaa8.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Locust Beans - Iru "
+    ],
+    "name": "locust beans - iru",
+    "createdAt": "2025-02-05T22:41:43.605Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "fermented seasoning legumes fermented bean seasoning african cuisine iru umami savory protein rich traditional nigerian fermented flavorful spice ingredient depth complexity"
+  },
+  {
+    "_id": "67a3e9278f76755bc9adc748",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234740731-cnsmyjc2yel.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Garlic powder"
+    ],
+    "name": "garlic powder",
+    "createdAt": "2025-02-05T22:41:43.884Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "seasoning spice flavoring garlic powder seasoning spice savory aromatic flavorful versatile cooking baking pantry essential allnatural organic glutenfree vegan"
+  },
+  {
+    "_id": "67a3e9288f76755bc9adc74a",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234780860-0v6sdn6u77c.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Liver",
+      "Liver"
+    ],
+    "name": "liver",
+    "createdAt": "2025-02-05T22:41:44.163Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "organ meat protein source nutrient-rich organ meat protein iron b vitamins nutrient dense rich flavor savory hearty natural wholefood healthy traditional offal delicious versatile cooking ingredient"
+  },
+  {
+    "_id": "67a3e9288f76755bc9adc74d",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Sweetcorn"
+    ],
+    "name": "sweetcorn",
+    "createdAt": "2025-02-05T22:41:44.441Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "vegetable side snack sweetcorn fresh kernels yellow juicy summer vegetable grilling roasting cob sweet vibrant seasonal delicious wholesome farm fresh harvest"
+  },
+  {
+    "_id": "67a3e9288f76755bc9adc74f",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Green peas "
+    ],
+    "name": "green peas",
+    "createdAt": "2025-02-05T22:41:44.738Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "vegetable legume healthy fresh green peas vegetables frozen peas sweet peas garden peas organic peas vibrant green nutritious protein fiber delicious versatile healthy plantbased"
+  },
+  {
+    "_id": "67a3e9298f76755bc9adc751",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234838359-tecmxjxoi5t.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ginger powder"
+    ],
+    "name": "ginger powder",
+    "createdAt": "2025-02-05T22:41:45.017Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "spice seasoning flavoring ginger spice aromatic warming flavorful baking cooking curry chai tea antioxidant digestive healthy natural organic premium indian asian culinary essential"
+  },
+  {
+    "_id": "67a3e9298f76755bc9adc753",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234883370-cpzayc2k417.png",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Uziza Leaves"
+    ],
+    "name": "uziza leaves",
+    "createdAt": "2025-02-05T22:41:45.295Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "herbal seasoning vegetable uziza leaves african herb spice flavor pepper aromatic traditional nigeria westafrica cooking seasoning flavorful fragrant fresh green leafy vegetable"
+  },
+  {
+    "_id": "67a3e9298f76755bc9adc755",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234933977-5bl7dya1v9l.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Garden egg [green]",
+      "Garden egg [green]",
+      "Garden egg [green]"
+    ],
+    "name": "garden egg [green]",
+    "createdAt": "2025-02-05T22:41:45.573Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "vegetable healthy green garden egg green african vegetable small fruit eggplant shadeplant tropical produce nutritious antioxidant heirloom flavor"
+  },
+  {
+    "_id": "67a3e9298f76755bc9adc759",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739234995244-uhuga77tmel.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ewedu Leaf"
+    ],
+    "name": "ewedu leaf",
+    "createdAt": "2025-02-05T22:41:45.856Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "vegetable leafy nutritious ewedu leaf nigerian soup ingredient leafygreen african cuisine healthy vegetable nutritious traditional soup base fresh vibrant flavorful bitterleaf."
+  },
+  {
+    "_id": "67a3e92a8f76755bc9adc75b",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235018874-123ihfc6h59f.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Shawarma Bread"
+    ],
+    "name": "shawarma bread",
+    "createdAt": "2025-02-05T22:41:46.135Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "flatbread middle eastern wrap shawarma bread flatbread middleeastern wrap pita bread arabic versatile delicious pliable warm soft grillable sandwich bread flavor absorbent."
+  },
+  {
+    "_id": "67a3e92a8f76755bc9adc75d",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235039054-8e0a8d75qk4.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Bama Mayonnaise "
+    ],
+    "name": "bama mayonnaise",
+    "createdAt": "2025-02-05T22:41:46.437Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "condiment spread dressing creamy southern mayonnaise bama classic condiment tangy rich flavorful smooth spread sandwich recipe bbq coleslaw potato salad louisiana american comfortfood"
+  },
+  {
+    "_id": "67a3e92a8f76755bc9adc75f",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235059144-rd9usuy8pz.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Efo Tete"
+    ],
+    "name": "efo tete",
+    "createdAt": "2025-02-05T22:41:46.716Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "nigerian vegetable soup nigerian food yoruba cuisine swallow staple dish semolina flour elastic dough traditional african delicacy creamy texture filling breakfast lunch dinner"
+  },
+  {
+    "_id": "67a3e92a8f76755bc9adc761",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235081830-n4nlzmh1t1d.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Zobo leaf",
+      "Zobo leaf"
+    ],
+    "name": "zobo leaf",
+    "createdAt": "2025-02-05T22:41:46.995Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "herbal beverage natural zobo leaf hibiscus leaf african herb beverage ingredient natural digestive antioxidant refreshing flavor antioxidant properties traditional african drink"
+  },
+  {
+    "_id": "67a3e92b8f76755bc9adc764",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235107476-o2ws5coqvip.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Zobo leaf - blended",
+      "Zobo leaf - blended"
+    ],
+    "name": "zobo leaf - blended",
+    "createdAt": "2025-02-05T22:41:47.274Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "herbal drink natural beverage refreshing infusion zobo leaf blended drinkable refreshing african nigeria hibiscus floral tangy antioxidant healthy natural botanical traditional beverage"
+  },
+  {
+    "_id": "67a3e92b8f76755bc9adc767",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235125731-5owwyjtn9qa.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Sugar",
+      "Sugar"
+    ],
+    "name": "sugar",
+    "createdAt": "2025-02-05T22:41:47.558Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "sweetener ingredient additive sweet granular crystalline sweetener baking dessert candy flavoring natural ingredient pure delicious baking ingredient cooking ingredient confectionery ingredient refreshment\n\n\n\n"
+  },
+  {
+    "_id": "67a3e92b8f76755bc9adc76a",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235146775-x1souaht8q.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Oha leaves"
+    ],
+    "name": "oha leaves",
+    "createdAt": "2025-02-05T22:41:47.857Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "vegetable herb leafy oha leaves nigerian vegetable leafygreen superfood african cuisine healthy vibrant nutritious antioxidant natural wildharvested traditional medicine bitterleaf alternative fresh green"
+  },
+  {
+    "_id": "67a3e92c8f76755bc9adc76c",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235176722-mbrvkmnhqyl.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ogiri",
+      "Ogiri"
+    ],
+    "name": "ogiri",
+    "createdAt": "2025-02-05T22:41:48.135Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "fermented condiment seasoning ogiri fermented melonseed nigerian delicacy savory spread protein rich traditional african flavor umami fermentedfood condiment spread"
+  },
+  {
+    "_id": "67a3e92c8f76755bc9adc76f",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235203735-t7ifyyj3mb.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Cocoyam - Soup Thickener",
+      "Cocoyam - Soup Thickener"
+    ],
+    "name": "cocoyam - soup thickener",
+    "createdAt": "2025-02-05T22:41:48.422Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable starch ingredient cocoyam root starch thickening agent soup base african cuisine texture enhancer natural binder glutenfree traditional ingredient caribbean cooking vegetable pureed"
+  },
+  {
+    "_id": "67a3e92c8f76755bc9adc772",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235243961-1gs3tlns40a.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      " Dry Smoked Catfish"
+    ],
+    "name": "dry smoked catfish",
+    "createdAt": "2025-02-05T22:41:48.731Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "smoked fish dried seafood gourmet snack smoked catfish louisiana seafood delicious savory southern appetizer snack protein rich unique flavorful mild smoky delta fresh premium artisan"
+  },
+  {
+    "_id": "67a3e92d8f76755bc9adc774",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235269952-ztxuzlnbyqi.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Cabbage"
+    ],
+    "name": "cabbage",
+    "createdAt": "2025-02-05T22:41:49.009Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "vegetable leafy cruciferous cabbage vegetable cruciferous leafy green healthy nutritious fiber antioxidant vitamins versatile cooking hearty coleslaw salad braised roasted stirfry"
+  },
+  {
+    "_id": "67a3e92d8f76755bc9adc776",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235288996-ezqzw39jlk.png",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Spaghetti",
+      "Spaghetti"
+    ],
+    "name": "spaghetti",
+    "createdAt": "2025-02-05T22:41:49.288Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "pasta italian staple pasta italian noodle long wheat grain dinner lunch carb comfortfood classic versatile simple authentic traditional european cuisine"
+  },
+  {
+    "_id": "67a3e92d8f76755bc9adc779",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235312773-nez2q1d0lwc.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "okro ",
+      "okro ",
+      "okro "
+    ],
+    "name": "okro",
+    "createdAt": "2025-02-05T22:41:49.566Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "vegetable dish cuisine okro vegetable green pod african stew soup gumbo fiber healthy nutritious versatile unique africanorigin plant based"
+  },
+  {
+    "_id": "67a3e92d8f76755bc9adc77d",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235338418-5m4iyudcncg.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Uda seed [Negro pepper]"
+    ],
+    "name": "uda seed [negro pepper]",
+    "createdAt": "2025-02-05T22:41:49.871Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "spice seasoning herb uda seed negro pepper spice african nigeria seasoning flavorful aromatic heat culinary ingredient authentic traditional westafrican"
+  },
+  {
+    "_id": "67a3e92e8f76755bc9adc77f",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235358542-3o1qxv0z8ax.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Cucumber ",
+      "Cucumber ",
+      "Cucumber "
+    ],
+    "name": "cucumber",
+    "createdAt": "2025-02-05T22:41:50.151Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "vegetable salad healthy cucumber refreshing hydrating vegetable crisp green healthy salad snack organic garden produce cool summer"
+  },
+  {
+    "_id": "67a3e92e8f76755bc9adc783",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235378579-ci73cesknrh.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Watermelon",
+      "Watermelon"
+    ],
+    "name": "watermelon",
+    "createdAt": "2025-02-05T22:41:50.431Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "fruit refreshing summer watermelon fruit summer sweet juicy refreshing hydrating pink red green picnic healthy snack seasonal vibrant refreshing thirstquenching delicious tropical"
+  },
+  {
+    "_id": "67a3e92e8f76755bc9adc786",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235396764-aqp99ia711c.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Orange",
+      "Orange",
+      "Orange"
+    ],
+    "name": "orange",
+    "createdAt": "2025-02-05T22:41:50.713Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "citrus fruit snack citrus fruit juicy sweet tangy vitaminc healthy breakfast snack fruit orange color vibrant refreshing tropical citrusy delicious"
+  },
+  {
+    "_id": "67a3e92e8f76755bc9adc78a",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235417084-g3hzjusoybv.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Avocado",
+      "Avocado"
+    ],
+    "name": "avocado",
+    "createdAt": "2025-02-05T22:41:50.994Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "fruit healthy green avocado healthy fruit green creamy delicious nutritious fiber rich vitamins antioxidant vegan plantbased breakfast smoothie salad guacamole spread mexican california hass"
+  },
+  {
+    "_id": "67a3e92f8f76755bc9adc78d",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235438454-tqqhpl1eq2.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Garlic ",
+      "Garlic "
+    ],
+    "name": "garlic",
+    "createdAt": "2025-02-05T22:41:51.275Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "herb seasoning flavor garlic bulb aromatic pungent flavorful allium vegetable italian cuisine cooking ingredient herb spice seasoning savory flavorful delicious healthy organic fresh natural"
+  },
+  {
+    "_id": "67a3e92f8f76755bc9adc790",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235472386-gte5vz876pm.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Potash"
+    ],
+    "name": "potash",
+    "createdAt": "2025-02-05T22:41:51.555Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "fertilizer mineral nutrient potash potassium fertilizer plantfood agriculture potassiumchloride mineral soilamendment cropnutrition essentialnutrient sustainablefarming amendment gardening hydroponics"
+  },
+  {
+    "_id": "67a3e92f8f76755bc9adc792",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235490728-56alt9d73m6.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Alum"
+    ],
+    "name": "alum",
+    "createdAt": "2025-02-05T22:41:51.863Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "seasoning ingredient preservative aluminum astringent deodorant antiperspirant waterpurification tanning pottery mordant alumstone crystalline mineral rock baking chemical ingredient skincare vintage"
+  },
+  {
+    "_id": "67a3e9308f76755bc9adc794",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235511313-7zvxao0o7ll.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Tigernut",
+      "Tigernut",
+      "Tigernut",
+      "Tigernut"
+    ],
+    "name": "tigernut",
+    "createdAt": "2025-02-05T22:41:52.142Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 4,
+    "metadata": "snack superfood tuber tigernut ancient grain prebiotic fiber sweet nutty african root vegetable sustainable vegan organic healthy snack natural ingredient nutritious delicious raw food"
+  },
+  {
+    "_id": "67a3e9308f76755bc9adc799",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235528549-vu2jfxp0ut.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Spring Onion"
+    ],
+    "name": "spring onion",
+    "createdAt": "2025-02-05T22:41:52.421Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "vegetable herb garnish spring onion allium vegetable herb green onion scallion fresh mild flavor culinary garnish salad soup stirfry aromatic allium family"
+  },
+  {
+    "_id": "67a3e9308f76755bc9adc79b",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235567574-bybguvshjhj.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Bitter leaf - Whole"
+    ],
+    "name": "bitter leaf - whole",
+    "createdAt": "2025-02-05T22:41:52.709Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "vegetable herb ingredient bitterleaf whole herb african vegetable leafy green healthy nutritious traditional spice soup stew flavorful bitter taste culinary ingredient natural unprocessed"
+  },
+  {
+    "_id": "67a3e9308f76755bc9adc79d",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235622922-lia3jlgi9oj.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Bitter leaf - chopped "
+    ],
+    "name": "bitter leaf - chopped",
+    "createdAt": "2025-02-05T22:41:52.988Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "vegetable leafy ingredient bitterleaf chopped african vegetable leafy green soup ingredient healthy flavorful traditional nigerian bitter indigenous antioxidant culinary spice"
+  },
+  {
+    "_id": "67a3e9318f76755bc9adc79f",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235645660-jqjo1el2xik.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Parsley leaf"
+    ],
+    "name": "parsley leaf",
+    "createdAt": "2025-02-05T22:41:53.295Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "herb seasoning garnish fresh herb green leafy vegetable culinary garnish italian parsley flatleaf parsley curly parsley aromatic flavorful mediterranean garden organic vibrant healthy culinary ingredient"
+  },
+  {
+    "_id": "67a3e9318f76755bc9adc7a1",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235666940-c5ydf7rh9hs.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Broccoli",
+      "Broccoli"
+    ],
+    "name": "broccoli",
+    "createdAt": "2025-02-05T22:41:53.575Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable healthy green cruciferous vegetable green healthy fiber antioxidant vitamins nutritious superfood plantbased lowcarb fresh organic farmfresh vibrant wholesome delicious."
+  },
+  {
+    "_id": "67a3e9318f76755bc9adc7a4",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235691366-eygcet80ep.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Payoor Suya pepper "
+    ],
+    "name": "payoor suya pepper",
+    "createdAt": "2025-02-05T22:41:53.856Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "spicy seasoning condiment payoor suya pepper spicy nigerian african seasoning flavorful aromatic smoky delicious grilling roasting snacks authentic homemade traditional"
+  },
+  {
+    "_id": "67a3e9328f76755bc9adc7a6",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235719462-rqbzoqglu.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Sole Fish - Abo",
+      "Sole Fish - Abo"
+    ],
+    "name": "sole fish - abo",
+    "createdAt": "2025-02-05T22:41:54.137Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "seafood fish protein sole fish african delicacy seafood fresh premium tasty nutritious sustainable healthy flavorful unique artisanal seafoodlover"
+  },
+  {
+    "_id": "67a3e9328f76755bc9adc7a9",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235803554-hhz2m6kcei8.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Sweet corn",
+      "Sweet corn"
+    ],
+    "name": "sweet corn",
+    "createdAt": "2025-02-05T22:41:54.418Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable side dish snack sweet corn vegetable summer fresh juicy yellow kernels delicious grilling roasting buttery sweet harvest seasonal farm produce homegrown"
+  },
+  {
+    "_id": "67a3e9328f76755bc9adc7ac",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235835251-csmu3lvodjg.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Egg plant",
+      "Egg plant"
+    ],
+    "name": "egg plant",
+    "createdAt": "2025-02-05T22:41:54.698Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "vegetable plant-based nutritious eggplant vegetable purple hearty glossy flavorful versatile stirfry grilling baking mediterranean asian hearty nutritious fiber rich antioxidant"
+  },
+  {
+    "_id": "67a3e9328f76755bc9adc7af",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235853528-mlefh4req6.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Chia Seed",
+      "Chia Seed"
+    ],
+    "name": "chia seed",
+    "createdAt": "2025-02-05T22:41:54.979Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "superfood health snack chia seeds superfood tiny grain black seed vegan glutenfree fiber rich omega3 healthy snack nutritious ancient grain plantbased energy boost baking ingredient smoothie booster"
+  },
+  {
+    "_id": "67a3e9338f76755bc9adc7b2",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235875932-1ehzt2g6rft.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Flour for baking",
+      "Flour for baking"
+    ],
+    "name": "flour for baking",
+    "createdAt": "2025-02-05T22:41:55.261Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "baking ingredient cooking staple pantry essential all purpose baking flour wheat gluten bread pastry cakes cookies pie dough crusts pastrymaking bakingingredients baking supplies sweet savory baking"
+  },
+  {
+    "_id": "67a3e9338f76755bc9adc7b5",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235893252-7ag2qv804wa.png",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Agbalumo",
+      "Agbalumo"
+    ],
+    "name": "agbalumo",
+    "createdAt": "2025-02-05T22:41:55.541Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "fruit tropical snack agbalumo african fruit tropical citrus tangy sweet juicy exotic nigeria africanorigin delicious healthy flavorful unique\n\n\n\n"
+  },
+  {
+    "_id": "67a3e9338f76755bc9adc7b8",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235910848-q6826bjt2n.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Banga - Palm kernel fruit",
+      "Banga - Palm kernel fruit"
+    ],
+    "name": "banga - palm kernel fruit",
+    "createdAt": "2025-02-05T22:41:55.822Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "fruit tropical nut tropical fruit exotic delicious creamy nutty sustainable africanfood southasia nigeria ghana cameroon nigeriafood fiberrich vitamins minerals antioxidant unique flavour traditionalfood plantbased"
+  },
+  {
+    "_id": "67a3e9348f76755bc9adc7bb",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Scent leaf"
+    ],
+    "name": "scent leaf",
+    "createdAt": "2025-02-05T22:41:56.102Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "herb seasoning vegetable herb aromatic citrusy lemony fragrant tropical culinary edible flavorful refreshing zesty vibrant green culinaryingredient southeastasian garnish"
+  },
+  {
+    "_id": "67a3e9348f76755bc9adc7bd",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Scent leaf - chopped"
+    ],
+    "name": "scent leaf - chopped",
+    "createdAt": "2025-02-05T22:41:56.413Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "herb seasoning garnish fragrant herb chopped fresh aromatic citrusy floral tropical herbaceous southeastasian culinary flavoring ingredient unique flavor intense aroma cooking garnish"
+  },
+  {
+    "_id": "67a3e9348f76755bc9adc7bf",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Lettuce",
+      "Lettuce"
+    ],
+    "name": "lettuce",
+    "createdAt": "2025-02-05T22:41:56.693Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "salad vegetable fresh crisp green leafy vegetable salad fresh healthy organic romaine iceberg butter lettuce romaine lettuce crunchy mild flavorful versatile garden vegetables"
+  },
+  {
+    "_id": "67a3e9348f76755bc9adc7c2",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Ayoola poundo",
+      "Ayoola poundo",
+      "Ayoola poundo",
+      "Ayoola poundo"
+    ],
+    "name": "ayoola poundo",
+    "createdAt": "2025-02-05T22:41:56.974Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 4,
+    "metadata": "instant flour staple ayoola poundo yam pounded yam westafrican authentic traditional starchy hearty filling glutenfree nutritious smooth creamy delicious versatile side dish comfortfood nigerian food"
+  },
+  {
+    "_id": "67a3e9358f76755bc9adc7c7",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235945431-bcafs1fs6xe.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Poundo - Payoor Poundo",
+      "Poundo - Payoor Poundo"
+    ],
+    "name": "poundo - payoor poundo",
+    "createdAt": "2025-02-05T22:41:57.254Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "starchy traditional nigerian poundo yam starchy root vegetable westafrican food traditional dish hearty comfortfood authentic nigeria ghana versatile cooking staple delicious nutritious filling texture creamy fluffy pounded"
+  },
+  {
+    "_id": "67a3e9358f76755bc9adc7ca",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235974390-co3e82cqlus.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Dish wash - Morning Fresh "
+    ],
+    "name": "dish wash - morning fresh",
+    "createdAt": "2025-02-05T22:41:57.563Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "cleaning household detergent dishwashing detergent fresh scent morning clean dishes sparkling plates grease cutting powerful automatic dishwasher safe citrus aroma invigorating fragrance bright kitchen"
+  },
+  {
+    "_id": "67a3e9358f76755bc9adc7cc",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235994171-5lufofl3sjt.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Simply pasta"
+    ],
+    "name": "simply pasta",
+    "createdAt": "2025-02-05T22:41:57.851Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "pasta italian comfort pasta italian semolina wheat dried durum simple authentic classic pantry staple delicious easy cooking versatile meal base"
+  },
+  {
+    "_id": "67a3e9368f76755bc9adc7ce",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236016352-is8hv85jdhd.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Indomie Noodle - onion",
+      "Indomie Noodle - onion",
+      "Indomie Noodle - onion",
+      "Indomie Noodle - onion"
+    ],
+    "name": "indomie noodle - onion",
+    "createdAt": "2025-02-05T22:41:58.132Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 4,
+    "metadata": "instant noodles savory snack onion flavor indomie onion noodles instant savory asian comfortfood snack flavorful authentic indonesia cheap quick meal easy"
+  },
+  {
+    "_id": "67a3e9368f76755bc9adc7d3",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236047552-xbfwip9y5n9.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Indomie Noodle - Chicken Peppersoup",
+      "Indomie Noodle - Chicken Peppersoup",
+      "Indomie Noodle - Chicken Peppersoup",
+      "Indomie Noodle - Chicken Peppersoup"
+    ],
+    "name": "indomie noodle - chicken peppersoup",
+    "createdAt": "2025-02-05T22:41:58.413Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 4,
+    "metadata": "instant noodles chicken soup spicy dish indomie chicken peppersoup noodles spicy savory instant comfortfood nigerian flavor authentic seasoning quickmeal delicious affordable snack"
+  },
+  {
+    "_id": "67a3e9368f76755bc9adc7d8",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236068637-objkk7hvl0l.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Honeywell Spaghetti"
+    ],
+    "name": "honeywell spaghetti",
+    "createdAt": "2025-02-05T22:41:58.694Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "pasta italian cuisine honeywell spaghetti pasta italian pantry staple cooking ingredient versatile meal easyrecipe familyfavorite comfortfood delicious affordable pantryessential"
+  },
+  {
+    "_id": "67a3e9368f76755bc9adc7da",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236106890-dz11ww5lq29.png",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Indomie Noodle - original chicken",
+      "Indomie Noodle - original chicken",
+      "Indomie Noodle - original chicken",
+      "Indomie Noodle - original chicken"
+    ],
+    "name": "indomie noodle - original chicken",
+    "createdAt": "2025-02-05T22:41:58.974Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 4,
+    "metadata": "instant noodle snack indomie noodle chicken flavor instant noodle asianfood comfortfood savory snack quickmeal authentic indonesia halal delicious affordable pantry staple"
+  },
+  {
+    "_id": "67a3e9378f76755bc9adc7df",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236128352-0dqq89tgr0s.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Cadbury Bournvita",
+      "Cadbury Bournvita",
+      "Cadbury Bournvita"
+    ],
+    "name": "cadbury bournvita",
+    "createdAt": "2025-02-05T22:41:59.255Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "chocolate drink health supplement energy booster chocolate malt drink health nutrition energy kids family breakfast delicious vitamin fortified immunity boosting tasty classic indian"
+  },
+  {
+    "_id": "67a3e9378f76755bc9adc7e3",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236168259-u1tpvj9x029.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Hollandia Full Cream Evaporated",
+      "Hollandia Full Cream Evaporated",
+      "Hollandia Full Cream Evaporated",
+      "Hollandia Full Cream Evaporated",
+      "Hollandia Full Cream Evaporated",
+      "Hollandia Full Cream Evaporated"
+    ],
+    "name": "hollandia full cream evaporated",
+    "createdAt": "2025-02-05T22:41:59.537Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 6,
+    "metadata": "dairy cream evaporated hollandia fullcream evaporated milk dairy creamy rich nutritious breakfast baking cooking versatile family essential ingredient"
+  },
+  {
+    "_id": "67a3e9378f76755bc9adc7ea",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236188035-etfy3iaqqmd.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Lipton Yellow Label Tea"
+    ],
+    "name": "lipton yellow label tea",
+    "createdAt": "2025-02-05T22:41:59.816Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "beverage tea herbal classic black tea english breakfast everyday blend refreshing aromatic traditional beverage hotdrink pantry staple comforting familiar taste british tea strong flavor caffeine boost delicious"
+  },
+  {
+    "_id": "67a3e9388f76755bc9adc7ec",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236303871-85l7mei9xwt.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Capri-sun -Apple",
+      "Capri-sun -Apple",
+      "Capri-sun -Apple",
+      "Capri-sun -Apple"
+    ],
+    "name": "capri-sun -apple",
+    "createdAt": "2025-02-05T22:42:00.098Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 4,
+    "metadata": "beverage fruit juice apple juice kids snack refreshing fruity portable juicebox sweet childhood treat drink pouch convenient lunchbox"
+  },
+  {
+    "_id": "67a3e9388f76755bc9adc7f1",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236247866-olsn074tfs.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Capri-sun -Orange",
+      "Capri-sun -orange",
+      "Capri-sun -orange"
+    ],
+    "name": "capri-sun -orange",
+    "createdAt": "2025-02-05T22:42:00.378Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "beverage fruit snack orange juice drink kids snack refreshing fruity sweet portable convenient juicebox childhood classic summertime thirstquenching delicious"
+  },
+  {
+    "_id": "67a3e9388f76755bc9adc7f5",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236322962-hetmr4hvpvc.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Capri-sun - orange"
+    ],
+    "name": "capri-sun - orange",
+    "createdAt": "2025-02-05T22:42:00.679Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 1,
+    "metadata": "beverage fruit snack orange juice drink kids snack fruity refreshing sweet tangy portable convenient iconic childhood classic tropical citrus delicious"
+  },
+  {
+    "_id": "67a3e9388f76755bc9adc7f7",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236343953-4kq2uxucb3p.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Titus Sardine",
+      "Titus Sardine"
+    ],
+    "name": "titus sardine",
+    "createdAt": "2025-02-05T22:42:00.957Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "canned seafood protein snack omega-rich sardine seafood canned fish ocean protein omega3 healthy sustainable delicious pantry staple mediterranean portuguese spanish flavor umami"
+  },
+  {
+    "_id": "67a3e9398f76755bc9adc7fa",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236396433-nnvum3spq9.jpeg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Nasco Cornflakes - Original",
+      "Nasco Cornflakes - Original"
+    ],
+    "name": "nasco cornflakes - original",
+    "createdAt": "2025-02-05T22:42:01.265Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "breakfast cereal crunchy snack whole grain cornflakes breakfast cereal classic original crunchy toasted maize grain wholesome breakfast affordable family breakfast traditional"
+  },
+  {
+    "_id": "67a3e9398f76755bc9adc7fd",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236415286-b73l6emmk3t.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Kellogg's Cornflakes",
+      "Kellogg's Cornflakes",
+      "Kellogg's Cornflakes"
+    ],
+    "name": "kellogg's cornflakes",
+    "createdAt": "2025-02-05T22:42:01.544Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 3,
+    "metadata": "breakfast cereal crunchy snack whole grain classic cereal breakfast flakes simple crunchy toasted corn grain hearty wholesome family breakfast iconic kellogg's traditional breakfast filler wholesome goodness"
+  },
+  {
+    "_id": "67a3e9398f76755bc9adc801",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739236440493-3vmxpiey32e.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "Water yam",
+      "Water yam"
+    ],
+    "name": "water yam",
+    "createdAt": "2025-02-05T22:42:01.823Z",
+    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "variantCount": 2,
+    "metadata": "tuber vegetable starch water yam tuber root vegetable african caribbean westafrican starchy nutritious earthy versatile cooking baking roasting traditional food yam sweetpotato alternative fiber rich carbohydrate source"
+  },
+  {
+    "_id": "67c07dbb2a158f9f04705a9a",
+    "name": "coconut",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-02-27T14:59:07.169Z",
+    "updatedAt": "2025-02-27T14:59:07.169Z",
+    "__v": 0,
+    "metadata": "tropical fruit healthy snack versatile ingredient tropical fruit sweet creamy delicious hydrating natural vegan plantbased healthy exotic tropical coconutty versatile cooking baking beverage fiber antioxidant"
+  },
+  {
+    "_id": "67c07eac2a158f9f04705cc9",
+    "name": "Pear - English ",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-02-27T15:03:08.613Z",
+    "updatedAt": "2025-02-27T15:03:08.613Z",
+    "__v": 0,
+    "metadata": "fruit snack dessert pear fruit sweet juicy crisp refreshing healthy snack autumn harvest orchard fruit dessert baking fresh natural delicious green yellow"
+  },
+  {
+    "_id": "67c07fc52a158f9f04705e78",
+    "name": "Watermelon (Big)",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-02-27T15:07:49.767Z",
+    "updatedAt": "2025-02-27T15:07:49.767Z",
+    "__v": 0,
+    "metadata": "fruit refreshing summer watermelon big juicy sweet refreshing summer fruit picnic healthy vibrant red delicious hydrating thirstquenching large slice picnicfood"
+  },
+  {
+    "_id": "67c080192a158f9f04705ef8",
+    "name": "Watermelon (Medium)",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-02-27T15:09:13.881Z",
+    "updatedAt": "2025-02-27T15:09:13.881Z",
+    "__v": 0,
+    "metadata": "fruit refreshing summer watermelon fruit juicy refreshing summer sweet hydrating pink red green picnic snack healthy vibrant seasonal fruitmedium"
+  },
+  {
+    "_id": "67c081b42a158f9f0470627b",
+    "name": "Ginger",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1740669528900-j75m8wcwb3n.webp",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-02-27T15:16:04.816Z",
+    "updatedAt": "2025-02-27T15:18:51.041Z",
+    "__v": 0,
+    "metadata": "spice herb flavor ginger spice root aromatic warming digestive healthy natural antioxidant flavorful tea baking cooking asian indian caribbean medicinal antioxidant antiinflammatory"
+  },
+  {
+    "_id": "67c464782a158f9f04707a5d",
+    "name": "moringa",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1740924208062-bkjg995a9z5.webp",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-02T14:00:24.778Z",
+    "updatedAt": "2025-03-02T14:03:29.978Z",
+    "__v": 0,
+    "metadata": " superfood moringa leaf powder antioxidant antiinflammatory nutrientdense organic vegan vegetarian healthy supplement energy boost immunity support natural wellness greenpowder detox cleanse vitamins minerals antioxidants fiber rich plantbased"
+  },
+  {
+    "_id": "67c465432a158f9f04707e03",
+    "name": "Cinnamon Sticks",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-02T14:03:47.941Z",
+    "updatedAt": "2025-03-02T14:03:47.941Z",
+    "__v": 0,
+    "metadata": " cinnamon sticks spice baking flavoring aromatic warm sweet fragrant delicious natural authentic holiday festive baking ingredients cooking essential premium quality"
+  },
+  {
+    "_id": "67c465732a158f9f04707e95",
+    "name": "sugar cane",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1740925289128-wxf1sthkaoh.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "fruit"
+    ],
+    "variantCount": 0,
+    "createdAt": "2025-03-02T14:04:35.233Z",
+    "updatedAt": "2025-03-02T14:21:31.227Z",
+    "__v": 0,
+    "metadata": " sugarcane sweet tropical grass biofuel sweetener molasses fiber renewable energy tropicalplant rawmaterial agriculture juice natural ingredient crop\n"
+  },
+  {
+    "_id": "67c465f02a158f9f04708298",
+    "name": "beetroot",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-02T14:06:40.035Z",
+    "updatedAt": "2025-03-02T14:06:40.035Z",
+    "__v": 0,
+    "metadata": " beetroot earthy root vegetable vibrant purple antioxidant rich mineral source nutritious fiber vegetable sweet savory versatile healthy organic natural farmfresh"
+  },
+  {
+    "_id": "67c466212a158f9f0470832a",
+    "name": "celery Leaf",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1740924584013-2pcygz5r7od.webp",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-02T14:07:29.979Z",
+    "updatedAt": "2025-03-02T14:09:45.869Z",
+    "__v": 0,
+    "metadata": " celery leaf fresh herb vegetable green crunchy flavorful aromatic organic healthy plant based antioxidant fiber rich culinary garnish"
+  },
+  {
+    "_id": "67c466e62a158f9f04708700",
+    "name": "Turmeric",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1740924899642-gj7t34gpwgp.webp",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "leave, spice, "
+    ],
+    "variantCount": 0,
+    "createdAt": "2025-03-02T14:10:46.781Z",
+    "updatedAt": "2025-03-02T14:15:01.753Z",
+    "__v": 0,
+    "metadata": " turmeric spice golden antioxidant antiinflammatory organic natural flavorful healthy traditional indian ayurveda curcumin vibrant warming culinary ingredient"
+  },
+  {
+    "_id": "67c468672a158f9f04708e28",
+    "name": "Supreme  - Cayenne pepper spice",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1740925128336-o3peplfxyo.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "spices"
+    ],
+    "variantCount": 0,
+    "createdAt": "2025-03-02T14:17:11.004Z",
+    "updatedAt": "2025-03-02T14:19:24.102Z",
+    "__v": 0,
+    "metadata": " cayenne pepper spice supreme heat vibrant flavor culinary ingredient fiery seasoning cooking aromatic bold intense delicious premium natural"
+  },
+  {
+    "_id": "67c7434a2a158f9f0470b2e0",
+    "name": "mango",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1741112775030-cafxcixbaan.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-04T18:15:38.667Z",
+    "updatedAt": "2025-03-04T18:26:28.031Z",
+    "__v": 0,
+    "metadata": " tropical fruit sweet juicy ripe vibrant yellow orange fragrant delicious refreshing summery exotic healthy vitamin a vitamin c antioxidant antioxidantrich tropicalflavor mangoes"
+  },
+  {
+    "_id": "67c75f972a158f9f0470c74e",
+    "name": "Mint leaf",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1741119728610-yc4ijbvrrfm.jpg",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-04T20:16:23.166Z",
+    "updatedAt": "2025-03-04T20:22:11.204Z",
+    "__v": 0,
+    "metadata": " fresh herb aromatic culinary mint refreshing garden organic flavorful garnish cocktail ingredient green vibrant cool summer"
+  },
+  {
+    "_id": "67cf72d72a158f9f0470e7a3",
+    "name": "Rosemary leaves",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-10T23:16:39.634Z",
+    "updatedAt": "2025-03-10T23:16:39.634Z",
+    "__v": 0,
+    "metadata": " rosemary herb culinary fragrant aromatic mediterranean cooking organic fresh dried leaves flavorful seasoning garden spice italian greek flavorful natural"
+  },
+  {
+    "_id": "67cf739e2a158f9f0470ec17",
+    "name": "Supreme Italian seasoning",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-10T23:19:58.163Z",
+    "updatedAt": "2025-03-10T23:19:58.163Z",
+    "__v": 0,
+    "metadata": " supreme italian seasoning herb blend aromatic flavorful savory classic authentic premium culinary spice kitchen pantry"
+  },
+  {
+    "_id": "67cf74132a158f9f0470eda8",
+    "name": "Barilla Spaghetti Grossi",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-10T23:21:55.430Z",
+    "updatedAt": "2025-03-10T23:21:55.430Z",
+    "__v": 0,
+    "metadata": " barilla spaghetti grossi pasta italian durumwheat longshape classic authentic traditional italiancuisine pantry staple familyfavorite everydaymeal"
+  },
+  {
+    "_id": "67cfe6052a158f9f0470f0cb",
+    "name": "Blue band butter",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-11T07:28:05.039Z",
+    "updatedAt": "2025-03-11T07:28:05.039Z",
+    "__v": 0,
+    "metadata": " butter spread dairy creamy delicious baking cooking breakfast sandwich family everyday kitchen staple traditional european dairy product"
+  },
+  {
+    "_id": "67cfe8e92a158f9f04710dc5",
+    "name": "cloves",
+    "image": "",
+    "generatedDescription": "",
+    "generatedCategories": [],
+    "variantCount": 0,
+    "createdAt": "2025-03-11T07:40:25.062Z",
+    "updatedAt": "2025-03-11T07:40:25.062Z",
+    "__v": 0,
+    "metadata": " spice aromatic pungent warm flavorful culinary baking essential fragrant aromatic clove whole dried aromatic flavor antioxidant natural spice baking culinary"
+  }
+]

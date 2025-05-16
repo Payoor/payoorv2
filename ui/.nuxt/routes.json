@@ -1,0 +1,37 @@
+[
+  {
+    "name": "cart",
+    "path": "/cart",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/cart.vue",
+    "chunkName": "pages/cart",
+    "_name": "_2b63bfe1"
+  },
+  {
+    "name": "checkout",
+    "path": "/checkout",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/checkout.vue",
+    "chunkName": "pages/checkout",
+    "_name": "_730fd287"
+  },
+  {
+    "name": "orders",
+    "path": "/orders",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/orders.vue",
+    "chunkName": "pages/orders",
+    "_name": "_4d3d5234"
+  },
+  {
+    "name": "payment",
+    "path": "/payment",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/payment.vue",
+    "chunkName": "pages/payment",
+    "_name": "_62f4b2d5"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_06e04561"
+  }
+]

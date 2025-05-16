@@ -1,0 +1,35 @@
+{
+  "Authenticator": {
+    "description": "Auto imported from components/Authenticator.vue"
+  },
+  "CartButton": {
+    "description": "Auto imported from components/CartButton.vue"
+  },
+  "ChatBody": {
+    "description": "Auto imported from components/ChatBody.vue"
+  },
+  "ChatCard": {
+    "description": "Auto imported from components/ChatCard.vue"
+  },
+  "ChatCategories": {
+    "description": "Auto imported from components/ChatCategories.vue"
+  },
+  "ChatHeader": {
+    "description": "Auto imported from components/ChatHeader.vue"
+  },
+  "ChatInput": {
+    "description": "Auto imported from components/ChatInput.vue"
+  },
+  "ChatOption": {
+    "description": "Auto imported from components/ChatOption.vue"
+  },
+  "ChatOptions": {
+    "description": "Auto imported from components/ChatOptions.vue"
+  },
+  "GoogleBtn": {
+    "description": "Auto imported from components/GoogleBtn.vue"
+  },
+  "OtpInput": {
+    "description": "Auto imported from components/OtpInput.vue"
+  }
+}
