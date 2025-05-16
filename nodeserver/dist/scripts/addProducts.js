@@ -11,7 +11,7 @@ function _objectWithoutProperties(e, t) { if (null == e) return {}; var o, r, i 
 function _objectWithoutPropertiesLoose(r, e) { if (null == r) return {}; var t = {}; for (var n in r) if ({}.hasOwnProperty.call(r, n)) { if (-1 !== e.indexOf(n)) continue; t[n] = r[n]; } return t; }
 var fs = require('fs');
 var axios = require('axios');
-var filePath = './updated_products.json';
+var filePath = __dirname + '/updated_products.json';
 fs.readFile(filePath, 'utf8', function (err, data) {
   if (err) {
     console.error('Error reading file:', err);
@@ -43,7 +43,7 @@ fs.readFile(filePath, 'utf8', function (err, data) {
       }) + '\n';
       bulkPayload += JSON.stringify(product) + '\n';
     });
-    axios.post('http://localhost:9200/products/_bulk?refresh', bulkPayload, {
+    axios.post('hhttp://shopping_assistant-elasticsearch-1:9200/products/_bulk?refresh', bulkPayload, {
       headers: {
         'Content-Type': 'application/x-ndjson'
       }

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
 
-const filePath = './updated_products.json';
+const filePath = __dirname + '/updated_products.json';
 
 fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
@@ -33,7 +33,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
             bulkPayload += JSON.stringify(product) + '\n';
         });
 
-        axios.post('http://localhost:9200/products/_bulk?refresh', bulkPayload, {
+        axios.post('hhttp://shopping_assistant-elasticsearch-1:9200/products/_bulk?refresh', bulkPayload, {
             headers: { 'Content-Type': 'application/x-ndjson' }
         })
         .then(response => {
