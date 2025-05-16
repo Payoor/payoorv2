@@ -2,6 +2,8 @@
 
 set -e  # Exit if any command fails
 
+sudo docker system prune -af --volumes
+
 echo "Starting containers..."
 docker-compose up --build -d
 
