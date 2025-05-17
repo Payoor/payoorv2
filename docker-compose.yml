@@ -54,7 +54,8 @@ services:
     container_name: nginx
     image: nginx:alpine
     ports:
-      - "80:80"  # Expose port 80 on the host
+      - "80:80"  
+      - "443:443"
     environment:
       - ENVIRONMENT=${ENVIRONMENT:-development}
     volumes:
