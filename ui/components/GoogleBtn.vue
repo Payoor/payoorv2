@@ -15,6 +15,7 @@ export default {
         "845190882138-9pr7hgfgeidb7f90qom56r810mf7vnes.apps.googleusercontent.com",
     };
   },
+  emits: ["update:authValue"],
   mounted() {
     this.loadGoogleSignIn();
   },
@@ -42,23 +43,24 @@ export default {
       return JSON.parse(jsonPayload);
     },
     handleCredentialResponse(response) {
-      console.log(response)
+     // console.log(response)
       this.sendTokenToBackend(response.credential);
     },
     async sendTokenToBackend(token) {
       const decoded = this.parseJwt(token);
-      console.log("User email:", decoded.email);
+      const email = decoded.email;
+      const googleId = decoded.sub;
+      const picture = decoded.picture;
+
+     // console.log("Decoded Google data:", { email, googleId, picture });
 
       try {
         const response = await fetch(`${serverurl}/shopper/auth/google`, {
           method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            'Origin': window.location.origin,
-            'Access-Control-Request-Method': 'POST',
-            'Access-Control-Request-Headers': 'Content-Type'
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ email: decoded.email }),
+          body: JSON.stringify({ email, googleId, picture }),
         });
 
         if (!response.ok) {
@@ -68,13 +70,14 @@ export default {
         const data = await response.json();
 
         if (data.token) {
-          console.log(data.token);
-          //res.cookie('token', jwtToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+          localStorage.setItem('token', data.token);
+         // console.log("Auth token received:", data.token);
+          this.$emit("update:authValue", data.token);
         }
       } catch (error) {
         console.error("Authentication error:", error.message);
       }
-    },
+    }
   },
 };
 </script>

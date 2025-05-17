@@ -47,9 +47,11 @@
 
 <script>
 import { serverurl } from '@/api';
+import jwt_mixin from "@/mixins/jwt_mixin";
 import { mapState } from "vuex";
 
 export default {
+    mixins: [jwt_mixin],
     props: {
         data: {
             type: Object,
@@ -107,7 +109,7 @@ export default {
     },*/
     methods: {
         syncCartToLocalStorage(newItems = this.cartItems) {
-            console.log('syncCartToLocalStorage ran', newItems);
+          //  console.log('syncCartToLocalStorage ran', newItems);
 
             const safeCartItems = newItems || {};
             const safeCartLength = Object.keys(safeCartItems).length;
@@ -122,10 +124,13 @@ export default {
             }
         },
         async getOption() {
+            const token = await this.getValidToken();
+
             try {
                 const response = await fetch(`${serverurl}/shopper/getoption?mongooseid=${this.mongooseid}`, {
                     method: 'GET',
                     headers: {
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                         'Origin': window.location.origin,
                         'Access-Control-Request-Method': 'POST',
@@ -143,7 +148,7 @@ export default {
 
                 const { variant } = data;
 
-                console.log(variant)
+               // console.log(variant)
                 this.option = variant;
             } catch (error) {
                 console.log(error)
@@ -155,7 +160,7 @@ export default {
         incrementQuantity() {
             this.quantity++;
 
-            console.log(typeof this.option.price, 'this.price')
+          //  console.log(typeof this.option.price, 'this.price')
 
             this.$store.dispatch("cart/addItem", { id: this.option._id, quantity: this.quantity, price: this.option.price });
 

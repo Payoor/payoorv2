@@ -55,7 +55,8 @@ export default {
                     description: 'Banana, Apple, Watermelon, Pineapple — sweet, juicy, and healthy.',
                     class: 'fruits'
                 }
-            ]
+            ],
+            animatedIndices: [] // To track which ones are animated
 
         };
     },
@@ -77,7 +78,7 @@ export default {
                 }
             });
 
-            console.log(value)
+            //console.log(value)
 
             // Post the message to the server
             await this.postMessageFromQuery(value);
@@ -90,17 +91,16 @@ export default {
 
 <style lang="scss" scoped>
 .chat-categories {
+    
 
     &__categories {
         background: $white;
         display: flex;
         justify-content: flex-start;
-        //margin-bottom: 2rem;
-        //background: blue;
         width: 100%;
         overflow-x: scroll;
-        overflow-y: hidden; // clearer intent
-        padding: 2rem 0;
+        overflow-y: hidden;
+        padding: 1rem;
         @include hide-scrollbar;
     }
 
@@ -112,6 +112,7 @@ export default {
         min-height: 3rem;
         margin-right: 1rem;
         padding: 1rem;
+        cursor: pointer;
 
         display: flex;
         align-items: center;

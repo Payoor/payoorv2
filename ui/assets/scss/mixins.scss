@@ -82,12 +82,20 @@ ORDER: Base + typography > general layout + grid > page layout > components
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 5;
-    background: $white;
+    z-index: 6;
+
     width: 100vw;
 
     &.unauth {
         background: transparent;
+    }
+
+    &.auth {
+        background: transparent;
+
+        @include respond(tab-port) {
+            background: $white;
+        }
     }
 }
 
@@ -95,26 +103,125 @@ ORDER: Base + typography > general layout + grid > page layout > components
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     z-index: 4;
-  
+
     background: $white;
     padding: 1rem;
     padding-bottom: 2rem;
-  
-    button {
-      font-size: 2rem;
-      padding: 2rem;
-      width: 100%;
-  
-      &.spacebetween {
-        display: flex;
-        justify-content: space-between;
-      }
-  
-      &.transparent-button {
-        margin-bottom: 2rem;
-      }
+
+    display: flex;
+    justify-content: center;
+
+    &.column {
+        flex-direction: column;
     }
-  }
-  
+
+    @include respond(tab-port) {
+        display: block
+    }
+
+    button {
+        font-size: 2rem;
+        padding: 2rem;
+        width: 100%;
+
+        &.spacebetween {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &.transparent-button {
+            margin-bottom: 2rem;
+        }
+    }
+}
+
+$breakpoints: (
+    // Mobile devices
+    "xxs": 280px,
+    // Extra extra small devices (very small phones)
+    "xs": 320px,
+    // Extra small devices (small phones)
+    "sm": 576px,
+
+    // Small devices (large phones)
+    // Tablets
+    "md": 768px,
+    // Medium devices (tablets)
+    "md-lg": 896px,
+
+    // Medium-large devices (large tablets)
+    // Desktops
+    "lg": 992px,
+    // Large devices (small desktops)
+    "lg-xl": 1100px,
+    // Large to extra large transition
+    "xl": 1200px,
+    // Extra large devices (standard desktops)
+    "xxl": 1400px,
+
+    // Extra extra large devices (large desktops)
+    // Larger screens
+    "hd": 1600px,
+    // HD displays
+    "fhd": 1920px,
+    // Full HD displays
+    "wqhd": 2520px,
+    // Wide Quad HD displays
+    "4k": 3840px,
+    // 4K displays
+    "5k": 5120px,
+    // 5K displays (Apple iMac, etc.)
+    "8k": 7680px // 8K displays
+);
+
+@mixin breakpoint-down($size) {
+    @if map-has-key($breakpoints, $size) {
+        @media (min-width: map-get($breakpoints, $size) - 1) {
+            @content;
+        }
+    } @else {
+        @warn "Undefined breakpoint: #{$size}";
+    }
+}
+
+@mixin section-header {
+    &__header {
+        color: $white;
+        text-align: center;
+        font-size: 5rem;
+        font-weight: 400;
+        margin-bottom: 6rem;
+
+        @include respond(tab-port) {
+            font-size: 3rem;
+            margin-top: 6rem;
+            margin-bottom: 6rem;
+        }
+    }
+}
+
+@mixin section {
+    background: $primary-color;
+    padding: 0 20rem;
+    padding-top: 6rem;
+
+    @include breakpoint-down(wqhd) {
+        //padding: 0 54rem;
+        padding-top: 6rem;
+    }
+
+    @include respond(tab-land) {
+        padding: 0 10rem;
+    }
+
+    @include respond(tab-port) {
+        padding: 1rem;
+    }
+}
+
+@mixin floating($duration: 3s, $delay: 0s) {
+    animation: float $duration ease-in-out infinite;
+    animation-delay: $delay;
+}

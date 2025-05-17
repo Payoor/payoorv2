@@ -29,6 +29,21 @@
   "GoogleBtn": {
     "description": "Auto imported from components/GoogleBtn.vue"
   },
+  "Landing": {
+    "description": "Auto imported from components/Landing.vue"
+  },
+  "LandingCategories": {
+    "description": "Auto imported from components/LandingCategories.vue"
+  },
+  "LandingCopy": {
+    "description": "Auto imported from components/LandingCopy.vue"
+  },
+  "LandingFaq": {
+    "description": "Auto imported from components/LandingFaq.vue"
+  },
+  "LandingFooter": {
+    "description": "Auto imported from components/LandingFooter.vue"
+  },
   "OtpInput": {
     "description": "Auto imported from components/OtpInput.vue"
   }

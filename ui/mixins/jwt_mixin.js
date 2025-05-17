@@ -14,7 +14,7 @@ export default {
         if (this.validToken) {
           return this.validToken
         } else {
-          return false
+          this.router.push('/')
         }
       } catch (error) {
         this.loading = false

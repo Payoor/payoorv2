@@ -39,6 +39,19 @@ const UserSchema = new mongoose.Schema({
       }
     }
   ],
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+  authMethods: {
+    type: [String],
+    default: ['otp']
+  },
+  profilePicture: {
+    type: String,
+    default: null
+  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -62,7 +75,9 @@ UserSchema.methods.generateAuthToken = function () {
 UserSchema.methods.removeToken = function (token) {
   let user = this
 
-  return user.update({
+  //console.log(user, 'test for user')
+
+  return user.updateOne({
     $pull: {
       tokens: { token }
     }

@@ -2,12 +2,12 @@
     <div>
         <div class="checkout">
             <div class="checkout__header">
-                <ChatHeader :name="'Checkout'" :logovisible="false" :jwt="true" :backRoute="'/cart'"/>
+                <ChatHeader :name="'Checkout'" :logovisible="false" :jwt="true" :backRoute="'/cart'" />
             </div>
 
             <div class="checkout__content">
 
-                <div class="checkout__data">
+                <div class="checkout__data checkout__content--body">
 
 
                     <div class="checkout__section">
@@ -86,18 +86,20 @@
                 </div>
 
                 <div class="checkout__inputs" v-if="place_holder" @click.stop="setPlaceholder(false, false, null)">
-                    <div class="checkout__inputcontent slide-fade-in-up">
-                        <h2 class="checkout__inputcontent--h2">{{ input_label }}</h2>
+                    <div class="checkout__inputs--body">
+                        <div class="checkout__inputcontent slide-fade-in-up">
+                            <h2 class="checkout__inputcontent--h2">{{ input_label }}</h2>
 
-                        <div class="checkout__input">
-                            <textarea class="checkout__field" v-model="checkout_inputs[checkout_input]"
-                                :placeholder="place_holder" @input="autoResize" @click.stop=""
-                                ref="textarea"></textarea>
-                        </div>
+                            <div class="checkout__input">
+                                <textarea class="checkout__field" v-model="checkout_inputs[checkout_input]"
+                                    :placeholder="place_holder" @input="autoResize" @click.stop=""
+                                    ref="textarea"></textarea>
+                            </div>
 
-                        <div class="checkout__bottom">
-                            <button class="button-primary"
-                                @click.stop="setPlaceholder(false, false, checkout_input)">Done</button>
+                            <div class="checkout__bottom">
+                                <button class="button-primary"
+                                    @click.stop="setPlaceholder(false, false, checkout_input)">Done</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -130,11 +132,13 @@
                 </div>
 
                 <div class="checkout__bottom">
-                    <button class="button-primary disabled-btn" v-if="!allowOrderCreation">Confirm
-                        Order</button>
-                    <button class="button-primary" v-if="allowOrderCreation" @click="createOrder"
-                        :class="{ 'disabled-btn': loading }">{{ loading ? 'Creating your order...' : `Confirm
-                        Order`}}</button>
+                    <div class="checkout__content--body">
+                        <button class="button-primary disabled-btn" v-if="!allowOrderCreation">Confirm
+                            Order</button>
+                        <button class="button-primary" v-if="allowOrderCreation" @click="createOrder"
+                            :class="{ 'disabled-btn': loading }">{{ loading ? 'Creating your order...' : `Confirm
+                            Order`}}</button>
+                    </div>
                 </div>
 
             </div>
@@ -214,15 +218,16 @@ export default {
                 return;
             }
 
-            const validToken = this.getValidToken();
+            const validToken = await this.getValidToken();
 
-            console.log('Cart Items:', cartItems);
-            console.log('Cart Total:', cartTotal);
+            //  console.log('Cart Items:', cartItems);
+            //console.log('Cart Total:', cartTotal);
 
             if (validToken) {
                 const response = await fetch(`${serverurl}/shopper/init/checkout?jwt=${this.validToken}`, {
                     method: 'GET',
                     headers: {
+                        Authorization: `Bearer ${validToken}`,
                         'Content-Type': 'application/json',
                         'Origin': window.location.origin,
                         'Access-Control-Request-Method': 'POST',
@@ -275,9 +280,12 @@ export default {
             try {
                 this.loading = true;
 
+                const validToken = await this.getValidToken();
+
                 const response = await fetch(`${serverurl}/shopper/create/checkout?jwt=${this.validToken}`, {
                     method: 'POST',
                     headers: {
+                        Authorization: `Bearer ${validToken}`,
                         'Content-Type': 'application/json',
                         'Origin': window.location.origin,
                         'Access-Control-Request-Method': 'POST',
@@ -348,19 +356,6 @@ export default {
         @include fixed-header;
     }
 
-    &__content {
-        position: relative;
-        padding-bottom: 20rem;
-        background: $white;
-
-        @include respond(phone) {
-            padding: 1rem;
-            padding-top: 7rem;
-
-
-            padding-bottom: 30rem;
-        }
-    }
 
     &__section {
         border: 1px solid $primary-color;
@@ -468,10 +463,29 @@ export default {
         width: 100vw;
         z-index: 6;
         background: rgba($black, .7);
+
+        display: flex;
+        justify-content: center;
+
+        &--flex {}
+
+        &--body {
+            width: 60rem;
+
+            @include respond(tab-port) {
+                width: 100%;
+            }
+        }
     }
 
     &__input {
         min-height: 21rem;
+
+        width: 60rem;
+
+        @include respond(tab-port) {
+            width: 100%;
+        }
     }
 
     &__inputcontent {
@@ -479,10 +493,18 @@ export default {
         bottom: 0;
         left: 0;
         background: $white;
-        width: 100vw;
+        width: 100%;
         //height: 28rem;
         border-radius: 2rem 2rem 0 0;
         padding: 2rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @include respond(tab-port) {
+            display: block;
+        }
 
         & h2 {
             font-size: 1.2rem;
@@ -513,7 +535,13 @@ export default {
         border-radius: 1rem;
     }
 
-    &__summary {}
+    &__summary {
+        width: 60rem;
+
+        @include respond(tab-port) {
+            width: auto;
+        }
+    }
 
     &__summaryitem {
         display: flex;
@@ -547,10 +575,52 @@ export default {
         padding: 1rem;
         padding-bottom: 2rem;
 
+
+
+        display: flex;
+        justify-content: center;
+
+        @include respond(tab-port) {
+            display: block
+        }
+
         & button {
             font-size: 2rem;
             padding: 2rem;
-            width: 100%;
+
+            width: 60rem;
+
+            @include respond(tab-port) {
+                width: 100%;
+            }
+        }
+    }
+
+    &__content {
+        position: relative;
+        padding-bottom: 20rem;
+        background: $white;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 4rem;
+
+        @include respond(phone) {
+            padding: 1rem;
+            padding-top: 7rem;
+
+            display: block;
+            padding-bottom: 30rem;
+        }
+
+        &--body {
+            width: 60rem;
+
+            @include respond(tab-port) {
+                width: 100%;
+            }
+
         }
     }
 }

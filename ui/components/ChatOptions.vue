@@ -1,38 +1,46 @@
 <template>
     <div class="chatoptions">
-        <h1 class="chatoptions__header" @click.stop="toggleViewOptions">
-            <span class="svg">
-                <svg>
-                    <use v-bind:xlink:href="'/svg/symbol-defs.svg#icon-arrow_back'"></use>
-                </svg>
-            </span>
-
-            <span>{{ productname }}</span>
-        </h1>
-
         <div class="chatoptions__content">
+            <div class="chatoptions__content--body">
+                <h1 class="chatoptions__header" @click.stop="toggleViewOptions">
+                    <span class="svg">
+                        <svg>
+                            <use v-bind:xlink:href="'/svg/symbol-defs.svg#icon-arrow_back'"></use>
+                        </svg>
+                    </span>
 
-            <div class="chatoptions__options">
-
-                <div v-for="variant in variants" :key="variant._id">
-                    <ChatOption :data="{ ...variant, productimg }" />
-                </div>
+                    <span>{{ productname }}</span>
+                </h1>
             </div>
 
-            <div class="chatoptions__bottom">
-                <button class="button-primary transparent-button" @click="toggleViewOptions">
-                    <span>Continue Shopping</span>
-                </button>
+        </div>
+        <div class="chatoptions__content">
 
-                <button class="button-primary spacebetween disabled-btn" v-if="cartTotal === 0">
-                    <span>Proceed to Checkout</span>
-                    <CartButton :showicon="false" />
-                </button>
+            <div class="chatoptions__content--body">
+                <div class="chatoptions__options">
 
-                <button class="button-primary spacebetween" @click="goToCheckout" v-if="cartTotal > 0">
-                    <span>Proceed to Checkout</span>
-                    <CartButton :showicon="false" />
-                </button>
+                    <div v-for="variant in variants" :key="variant._id">
+                        <ChatOption :data="{ ...variant, productimg }" />
+                    </div>
+                </div>
+
+                <div class="chatoptions__bottom">
+                    <div class="chatoptions__content--body">
+                        <button class="button-primary transparent-button" @click="toggleViewOptions">
+                            <span>Continue Shopping</span>
+                        </button>
+
+                        <button class="button-primary spacebetween disabled-btn" v-if="cartTotal === 0">
+                            <span>Proceed to Checkout</span>
+                            <CartButton :showicon="false" />
+                        </button>
+
+                        <button class="button-primary spacebetween" @click="goToCheckout" v-if="cartTotal > 0">
+                            <span>Proceed to Checkout</span>
+                            <CartButton :showicon="false" />
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -42,9 +50,11 @@
 <script>
 import { mapState } from "vuex";
 import { serverurl } from '@/api';
+import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {
     props: ['toggleViewOptions', 'mongooseid', 'productname', 'productimg'],
+    mixins: [jwt_mixin],
     data() {
         return {
             variants: []
@@ -64,10 +74,13 @@ export default {
         async getOptions() {
             const { mongooseid } = this;
 
+            const token = await this.getValidToken();
+
             try {
                 const response = await fetch(`${serverurl}/shopper/getoptions?mongooseid=${mongooseid}`, {
                     method: 'GET',
                     headers: {
+                        Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json',
                         'Origin': window.location.origin,
                         'Access-Control-Request-Method': 'POST',
@@ -85,11 +98,11 @@ export default {
 
                 const { variants } = data;
 
-                console.log('variants, variants', variants)
+               // console.log('variants, variants', variants)
 
                 this.variants = variants;
 
-                console.log(this.variants, 'updated varaints')
+              //  console.log(this.variants, 'updated varaints')
             } catch (error) {
                 console.log(error)
             }
@@ -148,11 +161,12 @@ export default {
         top: 0;
         left: 0;
         padding: 2rem 1rem;
-        width: 100vw;
+        width: 100%;
         z-index: 3;
         background: $black;
 
         & span {
+            cursor: pointer;
 
             &.svg {
                 display: flex;
@@ -171,6 +185,20 @@ export default {
 
     &__options {
         margin-top: 3rem;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: center;
+
+        &--body {
+            width: 60rem;
+
+            @include respond(tab-port) {
+                width: 100%;
+            }
+
+        }
     }
 
     &__bottom {

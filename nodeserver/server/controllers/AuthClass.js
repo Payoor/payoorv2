@@ -3,6 +3,8 @@ import { Resend } from 'resend'
 import speakeasy from 'speakeasy'
 import crypto from 'crypto'
 
+const jwt = require('jsonwebtoken')
+
 const resend = new Resend(`${process.env.RESEND_API_KEY}`)
 
 import { redisClient } from '../redisconf'
@@ -192,11 +194,131 @@ class AuthClass {
 
   static async googleAuth (req, res) {
     try {
-      const { email } = req.body
+      const { email, googleId, picture } = req.body
 
-      console.log(email)
+      if (!email || !googleId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Email and Google ID are required'
+        })
+      }
+
+      let user = await User.findOne({ email: email.toLowerCase().trim() })
+
+      if (user) {
+        let updated = false
+
+        if (!user.googleId) {
+          user.googleId = googleId
+          updated = true
+        }
+
+        if (!user.authMethods) user.authMethods = []
+
+        if (!user.authMethods.includes('google')) {
+          user.authMethods.push('google')
+          updated = true
+        }
+
+        if (!user.profilePicture && picture) {
+          user.profilePicture = picture
+          updated = true
+        }
+
+        if (updated) await user.save()
+      } else {
+        user = new User({
+          email: email.toLowerCase().trim(),
+          googleId,
+          authMethods: ['google'],
+          profilePicture: picture
+        })
+        await user.save()
+      }
+
+      const token = await user.generateAuthToken()
+
+      await redisClient.setEx(
+        `auth:session:${token}`,
+        2592000, // 30 days
+        user._id.toString()
+      )
+
+      return res.status(200).json({
+        success: true,
+        message: 'Google authentication successful',
+        user: {
+          id: user._id,
+          email: user.email,
+          token,
+          profilePicture: user.profilePicture
+        }
+      })
     } catch (error) {
-      console.error('OTP verification error:', error)
+      console.error('Google Auth error:', error)
+      return res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' })
+    }
+  }
+
+  static async getValidUser (req, res) {
+    try {
+      const { jwttoken } = req.query
+
+      const userId = await redisClient.get(`auth:session:${jwttoken}`)
+
+      if (userId) {
+        return res.status(200).json({
+          success: true,
+          message: 'User found'
+        })
+      } else {
+        const user = await this.findByToken(jwttoken)
+
+        if (user) {
+          await user.removeToken(jwttoken)
+        }
+
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      return res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' })
+    }
+  }
+
+  static async signOut (req, res) {
+    try {
+      const token = req.headers.authorization?.split(' ')[1]
+
+      if (!token) {
+        return res
+          .status(400)
+          .json({ success: false, message: 'Token is required' })
+      }
+
+      const user = await User.findByToken(token)
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ success: false, message: 'Invalid token or user not found' })
+      }
+
+      await user.removeToken(token)
+      await redisClient.del(`auth:session:${token}`)
+
+      return res
+        .status(200)
+        .json({ success: true, message: 'Signed out successfully' })
+    } catch (error) {
+      console.error('Sign out error:', error)
       return res
         .status(500)
         .json({ success: false, message: 'Internal server error' })

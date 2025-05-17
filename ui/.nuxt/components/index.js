@@ -8,6 +8,11 @@ export { default as ChatInput } from '../../components/ChatInput.vue'
 export { default as ChatOption } from '../../components/ChatOption.vue'
 export { default as ChatOptions } from '../../components/ChatOptions.vue'
 export { default as GoogleBtn } from '../../components/GoogleBtn.vue'
+export { default as Landing } from '../../components/Landing.vue'
+export { default as LandingCategories } from '../../components/LandingCategories.vue'
+export { default as LandingCopy } from '../../components/LandingCopy.vue'
+export { default as LandingFaq } from '../../components/LandingFaq.vue'
+export { default as LandingFooter } from '../../components/LandingFooter.vue'
 export { default as OtpInput } from '../../components/OtpInput.vue'
 
 // nuxt/nuxt.js#8607

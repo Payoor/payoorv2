@@ -24,30 +24,32 @@
                 <span>Continue with Google</span>
             </button>-->
 
-            <div class="auth__form slide-fade-in-up">
+            <div class="auth__formarea">
+                <div class="auth__form slide-fade-in-up">
 
-                <div class="auth__input" v-if="!otp_view">
-                    <input v-model="value" :type="auth_method" placeholder="Enter your email" />
+                    <div class="auth__input" v-if="!otp_view">
+                        <input v-model="value" :type="auth_method" placeholder="Enter your email" />
+                    </div>
+
+                    <!--to do add phonenumber otp-->
+
+                    <div class="auth__otp" v-if="otp_view">
+                        <OtpInput @update:modelValue="handleOtpChange" :otpLength="6" />
+                    </div>
+
+                    <div class="auth__button" v-if="!otp_view">
+                        <button class="button-primary slide-fade-in-up" @click="submit">{{ loading ? 'Please wait...' :
+                            'Continue' }}</button>
+                    </div>
+
                 </div>
-
-                <!--to do add phonenumber otp-->
-
-                <div class="auth__otp" v-if="otp_view">
-                    <OtpInput @update:modelValue="handleOtpChange" :otpLength="6" />
-                </div>
-
-                <div class="auth__button" v-if="!otp_view">
-                    <button class="button-primary slide-fade-in-up" @click="submit">{{ loading ? 'Please wait...' :
-                        'Continue' }}</button>
-                </div>
-
             </div>
 
             <div class="auth__or">
                 <span>Or</span>
             </div>
 
-            <GoogleBtn />
+            <GoogleBtn @update:authValue="handleAuthChange" />
         </div>
 
     </div>
@@ -75,6 +77,9 @@ export default {
             if (this.user_otp.length === 6) {
                 this.submitOtp();
             }
+        },
+        handleAuthChange(token) {
+            this.$emit("update:authValue", token);
         },
         submit() {
             this.getOtp();
@@ -116,7 +121,7 @@ export default {
 
                 if (status === 200) {
                     const data = await response.json();
-                    console.log('Success:', data);
+                   // console.log('Success:', data);
                     this.otp_view = true
                     this.loading = false;
                 }
@@ -157,7 +162,7 @@ export default {
 
                     const { user } = data;
 
-                    console.log(user.token)
+                    //console.log(user.token)
                     this.$emit("update:authValue", user.token);
                 }
             } catch (error) {
@@ -184,6 +189,16 @@ export default {
 
         & img {
             height: 100%;
+        }
+    }
+
+    &__formarea {
+        width: 100%;
+
+        padding: 0 10rem;
+
+        @include respond(tab-port) {
+            padding: 0;
         }
     }
 

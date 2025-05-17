@@ -20,6 +20,7 @@ function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), 
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 require('dotenv').config();
+var jwt = require('jsonwebtoken');
 var resend = new _resend.Resend("".concat(process.env.RESEND_API_KEY));
 var AuthClass = /*#__PURE__*/function () {
   function AuthClass() {
@@ -266,33 +267,222 @@ var AuthClass = /*#__PURE__*/function () {
     key: "googleAuth",
     value: function () {
       var _googleAuth = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-        var email;
+        var _req$body, email, googleId, picture, user, updated, token;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
               _context5.prev = 0;
-              email = req.body.email;
-              console.log(email);
-              _context5.next = 9;
+              _req$body = req.body, email = _req$body.email, googleId = _req$body.googleId, picture = _req$body.picture;
+              if (!(!email || !googleId)) {
+                _context5.next = 4;
+                break;
+              }
+              return _context5.abrupt("return", res.status(400).json({
+                success: false,
+                message: 'Email and Google ID are required'
+              }));
+            case 4:
+              _context5.next = 6;
+              return _User["default"].findOne({
+                email: email.toLowerCase().trim()
+              });
+            case 6:
+              user = _context5.sent;
+              if (!user) {
+                _context5.next = 18;
+                break;
+              }
+              updated = false;
+              if (!user.googleId) {
+                user.googleId = googleId;
+                updated = true;
+              }
+              if (!user.authMethods) user.authMethods = [];
+              if (!user.authMethods.includes('google')) {
+                user.authMethods.push('google');
+                updated = true;
+              }
+              if (!user.profilePicture && picture) {
+                user.profilePicture = picture;
+                updated = true;
+              }
+              if (!updated) {
+                _context5.next = 16;
+                break;
+              }
+              _context5.next = 16;
+              return user.save();
+            case 16:
+              _context5.next = 21;
               break;
-            case 5:
-              _context5.prev = 5;
+            case 18:
+              user = new _User["default"]({
+                email: email.toLowerCase().trim(),
+                googleId: googleId,
+                authMethods: ['google'],
+                profilePicture: picture
+              });
+              _context5.next = 21;
+              return user.save();
+            case 21:
+              _context5.next = 23;
+              return user.generateAuthToken();
+            case 23:
+              token = _context5.sent;
+              _context5.next = 26;
+              return _redisconf.redisClient.setEx("auth:session:".concat(token), 2592000,
+              // 30 days
+              user._id.toString());
+            case 26:
+              return _context5.abrupt("return", res.status(200).json({
+                success: true,
+                message: 'Google authentication successful',
+                user: {
+                  id: user._id,
+                  email: user.email,
+                  token: token,
+                  profilePicture: user.profilePicture
+                }
+              }));
+            case 29:
+              _context5.prev = 29;
               _context5.t0 = _context5["catch"](0);
-              console.error('OTP verification error:', _context5.t0);
+              console.error('Google Auth error:', _context5.t0);
               return _context5.abrupt("return", res.status(500).json({
                 success: false,
                 message: 'Internal server error'
               }));
-            case 9:
+            case 33:
             case "end":
               return _context5.stop();
           }
-        }, _callee5, null, [[0, 5]]);
+        }, _callee5, null, [[0, 29]]);
       }));
       function googleAuth(_x8, _x9) {
         return _googleAuth.apply(this, arguments);
       }
       return googleAuth;
+    }()
+  }, {
+    key: "getValidUser",
+    value: function () {
+      var _getValidUser = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+        var jwttoken, userId, user;
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
+            case 0:
+              _context6.prev = 0;
+              jwttoken = req.query.jwttoken;
+              _context6.next = 4;
+              return _redisconf.redisClient.get("auth:session:".concat(jwttoken));
+            case 4:
+              userId = _context6.sent;
+              if (!userId) {
+                _context6.next = 9;
+                break;
+              }
+              return _context6.abrupt("return", res.status(200).json({
+                success: true,
+                message: 'User found'
+              }));
+            case 9:
+              _context6.next = 11;
+              return this.findByToken(jwttoken);
+            case 11:
+              user = _context6.sent;
+              if (!user) {
+                _context6.next = 15;
+                break;
+              }
+              _context6.next = 15;
+              return user.removeToken(jwttoken);
+            case 15:
+              return _context6.abrupt("return", res.status(404).json({
+                success: false,
+                message: 'User not found'
+              }));
+            case 16:
+              _context6.next = 22;
+              break;
+            case 18:
+              _context6.prev = 18;
+              _context6.t0 = _context6["catch"](0);
+              console.log(_context6.t0);
+              return _context6.abrupt("return", res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+              }));
+            case 22:
+            case "end":
+              return _context6.stop();
+          }
+        }, _callee6, this, [[0, 18]]);
+      }));
+      function getValidUser(_x0, _x1) {
+        return _getValidUser.apply(this, arguments);
+      }
+      return getValidUser;
+    }()
+  }, {
+    key: "signOut",
+    value: function () {
+      var _signOut = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+        var _req$headers$authoriz, token, user;
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
+            case 0:
+              _context7.prev = 0;
+              token = (_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.split(' ')[1];
+              if (token) {
+                _context7.next = 4;
+                break;
+              }
+              return _context7.abrupt("return", res.status(400).json({
+                success: false,
+                message: 'Token is required'
+              }));
+            case 4:
+              _context7.next = 6;
+              return _User["default"].findByToken(token);
+            case 6:
+              user = _context7.sent;
+              if (user) {
+                _context7.next = 9;
+                break;
+              }
+              return _context7.abrupt("return", res.status(404).json({
+                success: false,
+                message: 'Invalid token or user not found'
+              }));
+            case 9:
+              _context7.next = 11;
+              return user.removeToken(token);
+            case 11:
+              _context7.next = 13;
+              return _redisconf.redisClient.del("auth:session:".concat(token));
+            case 13:
+              return _context7.abrupt("return", res.status(200).json({
+                success: true,
+                message: 'Signed out successfully'
+              }));
+            case 16:
+              _context7.prev = 16;
+              _context7.t0 = _context7["catch"](0);
+              console.error('Sign out error:', _context7.t0);
+              return _context7.abrupt("return", res.status(500).json({
+                success: false,
+                message: 'Internal server error'
+              }));
+            case 20:
+            case "end":
+              return _context7.stop();
+          }
+        }, _callee7, null, [[0, 16]]);
+      }));
+      function signOut(_x10, _x11) {
+        return _signOut.apply(this, arguments);
+      }
+      return signOut;
     }()
   }]);
 }();

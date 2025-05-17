@@ -9,10 +9,13 @@ export default {
   emits: ['update:products'],
   methods: {
     async postMessageFromQuery (message) {
+      const token = localStorage.getItem('jwt')
+
       try {
         const response = await fetch(`${serverurl}/shopper/message`, {
           method: 'POST',
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
             Origin: window.location.origin,
             'Access-Control-Request-Method': 'POST',

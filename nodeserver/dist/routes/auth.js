@@ -14,4 +14,6 @@ var authRoute = (0, _express["default"])();
 authRoute.post('/shopper/auth/mail', _AuthClass["default"].sendEmailOtp);
 authRoute.post('/shopper/auth/verifyotp', _AuthClass["default"].verifyOtp);
 authRoute.post('/shopper/auth/google', _AuthClass["default"].googleAuth);
+authRoute.get('/shopper/auth/validuser', _AuthClass["default"].getValidUser);
+authRoute.post('/shopper/auth/signout', _AuthClass["default"].signOut);
 var _default = exports["default"] = authRoute;

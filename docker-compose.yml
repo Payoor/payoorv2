@@ -50,16 +50,17 @@ services:
       - mongodb
     restart: always
 
-  # NGINX reverse proxy service
   nginx:
     container_name: nginx
     image: nginx:alpine
     ports:
       - "80:80"  # Expose port 80 on the host
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-development}
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/certs:/etc/nginx/data/certs
+      - ${NGINX_CONFIG_PATH}/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ${NGINX_CONFIG_PATH}/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${NGINX_CERTS_PATH}:/etc/nginx/data/certs
     depends_on:
       - nodeserver
     networks:

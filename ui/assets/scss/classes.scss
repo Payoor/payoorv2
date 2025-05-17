@@ -23,5 +23,11 @@
 }
 
 .disabled-btn {
-    opacity: .4;
+    opacity: 0.4;
+}
+
+.floating-element {
+    @include floating(3s);
+    
+    transition: transform 0.2s ease;
 }

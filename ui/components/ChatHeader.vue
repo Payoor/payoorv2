@@ -16,6 +16,10 @@
         </div>
 
         <div class="chat-header__right">
+            <div class="chat-header__right--cart">
+                <CartButton :showicon="true" />
+            </div>
+
             <div class="chat-header__burger" :class="{ 'unauth': !jwt }" @click.stop="toggleSideMenu">
                 <span></span>
                 <span></span>
@@ -23,7 +27,7 @@
             </div>
         </div>
 
-        <div class="chat-header__menu" @click.stop="toggleSideMenu" v-if="menuopen">
+        <div class="chat-header__menu" @click.stop="toggleSideMenu" v-if="menuopen" :class="{ 'auth': jwt }">
             <div class="chat-header__menubody slide-in-left ">
 
                 <div class="chat-header__menuitems">
@@ -34,7 +38,7 @@
                     <div class="chat-header__menuitem">
                         <span class="svg"></span>
 
-                        <span class="label">About us</span>
+                        <span class="label" @click="$router.push('/aboutus')">About us</span>
                     </div>
 
                     <div class="chat-header__menuitem">
@@ -46,7 +50,7 @@
                     <div class="chat-header__menuitem">
                         <span class="svg"></span>
 
-                        <span class="label">Support</span>
+                        <!--<span class="label">Support</span>-->
                     </div>
 
                 </div>
@@ -55,13 +59,12 @@
                     <div class="chat-header__menuitem">
                         <span class="svg"></span>
 
-                        <span class="label">nerdyemmanuel@gmail.com</span>
+                        <!---<span class="label">nerdyemmanuel@gmail.com</span>-->
                     </div>
 
                     <div class="chat-header__menuitem">
                         <span class="svg"></span>
-
-                        <span class="label">Signout</span>
+                        <span class="label" @click="signOut">Signout</span>
                     </div>
                 </div>
             </div>
@@ -70,22 +73,81 @@
 </template>
 
 <script>
+import { serverurl } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {
     mixins: [jwt_mixin],
     props: ['logovisible', 'name', 'backRoute'],
+    emits: ["update:authValue"],
     data() {
         return {
             menuopen: false
         }
     },
-    mounted() {
-        this.getValidToken();
+    async mounted() {
+
+        const token = await this.getValidToken();
+
+        if (token) {
+            this.getValidUser(token);
+        } else {
+            this.$router.push({
+                path: '/',
+                query: {
+                    ...this.$route.query,
+                }
+            });
+        }
 
         this.$store.dispatch("cart/initializeCart");
+
+        if (window.innerWidth > 900 && this.jwt) {
+            this.menuopen = true;
+        } else {
+            this.menuopen = false;
+        }
+
+        window.addEventListener('resize', this.handleResize);
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.handleResize);
     },
     methods: {
+        async getValidUser(token) {
+            try {
+                const response = await fetch(`${serverurl}/shopper/auth/validuser?jwttoken=${token}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': window.location.origin,
+                        'Access-Control-Request-Method': 'GET',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    },
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Error performing autocomplete:', errorData);
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (response.status !== 200) {
+                    this.$router.push({
+                        path: this.backRoute,
+                        query: {
+                            ...this.$route.query,
+                        }
+                    });
+                } else {
+
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
         toggleSideMenu() {
             this.menuopen = !this.menuopen;
         },
@@ -96,6 +158,48 @@ export default {
                     ...this.$route.query,
                 }
             });
+        },
+        handleResize() {
+            if (window.innerWidth > 900) {
+                this.menuopen = true;
+            } else {
+                this.menuopen = false;
+            }
+        },
+        async signOut() {
+            try {
+                const token = await this.getValidToken();
+
+                if (!token) {
+                    this.$router.push('/');
+                    this.$emit("update:authValue", null);
+                    return;
+                }
+
+                const response = await fetch(`${serverurl}/shopper/auth/signout`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to sign out');
+                }
+
+                const data = await response.json();
+
+                console.log(data)
+
+                localStorage.removeItem('jwt');
+                this.$router.push('/');
+                this.$emit("update:authValue", null);
+
+                // console.log('logged out')
+            } catch (error) {
+                console.error('Sign out failed:', error.message);
+            }
         }
     }
 }
@@ -141,6 +245,15 @@ export default {
                 color: $primary-color;
                 font-weight: 600;
 
+            }
+        }
+    }
+
+    &__right {
+
+        &--cart {
+            @include respond(tab-port) {
+                display: none;
             }
         }
     }
@@ -200,14 +313,45 @@ export default {
         overflow: hidden;
         overflow-y: scroll;
         background: rgba($black, .6);
+
+        &.auth {
+            box-shadow: 20px 0 30px -10px rgba($primary-color, 0.1);
+            background: transparent;
+            width: auto;
+
+            @include respond(tab-port) {
+                width: 100vw;
+                overflow: hidden;
+                overflow-y: scroll;
+                background: rgba($black, .6);
+
+                box-shadow: none;
+            }
+        }
+
+        @include respond(tab-port) {
+            width: 100vw;
+            overflow: hidden;
+            overflow-y: scroll;
+            background: rgba($black, .6);
+
+            box-shadow: none;
+        }
     }
 
     &__menuitem {
         margin-bottom: 3rem;
-        font-size: 1.8rem;
+
         font-weight: 500;
 
+        font-size: 1.4rem;
+
         text-decoration: none;
+        cursor: pointer;
+
+        @include respond(tab-port) {
+            font-size: 1.8rem;
+        }
 
         & span {
             text-decoration: none;

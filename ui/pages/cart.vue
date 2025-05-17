@@ -5,27 +5,31 @@
         </div>
 
         <div class="chatcart__content">
-            <div class="chatoptions__options">
+            <div class="chatcart__content--body">
+                <div class="chatoptions__options">
 
-                <div v-for="mongooseid in cartTotalItems" :key="mongooseid">
-                    <ChatOption :mongooseid="mongooseid" />
+                    <div v-for="mongooseid in cartTotalItems" :key="mongooseid">
+                        <ChatOption :mongooseid="mongooseid" />
+                    </div>
                 </div>
-            </div>
 
-            <div class="chatcart__bottom">
-                <button class="button-primary transparent-button" @click="continueShopping">
-                    <span>Continue Shopping</span>
-                </button>
+                <div class="chatcart__bottom">
+                    <div class="chatcart__content--body">
+                        <button class="button-primary transparent-button" @click="continueShopping">
+                            <span>Continue Shopping</span>
+                        </button>
 
-                <button class="button-primary spacebetween disabled-btn" v-if="cartTotal === 0">
-                    <span>Proceed to Checkout</span>
-                    <CartButton :showicon="false" />
-                </button>
+                        <button class="button-primary spacebetween disabled-btn" v-if="cartTotal === 0">
+                            <span>Proceed to Checkout</span>
+                            <CartButton :showicon="false" />
+                        </button>
 
-                <button class="button-primary spacebetween" @click="goToCheckout" v-if="cartTotal > 0">
-                    <span>Proceed to Checkout</span>
-                    <CartButton :showicon="false" />
-                </button>
+                        <button class="button-primary spacebetween" @click="goToCheckout" v-if="cartTotal > 0">
+                            <span>Proceed to Checkout</span>
+                            <CartButton :showicon="false" />
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -87,12 +91,26 @@ export default {
         padding-bottom: 20rem;
         background: $white;
 
+        display: flex;
+        justify-content: center;
+
+        padding-top: 4rem;
+
         @include respond(phone) {
             padding: 1rem;
             padding-top: 7rem;
 
 
             padding-bottom: 30rem;
+        }
+
+        &--body {
+            width: 60rem;
+
+            @include respond(tab-port) {
+                width: 100%;
+            }
+
         }
     }
 

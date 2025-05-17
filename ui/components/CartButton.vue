@@ -49,6 +49,7 @@ export default {
 <style lang="scss" scoped>
 .cartbtn {
     color: $black;
+    position: relative;
 
     &__icon {
         width: 4.5rem;
@@ -61,8 +62,16 @@ export default {
         padding: 1rem;
         border-radius: 100%;
         position: fixed;
-        right: 2rem;
-        bottom: 23rem;
+        right: 15rem;
+        top: 3rem;
+
+        @include respond(tab-port) {
+            position: fixed;
+            right: 2rem;
+            bottom: 23rem;
+
+            top: unset;
+        }
 
         &--total {
             background: red;

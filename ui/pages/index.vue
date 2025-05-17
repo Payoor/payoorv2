@@ -2,30 +2,40 @@
     <div>
         <div v-if="!jwt">
             <div class="home__header" :class="{ 'unauth': !jwt }">
-                <ChatHeader :logovisible="false" :jwt="jwt" />
+                <ChatHeader :logovisible="false" :jwt="jwt" @update:authValue="handleAuthChange" />
             </div>
 
             <div>
-                <Authenticator @update:authValue="handleAuthChange" />
+                <Landing>
+                    <template #top-left>
+                        <Authenticator @update:authValue="handleAuthChange" />
+                    </template>
+                </Landing>
             </div>
         </div>
 
         <div v-if="jwt">
             <div class="home">
-                <div class="home__header">
-                    <ChatHeader :logovisible="true" :jwt="jwt" />
-                </div>
+                <div class="home__content">
+                    <div class="home__header" :class="{ 'auth': jwt }">
+                        <ChatHeader :logovisible="true" :jwt="jwt" @update:authValue="handleAuthChange"/>
+                    </div>
 
-                <div class="home__chatbody">
-                    <ChatBody :jwt="jwt" :products="products" />
-                </div>
+                    <div class="home__chatbody">
+                        <ChatBody :jwt="jwt" :products="products" />
+                    </div>
 
-                <div class="home__bottom">
-                    <CartButton :showicon="true" />
+                    <div class="home__bottom">
+                        <div>
+                            <div class="home__bottom--cart">
+                                <CartButton :showicon="true" />
+                            </div>
 
-                    <ChatCategories :jwt="jwt" @update:products="handleProductsChange" />
+                            <ChatCategories :jwt="jwt" @update:products="handleProductsChange" />
 
-                    <ChatInput :jwt="jwt" @update:products="handleProductsChange" />
+                            <ChatInput :jwt="jwt" @update:products="handleProductsChange" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -33,6 +43,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -40,17 +51,23 @@ export default {
             products: []
         }
     },
-    mounted() {
+    async mounted() {
         this.jwt = localStorage.getItem('jwt');
     },
     methods: {
         handleAuthChange(value) {
-            this.jwt = value;
-            localStorage.setItem('jwt', value);
+            if (value) {
+                this.jwt = value;
+                localStorage.setItem('jwt', value);
+            } else {
+                this.jwt = null
+
+                console.log('logged out here')
+            }
         },
         handleProductsChange(value) {
             this.products = value;
-        }
+        },
     }
 }
 </script>
@@ -73,7 +90,9 @@ export default {
         overflow: hidden;
         overflow-y: scroll;
 
-        @include respond(phone) {
+        padding-bottom: 30rem;
+
+        @include respond(tab-port) {
             padding: 1rem;
             padding-top: 7rem;
 
@@ -92,11 +111,36 @@ export default {
         width: 100vw;
         padding: 3rem;
 
-        z-index: 4;
+        z-index: 5;
         background: $white;
 
-        @include respond(phone) {
-            padding: 1rem;
+        display: flex;
+        justify-content: center;
+        padding-bottom: .4rem;
+
+        &--cart {
+            display: none;
+
+            @include respond(tab-port) {
+                display: block;
+            }
+        }
+
+        @include respond(tab-port) {
+            padding: 0;
+            padding-bottom: 0;
+            display: block;
+        }
+    }
+
+    &__content {
+        position: relative;
+
+        //width: 80rem;
+        overflow: hidden;
+
+        @include respond(tab-port) {
+            //width: auto;
         }
     }
 }

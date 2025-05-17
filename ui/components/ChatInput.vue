@@ -2,7 +2,8 @@
     <div>
         <div class="chatinput">
             <textarea v-model="userinput" class="chatinput__field" :placeholder="placeholder" @input="autoResize"
-                ref="textarea"></textarea>
+                @keydown.enter.prevent="handleEnter" ref="textarea">
+</textarea>
 
             <div class="chatinput__sendbtn slide-fade-in-up" :class="{
                 'visible': userinput.length
@@ -38,11 +39,11 @@ export default {
             const wordArray = newValue.trim().split(/\s+/); // split by spaces
             const wordCount = wordArray.length;
 
-            console.log(wordArray, wordCount)
+          //  console.log(wordArray, wordCount)
 
             if (wordCount >= 1) {
                 if (wordCount >= 5 || wordArray[0].length >= 5) {
-                    console.log('hello wordcound')
+                   // console.log('hello wordcound')
                     //this.autoComplete(newValue);
                 }
             }
@@ -64,9 +65,12 @@ export default {
         },
         async autoComplete(queryText) {
             try {
+                const token = await this.getValidToken();
+
                 const response = await fetch(`${serverurl}/shopper/message/suggest?query=${queryText}`, {
                     method: 'POST',
                     headers: {
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                         'Origin': window.location.origin,
                         'Access-Control-Request-Method': 'POST',
@@ -81,7 +85,7 @@ export default {
                 }
 
                 const data = await response.json();
-                console.log('Autocomplete response:', data);
+               // console.log('Autocomplete response:', data);
             } catch (error) {
                 console.error('Error performing autocomplete:', error.message);
             }
@@ -96,11 +100,26 @@ export default {
                 }
             }
         },
+        handleEnter(e) {
+            const width = window.innerWidth;
+
+            if (width > 900) {
+                this.sendMessage();
+            } else {
+                // to do: allow new lines on desktop or do nothing
+                // e.g., this.userinput += '\n';
+            }
+        },
         async postMessageToServer() {
+            const { mongooseid } = this;
+
+            const token = await this.getValidToken();
+
             try {
                 const response = await fetch(`${serverurl}/shopper/message`, {
                     method: 'POST',
                     headers: {
+                        Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json',
                         'Origin': window.location.origin,
                         'Access-Control-Request-Method': 'POST',
@@ -136,10 +155,13 @@ export default {
             }
         },
         async postMessageFromQuery(message) {
+            const token = await this.getValidToken();
+
             try {
                 const response = await fetch(`${serverurl}/shopper/message`, {
                     method: 'POST',
                     headers: {
+                        Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json',
                         'Origin': window.location.origin,
                         'Access-Control-Request-Method': 'POST',
@@ -169,14 +191,19 @@ export default {
 <style lang="scss" scoped>
 .chatinput {
     position: relative;
-    border-radius: 1rem;
-    //width: 100rem;
+
     margin: 0 auto;
     border: 0.3rem solid transparent;
-    background: $input-black;
+    background: #333333;
     overflow: hidden;
-    padding: 1rem;
+    padding: 2rem;
     min-height: 6rem;
+
+    border-radius: 3rem;
+
+    @include respond(tab-port) {
+        border-radius: 3rem 3rem 0rem 0rem;
+    }
 
     &__field {
         border: none;
@@ -197,8 +224,8 @@ export default {
         position: absolute;
         bottom: 1rem;
         right: 1rem;
-        height: 3rem;
-        width: 3rem;
+        height: 4.5rem;
+        width: 4.5rem;
         display: flex;
         justify-content: center;
         border-radius: 100%;
@@ -224,8 +251,8 @@ export default {
             & svg {
                 fill: $white;
                 color: $white;
-                height: 3rem;
-                width: 2rem;
+                height: 4rem;
+                width: 4rem;
             }
         }
     }
