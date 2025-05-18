@@ -43,7 +43,7 @@ export default {
       return JSON.parse(jsonPayload);
     },
     handleCredentialResponse(response) {
-     console.log(response)
+     //console.log(response)
       this.sendTokenToBackend(response.credential);
     },
     async sendTokenToBackend(token) {
@@ -52,7 +52,7 @@ export default {
       const googleId = decoded.sub;
       const picture = decoded.picture;
 
-     console.log("Decoded Google data:", { email, googleId, picture });
+     //console.log("Decoded Google data:", { email, googleId, picture });
 
       try {
         const response = await fetch(`${serverurl}/shopper/auth/google`, {
@@ -71,7 +71,7 @@ export default {
 
         if (data.user.token) {
           localStorage.setItem('token', data.user.token);
-          console.log(data)
+          //console.log(data)
          // console.log("Auth token received:", data.token);
           this.$emit("update:authValue", data.user.token);
         }
