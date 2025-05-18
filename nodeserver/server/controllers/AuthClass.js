@@ -196,6 +196,9 @@ class AuthClass {
     try {
       const { email, googleId, picture } = req.body
 
+      console.log(email, googleId, picture)
+      console.log('==============================')
+
       if (!email || !googleId) {
         return res.status(400).json({
           success: false,
@@ -243,6 +246,13 @@ class AuthClass {
         2592000, // 30 days
         user._id.toString()
       )
+
+      console.log({
+        id: user._id,
+        email: user.email,
+        token,
+        profilePicture: user.profilePicture
+      })
 
       return res.status(200).json({
         success: true,

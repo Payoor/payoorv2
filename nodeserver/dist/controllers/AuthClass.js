@@ -273,23 +273,25 @@ var AuthClass = /*#__PURE__*/function () {
             case 0:
               _context5.prev = 0;
               _req$body = req.body, email = _req$body.email, googleId = _req$body.googleId, picture = _req$body.picture;
+              console.log(email, googleId, picture);
+              console.log('==============================');
               if (!(!email || !googleId)) {
-                _context5.next = 4;
+                _context5.next = 6;
                 break;
               }
               return _context5.abrupt("return", res.status(400).json({
                 success: false,
                 message: 'Email and Google ID are required'
               }));
-            case 4:
-              _context5.next = 6;
+            case 6:
+              _context5.next = 8;
               return _User["default"].findOne({
                 email: email.toLowerCase().trim()
               });
-            case 6:
+            case 8:
               user = _context5.sent;
               if (!user) {
-                _context5.next = 18;
+                _context5.next = 20;
                 break;
               }
               updated = false;
@@ -307,33 +309,39 @@ var AuthClass = /*#__PURE__*/function () {
                 updated = true;
               }
               if (!updated) {
-                _context5.next = 16;
+                _context5.next = 18;
                 break;
               }
-              _context5.next = 16;
+              _context5.next = 18;
               return user.save();
-            case 16:
-              _context5.next = 21;
-              break;
             case 18:
+              _context5.next = 23;
+              break;
+            case 20:
               user = new _User["default"]({
                 email: email.toLowerCase().trim(),
                 googleId: googleId,
                 authMethods: ['google'],
                 profilePicture: picture
               });
-              _context5.next = 21;
-              return user.save();
-            case 21:
               _context5.next = 23;
-              return user.generateAuthToken();
+              return user.save();
             case 23:
+              _context5.next = 25;
+              return user.generateAuthToken();
+            case 25:
               token = _context5.sent;
-              _context5.next = 26;
+              _context5.next = 28;
               return _redisconf.redisClient.setEx("auth:session:".concat(token), 2592000,
               // 30 days
               user._id.toString());
-            case 26:
+            case 28:
+              console.log({
+                id: user._id,
+                email: user.email,
+                token: token,
+                profilePicture: user.profilePicture
+              });
               return _context5.abrupt("return", res.status(200).json({
                 success: true,
                 message: 'Google authentication successful',
@@ -344,19 +352,19 @@ var AuthClass = /*#__PURE__*/function () {
                   profilePicture: user.profilePicture
                 }
               }));
-            case 29:
-              _context5.prev = 29;
+            case 32:
+              _context5.prev = 32;
               _context5.t0 = _context5["catch"](0);
               console.error('Google Auth error:', _context5.t0);
               return _context5.abrupt("return", res.status(500).json({
                 success: false,
                 message: 'Internal server error'
               }));
-            case 33:
+            case 36:
             case "end":
               return _context5.stop();
           }
-        }, _callee5, null, [[0, 29]]);
+        }, _callee5, null, [[0, 32]]);
       }));
       function googleAuth(_x8, _x9) {
         return _googleAuth.apply(this, arguments);
