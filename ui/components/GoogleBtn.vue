@@ -69,11 +69,11 @@ export default {
 
         const data = await response.json();
 
-        if (data.token) {
-          localStorage.setItem('token', data.token);
+        if (data.user.token) {
+          localStorage.setItem('token', data.user.token);
           console.log(data)
          // console.log("Auth token received:", data.token);
-          this.$emit("update:authValue", data.token);
+          this.$emit("update:authValue", data.user.token);
         }
       } catch (error) {
         console.error("Authentication error:", error.message);
