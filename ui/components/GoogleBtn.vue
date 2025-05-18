@@ -71,6 +71,7 @@ export default {
 
         if (data.token) {
           localStorage.setItem('token', data.token);
+          console.log(data)
          // console.log("Auth token received:", data.token);
           this.$emit("update:authValue", data.token);
         }
