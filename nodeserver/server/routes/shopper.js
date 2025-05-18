@@ -19,7 +19,7 @@ import ElasticSearchClass from '../controllers/ElasticSearchClass'
 
 const ObjectId = mongoose.Types.ObjectId
 
-const elasticsearchUrl = 'http://shopping_assistant-elasticsearch-1:9200'
+const elasticsearchUrl = process.env.ELASTICSEARCHURL
 const productIndex = 'products'
 
 const elasticSearchCl = new ElasticSearchClass(elasticsearchUrl)

@@ -28,7 +28,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 var ObjectId = _mongoose["default"].Types.ObjectId;
-var elasticsearchUrl = 'http://shopping_assistant-elasticsearch-1:9200';
+var elasticsearchUrl = process.env.ELASTICSEARCHURL;
 var productIndex = 'products';
 var elasticSearchCl = new _ElasticSearchClass["default"](elasticsearchUrl);
 var shopperRoute = (0, _express["default"])();
