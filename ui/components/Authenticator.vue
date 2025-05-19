@@ -127,13 +127,25 @@ export default {
 
     },
     watch: {
-        otp_view(newVal) {
-            if (newVal) {
+        otp_view(val) {
+            if (val) {
                 document.body.classList.add('no-scroll');
+
+                const landingTop = document.querySelector('.landing__top');
+                if (landingTop) {
+                    landingTop.style.zIndex = '5';
+                    landingTop.style.position = 'relative';
+                }
             } else {
                 document.body.classList.remove('no-scroll');
+
+                const landingTop = document.querySelector('.landing__top');
+                if (landingTop) {
+                    landingTop.style.zIndex = '';
+                    landingTop.style.position = '';
+                }
             }
-        },
+        }
     },
     methods: {
         startResendOtpCounter() {
@@ -246,6 +258,13 @@ export default {
                     const { user } = data;
 
                     document.body.classList.remove('no-scroll');
+
+                    const landingTop = document.querySelector('.landing__top');
+                    
+                    if (landingTop) {
+                        landingTop.style.zIndex = '';
+                        landingTop.style.position = '';
+                    }
 
                     //console.log(user.token)
                     this.$emit("update:authValue", user.token);
