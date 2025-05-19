@@ -212,6 +212,8 @@ export default {
 
         @include respond(tab-port) {
             padding: 0;
+
+            transform: translateY(-9rem);
         }
     }
 
@@ -372,6 +374,10 @@ export default {
     &__googlebtn {
         position: relative;
         z-index: 4;
+
+        @include respond(tab-port) {
+            transform: translateY(-12rem);
+        }
     }
 
     &__cartongif {
