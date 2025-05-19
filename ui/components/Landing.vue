@@ -15,6 +15,10 @@
                     </figure>
                 </div>
 
+                <figure class="landing__cloud">
+                    <img src="/imgs/4eb5d8593236b95b3a366be49d086af443b87fa7.png" />
+                </figure>
+
                 <!--<div class="landing__seemore">
                     <button class="landing__seemore--btn floating-element" @click="scrollDown('landing-categories')">Learn more</button>
                 </div>-->
@@ -86,6 +90,8 @@ export default {
         left: 0;
         width: 100%;
         height: 100vh;
+
+        background: $sky-blue-3;
 
         @include respond(tab-port) {
             display: flex;
@@ -163,6 +169,21 @@ export default {
             cursor: pointer;
             font-weight: 600;
             font-size: 1.4rem;
+        }
+    }
+
+    &__cloud {
+        height: 34rem;
+        width: 100vw;
+        position: absolute;
+        bottom: 0;
+        z-index: 3;
+        transform: scale(1.1);
+
+        & img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
         }
     }
 }

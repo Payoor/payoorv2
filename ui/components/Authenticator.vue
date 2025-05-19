@@ -57,9 +57,7 @@
                 <GoogleBtn @update:authValue="handleAuthChange" />
             </div>
 
-            <figure class="auth__cloud">
-                <img src="/imgs/4eb5d8593236b95b3a366be49d086af443b87fa7.png" />
-            </figure>
+            
         </div>
 
     </div>
@@ -213,7 +211,7 @@ export default {
         @include respond(tab-port) {
             padding: 0;
 
-            transform: translateY(-9rem);
+            transform: translateY(-4rem);
         }
     }
 
@@ -310,7 +308,7 @@ export default {
         border-radius: 1rem;
 
         height: 65rem;
-        margin-top: 7rem;
+        margin-top: 5rem;
 
         position: relative;
     }
@@ -342,7 +340,7 @@ export default {
 
     &__h1 {
         font-size: 3.7rem;
-        font-weight: 400;
+        font-weight: 600;
         text-align: center;
         display: flex;
         flex-direction: column;
@@ -353,8 +351,8 @@ export default {
 
     &__h2 {
         font-size: 2rem;
-        font-weight: 400;
         text-align: center;
+        font-weight: 500;
     }
 
     &__htags {
@@ -376,7 +374,7 @@ export default {
         z-index: 4;
 
         @include respond(tab-port) {
-            transform: translateY(-12rem);
+            transform: translateY(-6rem);
         }
     }
 
