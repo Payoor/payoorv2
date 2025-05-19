@@ -126,6 +126,15 @@ export default {
         }
 
     },
+    watch: {
+        otp_view(newVal) {
+            if (newVal) {
+                document.body.classList.add('no-scroll');
+            } else {
+                document.body.classList.remove('no-scroll');
+            }
+        },
+    },
     methods: {
         startResendOtpCounter() {
             const countdown = setInterval(() => {
@@ -150,6 +159,7 @@ export default {
             }
         },
         handleAuthChange(token) {
+
             this.$emit("update:authValue", token);
         },
         submit() {
@@ -234,6 +244,8 @@ export default {
                     this.loading = false;
 
                     const { user } = data;
+
+                    document.body.classList.remove('no-scroll');
 
                     //console.log(user.token)
                     this.$emit("update:authValue", user.token);

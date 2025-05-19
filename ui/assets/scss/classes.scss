@@ -28,6 +28,11 @@
 
 .floating-element {
     @include floating(3s);
-    
+
     transition: transform 0.2s ease;
+}
+
+.no-scroll {
+    overflow: hidden !important;
+    height: 100vh !important;
 }

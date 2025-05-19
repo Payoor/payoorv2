@@ -1,8 +1,9 @@
 <template>
     <div class="otp-inputs">
         <div v-for="(digit, index) in otpLength" :key="index" class="otp-inputs__area">
-            <input :ref="`otp${index}`" v-model="otpDigits[index]" type="text" maxlength="1" @input="onInput(index)"
-                @keydown="onKeydown($event, index)" @paste="onPaste" class="otp-input" />
+            <input :ref="`otp${index}`" v-model="otpDigits[index]" type="text" inputmode="numeric" pattern="[0-9]*"
+                maxlength="1" @input="onInput(index)" @keydown="onKeydown($event, index)" @paste="onPaste"
+                class="otp-input" />
         </div>
     </div>
 </template>
@@ -36,10 +37,9 @@ export default {
     },
     methods: {
         onInput(index) {
-            const val = this.otpDigits[index];
-            if (val.length > 1) {
-                this.otpDigits[index] = val.slice(0, 1);
-            }
+            let val = this.otpDigits[index];
+            val = val.replace(/\D/g, ""); // Remove non-digits
+            this.otpDigits[index] = val.slice(0, 1); // Enforce one digit
 
             if (val && index < this.otpLength - 1) {
                 this.$refs[`otp${index + 1}`][0]?.focus();
@@ -65,7 +65,7 @@ export default {
 
             const lastFilledIndex = Math.min(numericValue.length, this.otpDigits.length);
             const focusRef = `otp${lastFilledIndex}`;
-            
+
             if (this.$refs[focusRef] && this.$refs[focusRef][0]) {
                 this.$refs[focusRef][0].focus();
             }
