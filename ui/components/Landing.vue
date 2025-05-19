@@ -93,8 +93,6 @@ export default {
 
         background: $sky-blue-3;
 
-        position: relative;
-
         @include respond(tab-port) {
             display: flex;
         }

@@ -134,7 +134,7 @@ export default {
                 const landingTop = document.querySelector('.landing__top');
                 if (landingTop) {
                     landingTop.style.zIndex = '5';
-                    landingTop.style.position = 'relative';
+                    landingTop.style.position = 'fixed';
                 }
             } else {
                 document.body.classList.remove('no-scroll');
@@ -260,7 +260,7 @@ export default {
                     document.body.classList.remove('no-scroll');
 
                     const landingTop = document.querySelector('.landing__top');
-                    
+
                     if (landingTop) {
                         landingTop.style.zIndex = '';
                         landingTop.style.position = '';
