@@ -3,7 +3,8 @@ export default {
   data () {
     return {
       loading: false,
-      validToken: null
+      validToken: null,
+      excludedPaths: ['/aboutus']
     }
   },
   methods: {
@@ -13,8 +14,13 @@ export default {
 
         if (this.validToken) {
           return this.validToken
-        } else {
-          this.router.push('/')
+        } else if (!this.excludedPaths.includes(this.$route.path)) {
+          this.$router.push({
+            path: '/',
+            query: {
+              ...this.$route.query
+            }
+          })
         }
       } catch (error) {
         this.loading = false

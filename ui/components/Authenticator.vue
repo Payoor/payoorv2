@@ -46,11 +46,24 @@
                     <!--to do add phonenumber otp-->
 
                     <div class="auth__otp" v-if="otp_view">
+                        <p class="auth__otp--header">We just sent you an otp</p>
                         <OtpInput @update:modelValue="handleOtpChange" :otpLength="6" />
+                        <p class="auth__otp--resendbtn">
+                            <span class="auth__otp--resendotp" v-if="allowResendOtp" @click="resendOtp">Resend
+                                OTP</span>
+                            <span class="auth__otp--resendotp disabled-btn" v-if="!allowResendOtp">Resend OTP</span>
+                            <span class="auth__otp--counter">{{ allowResendOtpCounter }}</span>
+                        </p>
                     </div>
 
                     <div class="auth__button" v-if="!otp_view">
-                        <button class="button-primary slide-fade-in-up" @click="submit">{{ loading ? 'Please wait...' :
+                        <button class="button-primary slide-fade-in-up" v-if="allowSubmit" @click="submit">{{ loading ?
+                            'Please wait...' :
+                            'Start shopping' }}</button>
+
+                        <button class="button-primary slide-fade-in-up disabled-btn" v-if="!allowSubmit">{{ loading ?
+                            `Please
+                            wait...` :
                             'Start shopping' }}</button>
                     </div>
 
@@ -82,11 +95,53 @@ export default {
             auth_method: 'email',
             loading: false,
             user_otp: "",
-            otp_view: false
+            otp_view: false,
+            allowResendOtpCounter: 50,
+            //allowResendOtp: false
         }
     },
     emits: ["update:authValue"],
+    computed: {
+        allowSubmit() {
+            if (this.loading) {
+                return false;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!this.value || !emailRegex.test(this.value)) {
+                return false;
+            }
+
+            return true;
+        },
+        allowResendOtp() {
+            if (this.allowResendOtpCounter >= 1 || !this.otp_view) {
+                return false;
+            }
+
+            if (this.otp_view && this.allowResendOtpCounter === 0) {
+                return true;
+            }
+        }
+
+    },
     methods: {
+        startResendOtpCounter() {
+            const countdown = setInterval(() => {
+                if (this.allowResendOtpCounter > 0) {
+                    this.allowResendOtpCounter--;
+                } else {
+                    clearInterval(countdown);
+                }
+            }, 2000);
+        },
+        resendOtp() {
+            this.allowResendOtpCounter = 50;
+            this.startResendOtpCounter();
+
+            this.getOtp();
+        },
         handleOtpChange(value) {
             this.user_otp = value;
 
@@ -140,6 +195,8 @@ export default {
                     // console.log('Success:', data);
                     this.otp_view = true
                     this.loading = false;
+
+                    this.startResendOtpCounter();
                 }
             } catch (error) {
                 this.loading = false;
@@ -352,7 +409,7 @@ export default {
 
             padding: 1.8rem;
 
-            border-radius: 2rem;
+            border-radius: 12px;
         }
     }
 
@@ -445,6 +502,36 @@ export default {
             object-fit: cover;
             height: 100;
             width: auto;
+        }
+    }
+
+    &__otp {
+
+
+        &--header {
+            text-align: center;
+            font-size: 1.6rem;
+            margin-bottom: 2rem;
+            color: $primary-color;
+            font-weight: 600;
+        }
+
+        &--resendbtn {
+            color: $primary-color;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        &--resendotp {
+            text-decoration: underline;
+        }
+
+        &--counter {
+            color: $black;
+            font-size: 1.1rem;
         }
     }
 }

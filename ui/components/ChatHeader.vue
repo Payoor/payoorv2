@@ -91,7 +91,7 @@ export default {
 
         if (token) {
             this.getValidUser(token);
-        } else {
+        } else if (!this.excludedPaths.includes(this.$route.path)) {
             this.$router.push({
                 path: '/',
                 query: {

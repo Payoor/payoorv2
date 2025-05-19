@@ -34,6 +34,9 @@ export default {
         src: 'https://accounts.google.com/gsi/client',
         async: true,
         defer: true
+      },
+      {
+        src: '/scripts/index.js',
       }
     ]
   },

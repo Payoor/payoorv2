@@ -10,18 +10,20 @@ html {
     // This defines what 1rem is
     font-size: 62.5%; //1 rem = 10px; 10px/16px = 62.5%
 
-    @include respond(phone) { // width < 1200?
-        //font-size: 40.25%; //1 rem = 9px, 9/16 = 50%
-    }
-
-    @include respond(tab-land) { // width < 1200?
+    @include respond(tab-land) {
+        // width < 1200?
         font-size: 56.25%; //1 rem = 9px, 9/16 = 50%
     }
 
-    @include respond(tab-port) { // width < 900?
-        font-size: 50%; //1 rem = 8px, 8/16 = 50%
+    @include respond(tab-port) {
+        // width < 900?
+        font-size: 55%; //1 rem = 8px, 8/16 = 50%
     }
-    
+
+    @include respond(phone) {
+        font-size: 50%; //1 rem = 9px, 9/16 = 50%
+    }
+
     @include respond(big-desktop) {
         font-size: 65%; //1rem = 12, 12/16
     }
@@ -36,11 +38,12 @@ body {
     //background: $white;
     //padding: 3rem;
 
+    display: none;
+
     @include respond(tab-port) {
         padding: 0;
     }
 }
-
 
 ::selection {
     background-color: $primary-color;
@@ -49,18 +52,18 @@ body {
 
 /* Webkit browsers */
 ::-webkit-scrollbar {
-    width: 8px;  // thinner width (adjust as needed)
+    width: 8px; // thinner width (adjust as needed)
     height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;  // fully transparent track
+    background: transparent; // fully transparent track
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: $primary-color;
     border-radius: 10px;
-    border: none;  // remove border so only thumb shows, no padded edge
+    border: none; // remove border so only thumb shows, no padded edge
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -69,6 +72,6 @@ body {
 
 /* Firefox */
 * {
-    scrollbar-width: thin;  // 'thin' reduces track width
-    scrollbar-color: $primary-color transparent;  // transparent track
+    scrollbar-width: thin; // 'thin' reduces track width
+    scrollbar-color: $primary-color transparent; // transparent track
 }
