@@ -264,7 +264,6 @@ shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__P
     return _ref6.apply(this, arguments);
   };
 }());
-console.log(process.env.PAYSTACK_SECRET_KEY);
 shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
     var checkout_id, _yield$Checkout$aggre, _yield$Checkout$aggre2, checkoutWithUser, email, user_id, total, params, options, paystackRes;
@@ -392,37 +391,19 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
     return _ref7.apply(this, arguments);
   };
 }());
-shopperRoute.post('/shopper/paystack/payment-response', _authMiddleware["default"], /*#__PURE__*/function () {
+shopperRoute.get('/shopper/user/getorders', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref8 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
-    var signature, computedHash, _req$body, event, data;
     return _regeneratorRuntime().wrap(function _callee8$(_context8) {
       while (1) switch (_context8.prev = _context8.next) {
         case 0:
-          _context8.prev = 0;
-          signature = req.headers['x-paystack-signature'];
-          computedHash = crypto.createHmac('sha512', process.env.PAYSTACK_SECRET_KEY).update(JSON.stringify(req.body)).digest('hex');
-          if (!(computedHash !== signature)) {
-            _context8.next = 5;
-            break;
+          try {} catch (error) {
+            console.log(error);
           }
-          return _context8.abrupt("return", res.status(401).json({
-            message: 'Unauthorized'
-          }));
-        case 5:
-          _req$body = req.body, event = _req$body.event, data = _req$body.data;
-          if (event === 'charge.success') {}
-          return _context8.abrupt("return", res.sendStatus(200));
-        case 10:
-          _context8.prev = 10;
-          _context8.t0 = _context8["catch"](0);
-          return _context8.abrupt("return", res.status(500).json({
-            error: 'Server error'
-          }));
-        case 13:
+        case 1:
         case "end":
           return _context8.stop();
       }
-    }, _callee8, null, [[0, 10]]);
+    }, _callee8);
   }));
   return function (_x13, _x14) {
     return _ref8.apply(this, arguments);

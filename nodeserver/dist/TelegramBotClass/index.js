@@ -4,7 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.TelegramBotClass = void 0;
+var _redisconf = require("../redisconf");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return r; }; var t, r = {}, e = Object.prototype, n = e.hasOwnProperty, o = "function" == typeof Symbol ? Symbol : {}, i = o.iterator || "@@iterator", a = o.asyncIterator || "@@asyncIterator", u = o.toStringTag || "@@toStringTag"; function c(t, r, e, n) { return Object.defineProperty(t, r, { value: e, enumerable: !n, configurable: !n, writable: !n }); } try { c({}, ""); } catch (t) { c = function c(t, r, e) { return t[r] = e; }; } function h(r, e, n, o) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype); return c(a, "_invoke", function (r, e, n) { var o = 1; return function (i, a) { if (3 === o) throw Error("Generator is already running"); if (4 === o) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var u = n.delegate; if (u) { var c = d(u, n); if (c) { if (c === f) continue; return c; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (1 === o) throw o = 4, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = 3; var h = s(r, e, n); if ("normal" === h.type) { if (o = n.done ? 4 : 2, h.arg === f) continue; return { value: h.arg, done: n.done }; } "throw" === h.type && (o = 4, n.method = "throw", n.arg = h.arg); } }; }(r, n, new Context(o || [])), !0), a; } function s(t, r, e) { try { return { type: "normal", arg: t.call(r, e) }; } catch (t) { return { type: "throw", arg: t }; } } r.wrap = h; var f = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var l = {}; c(l, i, function () { return this; }); var p = Object.getPrototypeOf, y = p && p(p(x([]))); y && y !== e && n.call(y, i) && (l = y); var v = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(l); function g(t) { ["next", "throw", "return"].forEach(function (r) { c(t, r, function (t) { return this._invoke(r, t); }); }); } function AsyncIterator(t, r) { function e(o, i, a, u) { var c = s(t[o], t, i); if ("throw" !== c.type) { var h = c.arg, f = h.value; return f && "object" == _typeof(f) && n.call(f, "__await") ? r.resolve(f.__await).then(function (t) { e("next", t, a, u); }, function (t) { e("throw", t, a, u); }) : r.resolve(f).then(function (t) { h.value = t, a(h); }, function (t) { return e("throw", t, a, u); }); } u(c.arg); } var o; c(this, "_invoke", function (t, n) { function i() { return new r(function (r, o) { e(t, n, r, o); }); } return o = o ? o.then(i, i) : i(); }, !0); } function d(r, e) { var n = e.method, o = r.i[n]; if (o === t) return e.delegate = null, "throw" === n && r.i["return"] && (e.method = "return", e.arg = t, d(r, e), "throw" === e.method) || "return" !== n && (e.method = "throw", e.arg = new TypeError("The iterator does not provide a '" + n + "' method")), f; var i = s(o, r.i, e.arg); if ("throw" === i.type) return e.method = "throw", e.arg = i.arg, e.delegate = null, f; var a = i.arg; return a ? a.done ? (e[r.r] = a.value, e.next = r.n, "return" !== e.method && (e.method = "next", e.arg = t), e.delegate = null, f) : a : (e.method = "throw", e.arg = new TypeError("iterator result is not an object"), e.delegate = null, f); } function w(t) { this.tryEntries.push(t); } function m(r) { var e = r[4] || {}; e.type = "normal", e.arg = t, r[4] = e; } function Context(t) { this.tryEntries = [[-1]], t.forEach(w, this), this.reset(!0); } function x(r) { if (null != r) { var e = r[i]; if (e) return e.call(r); if ("function" == typeof r.next) return r; if (!isNaN(r.length)) { var o = -1, a = function e() { for (; ++o < r.length;) if (n.call(r, o)) return e.value = r[o], e.done = !1, e; return e.value = t, e.done = !0, e; }; return a.next = a; } } throw new TypeError(_typeof(r) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, c(v, "constructor", GeneratorFunctionPrototype), c(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = c(GeneratorFunctionPrototype, u, "GeneratorFunction"), r.isGeneratorFunction = function (t) { var r = "function" == typeof t && t.constructor; return !!r && (r === GeneratorFunction || "GeneratorFunction" === (r.displayName || r.name)); }, r.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, c(t, u, "GeneratorFunction")), t.prototype = Object.create(v), t; }, r.awrap = function (t) { return { __await: t }; }, g(AsyncIterator.prototype), c(AsyncIterator.prototype, a, function () { return this; }), r.AsyncIterator = AsyncIterator, r.async = function (t, e, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(h(t, e, n, o), i); return r.isGeneratorFunction(e) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, g(v), c(v, u, "Generator"), c(v, i, function () { return this; }), c(v, "toString", function () { return "[object Generator]"; }), r.keys = function (t) { var r = Object(t), e = []; for (var n in r) e.unshift(n); return function t() { for (; e.length;) if ((n = e.pop()) in r) return t.value = n, t.done = !1, t; return t.done = !0, t; }; }, r.values = x, Context.prototype = { constructor: Context, reset: function reset(r) { if (this.prev = this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(m), !r) for (var e in this) "t" === e.charAt(0) && n.call(this, e) && !isNaN(+e.slice(1)) && (this[e] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0][4]; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(r) { if (this.done) throw r; var e = this; function n(t) { a.type = "throw", a.arg = r, e.next = t; } for (var o = e.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i[4], u = this.prev, c = i[1], h = i[2]; if (-1 === i[0]) return n("end"), !1; if (!c && !h) throw Error("try statement without catch or finally"); if (null != i[0] && i[0] <= u) { if (u < c) return this.method = "next", this.arg = t, n(c), !0; if (u < h) return n(h), !1; } } }, abrupt: function abrupt(t, r) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var n = this.tryEntries[e]; if (n[0] > -1 && n[0] <= this.prev && this.prev < n[2]) { var o = n; break; } } o && ("break" === t || "continue" === t) && o[0] <= r && r <= o[2] && (o = null); var i = o ? o[4] : {}; return i.type = t, i.arg = r, o ? (this.method = "next", this.next = o[2], f) : this.complete(i); }, complete: function complete(t, r) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && r && (this.next = r), f; }, finish: function finish(t) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var e = this.tryEntries[r]; if (e[2] === t) return this.complete(e[4], e[3]), m(e), f; } }, "catch": function _catch(t) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var e = this.tryEntries[r]; if (e[0] === t) { var n = e[4]; if ("throw" === n.type) { var o = n.arg; m(e); } return o; } } throw Error("illegal catch attempt"); }, delegateYield: function delegateYield(r, e, n) { return this.delegate = { i: x(r), r: e, n: n }, "next" === this.method && (this.arg = t), f; } }, r; }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
@@ -21,6 +25,9 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
     this.bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {
       polling: true
     });
+    this.admin_code = process.env.ADMIN_CODE;
+    this.super_admin_id = process.env.SUPER_ADMIN_ID;
+    this.admin_list_key = 'telegram:admin:chat_ids';
   }
   return _createClass(TelegramBotClass, [{
     key: "startBot",
@@ -29,79 +36,170 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
       this.bot.on('message', /*#__PURE__*/function () {
         var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(msg) {
           var _parts$;
-          var telegramid, messageText, parts, directive, directiveNumber, fee, value;
+          var telegramid, messageText, parts, directive, isSuperAdmin, adminIds, adminList, _parts$2, _isSuperAdmin, targetId, removed, directiveNumber, fee, value;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
-                telegramid = msg.chat.id;
+                telegramid = msg.chat.id.toString();
                 messageText = msg.text.toLowerCase().trim();
                 parts = messageText.split(' ');
                 directive = (_parts$ = parts[1]) === null || _parts$ === void 0 ? void 0 : _parts$.toLowerCase().trim();
                 _context.prev = 4;
-                if (!messageText.startsWith('/setdeliveryfee')) {
-                  _context.next = 9;
+                if (!(messageText === _this.admin_code.toLowerCase().trim())) {
+                  _context.next = 11;
                   break;
                 }
                 _context.next = 8;
-                return _this.redisClient.hSet('admindirective', 'deliveryfee', directive);
+                return _this.redisClient.sAdd(_this.admin_list_key, telegramid);
               case 8:
-                _this.callBot("delivery fee set to ".concat(directive));
-              case 9:
+                _context.next = 10;
+                return _this.bot.sendMessage(telegramid, '✅ Admin access granted.');
+              case 10:
+                return _context.abrupt("return");
+              case 11:
+                if (!messageText.startsWith('/listadmins')) {
+                  _context.next = 29;
+                  break;
+                }
+                isSuperAdmin = telegramid === _this.super_admin_id;
+                if (isSuperAdmin) {
+                  _context.next = 17;
+                  break;
+                }
+                _context.next = 16;
+                return _this.bot.sendMessage(telegramid, '🚫 You are not authorized to view the admin list.');
+              case 16:
+                return _context.abrupt("return");
+              case 17:
+                _context.next = 19;
+                return _this.redisClient.sMembers(_this.admin_list_key);
+              case 19:
+                adminIds = _context.sent;
+                if (!(adminIds.length === 0)) {
+                  _context.next = 25;
+                  break;
+                }
+                _context.next = 23;
+                return _this.bot.sendMessage(telegramid, '👤 No admins have been registered yet.');
+              case 23:
+                _context.next = 28;
+                break;
+              case 25:
+                adminList = adminIds.map(function (id, idx) {
+                  return "".concat(idx + 1, ". ").concat(id);
+                }).join('\n');
+                _context.next = 28;
+                return _this.bot.sendMessage(telegramid, "\uD83D\uDC65 Registered Admins:\n".concat(adminList));
+              case 28:
+                return _context.abrupt("return");
+              case 29:
+                if (!messageText.startsWith('/removeadmin')) {
+                  _context.next = 51;
+                  break;
+                }
+                _isSuperAdmin = telegramid === _this.super_admin_id;
+                if (_isSuperAdmin) {
+                  _context.next = 35;
+                  break;
+                }
+                _context.next = 34;
+                return _this.bot.sendMessage(telegramid, '🚫 Only the super admin can remove admins.');
+              case 34:
+                return _context.abrupt("return");
+              case 35:
+                targetId = (_parts$2 = parts[1]) === null || _parts$2 === void 0 ? void 0 : _parts$2.trim();
+                if (targetId) {
+                  _context.next = 40;
+                  break;
+                }
+                _context.next = 39;
+                return _this.bot.sendMessage(telegramid, '⚠️ Usage: /removeadmin <chat_id>');
+              case 39:
+                return _context.abrupt("return");
+              case 40:
+                _context.next = 42;
+                return _this.redisClient.sRem(_this.admin_list_key, targetId);
+              case 42:
+                removed = _context.sent;
+                if (!removed) {
+                  _context.next = 48;
+                  break;
+                }
+                _context.next = 46;
+                return _this.bot.sendMessage(telegramid, "\uD83D\uDDD1\uFE0F Removed admin with ID: ".concat(targetId));
+              case 46:
+                _context.next = 50;
+                break;
+              case 48:
+                _context.next = 50;
+                return _this.bot.sendMessage(telegramid, "\u274C Admin ID ".concat(targetId, " was not found."));
+              case 50:
+                return _context.abrupt("return");
+              case 51:
+                if (!messageText.startsWith('/setdeliveryfee')) {
+                  _context.next = 55;
+                  break;
+                }
+                _context.next = 54;
+                return _this.redisClient.hSet('admindirective', 'deliveryfee', directive);
+              case 54:
+                _this.callBot("\uD83D\uDE9A Delivery fee set to ".concat(directive));
+              case 55:
                 if (!messageText.startsWith('/setservicecharge')) {
-                  _context.next = 18;
+                  _context.next = 64;
                   break;
                 }
                 directiveNumber = Number(directive);
                 if (!(!isNaN(directiveNumber) && directiveNumber >= 1 && directiveNumber <= 100)) {
-                  _context.next = 17;
+                  _context.next = 63;
                   break;
                 }
-                _context.next = 14;
+                _context.next = 60;
                 return _this.redisClient.hSet('admindirective', 'servicecharge', directiveNumber);
-              case 14:
-                _this.callBot("Service charge set to ".concat(directiveNumber, "%"));
-                _context.next = 18;
+              case 60:
+                _this.callBot("\uD83D\uDCBC Service charge set to ".concat(directiveNumber, "%"));
+                _context.next = 64;
                 break;
-              case 17:
-                _this.callBot('Invalid directive. Please enter a number between 1 and 100.');
-              case 18:
+              case 63:
+                _this.callBot('❗ Invalid directive. Enter a number between 1 and 100.');
+              case 64:
                 if (!messageText.startsWith('/getdeliveryfee')) {
-                  _context.next = 23;
+                  _context.next = 69;
                   break;
                 }
-                _context.next = 21;
+                _context.next = 67;
                 return _this.redisClient.hGet('admindirective', 'deliveryfee');
-              case 21:
+              case 67:
                 fee = _context.sent;
-                _this.callBot("current deliver fee ".concat(fee));
-              case 23:
+                _this.callBot("\uD83D\uDE9A Current delivery fee: ".concat(fee));
+              case 69:
                 if (!messageText.startsWith('/getservicecharge')) {
-                  _context.next = 28;
+                  _context.next = 74;
                   break;
                 }
-                _context.next = 26;
+                _context.next = 72;
                 return _this.redisClient.hGet('admindirective', 'servicecharge');
-              case 26:
+              case 72:
                 value = _context.sent;
                 if (value !== null) {
-                  _this.callBot("Current service charge is ".concat(value));
+                  _this.callBot("\uD83D\uDCBC Current service charge is ".concat(value, "%"));
                 } else {
-                  _this.callBot('No service charge has been set.');
+                  _this.callBot('❗ No service charge has been set.');
                 }
-              case 28:
-                _context.next = 35;
+              case 74:
+                _context.next = 81;
                 break;
-              case 30:
-                _context.prev = 30;
+              case 76:
+                _context.prev = 76;
                 _context.t0 = _context["catch"](4);
                 console.error('Telegram bot error:', _context.t0);
-                _context.next = 35;
+                _context.next = 81;
                 return _this.bot.sendMessage(telegramid, '❗ An error occurred. Please try again later.');
-              case 35:
+              case 81:
               case "end":
                 return _context.stop();
             }
-          }, _callee, null, [[4, 30]]);
+          }, _callee, null, [[4, 76]]);
         }));
         return function (_x) {
           return _ref.apply(this, arguments);
@@ -112,30 +210,72 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
     key: "callBot",
     value: function () {
       var _callBot = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(message) {
-        var chatId;
+        var adminIds, _iterator, _step, chatId;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              chatId = '7941032619';
-              _context2.prev = 1;
-              if (!message.length) {
-                _context2.next = 5;
+              if (message !== null && message !== void 0 && message.length) {
+                _context2.next = 2;
                 break;
               }
+              return _context2.abrupt("return");
+            case 2:
+              _context2.prev = 2;
               _context2.next = 5;
-              return this.bot.sendMessage(chatId, message);
+              return this.redisClient.sMembers(this.admin_list_key);
             case 5:
-              _context2.next = 10;
+              adminIds = _context2.sent;
+              if (adminIds.length) {
+                _context2.next = 8;
+                break;
+              }
+              return _context2.abrupt("return");
+            case 8:
+              _iterator = _createForOfIteratorHelper(adminIds);
+              _context2.prev = 9;
+              _iterator.s();
+            case 11:
+              if ((_step = _iterator.n()).done) {
+                _context2.next = 23;
+                break;
+              }
+              chatId = _step.value;
+              _context2.prev = 13;
+              _context2.next = 16;
+              return this.bot.sendMessage(chatId, message);
+            case 16:
+              _context2.next = 21;
               break;
-            case 7:
-              _context2.prev = 7;
-              _context2.t0 = _context2["catch"](1);
-              console.error('Failed to send message via bot:', _context2.t0);
-            case 10:
+            case 18:
+              _context2.prev = 18;
+              _context2.t0 = _context2["catch"](13);
+              console.error("\u274C Failed to send message to ".concat(chatId, ":"), _context2.t0);
+            case 21:
+              _context2.next = 11;
+              break;
+            case 23:
+              _context2.next = 28;
+              break;
+            case 25:
+              _context2.prev = 25;
+              _context2.t1 = _context2["catch"](9);
+              _iterator.e(_context2.t1);
+            case 28:
+              _context2.prev = 28;
+              _iterator.f();
+              return _context2.finish(28);
+            case 31:
+              _context2.next = 36;
+              break;
+            case 33:
+              _context2.prev = 33;
+              _context2.t2 = _context2["catch"](2);
+              console.error('❌ Failed to retrieve admin chat IDs:', _context2.t2);
+            case 36:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, this, [[1, 7]]);
+        }, _callee2, this, [[2, 33], [9, 25, 28, 31], [13, 18]]);
       }));
       function callBot(_x2) {
         return _callBot.apply(this, arguments);
@@ -144,4 +284,6 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
     }()
   }]);
 }();
-var _default = exports["default"] = TelegramBotClass;
+var telegramBot = new TelegramBotClass(_redisconf.redisClient);
+telegramBot.startBot();
+var _default = exports["default"] = telegramBot;

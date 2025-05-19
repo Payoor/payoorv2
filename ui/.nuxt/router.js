@@ -9,6 +9,7 @@ const _2b63bfe1 = () => interopDefault(import('../pages/cart.vue' /* webpackChun
 const _730fd287 = () => interopDefault(import('../pages/checkout.vue' /* webpackChunkName: "pages/checkout" */))
 const _4d3d5234 = () => interopDefault(import('../pages/orders.vue' /* webpackChunkName: "pages/orders" */))
 const _62f4b2d5 = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
+const _150a62c0 = () => interopDefault(import('../pages/admin/order/index.vue' /* webpackChunkName: "pages/admin/order/index" */))
 const _06e04561 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
@@ -42,6 +43,10 @@ export const routerOptions = {
     path: "/payment",
     component: _62f4b2d5,
     name: "payment"
+  }, {
+    path: "/admin/order",
+    component: _150a62c0,
+    name: "admin-order"
   }, {
     path: "/",
     component: _06e04561,

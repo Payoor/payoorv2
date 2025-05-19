@@ -1,7 +1,8 @@
 <template>
     <div class="chat-categories__categories">
         <div class="chat-categories__category" v-for="(category, index) in categories" :key="index"
-            :class="category.class" @click="searchCategory(index)">
+            :class="[category.class, { currentcat: currentcat === index }]" @click="searchCategory(index)"
+            :style="{ currentcat: currentcat === index }">
             <div class="chat-categories__category--left">
                 <figure class="chat-categories__category--png">
                     <img :src="category.image" alt="Category image" />
@@ -30,6 +31,7 @@ export default {
     mixins: [jwt_mixin, product_mixin],
     data() {
         return {
+            currentcat: null,
             categories: [
                 {
                     image: '/imgs/farmfresh.png',
@@ -67,6 +69,8 @@ export default {
         searchCategory(index) {
             const category = this.categories[index];
 
+            this.currentcat = index;
+
             this.setMessageAndPost(category.description)
         },
         async setMessageAndPost(value) {
@@ -91,7 +95,7 @@ export default {
 
 <style lang="scss" scoped>
 .chat-categories {
-    
+
 
     &__categories {
         background: $white;
@@ -116,6 +120,10 @@ export default {
 
         display: flex;
         align-items: center;
+
+        &.currentcat {
+            border: 1px solid $primary-color;
+        }
 
         &--header {
             font-size: 1rem;

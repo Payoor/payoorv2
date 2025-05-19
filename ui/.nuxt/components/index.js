@@ -13,6 +13,7 @@ export { default as LandingCategories } from '../../components/LandingCategories
 export { default as LandingCopy } from '../../components/LandingCopy.vue'
 export { default as LandingFaq } from '../../components/LandingFaq.vue'
 export { default as LandingFooter } from '../../components/LandingFooter.vue'
+export { default as OrderDisplay } from '../../components/OrderDisplay.vue'
 export { default as OtpInput } from '../../components/OtpInput.vue'
 
 // nuxt/nuxt.js#8607

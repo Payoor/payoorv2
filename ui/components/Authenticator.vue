@@ -3,18 +3,22 @@
 
         <div class="auth__content">
             <div class="auth__header">
-                <figure class="auth__logo">
+                <!--<figure class="auth__logo">
                     <img src="/imgs/logo.png" />
-                </figure>
+                </figure>-->
             </div>
 
             <div class="auth__htags">
                 <h1 class="auth__h1">
-                    <div>AI Powered Grocery</div>Shopping Assistant
+                    <div>Your all in one</div>grocery assistant
                 </h1>
 
                 <h2 class="auth__h2">Make a list and leave the rest to us</h2>
             </div>
+
+            <figure class="auth__cartongif">
+                <img src="/imgs/fca2af0aa016e2cc06a10067ea4eb64446dbedde.gif" />
+            </figure>
 
             <!--<button class="auth__form--google">
                 <span>
@@ -39,7 +43,7 @@
 
                     <div class="auth__button" v-if="!otp_view">
                         <button class="button-primary slide-fade-in-up" @click="submit">{{ loading ? 'Please wait...' :
-                            'Continue' }}</button>
+                            'Start shopping' }}</button>
                     </div>
 
                 </div>
@@ -49,7 +53,13 @@
                 <span>Or</span>
             </div>
 
-            <GoogleBtn @update:authValue="handleAuthChange" />
+            <div class="auth__googlebtn">
+                <GoogleBtn @update:authValue="handleAuthChange" />
+            </div>
+
+            <figure class="auth__cloud">
+                <img src="/imgs/4eb5d8593236b95b3a366be49d086af443b87fa7.png" />
+            </figure>
         </div>
 
     </div>
@@ -121,7 +131,7 @@ export default {
 
                 if (status === 200) {
                     const data = await response.json();
-                   // console.log('Success:', data);
+                    // console.log('Success:', data);
                     this.otp_view = true
                     this.loading = false;
                 }
@@ -177,7 +187,7 @@ export default {
 <style lang="scss" scoped>
 .auth {
     height: 100vh;
-    background: rgba($primary-color, 1);
+    background: rgba($sky-blue-3, 1);
     padding: 1rem;
     display: flex;
     //align-items: center;
@@ -197,6 +207,9 @@ export default {
 
         padding: 0 10rem;
 
+        position: relative;
+        z-index: 8;
+
         @include respond(tab-port) {
             padding: 0;
         }
@@ -211,6 +224,8 @@ export default {
         min-height: 3rem;
         border: 1px solid $primary-color;
         border-radius: 1rem;
+
+        background: $white;
 
         &--google {
             cursor: pointer;
@@ -259,6 +274,8 @@ export default {
             width: 100%;
             padding: 1rem;
             font-size: 2rem;
+
+            background: $white;
         }
     }
 
@@ -281,7 +298,7 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background: $white;
+        background: $sky-blue-3;
 
         width: 100%;
 
@@ -292,6 +309,8 @@ export default {
 
         height: 65rem;
         margin-top: 7rem;
+
+        position: relative;
     }
 
     &__or {
@@ -314,6 +333,8 @@ export default {
             font-weight: 600;
 
             padding: 1.8rem;
+
+            border-radius: 2rem;
         }
     }
 
@@ -344,6 +365,37 @@ export default {
         width: 100%;
 
         margin-top: 5rem;
+
+        transform: translateY(9rem);
+    }
+
+    &__googlebtn {
+        position: relative;
+        z-index: 4;
+    }
+
+    &__cartongif {
+        height: 32rem;
+        transform: translateY(5rem);
+
+        & img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__cloud {
+        height: 10rem;
+        position: absolute;
+        bottom: 0;
+        z-index: 3;
+
+        & img {
+            object-fit: cover;
+            height: 100;
+            width: auto;
+        }
     }
 }
 </style>

@@ -44,6 +44,9 @@
   "LandingFooter": {
     "description": "Auto imported from components/LandingFooter.vue"
   },
+  "OrderDisplay": {
+    "description": "Auto imported from components/OrderDisplay.vue"
+  },
   "OtpInput": {
     "description": "Auto imported from components/OtpInput.vue"
   }

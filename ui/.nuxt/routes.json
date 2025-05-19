@@ -35,6 +35,13 @@
     "_name": "_62f4b2d5"
   },
   {
+    "name": "admin-order",
+    "path": "/admin/order",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/admin/order/index.vue",
+    "chunkName": "pages/admin/order/index",
+    "_name": "_150a62c0"
+  },
+  {
     "name": "index",
     "path": "/",
     "component": "/var/www/dockerize-nuxt/nuxt-app/pages/index.vue",

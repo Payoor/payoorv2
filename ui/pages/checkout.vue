@@ -254,7 +254,7 @@ export default {
 
                 this.total = this.service_charge + this.delivery_fee + this.subtotal
 
-                console.log(data)
+                // console.log(data)
             }
         },
         setDeliveryDate(deliver_date) {

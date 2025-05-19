@@ -15,9 +15,9 @@
                     </figure>
                 </div>
 
-                <div class="landing__seemore">
+                <!--<div class="landing__seemore">
                     <button class="landing__seemore--btn floating-element" @click="scrollDown('landing-categories')">Learn more</button>
-                </div>
+                </div>-->
             </div>
         </div>
 

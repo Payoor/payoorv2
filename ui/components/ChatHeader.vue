@@ -10,7 +10,7 @@
                 <span class="label">{{ name }}</span>
             </div>
 
-            <figure class="chat-header__left--logo" v-if="logovisible">
+            <figure class="chat-header__left--logo" v-if="logovisible" :class="{ 'green': green }">
                 <img src="/imgs/logo.png" />
             </figure>
         </div>
@@ -20,7 +20,7 @@
                 <CartButton :showicon="true" />
             </div>
 
-            <div class="chat-header__burger" :class="{ 'unauth': !jwt }" @click.stop="toggleSideMenu">
+            <div class="chat-header__burger" :class="{ 'unauth': !jwt, 'green': green }" @click.stop="toggleSideMenu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -78,7 +78,7 @@ import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {
     mixins: [jwt_mixin],
-    props: ['logovisible', 'name', 'backRoute'],
+    props: ['logovisible', 'name', 'backRoute', 'green'],
     emits: ["update:authValue"],
     data() {
         return {
@@ -272,6 +272,10 @@ export default {
                 width: auto;
                 object-fit: cover;
             }
+
+            &.green {
+                height: 4.5rem;
+            }
         }
     }
 
@@ -300,6 +304,13 @@ export default {
 
             & span {
                 background: $white;
+            }
+        }
+
+        &.green {
+
+            & span {
+                background: rgba($primary-color, 1);
             }
         }
     }

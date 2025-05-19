@@ -10,9 +10,8 @@ import './db'
 import { redisClient } from './redisconf'
 
 import shopperRoute from './routes/shopper'
-import authRoute from './routes/auth'
-
-import TelegramBotClass from './TelegramBotClass'
+import authRoute from './routes/auth';
+import adminRoute from './routes/admin';
 
 const port = process.env.PORT
 
@@ -24,8 +23,9 @@ app.get('/', async (req, res) => {
   })
 })
 
-app.use(shopperRoute)
-app.use(authRoute)
+app.use(shopperRoute);
+app.use(authRoute);
+app.use(adminRoute);
 
 async function startServer () {
   try {
@@ -36,8 +36,7 @@ async function startServer () {
       console.log(`Server is running on ${port}`)
     })
 
-    const telegramBot = new TelegramBotClass(redisClient)
-    telegramBot.startBot()
+    
   } catch (error) {
     console.error('Failed to connect to Redis:', error)
     process.exit(1) // exit process on failure

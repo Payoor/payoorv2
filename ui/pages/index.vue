@@ -2,7 +2,7 @@
     <div>
         <div v-if="!jwt">
             <div class="home__header" :class="{ 'unauth': !jwt }">
-                <ChatHeader :logovisible="false" :jwt="jwt" @update:authValue="handleAuthChange" />
+                <ChatHeader :logovisible="true" :jwt="jwt" :green="true" @update:authValue="handleAuthChange" />
             </div>
 
             <div>

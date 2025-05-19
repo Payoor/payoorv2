@@ -1,9 +1,9 @@
-import mongoose from 'mongoose'
-import express from 'express'
-import https from 'https'
+import mongoose from 'mongoose';
+import express from 'express';
+import https from 'https';
 
-import Checkout from '../models/Checkout'
-import User from '../models/User'
+import Checkout from '../models/Checkout';
+import User from '../models/User';
 
 import authMiddleware from '../middleware/authMiddleware'
 
@@ -162,8 +162,6 @@ shopperRoute.post(
   }
 )
 
-console.log(process.env.PAYSTACK_SECRET_KEY)
-
 shopperRoute.get(
   '/shopper/paystack/generate-paystack-link',
   authMiddleware,
@@ -260,36 +258,20 @@ shopperRoute.get(
       return res.status(500).json({ error: 'Server error' })
     }
   }
-)
+);
 
-shopperRoute.post(
-  '/shopper/paystack/payment-response',
+shopperRoute.get(
+  '/shopper/user/getorders',
   authMiddleware,
   async (req, res) => {
     try {
-      const signature = req.headers['x-paystack-signature']
 
-      const computedHash = crypto
-        .createHmac('sha512', process.env.PAYSTACK_SECRET_KEY)
-        .update(JSON.stringify(req.body))
-        .digest('hex')
-
-      if (computedHash !== signature) {
-        return res.status(401).json({ message: 'Unauthorized' })
-      }
-
-      const { event, data } = req.body
-
-      if (event === 'charge.success') {
-      }
-
-      return res.sendStatus(200)
-    } catch (error) {
-      return res.status(500).json({ error: 'Server error' })
+    } catch (error) { 
+      console.log(error)
     }
   }
 )
 
-export default shopperRoute
+export default shopperRoute;
 
 //https://chatgpt.com/c/6819039c-9ad4-8005-8400-d2567db4dc3c
