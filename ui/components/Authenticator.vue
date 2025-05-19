@@ -10,7 +10,15 @@
 
             <div class="auth__htags">
                 <h1 class="auth__h1">
-                    <div>Your all in one</div>grocery assistant
+                    <div>Your all in one</div>
+                    <div class="auth__h1--bottom">
+                        <p class="auth__h1--bottomp1">
+                            <span>grocery</span>
+                            <span class="line grow-bar">
+                                <img src="imgs/9b0498221204fb302eeee0e4809573e18a95723b.png" />
+                            </span>
+                        </p class="auth__h1--bottomp2"> assistant
+                    </div>
                 </h1>
 
                 <h2 class="auth__h2">Make a list and leave the rest to us</h2>
@@ -50,14 +58,14 @@
             </div>
 
             <div class="auth__or">
-                <span>Or</span>
+                <span></span>
             </div>
 
             <div class="auth__googlebtn">
                 <GoogleBtn @update:authValue="handleAuthChange" />
             </div>
 
-            
+
         </div>
 
     </div>
@@ -183,6 +191,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@keyframes growWidth {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 13rem;
+    }
+}
+
 .auth {
     height: 100vh;
     background: rgba($sky-blue-3, 1);
@@ -347,6 +365,34 @@ export default {
         justify-content: center;
         line-height: 5rem;
         margin-bottom: 2rem;
+        position: relative;
+
+        &--bottom {
+            display: flex;
+        }
+
+        &--bottomp1 {
+
+            & span {
+                display: inline-block;
+                margin-right: 1rem;
+
+                &.line {
+                    position: absolute;
+                    left: 2rem;
+                    bottom: -1.6rem;
+                    width: 13rem;
+                    margin: 0;
+
+                    & img {
+                        height: 100%;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        &--bottomp2 {}
     }
 
     &__h2 {
@@ -401,5 +447,10 @@ export default {
             width: auto;
         }
     }
+}
+
+.grow-bar {
+    width: 0;
+    animation: growWidth 1s ease-out forwards;
 }
 </style>
