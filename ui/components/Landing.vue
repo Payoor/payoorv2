@@ -15,9 +15,9 @@
                     </figure>
                 </div>
 
-                <figure class="landing__cloud">
+                <!--<figure class="landing__cloud">
                     <img src="/imgs/4eb5d8593236b95b3a366be49d086af443b87fa7.png" />
-                </figure>
+                </figure>-->
 
                 <!--<div class="landing__seemore">
                     <button class="landing__seemore--btn floating-element" @click="scrollDown('landing-categories')">Learn more</button>
