@@ -53,7 +53,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                 return _this.redisClient.sAdd(_this.admin_list_key, telegramid);
               case 8:
                 _context.next = 10;
-                return _this.bot.sendMessage(telegramid, '✅ Admin access granted.');
+                return _this.bot.sendMessage(telegramid, "\u2705 Admin access granted.\n        \n        \uD83D\uDCCB *Available Commands*:\n        /setdeliveryfee <amount> \u2013 Set delivery fee (e.g. 1500)\n        /setservicecharge <percent> \u2013 Set service charge (1-100)\n        /getdeliveryfee \u2013 View current delivery fee\n        /getservicecharge \u2013 View current service charge\n        \n        \uD83D\uDD10 *Super Admin Only*:\n        /listadmins \u2013 List all registered admins\n        /removeadmin <chat_id> \u2013 Remove an admin by ID\n        \n        *Note:* Only valid numbers are accepted for amounts and percentages.\n        \n        Welcome aboard! \uD83D\uDE80");
               case 10:
                 return _context.abrupt("return");
               case 11:

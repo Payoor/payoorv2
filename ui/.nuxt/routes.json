@@ -47,5 +47,12 @@
     "component": "/var/www/dockerize-nuxt/nuxt-app/pages/index.vue",
     "chunkName": "pages/index",
     "_name": "_06e04561"
+  },
+  {
+    "name": "userorder-orderid",
+    "path": "/userorder/:orderid?",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/userorder/_orderid.vue",
+    "chunkName": "pages/userorder/_orderid",
+    "_name": "_150a3bd7"
   }
 ]

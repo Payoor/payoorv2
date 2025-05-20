@@ -10,11 +10,18 @@ var _express = _interopRequireDefault(require("express"));
 var _https = _interopRequireDefault(require("https"));
 var _Checkout = _interopRequireDefault(require("../models/Checkout"));
 var _User = _interopRequireDefault(require("../models/User"));
+var _Order = _interopRequireDefault(require("../models/Order"));
 var _authMiddleware = _interopRequireDefault(require("../middleware/authMiddleware"));
 var _redisconf = require("../redisconf");
 var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _ElasticSearchClass = _interopRequireDefault(require("../controllers/ElasticSearchClass"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -393,20 +400,223 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
 }());
 shopperRoute.get('/shopper/user/getorders', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref8 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
-    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
-      while (1) switch (_context8.prev = _context8.next) {
+    var userId, userOrders, variantsCollection, productCollection, enrichedOrders, _iterator, _step, _loop;
+    return _regeneratorRuntime().wrap(function _callee8$(_context9) {
+      while (1) switch (_context9.prev = _context9.next) {
         case 0:
-          try {} catch (error) {
-            console.log(error);
+          _context9.prev = 0;
+          userId = req.userId;
+          _context9.next = 4;
+          return _Order["default"].find({
+            user_id: userId
+          }).populate('checkout_id');
+        case 4:
+          userOrders = _context9.sent;
+          variantsCollection = _payoordb["default"].db.collection('productvariants');
+          productCollection = _payoordb["default"].db.collection('newproducts');
+          enrichedOrders = [];
+          _iterator = _createForOfIteratorHelper(userOrders);
+          _context9.prev = 9;
+          _loop = /*#__PURE__*/_regeneratorRuntime().mark(function _loop() {
+            var _order$checkout_id$ca, _order$checkout_id$ca2;
+            var order, cartItems, variantIds, variants, productIds, products, productMap, _iterator2, _step2, product, enrichedCart;
+            return _regeneratorRuntime().wrap(function _loop$(_context8) {
+              while (1) switch (_context8.prev = _context8.next) {
+                case 0:
+                  order = _step.value;
+                  cartItems = order.checkout_id.cart_items instanceof Map ? Object.fromEntries(order.checkout_id.cart_items) : ((_order$checkout_id$ca = (_order$checkout_id$ca2 = order.checkout_id.cart_items).toObject) === null || _order$checkout_id$ca === void 0 ? void 0 : _order$checkout_id$ca.call(_order$checkout_id$ca2)) || order.checkout_id.cart_items;
+                  variantIds = Object.keys(cartItems || {}).map(function (id) {
+                    return new ObjectId(id);
+                  });
+                  _context8.next = 5;
+                  return variantsCollection.find({
+                    _id: {
+                      $in: variantIds
+                    }
+                  }).toArray();
+                case 5:
+                  variants = _context8.sent;
+                  productIds = variants.map(function (v) {
+                    return v.productId;
+                  });
+                  _context8.next = 9;
+                  return productCollection.find({
+                    _id: {
+                      $in: productIds
+                    }
+                  }).toArray();
+                case 9:
+                  products = _context8.sent;
+                  productMap = {};
+                  _iterator2 = _createForOfIteratorHelper(products);
+                  try {
+                    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                      product = _step2.value;
+                      productMap[product._id.toString()] = product;
+                    }
+                  } catch (err) {
+                    _iterator2.e(err);
+                  } finally {
+                    _iterator2.f();
+                  }
+                  enrichedCart = variants.map(function (variant) {
+                    return _objectSpread(_objectSpread({}, variant), {}, {
+                      product: productMap[variant.productId.toString()],
+                      quantity: cartItems[variant._id.toString()]
+                    });
+                  });
+                  enrichedOrders.push(_objectSpread(_objectSpread({}, order.toObject()), {}, {
+                    cart: enrichedCart
+                  }));
+                case 15:
+                case "end":
+                  return _context8.stop();
+              }
+            }, _loop);
+          });
+          _iterator.s();
+        case 12:
+          if ((_step = _iterator.n()).done) {
+            _context9.next = 16;
+            break;
           }
-        case 1:
+          return _context9.delegateYield(_loop(), "t0", 14);
+        case 14:
+          _context9.next = 12;
+          break;
+        case 16:
+          _context9.next = 21;
+          break;
+        case 18:
+          _context9.prev = 18;
+          _context9.t1 = _context9["catch"](9);
+          _iterator.e(_context9.t1);
+        case 21:
+          _context9.prev = 21;
+          _iterator.f();
+          return _context9.finish(21);
+        case 24:
+          console.log(enrichedOrders);
+          return _context9.abrupt("return", res.status(200).json({
+            success: true,
+            orders: enrichedOrders
+          }));
+        case 28:
+          _context9.prev = 28;
+          _context9.t2 = _context9["catch"](0);
+          console.error(_context9.t2);
+          return _context9.abrupt("return", res.status(500).json({
+            success: false,
+            message: 'Server error'
+          }));
+        case 32:
         case "end":
-          return _context8.stop();
+          return _context9.stop();
       }
-    }, _callee8);
+    }, _callee8, null, [[0, 28], [9, 18, 21, 24]]);
   }));
   return function (_x13, _x14) {
     return _ref8.apply(this, arguments);
+  };
+}());
+shopperRoute.get('/shopper/user/getorder/', _authMiddleware["default"], /*#__PURE__*/function () {
+  var _ref9 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
+    var _order$checkout_id$ca3, _order$checkout_id$ca4, userId, orderId, order, cartItems, variantIds, variantsCollection, productCollection, variants, productIds, products, productMap, _iterator3, _step3, product, enrichedCart;
+    return _regeneratorRuntime().wrap(function _callee9$(_context0) {
+      while (1) switch (_context0.prev = _context0.next) {
+        case 0:
+          _context0.prev = 0;
+          userId = req.userId;
+          orderId = req.query.orderId;
+          if (ObjectId.isValid(orderId)) {
+            _context0.next = 5;
+            break;
+          }
+          return _context0.abrupt("return", res.status(400).json({
+            success: false,
+            message: 'Invalid order ID'
+          }));
+        case 5:
+          _context0.next = 7;
+          return _Order["default"].findOne({
+            _id: new ObjectId(orderId),
+            user_id: new ObjectId(userId)
+          }).populate('checkout_id');
+        case 7:
+          order = _context0.sent;
+          if (order) {
+            _context0.next = 10;
+            break;
+          }
+          return _context0.abrupt("return", res.status(404).json({
+            success: false,
+            message: 'Order not found'
+          }));
+        case 10:
+          cartItems = order.checkout_id.cart_items instanceof Map ? Object.fromEntries(order.checkout_id.cart_items) : ((_order$checkout_id$ca3 = (_order$checkout_id$ca4 = order.checkout_id.cart_items).toObject) === null || _order$checkout_id$ca3 === void 0 ? void 0 : _order$checkout_id$ca3.call(_order$checkout_id$ca4)) || order.checkout_id.cart_items;
+          variantIds = Object.keys(cartItems || {}).map(function (id) {
+            return new ObjectId(id);
+          });
+          variantsCollection = _payoordb["default"].db.collection('productvariants');
+          productCollection = _payoordb["default"].db.collection('newproducts');
+          _context0.next = 16;
+          return variantsCollection.find({
+            _id: {
+              $in: variantIds
+            }
+          }).toArray();
+        case 16:
+          variants = _context0.sent;
+          productIds = variants.map(function (v) {
+            return v.productId;
+          });
+          _context0.next = 20;
+          return productCollection.find({
+            _id: {
+              $in: productIds
+            }
+          }).toArray();
+        case 20:
+          products = _context0.sent;
+          productMap = {};
+          _iterator3 = _createForOfIteratorHelper(products);
+          try {
+            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+              product = _step3.value;
+              productMap[product._id.toString()] = product;
+            }
+          } catch (err) {
+            _iterator3.e(err);
+          } finally {
+            _iterator3.f();
+          }
+          enrichedCart = variants.map(function (variant) {
+            return _objectSpread(_objectSpread({}, variant), {}, {
+              product: productMap[variant.productId.toString()],
+              quantity: cartItems[variant._id.toString()]
+            });
+          });
+          return _context0.abrupt("return", res.status(200).json({
+            success: true,
+            order: order.toObject(),
+            cart: enrichedCart
+          }));
+        case 28:
+          _context0.prev = 28;
+          _context0.t0 = _context0["catch"](0);
+          console.error(_context0.t0);
+          return _context0.abrupt("return", res.status(500).json({
+            success: false,
+            message: 'Server error'
+          }));
+        case 32:
+        case "end":
+          return _context0.stop();
+      }
+    }, _callee9, null, [[0, 28]]);
+  }));
+  return function (_x15, _x16) {
+    return _ref9.apply(this, arguments);
   };
 }());
 var _default = exports["default"] = shopperRoute; //https://chatgpt.com/c/6819039c-9ad4-8005-8400-d2567db4dc3c

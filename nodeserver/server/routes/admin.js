@@ -126,18 +126,22 @@ adminRoute.post('/admin/paystack/payment-response', async (req, res) => {
       const { checkoutId, userId } = metadata
 
       const newOrder = new Order({
+        user_id: userId,
         checkout_id: checkoutId
       })
 
-      await newOrder.save();
+      await newOrder.save()
 
-      await orderconfirmEmail(userId, `${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`);
+      await orderconfirmEmail(
+        userId,
+        `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`
+      )
 
       telegramBot.callBot(
         `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
       )
 
-      return res.sendStatus(200);
+      return res.sendStatus(200)
     }
 
     return res.sendStatus(200)

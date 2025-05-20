@@ -21,7 +21,24 @@ export class TelegramBotClass {
         // 🔐 Register as admin using code
         if (messageText === this.admin_code.toLowerCase().trim()) {
           await this.redisClient.sAdd(this.admin_list_key, telegramid)
-          await this.bot.sendMessage(telegramid, '✅ Admin access granted.')
+          await this.bot.sendMessage(
+            telegramid,
+            `✅ Admin access granted.
+        
+        📋 *Available Commands*:
+        /setdeliveryfee <amount> – Set delivery fee (e.g. 1500)
+        /setservicecharge <percent> – Set service charge (1-100)
+        /getdeliveryfee – View current delivery fee
+        /getservicecharge – View current service charge
+        
+        🔐 *Super Admin Only*:
+        /listadmins – List all registered admins
+        /removeadmin <chat_id> – Remove an admin by ID
+        
+        *Note:* Only valid numbers are accepted for amounts and percentages.
+        
+        Welcome aboard! 🚀`
+          )
           return
         }
 

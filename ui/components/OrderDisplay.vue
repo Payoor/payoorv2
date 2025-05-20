@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="orderdetails__actions">
-                    <button class="button-primary transparent-button" @click="goBack">
+                    <button class="button-primary transparent-button" v-if="showbacktoorders" @click="backToOrders">
                         <span>Back to Orders</span>
                     </button>
                 </div>
@@ -46,7 +46,8 @@ export default {
     },
     props: {
         order: Object,
-        cart: Array
+        cart: Array,
+        showbacktoorders: Boolean
     },
     computed: {
         formattedDate() {
@@ -55,8 +56,13 @@ export default {
         }
     },
     methods: {
-        goBack() {
-            this.$router.push('/admin/orders')
+        backToOrders() {
+            this.$router.push({
+                path: '/orders',
+                query: {
+                    ...this.$route.query,
+                }
+            });
         }
     }
 }

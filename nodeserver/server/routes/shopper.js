@@ -1,9 +1,10 @@
-import mongoose from 'mongoose';
-import express from 'express';
-import https from 'https';
+import mongoose from 'mongoose'
+import express from 'express'
+import https from 'https'
 
-import Checkout from '../models/Checkout';
-import User from '../models/User';
+import Checkout from '../models/Checkout'
+import User from '../models/User'
+import Order from '../models/Order'
 
 import authMiddleware from '../middleware/authMiddleware'
 
@@ -258,20 +259,146 @@ shopperRoute.get(
       return res.status(500).json({ error: 'Server error' })
     }
   }
-);
+)
 
 shopperRoute.get(
   '/shopper/user/getorders',
   authMiddleware,
   async (req, res) => {
     try {
+      const { userId } = req
 
-    } catch (error) { 
-      console.log(error)
+      const userOrders = await Order.find({ user_id: userId }).populate(
+        'checkout_id'
+      )
+
+      const variantsCollection =
+        payoorDBConnection.db.collection('productvariants')
+      const productCollection = payoorDBConnection.db.collection('newproducts')
+
+      const enrichedOrders = []
+
+      for (const order of userOrders) {
+        const cartItems =
+          order.checkout_id.cart_items instanceof Map
+            ? Object.fromEntries(order.checkout_id.cart_items)
+            : order.checkout_id.cart_items.toObject?.() ||
+              order.checkout_id.cart_items
+
+        const variantIds = Object.keys(cartItems || {}).map(
+          id => new ObjectId(id)
+        )
+
+        const variants = await variantsCollection
+          .find({ _id: { $in: variantIds } })
+          .toArray()
+
+        const productIds = variants.map(v => v.productId)
+        const products = await productCollection
+          .find({ _id: { $in: productIds } })
+          .toArray()
+
+        const productMap = {}
+        for (const product of products) {
+          productMap[product._id.toString()] = product
+        }
+
+        const enrichedCart = variants.map(variant => ({
+          ...variant,
+          product: productMap[variant.productId.toString()],
+          quantity: cartItems[variant._id.toString()]
+        }))
+
+        enrichedOrders.push({
+          ...order.toObject(),
+          cart: enrichedCart
+        })
+      }
+
+      console.log(enrichedOrders)
+
+      return res.status(200).json({
+        success: true,
+        orders: enrichedOrders
+      })
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+        success: false,
+        message: 'Server error'
+      })
     }
   }
 )
 
-export default shopperRoute;
+shopperRoute.get('/shopper/user/getorder/', authMiddleware, async (req, res) => {
+  try {
+    const { userId } = req
+    const { orderId } = req.query
+
+    if (!ObjectId.isValid(orderId)) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Invalid order ID' })
+    }
+
+    const order = await Order.findOne({
+      _id: new ObjectId(orderId),
+      user_id: new ObjectId(userId)
+    }).populate('checkout_id')
+
+    if (!order) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Order not found' })
+    }
+
+    const cartItems =
+      order.checkout_id.cart_items instanceof Map
+        ? Object.fromEntries(order.checkout_id.cart_items)
+        : order.checkout_id.cart_items.toObject?.() ||
+          order.checkout_id.cart_items
+
+    const variantIds = Object.keys(cartItems || {}).map(id => new ObjectId(id))
+
+    const variantsCollection =
+      payoorDBConnection.db.collection('productvariants')
+    const productCollection = payoorDBConnection.db.collection('newproducts')
+
+    const variants = await variantsCollection
+      .find({ _id: { $in: variantIds } })
+      .toArray()
+
+    const productIds = variants.map(v => v.productId)
+    const products = await productCollection
+      .find({ _id: { $in: productIds } })
+      .toArray()
+
+    const productMap = {}
+    for (const product of products) {
+      productMap[product._id.toString()] = product
+    }
+
+    const enrichedCart = variants.map(variant => ({
+      ...variant,
+      product: productMap[variant.productId.toString()],
+      quantity: cartItems[variant._id.toString()]
+    }))
+
+    return res.status(200).json({
+      success: true,
+      order: order.toObject(),
+      cart: enrichedCart
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({
+      success: false,
+      message: 'Server error'
+    })
+  }
+})
+
+export default shopperRoute
 
 //https://chatgpt.com/c/6819039c-9ad4-8005-8400-d2567db4dc3c

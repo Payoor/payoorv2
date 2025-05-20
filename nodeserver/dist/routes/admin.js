@@ -188,13 +188,14 @@ adminRoute.post('/admin/paystack/payment-response', /*#__PURE__*/function () {
           metadata = data.metadata;
           checkoutId = metadata.checkoutId, userId = metadata.userId;
           newOrder = new _Order["default"]({
+            user_id: userId,
             checkout_id: checkoutId
           });
           _context3.next = 12;
           return newOrder.save();
         case 12:
           _context3.next = 14;
-          return (0, _orderconfirmEmail["default"])(userId, "".concat(process.env.PAYOOR_URL, "/admin/order?reference=").concat(newOrder._id));
+          return (0, _orderconfirmEmail["default"])(userId, "".concat(process.env.PAYOOR_URL, "/userorder/").concat(newOrder._id));
         case 14:
           _TelegramBotClass["default"].callBot("new order ".concat(process.env.PAYOOR_URL, "/admin/order?reference=").concat(newOrder._id));
           return _context3.abrupt("return", res.sendStatus(200));

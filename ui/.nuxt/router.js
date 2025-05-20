@@ -11,6 +11,7 @@ const _4d3d5234 = () => interopDefault(import('../pages/orders.vue' /* webpackCh
 const _62f4b2d5 = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
 const _150a62c0 = () => interopDefault(import('../pages/admin/order/index.vue' /* webpackChunkName: "pages/admin/order/index" */))
 const _06e04561 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _150a3bd7 = () => interopDefault(import('../pages/userorder/_orderid.vue' /* webpackChunkName: "pages/userorder/_orderid" */))
 
 const emptyFn = () => {}
 
@@ -51,6 +52,10 @@ export const routerOptions = {
     path: "/",
     component: _06e04561,
     name: "index"
+  }, {
+    path: "/userorder/:orderid?",
+    component: _150a3bd7,
+    name: "userorder-orderid"
   }],
 
   fallback: false

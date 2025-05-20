@@ -41,7 +41,7 @@
                         <span class="label" @click="$router.push('/aboutus')">About us</span>
                     </div>
 
-                    <div class="chat-header__menuitem">
+                    <div class="chat-header__menuitem" @click="goToUserOrders" v-if="jwt">
                         <span class="svg"></span>
 
                         <span class="label">Orders</span>
@@ -62,7 +62,7 @@
                         <!---<span class="label">nerdyemmanuel@gmail.com</span>-->
                     </div>
 
-                    <div class="chat-header__menuitem">
+                    <div class="chat-header__menuitem" v-if="jwt">
                         <span class="svg"></span>
                         <span class="label" @click="signOut">Signout</span>
                     </div>
@@ -114,6 +114,14 @@ export default {
         window.removeEventListener('resize', this.handleResize);
     },
     methods: {
+        goToUserOrders() {
+            this.$router.push({
+                path: '/orders',
+                query: {
+                    ...this.$route.query,
+                }
+            });
+        },
         async getValidUser(token) {
             try {
                 const response = await fetch(`${serverurl}/shopper/auth/validuser?jwttoken=${token}`, {

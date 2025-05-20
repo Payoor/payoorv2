@@ -8,26 +8,11 @@
 
         <div class="orders__content">
             <div class="orders__content--body">
-                <div v-if="orders.length === 0" class="orders__empty">
-                    <p>You haven’t placed any orders yet.</p>
+
+                <div v-if="singleOrder" class="order-card">
+                    <OrderDisplay :order="singleOrder" :cart="singleOrder.cart" :showbacktoorders="true" />
                 </div>
 
-                <div v-else>
-                    <div v-for="(order, index) in orders" :key="order._id" class="order-card">
-                        <div class="order-card__header" @click="toggle(index)">
-                            <p><strong>Order ID:</strong> {{ order._id }}</p>
-                            <p><strong>Total:</strong> ₦{{ order.checkout_id.total.toLocaleString() }}</p>
-                            <p><strong>Date:</strong> {{ formatDate(order.checkout_id.delivery_date) }}</p>
-                            <button class="order-card__togglecart transparent-button">
-                                {{ expanded[index] ? 'Hide Cart' : 'View Cart' }}
-                            </button>
-                        </div>
-
-                        <transition name="fade">
-                            <OrderDisplay v-if="expanded[index]" :order="order" :cart="order.cart" :showbacktoorders="false"/>
-                        </transition>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -48,41 +33,44 @@ export default {
         return {
             jwt: null,
             orders: [],
-            expanded: []
-        }
+            expanded: [],
+            singleOrder: null,
+        };
     },
-    mounted() {
+    async mounted() {
         this.jwt = localStorage.getItem('jwt');
-        this.getUserOrders();
+
+        const orderId = this.$route.params.orderid || this.$route.query.orderid;
+
+        await this.fetchOrderById(orderId);
     },
     methods: {
-        async getUserOrders() {
+        async fetchOrderById(orderId) {
             try {
                 const { jwt } = this;
-
                 if (!jwt) return;
 
-                const response = await fetch(`${serverurl}/shopper/user/getorders`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${jwt}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
+                const response = await fetch(
+                    `${serverurl}/shopper/user/getorder?orderId=${orderId}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${jwt}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
 
                 if (!response.ok) {
-                    if (response.status === 401) {
-                        localStorage.removeItem('jwt');
-                        this.$router.push({ path: '/', query: this.$route.query });
-                    }
-                    throw new Error('Unauthorized');
+                    throw new Error('Order not found');
                 }
 
                 const data = await response.json();
-                this.orders = data.orders;
-                this.expanded = this.orders.map(() => false);
+                this.singleOrder = data.order;
+                this.singleOrder.cart = data.cart;
             } catch (error) {
-                console.error(error);
+                console.error('Failed to load order:', error);
+                this.$router.push('/orders');
             }
         },
         toggle(index) {
@@ -92,9 +80,9 @@ export default {
             if (!deliveryDate) return '';
             const { day, date, month } = deliveryDate;
             return `${day}, ${month} ${date}`;
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -150,8 +138,6 @@ export default {
         align-items: center;
         flex-wrap: wrap;
         cursor: pointer;
-
-
 
         p {
             margin: 0.5rem 0;
