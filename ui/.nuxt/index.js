@@ -14,6 +14,7 @@ import { createStore } from './store.js'
 /* Plugins */
 
 import nuxt_plugin_plugin_4cf69087 from 'nuxt_plugin_plugin_4cf69087' // Source: ./components/plugin.js (mode: 'all')
+import nuxt_plugin_vuelazyload_d07c1d40 from 'nuxt_plugin_vuelazyload_d07c1d40' // Source: ../plugins/vue-lazyload.js (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -81,7 +82,7 @@ async function createApp(ssrContext, config = {}) {
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    head: {"title":"Payoor - Shopping Assistant","htmlAttrs":{"lang":"en"},"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"},{"hid":"description","name":"description","content":""},{"name":"format-detection","content":"telephone=no"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"preconnect","href":"https:\u002F\u002Ffonts.googleapis.com"},{"rel":"preconnect","href":"https:\u002F\u002Ffonts.gstatic.com","crossorigin":true},{"rel":"stylesheet","href":"https:\u002F\u002Ffonts.googleapis.com\u002Fcss2?family=Poppins:wght@100;200;300;400;500;600&display=swap"}],"script":[{"src":"https:\u002F\u002Faccounts.google.com\u002Fgsi\u002Fclient","async":true,"defer":true},{"src":"\u002Fscripts\u002Findex.js"}],"style":[]},
+    head: {"title":"Payoor - Shopping Assistant","htmlAttrs":{"lang":"en"},"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"},{"hid":"description","name":"description","content":"Shop groceries easily with Payoor. Great prices. Fast delivery."},{"name":"format-detection","content":"telephone=no"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"preconnect","href":"https:\u002F\u002Ffonts.googleapis.com"},{"rel":"preconnect","href":"https:\u002F\u002Ffonts.gstatic.com","crossorigin":true},{"rel":"stylesheet","href":"https:\u002F\u002Ffonts.googleapis.com\u002Fcss2?family=Poppins:wght@100;200;300;400;500;600&display=swap"}],"script":[{"src":"https:\u002F\u002Faccounts.google.com\u002Fgsi\u002Fclient","async":true,"defer":true},{"src":"\u002Fscripts\u002Findex.js"}],"style":[]},
 
     store,
     router,
@@ -215,6 +216,10 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_plugin_4cf69087 === 'function') {
     await nuxt_plugin_plugin_4cf69087(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_vuelazyload_d07c1d40 === 'function') {
+    await nuxt_plugin_vuelazyload_d07c1d40(app.context, inject)
   }
 
   // Lock enablePreview in context

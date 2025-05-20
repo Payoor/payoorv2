@@ -8,42 +8,42 @@
       <div class="categories__grid">
         <div class="categories__griditem">
           <figure>
-            <img src="@/assets/imgs/chicken_lap.png" />
+            <img v-lazy="'/imgs/chicken_lap.png'" />
           </figure>
           <h4>Meat and Frozen Food</h4>
         </div>
 
         <div class="categories__griditem">
           <figure>
-            <img src="@/assets/imgs/chai_seed.jpeg" />
+            <img v-lazy="'/imgs/chai_seed.jpeg'" />
           </figure>
           <h4>Soups and Stews</h4>
         </div>
 
         <div class="categories__griditem">
           <figure>
-            <img src="@/assets/imgs/bournvita.jpeg" />
+            <img v-lazy="'/imgs/bournvita.jpeg'" />
           </figure>
           <h4>Beverages</h4>
         </div>
 
         <div class="categories__griditem">
           <figure>
-            <img src="@/assets/imgs/fruits.png" />
+            <img v-lazy="'/imgs/fruits.png'" />
           </figure>
           <h4>Fruits</h4>
         </div>
 
         <div class="categories__griditem">
           <figure>
-            <img src="@/assets/imgs/fruit_basket.jpeg" />
+            <img v-lazy="'/imgs/fruit_basket.jpeg'" />
           </figure>
           <h4>Farmers market</h4>
         </div>
 
         <div class="categories__griditem">
           <figure>
-            <img src="@/assets/imgs/pepper_container.png" />
+            <img v-lazy="'/imgs/pepper_container.png'" />
           </figure>
           <h4>Spices and packaged foods</h4>
         </div>

@@ -13,7 +13,7 @@
                     <h3 class="orderdetails__subtitle">Items</h3>
 
                     <div class="orderdetails__cart-item" v-for="item in cart" :key="item._id">
-                        <img :src="item.image" alt="product image" class="orderdetails__cart-image" />
+                        <img v-lazy="item.image" alt="product image" class="orderdetails__cart-image" />
                         <div class="orderdetails__cart-details">
                             <p><strong>Name:</strong> {{ item.product?.name || 'Unnamed product' }}</p>
                             <p v-if="item.product?.metadata"><strong>Tags:</strong> {{ item.product.metadata }}</p>

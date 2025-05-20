@@ -15,7 +15,7 @@
                         <p class="auth__h1--bottomp1">
                             <span>grocery</span>
                             <span class="line grow-bar">
-                                <img src="imgs/9b0498221204fb302eeee0e4809573e18a95723b.png" />
+                                <img src="/imgs/9b0498221204fb302eeee0e4809573e18a95723b.png" />
                             </span>
                         </p class="auth__h1--bottomp2"> assistant
                     </div>

@@ -3,7 +3,7 @@
     <div class="landingcopy__content">
       <div class="landingcopy__mast">
         <figure>
-          <img src="@/assets/imgs/copy-mast-img.png" />
+          <img v-lazy="'/imgs/copy-mast-img.png'" />
         </figure>
       </div>
 
@@ -25,7 +25,7 @@
 
           <div class="landingcopy__card--right">
             <figure class="sample-dish">
-              <img src="@/assets/imgs/sample_dish.png" />
+              <img v-lazy="'/imgs/sample_dish.png'" />
             </figure>
           </div>
         </div>
@@ -41,7 +41,7 @@
 
           <div class="landingcopy__card--right">
             <figure class="paper-basket">
-              <img src="@/assets/imgs/paper_basket.png" />
+              <img v-lazy="'/imgs/paper_basket.png'" />
             </figure>
           </div>
         </div>
@@ -58,7 +58,7 @@
 
           <div class="landingcopy__card--right">
             <figure class="paper-box">
-              <img src="@/assets/imgs/paper_box.png" />
+              <img v-lazy="'/imgs/paper_box.png'" />
             </figure>
           </div>
         </div>

@@ -11,7 +11,7 @@
             </div>
 
             <figure class="chat-header__left--logo" v-if="logovisible" :class="{ 'green': green }">
-                <img src="/imgs/logo.png" />
+                <img :src="'/imgs/logo.png'" />
             </figure>
         </div>
 
@@ -32,7 +32,7 @@
 
                 <div class="chat-header__menuitems">
                     <figure class="chat-header__left--logo bottom-1rem">
-                        <img src="/imgs/logo.png" />
+                        <img v-lazy="'/imgs/logo.png'" />
                     </figure>
 
                     <div class="chat-header__menuitem">

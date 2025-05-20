@@ -7,7 +7,7 @@
 
       <div class="aboutus__content">
         <figure class="aboutus__jumbotron">
-          <img src="@/assets/imgs/copy-mast-img.png" />
+          <img v-lazy="'/imgs/copy-mast-img.png'" />
         </figure>
 
         <h1 class="aboutus__h1">

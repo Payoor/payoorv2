@@ -3,7 +3,7 @@
         <div class="chatoption slide-fade-in-up" v-if="option">
             <div class="chatoption__left">
                 <figure class="chatoption__img">
-                    <img :src="option.image.length ? option.image : option.productimg" />
+                    <img v-lazy="option.image.length ? option.image : option.productimg" />
                 </figure>
 
                 <div class="chatoption__details">

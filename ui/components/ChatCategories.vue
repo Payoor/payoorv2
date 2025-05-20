@@ -5,7 +5,7 @@
             :style="{ currentcat: currentcat === index }">
             <div class="chat-categories__category--left">
                 <figure class="chat-categories__category--png">
-                    <img :src="category.image" alt="Category image" />
+                    <img v-lazy="category.image" alt="Category image" />
                 </figure>
             </div>
 

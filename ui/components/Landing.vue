@@ -11,7 +11,7 @@
 
                 <div class="landing__topright">
                     <figure class="landing__topright--img">
-                        <img src="@/assets/imgs/bike-desktop.png" />
+                        <img v-lazy="'/imgs/bike-desktop.png'" />
                     </figure>
                 </div>
 

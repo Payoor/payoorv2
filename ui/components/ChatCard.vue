@@ -1,7 +1,7 @@
 <template>
     <div class="chatcard">
         <figure class="chatcard__img">
-            <img :src="imageUrl" />
+            <img v-lazy="imageUrl" />
         </figure>
 
         <div class="chatcard__contents">

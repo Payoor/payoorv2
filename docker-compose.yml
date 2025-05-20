@@ -72,7 +72,6 @@ services:
     container_name: shopui
     build:
       context: ./ui
-    command: npm run dev
     depends_on:
       - nodeserver
     volumes:
