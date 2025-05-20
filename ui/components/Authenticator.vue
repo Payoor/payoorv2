@@ -25,7 +25,7 @@
             </div>
 
             <figure class="auth__cartongif">
-                <img src="/imgs/fca2af0aa016e2cc06a10067ea4eb64446dbedde.gif" />
+                <!--<img src="/imgs/fca2af0aa016e2cc06a10067ea4eb64446dbedde.gif" />-->
             </figure>
 
             <!--<button class="auth__form--google">
