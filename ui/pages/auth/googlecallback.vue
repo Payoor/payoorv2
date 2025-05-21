@@ -41,7 +41,7 @@
           return;
         }
 
-        console.log(response, 'check here')
+        console.log(response, 'check here');
   
         /*const token = response.credential;
         console.log(token, 'token')

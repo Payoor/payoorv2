@@ -117,7 +117,7 @@ var api = __webpack_require__(40);
           jwt
         } = this;
         if (!jwt) return;
-        const response = await fetch(`${api["b" /* serverurl */]}/shopper/user/getorder?orderId=${orderId}`, {
+        const response = await fetch(`${api["a" /* serverurl */]}/shopper/user/getorder?orderId=${orderId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${jwt}`,
@@ -190,8 +190,7 @@ installComponents(component, {ChatHeader: __webpack_require__(47).default,OrderD
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return serverurl; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return googlecallback_url; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return serverurl; });
 const serverurl = (() => {
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
@@ -200,15 +199,6 @@ const serverurl = (() => {
     }
   }
   return 'http://localhost';
-})();
-const googlecallback_url = (() => {
-  if (typeof window !== 'undefined') {
-    const hostname = window.location.hostname;
-    if (hostname.includes('payoor')) {
-      return 'https://shop.payoor.store/auth/googlecallback'; // production
-    }
-  }
-  return 'https://shop.payoor.store/auth/googlecallback'; // production
 })();
 
 /***/ }),
@@ -485,7 +475,7 @@ var jwt_mixin = __webpack_require__(41);
     },
     async getValidUser(token) {
       try {
-        const response = await fetch(`${api["b" /* serverurl */]}/shopper/auth/validuser?jwttoken=${token}`);
+        const response = await fetch(`${api["a" /* serverurl */]}/shopper/auth/validuser?jwttoken=${token}`);
         if (response.status !== 200) {
           localStorage.removeItem('jwt');
           return this.redirectHome();
@@ -524,7 +514,7 @@ var jwt_mixin = __webpack_require__(41);
           return;
         }
         ;
-        const response = await fetch(`${api["b" /* serverurl */]}/shopper/auth/signout`, {
+        const response = await fetch(`${api["a" /* serverurl */]}/shopper/auth/signout`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,

@@ -27,7 +27,7 @@ export default {
           callback: this.handleCredentialResponse,
           scope: "email",
           ux_mode: "redirect",
-          login_uri: `${googlecallback_url}`,
+          login_uri: "https://shop.payoor.store/auth/googlecallback"
         });
 
         google.accounts.id.renderButton(
