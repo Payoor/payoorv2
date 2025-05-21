@@ -144,7 +144,8 @@ adminRoute.get('/admin/orders/reference', /*#__PURE__*/function () {
           return _context2.abrupt("return", res.status(200).json({
             message: 'Order with enriched cart and product details',
             order: order,
-            cart: enrichedCart
+            cart: enrichedCart,
+            phone_number: order.checkout_id.phone_number || null
           }));
         case 27:
           _context2.prev = 27;

@@ -29,6 +29,25 @@
 
                     <div class="checkout__section">
                         <div class="checkout__section--header">
+                            <h2>Phone Number</h2>
+                            <span class="required">*</span>
+                        </div>
+
+                        <div class="checkout__section--value" :class="{ ...faint(phone_number) }">
+                            <p>{{ phone_number.length ? phone_number : 'None Specified' }}</p>
+                        </div>
+
+                        <div class="checkout__section--btn">
+                            <button class="button-primary"
+                                @click="setPlaceholder('Enter your phone number', 'Phone number', 'phone_number')">
+                                Add Phone Number
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <div class="checkout__section">
+                        <div class="checkout__section--header">
                             <h2>Delivery Date</h2>
 
                             <span class="required">*</span>
@@ -89,6 +108,25 @@
                     <div class="checkout__inputs--body">
                         <div class="checkout__inputcontent slide-fade-in-up">
                             <h2 class="checkout__inputcontent--h2">{{ input_label }}</h2>
+
+                            <div v-if="input_label === 'Delivery address'">
+                                <AddressList :query="checkout_inputs[checkout_input]"
+                                    :selectAddressFromList="selectAddressFromList" :checkout_input="checkout_input" />
+                            </div>
+
+                            <div v-if="input_label === 'Delivery address'">
+                                <div class="checkout__currentlocation">
+                                    <span class="checkout__currentlocation--btn" @click.stop="getCurrentLocation">
+                                        <template v-if="!locationLoading">
+                                            📍 Use Your Current Location
+                                        </template>
+                                        <template v-else>
+                                            <span class="loader"></span> Getting location...
+                                        </template>
+                                    </span>
+                                </div>
+                            </div>
+
 
                             <div class="checkout__input">
                                 <textarea class="checkout__field" v-model="checkout_inputs[checkout_input]"
@@ -165,9 +203,10 @@ export default {
             total: 0,
             input_label: '',
             place_holder: false,
-
+            phone_number: '',
             checkout_inputs: {},
-            checkout_input: null
+            checkout_input: null,
+            locationLoading: false
         }
     },
     computed: {
@@ -210,6 +249,55 @@ export default {
         this.initCheckout();
     },
     methods: {
+        async reverseGeocode({ latitude, longitude }) {
+            try {
+                const token = localStorage.getItem('jwt');
+
+                const response = await fetch(`${serverurl}/shopper/google/use-current-location?lat=${latitude}&lng=${longitude}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data?.message || 'Reverse geocode failed');
+                }
+
+                const { address, filteredResults } = data.data;
+
+                this.selectAddressFromList(address, 'delivery_address')
+
+                return data.data;
+            } catch (err) {
+                console.error('Reverse geocode error:', err);
+                return null;
+            }
+        },
+        getCurrentLocation() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser');
+                return;
+            }
+
+            this.locationLoading = true;
+
+            navigator.geolocation.getCurrentPosition(
+                async position => {
+                    const { latitude, longitude } = position.coords;
+                    await this.reverseGeocode({ latitude, longitude });
+                    this.locationLoading = false;
+                },
+                error => {
+                    console.error('Geolocation error:', error);
+                    alert('Unable to retrieve your location');
+                    this.locationLoading = false;
+                }
+            );
+        },
         async initCheckout() {
             const cartItems = JSON.parse(localStorage.getItem('cartItems') || '{}');
             const cartTotal = JSON.parse(localStorage.getItem('cartTotal') || '0');
@@ -219,9 +307,6 @@ export default {
             }
 
             const validToken = await this.getValidToken();
-
-            //  console.log('Cart Items:', cartItems);
-            //console.log('Cart Total:', cartTotal);
 
             if (validToken) {
                 const response = await fetch(`${serverurl}/shopper/init/checkout?jwt=${this.validToken}`, {
@@ -257,6 +342,11 @@ export default {
                 // console.log(data)
             }
         },
+        selectAddressFromList(formatted_address, checkout_input) {
+            this.checkout_inputs[checkout_input] = formatted_address;
+
+            this.delivery_address = this.checkout_inputs[checkout_input];
+        },
         setDeliveryDate(deliver_date) {
             this.delivery_date = deliver_date;
 
@@ -271,6 +361,7 @@ export default {
                 delivery_instruction: this.delivery_instruction.trim(),
                 promo_code: this.promo_code.trim(),
                 cart_items: cartItems,
+                phone_number: this.phone_number.trim(),
                 subtotal: this.subtotal,
                 delivery_fee: this.delivery_fee,
                 service_charge: this.service_charge,
@@ -335,6 +426,10 @@ export default {
 
             if (checkout_input === 'delivery_address') {
                 this.delivery_address = this.checkout_inputs[checkout_input] ? this.checkout_inputs[checkout_input] : '';
+            }
+
+            if (checkout_input === 'phone_number') {
+                this.phone_number = this.checkout_inputs[checkout_input] || '';
             }
 
             if (checkout_input === 'delivery_instruction') {
@@ -533,6 +628,12 @@ export default {
         background: $input-black;
         padding: 1rem;
         border-radius: 1rem;
+
+        &[type="tel"] {
+            height: auto;
+            max-height: none;
+            resize: none;
+        }
     }
 
     &__summary {
@@ -621,6 +722,43 @@ export default {
                 width: 100%;
             }
 
+        }
+    }
+
+    &__currentlocation {
+        &--btn {
+            margin-bottom: 1rem;
+            display: inline-block;
+            background: transparent;
+            color: $primary-color;
+            padding: 1rem;
+            border: 1px solid $primary-color;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            position: relative;
+
+            .loader {
+                border: 2px solid #f3f3f3;
+                border-top: 2px solid $primary-color;
+                border-radius: 50%;
+                width: 1.4rem;
+                height: 1.4rem;
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 0.5rem;
+                animation: spin 0.8s linear infinite;
+            }
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
         }
     }
 }

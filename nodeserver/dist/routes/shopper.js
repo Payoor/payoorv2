@@ -15,6 +15,7 @@ var _authMiddleware = _interopRequireDefault(require("../middleware/authMiddlewa
 var _redisconf = require("../redisconf");
 var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _ElasticSearchClass = _interopRequireDefault(require("../controllers/ElasticSearchClass"));
+var _GoogleApiController = _interopRequireDefault(require("../controllers/GoogleApiController"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -244,6 +245,8 @@ shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__P
           _context6.next = 11;
           return newCheckout.save();
         case 11:
+          //console.log(newCheckout)
+
           res.status(200).json({
             message: 'Checkout data',
             newcheckout: newCheckout
@@ -619,4 +622,6 @@ shopperRoute.get('/shopper/user/getorder/', _authMiddleware["default"], /*#__PUR
     return _ref9.apply(this, arguments);
   };
 }());
+shopperRoute.get('/shopper/google/search-places', _authMiddleware["default"], _GoogleApiController["default"].searchPlaces);
+shopperRoute.get('/shopper/google/use-current-location', _authMiddleware["default"], _GoogleApiController["default"].reverseGeocode);
 var _default = exports["default"] = shopperRoute; //https://chatgpt.com/c/6819039c-9ad4-8005-8400-d2567db4dc3c

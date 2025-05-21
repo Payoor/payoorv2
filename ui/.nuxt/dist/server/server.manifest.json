@@ -1,6 +1,7 @@
 {
   "entry": "server.js",
   "files": {
+    "components/address-list.js": "components/address-list.js",
     "components/authenticator.js": "components/authenticator.js",
     "components/cart-button.js": "components/cart-button.js",
     "components/chat-body.js": "components/chat-body.js",
@@ -30,6 +31,7 @@
     "server.js": "server.js"
   },
   "maps": {
+    "components/address-list.js": "components/address-list.js.map",
     "components/authenticator.js": "components/authenticator.js.map",
     "components/cart-button.js": "components/cart-button.js.map",
     "components/chat-body.js": "components/chat-body.js.map",

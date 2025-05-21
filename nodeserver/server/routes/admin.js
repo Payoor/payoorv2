@@ -98,7 +98,8 @@ adminRoute.get('/admin/orders/reference', async (req, res) => {
     return res.status(200).json({
       message: 'Order with enriched cart and product details',
       order,
-      cart: enrichedCart
+      cart: enrichedCart,
+      phone_number: order.checkout_id.phone_number || null
     })
   } catch (error) {
     console.log(error)

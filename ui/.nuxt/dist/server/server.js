@@ -43,7 +43,7 @@ module.exports =
 /******/
 /******/ 		// "0" is the signal for "already loaded"
 /******/ 		if(installedChunks[chunkId] !== 0) {
-/******/ 			var chunk = require("./" + ({"1":"components/authenticator","2":"components/cart-button","3":"components/chat-body","4":"components/chat-card","5":"components/chat-categories","6":"components/chat-header","7":"components/chat-input","8":"components/chat-option","9":"components/chat-options","10":"components/google-btn","11":"components/landing","12":"components/landing-categories","13":"components/landing-copy","14":"components/landing-faq","15":"components/landing-footer","16":"components/order-display","17":"components/otp-input","18":"pages/aboutus","19":"pages/admin/order/index","20":"pages/auth/googlecallback","21":"pages/cart","22":"pages/checkout","23":"pages/index","24":"pages/orders","25":"pages/payment","26":"pages/userorder/_orderid"}[chunkId]||chunkId) + ".js");
+/******/ 			var chunk = require("./" + ({"1":"components/address-list","2":"components/authenticator","3":"components/cart-button","4":"components/chat-body","5":"components/chat-card","6":"components/chat-categories","7":"components/chat-header","8":"components/chat-input","9":"components/chat-option","10":"components/chat-options","11":"components/google-btn","12":"components/landing","13":"components/landing-categories","14":"components/landing-copy","15":"components/landing-faq","16":"components/landing-footer","17":"components/order-display","18":"components/otp-input","19":"pages/aboutus","20":"pages/admin/order/index","21":"pages/auth/googlecallback","22":"pages/cart","23":"pages/checkout","24":"pages/index","25":"pages/orders","26":"pages/payment","27":"pages/userorder/_orderid"}[chunkId]||chunkId) + ".js");
 /******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids;
 /******/ 			for(var moduleId in moreModules) {
 /******/ 				modules[moduleId] = moreModules[moduleId];
@@ -913,6 +913,7 @@ __webpack_require__.r(__webpack_exports__);
 // NAMESPACE OBJECT: ./.nuxt/components/index.js
 var components_namespaceObject = {};
 __webpack_require__.r(components_namespaceObject);
+__webpack_require__.d(components_namespaceObject, "AddressList", function() { return AddressList; });
 __webpack_require__.d(components_namespaceObject, "Authenticator", function() { return Authenticator; });
 __webpack_require__.d(components_namespaceObject, "CartButton", function() { return CartButton; });
 __webpack_require__.d(components_namespaceObject, "ChatBody", function() { return ChatBody; });
@@ -1660,15 +1661,15 @@ function shouldScrollToTop(route) {
 
 
 
-const _0b411c9a = () => interopDefault(__webpack_require__.e(/* import() | pages/aboutus */ 18).then(__webpack_require__.bind(null, 146)));
-const _b50a5bf0 = () => interopDefault(__webpack_require__.e(/* import() | pages/cart */ 21).then(__webpack_require__.bind(null, 138)));
-const _0973792e = () => interopDefault(__webpack_require__.e(/* import() | pages/checkout */ 22).then(__webpack_require__.bind(null, 139)));
-const _29fc7b4d = () => interopDefault(__webpack_require__.e(/* import() | pages/orders */ 24).then(__webpack_require__.bind(null, 140)));
-const _25be1b4e = () => interopDefault(__webpack_require__.e(/* import() | pages/payment */ 25).then(__webpack_require__.bind(null, 141)));
-const _4c8a984e = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/order/index */ 19).then(__webpack_require__.bind(null, 142)));
-const _d51f82e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/auth/googlecallback */ 20).then(__webpack_require__.bind(null, 143)));
-const _60a90fcc = () => interopDefault(__webpack_require__.e(/* import() | pages/index */ 23).then(__webpack_require__.bind(null, 144)));
-const _8e720484 = () => interopDefault(__webpack_require__.e(/* import() | pages/userorder/_orderid */ 26).then(__webpack_require__.bind(null, 145)));
+const _0b411c9a = () => interopDefault(__webpack_require__.e(/* import() | pages/aboutus */ 19).then(__webpack_require__.bind(null, 151)));
+const _b50a5bf0 = () => interopDefault(__webpack_require__.e(/* import() | pages/cart */ 22).then(__webpack_require__.bind(null, 143)));
+const _0973792e = () => interopDefault(__webpack_require__.e(/* import() | pages/checkout */ 23).then(__webpack_require__.bind(null, 144)));
+const _29fc7b4d = () => interopDefault(__webpack_require__.e(/* import() | pages/orders */ 25).then(__webpack_require__.bind(null, 145)));
+const _25be1b4e = () => interopDefault(__webpack_require__.e(/* import() | pages/payment */ 26).then(__webpack_require__.bind(null, 146)));
+const _4c8a984e = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/order/index */ 20).then(__webpack_require__.bind(null, 147)));
+const _d51f82e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/auth/googlecallback */ 21).then(__webpack_require__.bind(null, 148)));
+const _60a90fcc = () => interopDefault(__webpack_require__.e(/* import() | pages/index */ 24).then(__webpack_require__.bind(null, 149)));
+const _8e720484 = () => interopDefault(__webpack_require__.e(/* import() | pages/userorder/_orderid */ 27).then(__webpack_require__.bind(null, 150)));
 const emptyFn = () => {};
 external_vue_default.a.use(external_vue_router_default.a);
 const routerOptions = {
@@ -2458,23 +2459,24 @@ function mergeProperty(storeModule, moduleData, property) {
   }
 }
 // CONCATENATED MODULE: ./.nuxt/components/index.js
-const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 1).then(__webpack_require__.bind(null, 115)).then(c => wrapFunctional(c.default || c));
-const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 2).then(__webpack_require__.bind(null, 43)).then(c => wrapFunctional(c.default || c));
-const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 3).then(__webpack_require__.bind(null, 117)).then(c => wrapFunctional(c.default || c));
-const ChatCard = () => __webpack_require__.e(/* import() | components/chat-card */ 4).then(__webpack_require__.bind(null, 93)).then(c => wrapFunctional(c.default || c));
-const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 5).then(__webpack_require__.bind(null, 118)).then(c => wrapFunctional(c.default || c));
-const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 6).then(__webpack_require__.bind(null, 47)).then(c => wrapFunctional(c.default || c));
-const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 7).then(__webpack_require__.bind(null, 119)).then(c => wrapFunctional(c.default || c));
-const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 8).then(__webpack_require__.bind(null, 55)).then(c => wrapFunctional(c.default || c));
-const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 9).then(__webpack_require__.bind(null, 70)).then(c => wrapFunctional(c.default || c));
-const GoogleBtn = () => __webpack_require__.e(/* import() | components/google-btn */ 10).then(__webpack_require__.bind(null, 69)).then(c => wrapFunctional(c.default || c));
-const Landing = () => __webpack_require__.e(/* import() | components/landing */ 11).then(__webpack_require__.bind(null, 116)).then(c => wrapFunctional(c.default || c));
-const LandingCategories = () => __webpack_require__.e(/* import() | components/landing-categories */ 12).then(__webpack_require__.bind(null, 94)).then(c => wrapFunctional(c.default || c));
-const LandingCopy = () => __webpack_require__.e(/* import() | components/landing-copy */ 13).then(__webpack_require__.bind(null, 95)).then(c => wrapFunctional(c.default || c));
-const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 14).then(__webpack_require__.bind(null, 91)).then(c => wrapFunctional(c.default || c));
-const LandingFooter = () => __webpack_require__.e(/* import() | components/landing-footer */ 15).then(__webpack_require__.bind(null, 92)).then(c => wrapFunctional(c.default || c));
-const OrderDisplay = () => __webpack_require__.e(/* import() | components/order-display */ 16).then(__webpack_require__.bind(null, 63)).then(c => wrapFunctional(c.default || c));
-const OtpInput = () => __webpack_require__.e(/* import() | components/otp-input */ 17).then(__webpack_require__.bind(null, 90)).then(c => wrapFunctional(c.default || c));
+const AddressList = () => __webpack_require__.e(/* import() | components/address-list */ 1).then(__webpack_require__.bind(null, 119)).then(c => wrapFunctional(c.default || c));
+const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 2).then(__webpack_require__.bind(null, 120)).then(c => wrapFunctional(c.default || c));
+const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 3).then(__webpack_require__.bind(null, 44)).then(c => wrapFunctional(c.default || c));
+const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 4).then(__webpack_require__.bind(null, 122)).then(c => wrapFunctional(c.default || c));
+const ChatCard = () => __webpack_require__.e(/* import() | components/chat-card */ 5).then(__webpack_require__.bind(null, 95)).then(c => wrapFunctional(c.default || c));
+const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 6).then(__webpack_require__.bind(null, 123)).then(c => wrapFunctional(c.default || c));
+const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 7).then(__webpack_require__.bind(null, 48)).then(c => wrapFunctional(c.default || c));
+const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 8).then(__webpack_require__.bind(null, 124)).then(c => wrapFunctional(c.default || c));
+const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 9).then(__webpack_require__.bind(null, 56)).then(c => wrapFunctional(c.default || c));
+const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 10).then(__webpack_require__.bind(null, 71)).then(c => wrapFunctional(c.default || c));
+const GoogleBtn = () => __webpack_require__.e(/* import() | components/google-btn */ 11).then(__webpack_require__.bind(null, 70)).then(c => wrapFunctional(c.default || c));
+const Landing = () => __webpack_require__.e(/* import() | components/landing */ 12).then(__webpack_require__.bind(null, 121)).then(c => wrapFunctional(c.default || c));
+const LandingCategories = () => __webpack_require__.e(/* import() | components/landing-categories */ 13).then(__webpack_require__.bind(null, 96)).then(c => wrapFunctional(c.default || c));
+const LandingCopy = () => __webpack_require__.e(/* import() | components/landing-copy */ 14).then(__webpack_require__.bind(null, 97)).then(c => wrapFunctional(c.default || c));
+const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 15).then(__webpack_require__.bind(null, 93)).then(c => wrapFunctional(c.default || c));
+const LandingFooter = () => __webpack_require__.e(/* import() | components/landing-footer */ 16).then(__webpack_require__.bind(null, 94)).then(c => wrapFunctional(c.default || c));
+const OrderDisplay = () => __webpack_require__.e(/* import() | components/order-display */ 17).then(__webpack_require__.bind(null, 64)).then(c => wrapFunctional(c.default || c));
+const OtpInput = () => __webpack_require__.e(/* import() | components/otp-input */ 18).then(__webpack_require__.bind(null, 92)).then(c => wrapFunctional(c.default || c));
 
 // nuxt/nuxt.js#8607
 function wrapFunctional(options) {
@@ -3132,6 +3134,12 @@ const createNext = ssrContext => opts => {
   await beforeRender();
   return _app;
 });
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash/debounce");
 
 /***/ })
 /******/ ]);

@@ -31,6 +31,10 @@ var CheckoutSchema = new mongoose.Schema({
     type: String,
     "default": ''
   },
+  phone_number: {
+    type: String,
+    "default": ''
+  },
   cart_items: {
     type: Map,
     of: Number,
