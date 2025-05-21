@@ -5,7 +5,8 @@ exports.modules = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return serverurl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return serverurl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return googlecallback_url; });
 const serverurl = (() => {
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
@@ -14,6 +15,15 @@ const serverurl = (() => {
     }
   }
   return 'http://localhost';
+})();
+const googlecallback_url = (() => {
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    if (hostname.includes('payoor')) {
+      return 'https://shop.payoor.store/auth/googlecallback'; // production
+    }
+  }
+  return 'https://shop.payoor.store/auth/googlecallback'; // production
 })();
 
 /***/ }),
@@ -28,7 +38,7 @@ const serverurl = (() => {
     return {
       loading: false,
       validToken: null,
-      excludedPaths: ['/aboutus']
+      excludedPaths: ['/aboutus', '/admin']
     };
   },
   methods: {
@@ -208,7 +218,7 @@ var external_vuex_ = __webpack_require__(3);
     async getOption() {
       const token = await this.getValidToken();
       try {
-        const response = await fetch(`${api["a" /* serverurl */]}/shopper/getoption?mongooseid=${this.mongooseid}`, {
+        const response = await fetch(`${api["b" /* serverurl */]}/shopper/getoption?mongooseid=${this.mongooseid}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

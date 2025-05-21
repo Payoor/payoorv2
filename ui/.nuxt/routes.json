@@ -42,6 +42,13 @@
     "_name": "_4c8a984e"
   },
   {
+    "name": "auth-googlecallback",
+    "path": "/auth/googlecallback",
+    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/auth/googlecallback.vue",
+    "chunkName": "pages/auth/googlecallback",
+    "_name": "_d51f82e6"
+  },
+  {
     "name": "index",
     "path": "/",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/index.vue",

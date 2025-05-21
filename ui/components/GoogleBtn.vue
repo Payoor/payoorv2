@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { serverurl } from '@/api';
+import { serverurl, googlecallback_url } from '@/api';
 
 export default {
   data() {
@@ -26,10 +26,13 @@ export default {
           client_id: this.clientId,
           callback: this.handleCredentialResponse,
           scope: "email",
+          ux_mode: "redirect",
+          login_uri: `${googlecallback_url}`,
         });
+
         google.accounts.id.renderButton(
           document.getElementById("g_id_onload"),
-          { theme: "outline", size: "large" } // Customize as needed
+          { theme: "outline", size: "large" }
         );
       };
     },
@@ -43,7 +46,7 @@ export default {
       return JSON.parse(jsonPayload);
     },
     handleCredentialResponse(response) {
-     //console.log(response)
+      //console.log(response)
       this.sendTokenToBackend(response.credential);
     },
     async sendTokenToBackend(token) {
@@ -52,7 +55,7 @@ export default {
       const googleId = decoded.sub;
       const picture = decoded.picture;
 
-     //console.log("Decoded Google data:", { email, googleId, picture });
+      //console.log("Decoded Google data:", { email, googleId, picture });
 
       try {
         const response = await fetch(`${serverurl}/shopper/auth/google`, {
@@ -72,7 +75,7 @@ export default {
         if (data.user.token) {
           localStorage.setItem('token', data.user.token);
           //console.log(data)
-         // console.log("Auth token received:", data.token);
+          // console.log("Auth token received:", data.token);
           this.$emit("update:authValue", data.user.token);
         }
       } catch (error) {

@@ -4,14 +4,14 @@
             <div class="chat-header__name" v-if="name" @click="goBack">
                 <span class="svg">
                     <svg>
-                        <use v-bind:xlink:href="'/svg/symbol-defs.svg#icon-arrow_back'"></use>
+                        <use :xlink:href="'/svg/symbol-defs.svg#icon-arrow_back'"></use>
                     </svg>
                 </span>
                 <span class="label">{{ name }}</span>
             </div>
 
-            <figure class="chat-header__left--logo" v-if="logovisible" :class="{ 'green': green }">
-                <img :src="'/imgs/logo.png'" />
+            <figure class="chat-header__left--logo" v-if="logovisible" :class="{ green }">
+                <img src="/imgs/logo.png" />
             </figure>
         </div>
 
@@ -20,16 +20,13 @@
                 <CartButton :showicon="true" />
             </div>
 
-            <div class="chat-header__burger" :class="{ 'unauth': !jwt, 'green': green }" @click.stop="toggleSideMenu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="chat-header__burger" :class="{ unauth: !jwt, green }" @click.stop="toggleSideMenu">
+                <span></span><span></span><span></span>
             </div>
         </div>
 
-        <div class="chat-header__menu" @click.stop="toggleSideMenu" v-if="menuopen" :class="{ 'auth': jwt }">
-            <div class="chat-header__menubody slide-in-left ">
-
+        <div class="chat-header__menu" v-if="menuopen" :class="{ auth: jwt }" @click.stop="toggleSideMenu">
+            <div class="chat-header__menubody slide-in-left">
                 <div class="chat-header__menuitems">
                     <figure class="chat-header__left--logo bottom-1rem">
                         <img v-lazy="'/imgs/logo.png'" />
@@ -37,29 +34,18 @@
 
                     <div class="chat-header__menuitem">
                         <span class="svg"></span>
-
                         <span class="label" @click="$router.push('/aboutus')">About us</span>
                     </div>
 
-                    <div class="chat-header__menuitem" @click="goToUserOrders" v-if="jwt">
+                    <div class="chat-header__menuitem" v-if="jwt" @click="goToUserOrders">
                         <span class="svg"></span>
-
                         <span class="label">Orders</span>
                     </div>
-
-                    <div class="chat-header__menuitem">
-                        <span class="svg"></span>
-
-                        <!--<span class="label">Support</span>-->
-                    </div>
-
                 </div>
 
                 <div class="chat-header__menuitems">
                     <div class="chat-header__menuitem">
                         <span class="svg"></span>
-
-                        <!---<span class="label">nerdyemmanuel@gmail.com</span>-->
                     </div>
 
                     <div class="chat-header__menuitem" v-if="jwt">
@@ -74,143 +60,86 @@
 
 <script>
 import { serverurl } from '@/api';
-import jwt_mixin from "@/mixins/jwt_mixin";
+import jwt_mixin from '@/mixins/jwt_mixin';
 
 export default {
     mixins: [jwt_mixin],
     props: ['logovisible', 'name', 'backRoute', 'green'],
-    emits: ["update:authValue"],
+    emits: ['update:authValue'],
     data() {
-        return {
-            menuopen: false
-        }
+        return { menuopen: false };
     },
     async mounted() {
-
         const token = await this.getValidToken();
-
         if (token) {
             this.getValidUser(token);
-        } else if (!this.excludedPaths.includes(this.$route.path)) {
-            this.$router.push({
-                path: '/',
-                query: {
-                    ...this.$route.query,
-                }
-            });
-        }
-
-        this.$store.dispatch("cart/initializeCart");
-
-        if (window.innerWidth > 900 && this.jwt) {
-            this.menuopen = true;
         } else {
-            this.menuopen = false;
+            this.redirectHome();
         }
-
+        this.$store.dispatch('cart/initializeCart');
+        this.menuopen = window.innerWidth > 900 && this.jwt;
         window.addEventListener('resize', this.handleResize);
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.handleResize);
     },
     methods: {
+        redirectHome() {
+            if (!this.excludedPaths.includes(this.$route.path)) {
+                this.$emit('update:authValue', null);
+                this.$router.push({ path: '/', query: { ...this.$route.query } });
+            }
+        },
         goToUserOrders() {
-            this.$router.push({
-                path: '/orders',
-                query: {
-                    ...this.$route.query,
-                }
-            });
+            this.$router.push({ path: '/orders', query: { ...this.$route.query } });
         },
         async getValidUser(token) {
             try {
-                const response = await fetch(`${serverurl}/shopper/auth/validuser?jwttoken=${token}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'GET',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    },
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error performing autocomplete:', errorData);
-                    return;
-                }
-
-                const data = await response.json();
-
+                const response = await fetch(`${serverurl}/shopper/auth/validuser?jwttoken=${token}`);
                 if (response.status !== 200) {
-                    this.$router.push({
-                        path: this.backRoute,
-                        query: {
-                            ...this.$route.query,
-                        }
-                    });
-                } else {
+                    localStorage.removeItem('jwt');
 
-                }
+                    return this.redirectHome()
+                };
+                await response.json();
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         },
         toggleSideMenu() {
             this.menuopen = !this.menuopen;
         },
         goBack() {
-            this.$router.push({
-                path: this.backRoute,
-                query: {
-                    ...this.$route.query,
-                }
-            });
+            this.$router.push({ path: this.backRoute, query: { ...this.$route.query } });
         },
         handleResize() {
-            if (window.innerWidth > 900) {
-                this.menuopen = true;
-            } else {
-                this.menuopen = false;
-            }
+            this.menuopen = window.innerWidth > 900;
         },
         async signOut() {
             try {
                 const token = await this.getValidToken();
-
                 if (!token) {
-                    this.$router.push('/');
-                    this.$emit("update:authValue", null);
-                    return;
-                }
+                    this.$emit('update:authValue', null);
+                    this.$router.push({ path: '/', query: { ...this.$route.query } });
+                    return
+                };
 
                 const response = await fetch(`${serverurl}/shopper/auth/signout`, {
                     method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 });
 
-                if (!response.ok) {
-                    throw new Error('Failed to sign out');
-                }
-
-                const data = await response.json();
-
-                console.log(data)
-
+                if (!response.ok) throw new Error('Failed to sign out');
+                await response.json();
                 localStorage.removeItem('jwt');
-                this.$router.push('/');
-                this.$emit("update:authValue", null);
-
-                // console.log('logged out')
+                this.$emit('update:authValue', null);
+                this.$router.push({ path: '/', query: { ...this.$route.query } });
             } catch (error) {
                 console.error('Sign out failed:', error.message);
             }
         }
     }
-}
+};
 </script>
 
 <style lang="scss" scoped>

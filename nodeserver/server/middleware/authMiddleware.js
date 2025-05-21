@@ -3,13 +3,13 @@ import { redisClient } from '../redisconf'
 const authMiddleware = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(' ')[1]
-
+ 
     if (!token) {
-      return res
+      return res 
         .status(400)
         .json({ success: false, message: 'Token is required' })
     }
-
+ 
     const userId = await redisClient.get(`auth:session:${token}`)
 
     if (!userId) {

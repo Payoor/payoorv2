@@ -137,7 +137,7 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    background: rgba($black, 1);
+    background: rgba($white, 1);
     width: 100vw;
     height: 100vh;
 
@@ -153,7 +153,7 @@ export default {
 
     &__header {
         font-size: 1.9rem;
-        color: $white;
+        color: $black;
         display: flex;
         align-items: center;
         position: fixed;
@@ -163,7 +163,7 @@ export default {
         padding: 2rem 1rem;
         width: 100%;
         z-index: 3;
-        background: $black;
+        background: $white;
 
         & span {
             cursor: pointer;
@@ -203,8 +203,6 @@ export default {
 
     &__bottom {
         @include fixed-bottom-button-container;
-
-        background: $black;
     }
 }
 </style>

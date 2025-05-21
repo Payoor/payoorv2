@@ -1,4 +1,4 @@
-exports.ids = [24];
+exports.ids = [25];
 exports.modules = {
 
 /***/ 110:
@@ -7,7 +7,7 @@ exports.modules = {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(128);
+var content = __webpack_require__(129);
 if(content.__esModule) content = content.default;
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
@@ -19,7 +19,7 @@ module.exports.__inject__ = function (context) {
 
 /***/ }),
 
-/***/ 127:
+/***/ 128:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31,7 +31,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 128:
+/***/ 129:
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -46,7 +46,7 @@ module.exports = ___CSS_LOADER_EXPORT___;
 
 /***/ }),
 
-/***/ 138:
+/***/ 141:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93,7 +93,7 @@ var jwt_mixin = __webpack_require__(41);
       try {
         const validToken = await this.getValidToken();
         const checkout_id = this.$route.query.checkout_id;
-        const response = await fetch(`${api["a" /* serverurl */]}/shopper/paystack/generate-paystack-link?checkout_id=${checkout_id}`, {
+        const response = await fetch(`${api["b" /* serverurl */]}/shopper/paystack/generate-paystack-link?checkout_id=${checkout_id}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${validToken}`,
@@ -132,7 +132,7 @@ var componentNormalizer = __webpack_require__(2);
 
 function injectStyles (context) {
   
-  var style0 = __webpack_require__(127)
+  var style0 = __webpack_require__(128)
 if (style0.__inject__) style0.__inject__(context)
 
 }
@@ -158,7 +158,8 @@ var component = Object(componentNormalizer["a" /* default */])(
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return serverurl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return serverurl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return googlecallback_url; });
 const serverurl = (() => {
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
@@ -167,6 +168,15 @@ const serverurl = (() => {
     }
   }
   return 'http://localhost';
+})();
+const googlecallback_url = (() => {
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    if (hostname.includes('payoor')) {
+      return 'https://shop.payoor.store/auth/googlecallback'; // production
+    }
+  }
+  return 'https://shop.payoor.store/auth/googlecallback'; // production
 })();
 
 /***/ }),
@@ -181,7 +191,7 @@ const serverurl = (() => {
     return {
       loading: false,
       validToken: null,
-      excludedPaths: ['/aboutus']
+      excludedPaths: ['/aboutus', '/admin']
     };
   },
   methods: {

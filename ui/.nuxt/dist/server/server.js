@@ -43,7 +43,7 @@ module.exports =
 /******/
 /******/ 		// "0" is the signal for "already loaded"
 /******/ 		if(installedChunks[chunkId] !== 0) {
-/******/ 			var chunk = require("./" + ({"1":"components/authenticator","2":"components/cart-button","3":"components/chat-body","4":"components/chat-card","5":"components/chat-categories","6":"components/chat-header","7":"components/chat-input","8":"components/chat-option","9":"components/chat-options","10":"components/google-btn","11":"components/landing","12":"components/landing-categories","13":"components/landing-copy","14":"components/landing-faq","15":"components/landing-footer","16":"components/order-display","17":"components/otp-input","18":"pages/aboutus","19":"pages/admin/order/index","20":"pages/cart","21":"pages/checkout","22":"pages/index","23":"pages/orders","24":"pages/payment","25":"pages/userorder/_orderid"}[chunkId]||chunkId) + ".js");
+/******/ 			var chunk = require("./" + ({"1":"components/authenticator","2":"components/cart-button","3":"components/chat-body","4":"components/chat-card","5":"components/chat-categories","6":"components/chat-header","7":"components/chat-input","8":"components/chat-option","9":"components/chat-options","10":"components/google-btn","11":"components/landing","12":"components/landing-categories","13":"components/landing-copy","14":"components/landing-faq","15":"components/landing-footer","16":"components/order-display","17":"components/otp-input","18":"pages/aboutus","19":"pages/admin/order/index","20":"pages/auth/googlecallback","21":"pages/cart","22":"pages/checkout","23":"pages/index","24":"pages/orders","25":"pages/payment","26":"pages/userorder/_orderid"}[chunkId]||chunkId) + ".js");
 /******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids;
 /******/ 			for(var moduleId in moreModules) {
 /******/ 				modules[moduleId] = moreModules[moduleId];
@@ -1660,14 +1660,15 @@ function shouldScrollToTop(route) {
 
 
 
-const _0b411c9a = () => interopDefault(__webpack_require__.e(/* import() | pages/aboutus */ 18).then(__webpack_require__.bind(null, 142)));
-const _b50a5bf0 = () => interopDefault(__webpack_require__.e(/* import() | pages/cart */ 20).then(__webpack_require__.bind(null, 135)));
-const _0973792e = () => interopDefault(__webpack_require__.e(/* import() | pages/checkout */ 21).then(__webpack_require__.bind(null, 136)));
-const _29fc7b4d = () => interopDefault(__webpack_require__.e(/* import() | pages/orders */ 23).then(__webpack_require__.bind(null, 137)));
-const _25be1b4e = () => interopDefault(__webpack_require__.e(/* import() | pages/payment */ 24).then(__webpack_require__.bind(null, 138)));
-const _4c8a984e = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/order/index */ 19).then(__webpack_require__.bind(null, 139)));
-const _60a90fcc = () => interopDefault(__webpack_require__.e(/* import() | pages/index */ 22).then(__webpack_require__.bind(null, 140)));
-const _8e720484 = () => interopDefault(__webpack_require__.e(/* import() | pages/userorder/_orderid */ 25).then(__webpack_require__.bind(null, 141)));
+const _0b411c9a = () => interopDefault(__webpack_require__.e(/* import() | pages/aboutus */ 18).then(__webpack_require__.bind(null, 146)));
+const _b50a5bf0 = () => interopDefault(__webpack_require__.e(/* import() | pages/cart */ 21).then(__webpack_require__.bind(null, 138)));
+const _0973792e = () => interopDefault(__webpack_require__.e(/* import() | pages/checkout */ 22).then(__webpack_require__.bind(null, 139)));
+const _29fc7b4d = () => interopDefault(__webpack_require__.e(/* import() | pages/orders */ 24).then(__webpack_require__.bind(null, 140)));
+const _25be1b4e = () => interopDefault(__webpack_require__.e(/* import() | pages/payment */ 25).then(__webpack_require__.bind(null, 141)));
+const _4c8a984e = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/order/index */ 19).then(__webpack_require__.bind(null, 142)));
+const _d51f82e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/auth/googlecallback */ 20).then(__webpack_require__.bind(null, 143)));
+const _60a90fcc = () => interopDefault(__webpack_require__.e(/* import() | pages/index */ 23).then(__webpack_require__.bind(null, 144)));
+const _8e720484 = () => interopDefault(__webpack_require__.e(/* import() | pages/userorder/_orderid */ 26).then(__webpack_require__.bind(null, 145)));
 const emptyFn = () => {};
 external_vue_default.a.use(external_vue_router_default.a);
 const routerOptions = {
@@ -1700,6 +1701,10 @@ const routerOptions = {
     path: "/admin/order",
     component: _4c8a984e,
     name: "admin-order"
+  }, {
+    path: "/auth/googlecallback",
+    component: _d51f82e6,
+    name: "auth-googlecallback"
   }, {
     path: "/",
     component: _60a90fcc,
@@ -2453,17 +2458,17 @@ function mergeProperty(storeModule, moduleData, property) {
   }
 }
 // CONCATENATED MODULE: ./.nuxt/components/index.js
-const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 1).then(__webpack_require__.bind(null, 114)).then(c => wrapFunctional(c.default || c));
+const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 1).then(__webpack_require__.bind(null, 115)).then(c => wrapFunctional(c.default || c));
 const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 2).then(__webpack_require__.bind(null, 43)).then(c => wrapFunctional(c.default || c));
-const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 3).then(__webpack_require__.bind(null, 116)).then(c => wrapFunctional(c.default || c));
+const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 3).then(__webpack_require__.bind(null, 117)).then(c => wrapFunctional(c.default || c));
 const ChatCard = () => __webpack_require__.e(/* import() | components/chat-card */ 4).then(__webpack_require__.bind(null, 93)).then(c => wrapFunctional(c.default || c));
-const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 5).then(__webpack_require__.bind(null, 117)).then(c => wrapFunctional(c.default || c));
+const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 5).then(__webpack_require__.bind(null, 118)).then(c => wrapFunctional(c.default || c));
 const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 6).then(__webpack_require__.bind(null, 47)).then(c => wrapFunctional(c.default || c));
-const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 7).then(__webpack_require__.bind(null, 118)).then(c => wrapFunctional(c.default || c));
+const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 7).then(__webpack_require__.bind(null, 119)).then(c => wrapFunctional(c.default || c));
 const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 8).then(__webpack_require__.bind(null, 55)).then(c => wrapFunctional(c.default || c));
 const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 9).then(__webpack_require__.bind(null, 70)).then(c => wrapFunctional(c.default || c));
 const GoogleBtn = () => __webpack_require__.e(/* import() | components/google-btn */ 10).then(__webpack_require__.bind(null, 69)).then(c => wrapFunctional(c.default || c));
-const Landing = () => __webpack_require__.e(/* import() | components/landing */ 11).then(__webpack_require__.bind(null, 115)).then(c => wrapFunctional(c.default || c));
+const Landing = () => __webpack_require__.e(/* import() | components/landing */ 11).then(__webpack_require__.bind(null, 116)).then(c => wrapFunctional(c.default || c));
 const LandingCategories = () => __webpack_require__.e(/* import() | components/landing-categories */ 12).then(__webpack_require__.bind(null, 94)).then(c => wrapFunctional(c.default || c));
 const LandingCopy = () => __webpack_require__.e(/* import() | components/landing-copy */ 13).then(__webpack_require__.bind(null, 95)).then(c => wrapFunctional(c.default || c));
 const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 14).then(__webpack_require__.bind(null, 91)).then(c => wrapFunctional(c.default || c));
