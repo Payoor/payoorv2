@@ -1,9 +1,5 @@
 <template>
     <div class="orders">
-        <div class="orders__header">
-            <ChatHeader :logovisible="true" :jwt="true" :backRoute="'/'" />
-        </div>
-
         <div class="orders__content">
             <OrderDisplay :order="order" :cart="cart" />
         </div>
@@ -49,8 +45,6 @@ export default {
 
                 this.order = order;
                 this.cart = cart;
-
-                console.log(order, cart)
             } catch (error) {
                 console.log(error)
             }
