@@ -5,6 +5,7 @@
                 <div class="orderdetails__summary">
                     <h2 class="orderdetails__title">Order ID: {{ order._id }}</h2>
                     <p><strong>Address:</strong> {{ order.checkout_id.delivery_address }}</p>
+                    <p v-if="order.checkout_id.phone_number"><strong>Phone:</strong> {{ order.checkout_id.phone_number }}</p>
                     <p><strong>Delivery Date:</strong> {{ formattedDate }}</p>
                     <p><strong>Total:</strong> ₦{{ order.checkout_id.total.toLocaleString() }}</p>
                 </div>
