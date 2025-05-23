@@ -22,7 +22,8 @@
                     </div>
 
                     <div class="home__chatbody">
-                        <ChatBody :jwt="jwt" :products="products" :searchloading="loading" />
+                        <ChatBody :jwt="jwt" :products="products" :searchloading="loading"
+                            @load-more="loadMoreProducts" />
                     </div>
 
                     <div class="home__bottom">
@@ -44,13 +45,17 @@
 </template>
 
 <script>
+import { serverurl } from '@/api';
+
 export default {
     data() {
         return {
             jwt: null,
             products: [],
-            loading: false
-        }
+            loading: false,
+            page: 2,
+            noMoreProducts: false
+        };
     },
     async mounted() {
         this.jwt = localStorage.getItem('jwt');
@@ -67,9 +72,54 @@ export default {
         },
         handleProductsChange(value) {
             this.products = value;
+            this.page = 2;
+            this.noMoreProducts = false;
         },
         setLoading(value) {
             this.loading = value;
+        },
+        async loadMoreProducts() {
+            if (this.loading || this.noMoreProducts) return;
+
+            //this.setLoading(true);
+
+            try {
+                const token = this.jwt;
+                const message = this.$route.query.message;
+
+                if (!message) {
+                    console.warn("No search message found in route query.");
+                    //this.setLoading(false);
+                    return;
+                }
+
+                const response = await fetch(`${serverurl}/shopper/message?page=${this.page}&size=10`, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message })
+                });
+
+                if (!response.ok) throw new Error(`Error loading more: ${response.status}`);
+
+                const data = await response.json();
+                const moreProducts = data.products;
+
+                this.products = [...this.products, ...moreProducts];
+                this.page += 1;
+
+                if (!data.hasMore) {
+                    console.log("No more products to load.");
+                    this.noMoreProducts = true;
+                }
+
+            } catch (error) {
+                console.error('Failed to load more products:', error);
+            } finally {
+                //this.setLoading(false);
+            }
         }
     }
 }

@@ -31,22 +31,33 @@ const shopperRoute = express()
 shopperRoute.post('/shopper/message', authMiddleware, async (req, res) => {
   try {
     const { message } = req.body
+    const page = parseInt(req.query.page) || 1
+    const size = parseInt(req.query.size) || 10
 
     const data = await elasticSearchCl.findProducts({
       query: message,
-      index: productIndex
+      index: productIndex,
+      page,
+      size
     })
 
     const { total, hits } = data.hits
 
+    const totalItems = total.value;
+    const currentCount = page * size 
+
     res.status(200).json({
       message: 'message sent',
       input: message,
+      page,
+      size,
       products: hits ? hits.map(hit => hit._source) : [],
-      total: total.value
+      total: totalItems,
+      hasMore: currentCount < totalItems // true if more pages remain
     })
   } catch (error) {
     console.log(error)
+    res.status(500).json({ error: 'Internal server error' })
   }
 })
 

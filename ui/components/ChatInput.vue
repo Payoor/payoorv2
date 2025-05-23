@@ -54,7 +54,7 @@ export default {
         const message = this.$route.query.message;
 
         if (message) {
-            this.postMessageFromQuery(message); // Don't set `userinput`
+            this.postMessageFromQuery(message);
         }
     },
     methods: {

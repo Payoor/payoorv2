@@ -86,34 +86,36 @@ var ElasticSearchClass = /*#__PURE__*/function () {
     key: "findProducts",
     value: function () {
       var _findProducts = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(_ref) {
-        var query, index;
+        var query, index, _ref$page, page, _ref$size, size, from, response;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              query = _ref.query, index = _ref.index;
+              query = _ref.query, index = _ref.index, _ref$page = _ref.page, page = _ref$page === void 0 ? 1 : _ref$page, _ref$size = _ref.size, size = _ref$size === void 0 ? 10 : _ref$size;
               _context2.prev = 1;
-              return _context2.abrupt("return", axios.post("".concat(this.elasticsearchUrl, "/").concat(index, "/_search?filter_path=hits.total,hits.hits._source"), {
+              from = (page - 1) * size;
+              _context2.next = 5;
+              return axios.post("".concat(this.elasticsearchUrl, "/").concat(index, "/_search?filter_path=hits.total,hits.hits._source"), {
+                from: from,
+                size: size,
                 query: {
                   multi_match: {
                     query: query,
-                    //"sourdough recipe"
                     fields: ['name^2', 'metadata']
                   }
                 }
-              }).then(function (response) {
-                return response.data;
-              })["catch"](function (error) {
-                console.error('Error performing search:', error);
-              }));
+              });
             case 5:
-              _context2.prev = 5;
+              response = _context2.sent;
+              return _context2.abrupt("return", response.data);
+            case 9:
+              _context2.prev = 9;
               _context2.t0 = _context2["catch"](1);
-              console.log(_context2.t0);
-            case 8:
+              console.error('Error performing paginated search:', _context2.t0);
+            case 12:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, this, [[1, 5]]);
+        }, _callee2, this, [[1, 9]]);
       }));
       function findProducts(_x2) {
         return _findProducts.apply(this, arguments);

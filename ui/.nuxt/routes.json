@@ -7,6 +7,13 @@
     "_name": "_0b411c9a"
   },
   {
+    "name": "admin",
+    "path": "/admin",
+    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/index.vue",
+    "chunkName": "pages/admin/index",
+    "_name": "_dd64b54c"
+  },
+  {
     "name": "cart",
     "path": "/cart",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/cart.vue",

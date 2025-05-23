@@ -58,28 +58,25 @@ class ElasticSearchClass {
     }
   }
 
-  async findProducts ({ query, index }) {
+  async findProducts ({ query, index, page = 1, size = 10 }) {
     try {
-      return axios
-        .post(
-          `${this.elasticsearchUrl}/${index}/_search?filter_path=hits.total,hits.hits._source`,
-          {
-            query: {
-              multi_match: {
-                query, //"sourdough recipe"
-                fields: ['name^2', 'metadata']
-              }
+      const from = (page - 1) * size
+      const response = await axios.post(
+        `${this.elasticsearchUrl}/${index}/_search?filter_path=hits.total,hits.hits._source`,
+        {
+          from,
+          size,
+          query: {
+            multi_match: {
+              query,
+              fields: ['name^2', 'metadata']
             }
           }
-        )
-        .then(response => {
-          return response.data
-        })
-        .catch(error => {
-          console.error('Error performing search:', error)
-        })
+        }
+      )
+      return response.data
     } catch (error) {
-      console.log(error)
+      console.error('Error performing paginated search:', error)
     }
   }
 }

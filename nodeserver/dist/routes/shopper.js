@@ -42,39 +42,51 @@ var elasticSearchCl = new _ElasticSearchClass["default"](elasticsearchUrl);
 var shopperRoute = (0, _express["default"])();
 shopperRoute.post('/shopper/message', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var message, data, _data$hits, total, hits;
+    var message, page, size, data, _data$hits, total, hits, totalItems, currentCount;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
           message = req.body.message;
-          _context.next = 4;
+          page = parseInt(req.query.page) || 1;
+          size = parseInt(req.query.size) || 10;
+          _context.next = 6;
           return elasticSearchCl.findProducts({
             query: message,
-            index: productIndex
+            index: productIndex,
+            page: page,
+            size: size
           });
-        case 4:
+        case 6:
           data = _context.sent;
           _data$hits = data.hits, total = _data$hits.total, hits = _data$hits.hits;
+          totalItems = total.value;
+          currentCount = page * size;
           res.status(200).json({
             message: 'message sent',
             input: message,
+            page: page,
+            size: size,
             products: hits ? hits.map(function (hit) {
               return hit._source;
             }) : [],
-            total: total.value
+            total: totalItems,
+            hasMore: currentCount < totalItems // true if more pages remain
           });
-          _context.next = 12;
+          _context.next = 17;
           break;
-        case 9:
-          _context.prev = 9;
+        case 13:
+          _context.prev = 13;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0);
-        case 12:
+          res.status(500).json({
+            error: 'Internal server error'
+          });
+        case 17:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 9]]);
+    }, _callee, null, [[0, 13]]);
   }));
   return function (_x, _x2) {
     return _ref.apply(this, arguments);

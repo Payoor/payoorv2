@@ -58,8 +58,7 @@ export default {
                     class: 'fruits'
                 }
             ],
-            animatedIndices: [] // To track which ones are animated
-
+            animatedIndices: [] 
         };
     },
     methods: {

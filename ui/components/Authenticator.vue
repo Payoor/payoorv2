@@ -95,7 +95,6 @@
 
 <script>
 import { serverurl } from '@/api';
-import GoogleBtn from './GoogleBtn.vue';
 
 export default {
     data() {
