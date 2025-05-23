@@ -18,11 +18,28 @@
 
             <div class="chatoptions__content--body">
                 <div class="chatoptions__options">
+                    <div v-if="loading" class="chatoptions__loading">
+                        <div class="spinner"></div>
+                    </div>
 
-                    <div v-for="variant in variants" :key="variant._id">
-                        <ChatOption :data="{ ...variant, productimg }" />
+                    <div v-else>
+                        <div v-for="variant in variants" :key="variant._id">
+                            <ChatOption :data="{ ...variant, productimg }" />
+                        </div>
+                    </div>
+
+                    <div class="chatoptions__description">
+                        <div class="chatoptions__content--body">
+                            <h2 class="description__title">Product Description</h2>
+                            <p class="description__text">
+                                {{ productDescription || `This product comes in multiple variants. Select the one that
+                                best fits your needs. Each
+                                variant is carefully crafted to ensure the best quality and customer satisfaction.`}}
+                            </p>
+                        </div>
                     </div>
                 </div>
+
 
                 <div class="chatoptions__bottom">
                     <div class="chatoptions__content--body">
@@ -53,11 +70,12 @@ import { serverurl } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {
-    props: ['toggleViewOptions', 'mongooseid', 'productname', 'productimg'],
+    props: ['toggleViewOptions', 'mongooseid', 'productname', 'productimg', 'productDescription'],
     mixins: [jwt_mixin],
     data() {
         return {
-            variants: []
+            variants: [],
+            loading: false
         }
     },
     mounted() {
@@ -72,12 +90,11 @@ export default {
     },
     methods: {
         async getOptions() {
-            const { mongooseid } = this;
-
+            this.loading = true;
             const token = await this.getValidToken();
 
             try {
-                const response = await fetch(`${serverurl}/shopper/getoptions?mongooseid=${mongooseid}`, {
+                const response = await fetch(`${serverurl}/shopper/getoptions?mongooseid=${this.mongooseid}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -95,16 +112,11 @@ export default {
                 }
 
                 const data = await response.json();
-
-                const { variants } = data;
-
-               // console.log('variants, variants', variants)
-
-                this.variants = variants;
-
-              //  console.log(this.variants, 'updated varaints')
+                this.variants = data.variants;
             } catch (error) {
-                console.log(error)
+                console.log(error);
+            } finally {
+                this.loading = false;
             }
         },
         continueShopping() {
@@ -187,6 +199,25 @@ export default {
         margin-top: 3rem;
     }
 
+    &__description {
+        margin-top: 2rem;
+        padding: 1rem 0;
+        border-top: 1px solid #eee;
+
+        .description__title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: $black;
+            margin-bottom: 1rem;
+        }
+
+        .description__text {
+            font-size: 1.4rem;
+            color: #555;
+            line-height: 1.6;
+        }
+    }
+
     &__content {
         display: flex;
         justify-content: center;
@@ -199,6 +230,13 @@ export default {
             }
 
         }
+    }
+
+    &__loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5rem 0;
     }
 
     &__bottom {

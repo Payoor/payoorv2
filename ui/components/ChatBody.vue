@@ -3,11 +3,18 @@
         <div class="chatbody">
             <div class="chatbody__content">
 
-                <div class="chatbody__products">
-                    <div v-for="product in products">
-                        <ChatCard :product="product" />
+                <div>
+                    <div v-if="searchloading" class="chatbody__loading">
+                        <div class="spinner"></div>
+                    </div>
+
+                    <div v-else class="chatbody__products">
+                        <div v-for="product in products" :key="product._id">
+                            <ChatCard :product="product" />
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -17,7 +24,7 @@
 import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {
-    props: ['products'],
+    props: ['products', 'searchloading'],
     mixins: [jwt_mixin],
 }
 </script>
@@ -58,6 +65,14 @@ export default {
             width: auto;
 
         }
+    }
+
+    &__loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5rem 0;
+        grid-column: 1 / -1; // Span full width in grid
     }
 }
 </style>

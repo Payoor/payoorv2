@@ -18,11 +18,11 @@
             <div class="home">
                 <div class="home__content">
                     <div class="home__header" :class="{ 'auth': jwt }">
-                        <ChatHeader :logovisible="true" :jwt="jwt" @update:authValue="handleAuthChange"/>
+                        <ChatHeader :logovisible="true" :jwt="jwt" @update:authValue="handleAuthChange" />
                     </div>
 
                     <div class="home__chatbody">
-                        <ChatBody :jwt="jwt" :products="products" />
+                        <ChatBody :jwt="jwt" :products="products" :searchloading="loading" />
                     </div>
 
                     <div class="home__bottom">
@@ -31,9 +31,10 @@
                                 <CartButton :showicon="true" />
                             </div>
 
-                            <ChatCategories :jwt="jwt" @update:products="handleProductsChange" />
+                            <ChatCategories :jwt="jwt" @update:products="handleProductsChange"
+                                :setLoading="setLoading" />
 
-                            <ChatInput :jwt="jwt" @update:products="handleProductsChange" />
+                            <ChatInput :jwt="jwt" @update:products="handleProductsChange" :setLoading="setLoading" />
                         </div>
                     </div>
                 </div>
@@ -47,7 +48,8 @@ export default {
     data() {
         return {
             jwt: null,
-            products: []
+            products: [],
+            loading: false
         }
     },
     async mounted() {
@@ -59,14 +61,16 @@ export default {
                 this.jwt = value;
                 localStorage.setItem('jwt', value);
             } else {
-                this.jwt = null
-
-                console.log('logged out here')
+                this.jwt = null;
+                console.log('logged out here');
             }
         },
         handleProductsChange(value) {
             this.products = value;
         },
+        setLoading(value) {
+            this.loading = value;
+        }
     }
 }
 </script>

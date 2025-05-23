@@ -220,6 +220,9 @@ const serverurl = (() => {
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
+  props: {
+    setLoading: Function
+  },
   data() {
     return {
       products: []
@@ -229,6 +232,8 @@ const serverurl = (() => {
   methods: {
     async postMessageFromQuery(message) {
       const token = localStorage.getItem('jwt');
+      if (this.setLoading) this.setLoading(true); // 👉 Start loading
+
       try {
         const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "a"]}/shopper/message`, {
           method: 'POST',
@@ -255,6 +260,8 @@ const serverurl = (() => {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        if (this.setLoading) this.setLoading(false); // 👉 End loading
       }
     }
   }

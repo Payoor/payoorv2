@@ -113,6 +113,7 @@ export default {
         },
         async postMessageToServer() {
             const token = await this.getValidToken();
+            if (this.setLoading) this.setLoading(true); // start loading
 
             try {
                 const response = await fetch(`${serverurl}/shopper/message`, {
@@ -146,14 +147,17 @@ export default {
                     });
 
                     this.userinput = "";
-                    this.$nextTick(() => this.autoResize()); // Reset textarea height
+                    this.$nextTick(() => this.autoResize());
                 }
             } catch (error) {
                 console.log(error);
+            } finally {
+                if (this.setLoading) this.setLoading(false); // end loading
             }
         },
         async postMessageFromQuery(message) {
             const token = await this.getValidToken();
+            if (this.setLoading) this.setLoading(true);
 
             try {
                 const response = await fetch(`${serverurl}/shopper/message`, {
@@ -180,8 +184,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+            } finally {
+                if (this.setLoading) this.setLoading(false);
             }
         }
+
     }
 };
 </script>
