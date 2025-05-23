@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="loading" class="chatoption__loader">
+        <div v-if="loading && !option" class="chatoption__loader">
             <div class="spinner"></div>
         </div>
 
@@ -129,7 +129,7 @@ export default {
             }
         },
         async getOption() {
-            this.loading = true; // 👈 Start loading
+            this.loading = true;
             const token = await this.getValidToken();
 
             try {
@@ -156,7 +156,7 @@ export default {
             } catch (error) {
                 console.error(error);
             } finally {
-                this.loading = false; // 👈 End loading
+                this.loading = false;
             }
         },
         formatPrice(price) {
