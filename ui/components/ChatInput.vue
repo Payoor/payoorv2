@@ -210,7 +210,7 @@ export default {
         border: none;
         outline: none;
         width: 100%;
-        min-height: 4rem; // More substantial default height
+        min-height: 2.5rem; // More substantial default height
         max-height: 15rem;
         resize: none;
         overflow-y: auto;
