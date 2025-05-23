@@ -2,8 +2,9 @@
     <div>
         <div class="chatinput">
             <textarea v-model="userinput" class="chatinput__field" :placeholder="placeholder" @input="autoResize"
-                @keydown.enter.prevent="handleEnter" ref="textarea">
+                @keydown.enter="handleEnter" ref="textarea">
 </textarea>
+
 
             <div class="chatinput__sendbtn slide-fade-in-up" :class="{
                 'visible': userinput.length
@@ -31,7 +32,7 @@ export default {
     data() {
         return {
             userinput: "",
-            placeholder: "Create a list",
+            placeholder: "Enter your list",
         };
     },
     watch: {
@@ -39,11 +40,11 @@ export default {
             const wordArray = newValue.trim().split(/\s+/); // split by spaces
             const wordCount = wordArray.length;
 
-          //  console.log(wordArray, wordCount)
+            //  console.log(wordArray, wordCount)
 
             if (wordCount >= 1) {
                 if (wordCount >= 5 || wordArray[0].length >= 5) {
-                   // console.log('hello wordcound')
+                    // console.log('hello wordcound')
                     //this.autoComplete(newValue);
                 }
             }
@@ -53,15 +54,16 @@ export default {
         const message = this.$route.query.message;
 
         if (message) {
-            //this.userinput = message;
-            this.postMessageFromQuery(message);
+            this.postMessageFromQuery(message); // Don't set `userinput`
         }
     },
     methods: {
         autoResize() {
-            const textarea = this.$refs.textarea;
-            textarea.style.height = "auto"; // reset
-            textarea.style.height = `${textarea.scrollHeight}px`; // set to content height
+            this.$nextTick(() => {
+                const textarea = this.$refs.textarea;
+                textarea.style.height = "auto";
+                textarea.style.height = `${textarea.scrollHeight}px`;
+            });
         },
         async autoComplete(queryText) {
             try {
@@ -85,7 +87,7 @@ export default {
                 }
 
                 const data = await response.json();
-               // console.log('Autocomplete response:', data);
+                // console.log('Autocomplete response:', data);
             } catch (error) {
                 console.error('Error performing autocomplete:', error.message);
             }
@@ -104,11 +106,10 @@ export default {
             const width = window.innerWidth;
 
             if (width > 900) {
-                this.sendMessage();
-            } else {
-                // to do: allow new lines on desktop or do nothing
-                // e.g., this.userinput += '\n';
+                e.preventDefault(); // prevent newline
+                this.sendMessage(); // send the message
             }
+            // else: allow natural newline on mobile (no preventDefault)
         },
         async postMessageToServer() {
             const { mongooseid } = this;
@@ -209,8 +210,8 @@ export default {
         border: none;
         outline: none;
         width: 100%;
-        min-height: 3rem;
-        max-height: 15rem; // set your limit here
+        min-height: 8rem; // More substantial default height
+        max-height: 15rem;
         resize: none;
         overflow-y: auto;
         color: $white;
