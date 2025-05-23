@@ -8,7 +8,11 @@
 
         <div class="orders__content">
             <div class="orders__content--body">
-                <div v-if="orders.length === 0" class="orders__empty">
+                <div v-if="loading" class="orders__loading">
+                    <div class="spinner"></div>
+                </div>
+
+                <div v-else-if="orders.length === 0" class="orders__empty">
                     <p>You haven’t placed any orders yet.</p>
                 </div>
 
@@ -24,11 +28,13 @@
                         </div>
 
                         <transition name="fade">
-                            <OrderDisplay v-if="expanded[index]" :order="order" :cart="order.cart" :showbacktoorders="false"/>
+                            <OrderDisplay v-if="expanded[index]" :order="order" :cart="order.cart"
+                                :showbacktoorders="false" />
                         </transition>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -48,7 +54,8 @@ export default {
         return {
             jwt: null,
             orders: [],
-            expanded: []
+            expanded: [],
+            loading: true
         }
     },
     mounted() {
@@ -57,9 +64,10 @@ export default {
     },
     methods: {
         async getUserOrders() {
+            this.loading = true; // 👈 Start loading
+
             try {
                 const { jwt } = this;
-
                 if (!jwt) return;
 
                 const response = await fetch(`${serverurl}/shopper/user/getorders`, {
@@ -83,6 +91,8 @@ export default {
                 this.expanded = this.orders.map(() => false);
             } catch (error) {
                 console.error(error);
+            } finally {
+                this.loading = false; // 👈 End loading
             }
         },
         toggle(index) {
@@ -172,6 +182,13 @@ export default {
         font-size: 1.4rem;
         border: none;
         font-weight: 600;
+    }
+
+    &__loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5rem 0;
     }
 }
 
