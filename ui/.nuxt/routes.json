@@ -42,6 +42,13 @@
     "_name": "_25be1b4e"
   },
   {
+    "name": "admin-dashboard",
+    "path": "/admin/dashboard",
+    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/dashboard.vue",
+    "chunkName": "pages/admin/dashboard",
+    "_name": "_0ce7be1c"
+  },
+  {
     "name": "admin-order",
     "path": "/admin/order",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/order/index.vue",

@@ -10,6 +10,7 @@ const _b50a5bf0 = () => interopDefault(import('../pages/cart.vue' /* webpackChun
 const _0973792e = () => interopDefault(import('../pages/checkout.vue' /* webpackChunkName: "pages/checkout" */))
 const _29fc7b4d = () => interopDefault(import('../pages/orders.vue' /* webpackChunkName: "pages/orders" */))
 const _25be1b4e = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
+const _0ce7be1c = () => interopDefault(import('../pages/admin/dashboard.vue' /* webpackChunkName: "pages/admin/dashboard" */))
 const _4c8a984e = () => interopDefault(import('../pages/admin/order/index.vue' /* webpackChunkName: "pages/admin/order/index" */))
 const _d51f82e6 = () => interopDefault(import('../pages/auth/googlecallback.vue' /* webpackChunkName: "pages/auth/googlecallback" */))
 const _60a90fcc = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
@@ -50,6 +51,10 @@ export const routerOptions = {
     path: "/payment",
     component: _25be1b4e,
     name: "payment"
+  }, {
+    path: "/admin/dashboard",
+    component: _0ce7be1c,
+    name: "admin-dashboard"
   }, {
     path: "/admin/order",
     component: _4c8a984e,
