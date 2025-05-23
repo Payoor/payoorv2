@@ -1,6 +1,10 @@
 <template>
     <div>
-        <div class="chatoption slide-fade-in-up" v-if="option">
+        <div v-if="loading" class="chatoption__loader">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="chatoption slide-fade-in-up" v-else-if="option">
             <div class="chatoption__left">
                 <figure class="chatoption__img">
                     <img v-lazy="option.image.length ? option.image : option.productimg" />
@@ -63,7 +67,8 @@ export default {
     data() {
         return {
             quantity: 0,
-            option: null
+            option: null,
+            loading: false
         }
     },
     mounted() {
@@ -109,7 +114,7 @@ export default {
     },*/
     methods: {
         syncCartToLocalStorage(newItems = this.cartItems) {
-          //  console.log('syncCartToLocalStorage ran', newItems);
+            //  console.log('syncCartToLocalStorage ran', newItems);
 
             const safeCartItems = newItems || {};
             const safeCartLength = Object.keys(safeCartItems).length;
@@ -124,6 +129,7 @@ export default {
             }
         },
         async getOption() {
+            this.loading = true; // 👈 Start loading
             const token = await this.getValidToken();
 
             try {
@@ -145,13 +151,12 @@ export default {
                 }
 
                 const data = await response.json();
-
                 const { variant } = data;
-
-               // console.log(variant)
                 this.option = variant;
             } catch (error) {
-                console.log(error)
+                console.error(error);
+            } finally {
+                this.loading = false; // 👈 End loading
             }
         },
         formatPrice(price) {
@@ -160,7 +165,7 @@ export default {
         incrementQuantity() {
             this.quantity++;
 
-          //  console.log(typeof this.option.price, 'this.price')
+            //  console.log(typeof this.option.price, 'this.price')
 
             this.$store.dispatch("cart/addItem", { id: this.option._id, quantity: this.quantity, price: this.option.price });
 
@@ -200,6 +205,13 @@ export default {
     justify-content: space-between;
 
     border: 2px solid rgba($primary-color, .5);
+
+    &__loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 12rem;
+    }
 
     &__left {
         display: flex;

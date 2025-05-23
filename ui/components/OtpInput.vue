@@ -2,8 +2,9 @@
     <div class="otp-inputs">
         <div v-for="(digit, index) in otpLength" :key="index" class="otp-inputs__area">
             <input :ref="`otp${index}`" v-model="otpDigits[index]" type="text" inputmode="numeric" pattern="[0-9]*"
-                maxlength="1" @input="onInput(index)" @keydown="onKeydown($event, index)" @paste="onPaste"
-                class="otp-input" />
+                maxlength="1" :disabled="disabled" @input="onInput(index)" @keydown="onKeydown($event, index)"
+                @paste="onPaste" class="otp-input" />
+
         </div>
     </div>
 </template>
@@ -19,6 +20,10 @@ export default {
         modelValue: {
             type: String,
             default: "",
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     emits: ["update:modelValue"],
@@ -81,6 +86,13 @@ export default {
     gap: 1rem;
     width: 100%; // or max-content depending on layout
 }
+
+.otp-input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: #aaa;
+}
+
 
 .otp-inputs__area {
     width: 100%;

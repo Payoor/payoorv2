@@ -47,7 +47,8 @@
 
                     <div class="auth__otp" v-if="otp_view">
                         <p class="auth__otp--header">We just sent you an otp</p>
-                        <OtpInput @update:modelValue="handleOtpChange" :otpLength="6" />
+                        <OtpInput :disabled="loading" @update:modelValue="handleOtpChange" :otpLength="6" />
+
                         <p class="auth__otp--resendbtn">
                             <span class="auth__otp--resendotp" v-if="allowResendOtp" @click="resendOtp">Resend
                                 OTP</span>
@@ -57,9 +58,17 @@
                     </div>
 
                     <div class="auth__button" v-if="!otp_view">
-                        <button class="button-primary slide-fade-in-up" v-if="allowSubmit" @click="submit">{{ loading ?
-                            'Please wait...' :
-                            'Start shopping' }}</button>
+                        <button class="button-primary slide-fade-in-up" v-if="allowSubmit" @click="submit"
+                            :disabled="loading">
+                            <span v-if="loading">
+                                <svg class="spinner" viewBox="0 0 50 50">
+                                    <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5" />
+                                </svg>
+                                Please wait...
+                            </span>
+                            <span v-else>Start shopping</span>
+                        </button>
+
 
                         <button class="button-primary slide-fade-in-up disabled-btn" v-if="!allowSubmit">{{ loading ?
                             `Please

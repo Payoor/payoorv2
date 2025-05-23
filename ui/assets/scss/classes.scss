@@ -36,3 +36,16 @@
     overflow: hidden !important;
     height: 100vh !important;
 }
+
+.spinner {
+    animation: spin 1s linear infinite;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+
+    & .path {
+        stroke: $primary-color;
+        stroke-linecap: round;
+    }
+}
