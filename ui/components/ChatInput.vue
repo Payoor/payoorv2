@@ -112,8 +112,6 @@ export default {
             // else: allow natural newline on mobile (no preventDefault)
         },
         async postMessageToServer() {
-            const { mongooseid } = this;
-
             const token = await this.getValidToken();
 
             try {
@@ -126,9 +124,7 @@ export default {
                         'Access-Control-Request-Method': 'POST',
                         'Access-Control-Request-Headers': 'Content-Type'
                     },
-                    body: JSON.stringify({
-                        message: this.userinput
-                    })
+                    body: JSON.stringify({ message: this.userinput })
                 });
 
                 if (!response.ok) {
@@ -150,6 +146,7 @@ export default {
                     });
 
                     this.userinput = "";
+                    this.$nextTick(() => this.autoResize()); // Reset textarea height
                 }
             } catch (error) {
                 console.log(error);
@@ -210,7 +207,7 @@ export default {
         border: none;
         outline: none;
         width: 100%;
-        min-height: 2.5rem; // More substantial default height
+        min-height: 2rem; // More substantial default height
         max-height: 15rem;
         resize: none;
         overflow-y: auto;
