@@ -515,7 +515,8 @@ adminRoute.put('/admin/update-variant/:variantId', async (req, res) => {
     const variantId = new ObjectId(req.params.variantId)
     const { unit, price, availability, image } = req.body
 
-    if (!unit || !price || !availability || !image) {
+    if (!unit || !price || !availability) {
+      console.log('All fields are required')
       return res.status(400).json({ error: 'All fields are required' })
     }
 

@@ -780,14 +780,15 @@ adminRoute.put('/admin/update-variant/:variantId', /*#__PURE__*/function () {
           _context1.prev = 0;
           variantId = new ObjectId(req.params.variantId);
           _req$body7 = req.body, unit = _req$body7.unit, price = _req$body7.price, availability = _req$body7.availability, image = _req$body7.image;
-          if (!(!unit || !price || !availability || !image)) {
-            _context1.next = 5;
+          if (!(!unit || !price || !availability)) {
+            _context1.next = 6;
             break;
           }
+          console.log('All fields are required');
           return _context1.abrupt("return", res.status(400).json({
             error: 'All fields are required'
           }));
-        case 5:
+        case 6:
           updateFields = {
             unit: unit,
             price: price,
@@ -795,31 +796,31 @@ adminRoute.put('/admin/update-variant/:variantId', /*#__PURE__*/function () {
             image: image,
             updatedAt: new Date()
           };
-          _context1.next = 8;
+          _context1.next = 9;
           return _payoordb["default"].db.collection('productvariants').updateOne({
             _id: variantId
           }, {
             $set: updateFields
           });
-        case 8:
+        case 9:
           result = _context1.sent;
           res.status(200).json({
             message: 'Variant updated successfully'
           });
-          _context1.next = 16;
+          _context1.next = 17;
           break;
-        case 12:
-          _context1.prev = 12;
+        case 13:
+          _context1.prev = 13;
           _context1.t0 = _context1["catch"](0);
           console.error('Update variant error:', _context1.t0);
           res.status(500).json({
             error: 'Server error'
           });
-        case 16:
+        case 17:
         case "end":
           return _context1.stop();
       }
-    }, _callee1, null, [[0, 12]]);
+    }, _callee1, null, [[0, 13]]);
   }));
   return function (_x19, _x20) {
     return _ref1.apply(this, arguments);

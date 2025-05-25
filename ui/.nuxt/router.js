@@ -4,17 +4,17 @@ import { normalizeURL, decode } from 'ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _0b411c9a = () => interopDefault(import('../pages/aboutus.vue' /* webpackChunkName: "pages/aboutus" */))
-const _dd64b54c = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
-const _b50a5bf0 = () => interopDefault(import('../pages/cart.vue' /* webpackChunkName: "pages/cart" */))
-const _0973792e = () => interopDefault(import('../pages/checkout.vue' /* webpackChunkName: "pages/checkout" */))
-const _29fc7b4d = () => interopDefault(import('../pages/orders.vue' /* webpackChunkName: "pages/orders" */))
-const _25be1b4e = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
-const _0ce7be1c = () => interopDefault(import('../pages/admin/dashboard.vue' /* webpackChunkName: "pages/admin/dashboard" */))
-const _4c8a984e = () => interopDefault(import('../pages/admin/order/index.vue' /* webpackChunkName: "pages/admin/order/index" */))
-const _d51f82e6 = () => interopDefault(import('../pages/auth/googlecallback.vue' /* webpackChunkName: "pages/auth/googlecallback" */))
-const _60a90fcc = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
-const _8e720484 = () => interopDefault(import('../pages/userorder/_orderid.vue' /* webpackChunkName: "pages/userorder/_orderid" */))
+const _3796093a = () => interopDefault(import('../pages/aboutus.vue' /* webpackChunkName: "pages/aboutus" */))
+const _ca61bd3e = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
+const _2b63bfe1 = () => interopDefault(import('../pages/cart.vue' /* webpackChunkName: "pages/cart" */))
+const _730fd287 = () => interopDefault(import('../pages/checkout.vue' /* webpackChunkName: "pages/checkout" */))
+const _4d3d5234 = () => interopDefault(import('../pages/orders.vue' /* webpackChunkName: "pages/orders" */))
+const _62f4b2d5 = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
+const _41addea3 = () => interopDefault(import('../pages/admin/dashboard.vue' /* webpackChunkName: "pages/admin/dashboard" */))
+const _150a62c0 = () => interopDefault(import('../pages/admin/order/index.vue' /* webpackChunkName: "pages/admin/order/index" */))
+const _7cd678d8 = () => interopDefault(import('../pages/auth/googlecallback.vue' /* webpackChunkName: "pages/auth/googlecallback" */))
+const _06e04561 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _150a3bd7 = () => interopDefault(import('../pages/userorder/_orderid.vue' /* webpackChunkName: "pages/userorder/_orderid" */))
 
 const emptyFn = () => {}
 
@@ -29,47 +29,47 @@ export const routerOptions = {
 
   routes: [{
     path: "/aboutus",
-    component: _0b411c9a,
+    component: _3796093a,
     name: "aboutus"
   }, {
     path: "/admin",
-    component: _dd64b54c,
+    component: _ca61bd3e,
     name: "admin"
   }, {
     path: "/cart",
-    component: _b50a5bf0,
+    component: _2b63bfe1,
     name: "cart"
   }, {
     path: "/checkout",
-    component: _0973792e,
+    component: _730fd287,
     name: "checkout"
   }, {
     path: "/orders",
-    component: _29fc7b4d,
+    component: _4d3d5234,
     name: "orders"
   }, {
     path: "/payment",
-    component: _25be1b4e,
+    component: _62f4b2d5,
     name: "payment"
   }, {
     path: "/admin/dashboard",
-    component: _0ce7be1c,
+    component: _41addea3,
     name: "admin-dashboard"
   }, {
     path: "/admin/order",
-    component: _4c8a984e,
+    component: _150a62c0,
     name: "admin-order"
   }, {
     path: "/auth/googlecallback",
-    component: _d51f82e6,
+    component: _7cd678d8,
     name: "auth-googlecallback"
   }, {
     path: "/",
-    component: _60a90fcc,
+    component: _06e04561,
     name: "index"
   }, {
     path: "/userorder/:orderid?",
-    component: _8e720484,
+    component: _150a3bd7,
     name: "userorder-orderid"
   }],
 
