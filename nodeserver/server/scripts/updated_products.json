@@ -2,7 +2,7 @@
   {
     "_id": "67a3e90d8f76755bc9adc621",
     "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739212546567-6u2c1d9wieu.webp",
-    "generatedDescription": "",
+    "generatedDescription": "this is a description for long grain rice",
     "generatedCategories": [
       "Rice (long grain)",
       "Rice (long grain)",
@@ -12,9 +12,9 @@
     ],
     "name": "rice (long grain)",
     "createdAt": "2025-02-05T22:41:17.492Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-24T23:43:49.392Z",
     "variantCount": 5,
-    "metadata": "grains staple side long grain rice staple grain pantry essential versatile cooking grain everyday meal base affordable pantry staple white rice brown rice basmati alternative fluffy grains rice bowl ingredient side dish"
+    "metadata": "grains staple side long grain rice staple grain versatile pantry essential cooking grain affordable everyday meal base classic rice side dish carbohydrate source delicious fluffy texture budgetfriendly"
   },
   {
     "_id": "67a3e90d8f76755bc9adc627",
@@ -29,9 +29,9 @@
     ],
     "name": "rice (short grain)",
     "createdAt": "2025-02-05T22:41:17.822Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-24T23:49:33.294Z",
     "variantCount": 5,
-    "metadata": "grains staple side short grain rice sushi japanese sticky sweet glutinous premium grain cooking versatile asian cuisine fluffy delicious authentic traditional rice"
+    "metadata": "grains staple side shortgrain rice sticky japanese sushi rice premium grain fluffy texture sweet flavor versatile cooking rice asian cuisine delicious pantry staple"
   },
   {
     "_id": "67a3e90e8f76755bc9adc62d",
@@ -44,9 +44,9 @@
     ],
     "name": "ofada rice - white",
     "createdAt": "2025-02-05T22:41:18.101Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-24T23:52:18.995Z",
     "variantCount": 3,
-    "metadata": "rice staple grain ofada rice white grain nigerian staple aromatic naturallyunrefined longgrain nutty traditional authentic africanflavor unique texture wholesome unprocessed hearty flavorful rustic nigeria"
+    "metadata": "rice staple grain ofada rice white grain nigerian staple african traditional aromatic nutty brown rice unprocessed natural wholesome hearty flavorful wholesome delicious unprocessed fragrant rich texture."
   },
   {
     "_id": "67a3e90e8f76755bc9adc631",
@@ -59,9 +59,9 @@
     ],
     "name": "ofada rice - brown",
     "createdAt": "2025-02-05T22:41:18.380Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-24T23:54:08.994Z",
     "variantCount": 3,
-    "metadata": "whole grain staple food traditional cuisine ofada rice brown grain nigeria african traditional unprocessed nutty aroma wholesome healthy unprocessed natural rustic authentic unprocessed delicious earthy flavorful sustainable unique nigerian"
+    "metadata": "whole grain staple food traditional cuisine ofada rice brown rice african staple grain nutty aroma unprocessed natural wholesome healthy traditional westafrican authentic unprocessedgrain fiberrich nutritious versatile rustic flavour earthy delicious"
   },
   {
     "_id": "67a3e90e8f76755bc9adc635",
@@ -74,21 +74,21 @@
     "createdAt": "2025-02-05T22:41:18.659Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "nigerian staple grain ofada rice abakaliki nigeria staple grain aromatic nutty brown unpolished natural authentic flavorful traditional nigerian rice hearty wholesome rich taste african cuisine healthy grain.\n"
+    "metadata": "nigerian staple grain ofada rice abakaliki rice nigerian grain aromatic naturallyunpolished nutty brown rice hearty delicious traditional african staple complexflavor wholesome healthy unprocessed authentic regional delicacy.\n"
   },
   {
     "_id": "67a3e90e8f76755bc9adc637",
     "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739651180536-0vzlpozh5ur.jpg",
     "generatedDescription": "",
     "generatedCategories": [
-      " Basmati Rice - Tropical Sun Golden Stella ",
-      " Basmati Rice - Tropical Sun Golden Stella "
+      "Basmati Rice - Tropical Sun Golden Stella",
+      "Basmati Rice - Tropical Sun Golden Stella"
     ],
     "name": "basmati rice - tropical sun golden stella",
     "createdAt": "2025-02-05T22:41:18.969Z",
-    "updatedAt": "2025-02-15T20:26:22.114Z",
+    "updatedAt": "2025-05-24T23:55:58.657Z",
     "variantCount": 2,
-    "metadata": "grains rice staple basmati rice aromatic longgrain indian premium fluffy fragrant grains golden nutty flavorful delicious wholesome natural authentic traditional aged parboiled tender perfectrice"
+    "metadata": "grains rice staple basmati rice aromatic longgrain indian premium golden stella fragrant fluffy nutty flavorful naturallyaged parboiled grains delicious authentic traditional aromaticflavor wholesome pantry staple"
   },
   {
     "_id": "67a3e90f8f76755bc9adc63a",
@@ -101,7 +101,7 @@
     "createdAt": "2025-02-05T22:41:19.248Z",
     "updatedAt": "2025-02-15T20:27:15.425Z",
     "variantCount": 1,
-    "metadata": "grains rice staple basmati rice tilda golden sella aromatic longgrain indian premium fragrant fluffy delicious grains fluffy texture nutty flavor authentic indian cooking versatile rice"
+    "metadata": "grains rice staple basmati rice golden sella aromatic longgrain indian premium fluffy fragrant grains delicious nutty aromaticcooking versatile authentic parboiled traditional premiumquality"
   },
   {
     "_id": "67a3e90f8f76755bc9adc63c",
@@ -112,9 +112,9 @@
     ],
     "name": "beans - oloyin",
     "createdAt": "2025-02-05T22:41:19.531Z",
-    "updatedAt": "2025-02-15T20:29:30.100Z",
-    "variantCount": 1,
-    "metadata": "legume protein staple beans oloyin nigerian staple food protein rich fiber hearty traditional african cuisine delicious savory flavorful filling nutritious wholesome earthy protein source"
+    "updatedAt": "2025-05-25T00:02:54.756Z",
+    "variantCount": 2,
+    "metadata": "legume protein staple nigerian beans oloyin blackeyedpeas protein fiber hearty traditional african cooking westafrican cuisine delicious nutritious wholesome staple ingredient flavorful side dish"
   },
   {
     "_id": "67a3e90f8f76755bc9adc63e",
@@ -131,7 +131,7 @@
     "createdAt": "2025-02-05T22:41:19.809Z",
     "updatedAt": "2025-02-15T20:30:11.087Z",
     "variantCount": 5,
-    "metadata": "legume vegetable protein white beans dried pulses legume protein fiber plantbased healthy versatile cooking baking soup stew vegetarian vegan pantry staple baking ingredient"
+    "metadata": "legume vegetable protein white beans legumes pantry staple dried pulses protein fiber filling hearty creamy versatile cooking baking soup stew vegetarian vegan glutenfree nutritious healthy affordable budgetfriendly."
   },
   {
     "_id": "67a3e9108f76755bc9adc644",
@@ -147,7 +147,7 @@
     "createdAt": "2025-02-05T22:41:20.088Z",
     "updatedAt": "2025-02-15T20:28:53.169Z",
     "variantCount": 4,
-    "metadata": "poultry protein meat chicken meat protein poultry dinner grilling baking roasting healthy versatile delicious lean protein source meal ingredient cooking"
+    "metadata": "poultry protein meat chicken meat poultry protein source dinner roast grill bake versatile healthy delicious lean affordable cooking ingredient"
   },
   {
     "_id": "67a3e9108f76755bc9adc649",
@@ -160,9 +160,9 @@
     ],
     "name": "chicken lap- meat",
     "createdAt": "2025-02-05T22:41:20.369Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 3,
-    "metadata": "poultry protein savory chickenlap meat poultry protein delicacy african cuisine traditional nigerian flavorful savory rich texture authentic homemade"
+    "updatedAt": "2025-05-25T01:14:26.461Z",
+    "variantCount": 4,
+    "metadata": "poultry protein savory chicken lap meat offal delicious savory protein rich traditional african cuisine nigerian delicacy flavorful hearty unique ethnic food."
   },
   {
     "_id": "67a3e9108f76755bc9adc64d",
@@ -175,7 +175,7 @@
     "createdAt": "2025-02-05T22:41:20.650Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "meat poultry savory chicken lap meat offal organmeat poultry delicacy african cuisine traditional dish flavorful protein rich affordable unique texture savory"
+    "metadata": "meat poultry savory chicken lap meat offal poultry organmeat delicious savory protein rich traditional african cuisine nigerian delicacy unique flavor hearty meal flavorful ingredient."
   },
   {
     "_id": "67a3e9108f76755bc9adc64f",
@@ -188,7 +188,7 @@
     "createdAt": "2025-02-05T22:41:20.930Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "meat appetizer snack chicken wings appetizer snack fingerfood juicy savory spicy buffalo bbq teriyaki crispy wings bonein flavorful meaty comfortfood party food shareable delicious appetizer"
+    "metadata": "meat appetizer snack chicken wings appetizer fingerfood spicy savory juicy crispy buffalo wings bbq wings garlic parmesan wings wings night snack shareable delicious wings meat"
   },
   {
     "_id": "67a3e9118f76755bc9adc651",
@@ -202,7 +202,7 @@
     "createdAt": "2025-02-05T22:41:21.211Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "meat appetizer snack chicken wings appetizer snack fingerfood spicy buffalo bbq honey garlic savory juicy crispy meaty comfortfood party food shareable delicious flavorful"
+    "metadata": "meat appetizer snack chicken wings appetizer snack fingerfood spicy buffalo bbq honey garlic parmesan crispy juicy meaty savory delicious shareable partyfood wingsnight"
   },
   {
     "_id": "67a3e9118f76755bc9adc654",
@@ -216,7 +216,7 @@
     "createdAt": "2025-02-05T22:41:21.492Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "poultry protein savory turkey meat poultry protein dinner roast bake holiday festive autumn delicious savory wholesome natural lean source"
+    "metadata": "poultry protein savory poultry meat protein thanksgiving dinner festive roast healthy lean delicious autumnal harvest farmraised protein source juicy flavorful festivemeal"
   },
   {
     "_id": "67a3e9118f76755bc9adc657",
@@ -229,7 +229,7 @@
     "createdAt": "2025-02-05T22:41:21.771Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "meat protein red goat meat chevon male delicious protein rich lean savory flavorful hearty robust gamey african caribbean asian ethnic grilling roasting stewing barbecue"
+    "metadata": "meat protein red goat meat male chevon protein lean gamey savory delicious african caribbean asian stew grill roast hearty flavorful natural sustainable pasture raised farm fresh ethically sourced"
   },
   {
     "_id": "67a3e9128f76755bc9adc659",
@@ -242,7 +242,7 @@
     "createdAt": "2025-02-05T22:41:22.049Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "meat protein red goat meat female chevon caprine protein lean muscle gamey flavorful african caribbean asian latin heritage sustainable delicious nutritious grilling roasting stewing barbecue"
+    "metadata": "meat protein red goat meat female chevon caprine lean protein flavorful african caribbean latinamerican grilling roasting stewing hearty sustainable nutritious delicious farmraised ethicallysourced"
   },
   {
     "_id": "67a3e9128f76755bc9adc65b",
@@ -257,7 +257,7 @@
     "createdAt": "2025-02-05T22:41:22.328Z",
     "updatedAt": "2025-02-15T20:32:04.809Z",
     "variantCount": 3,
-    "metadata": "seafood protein delicacy fish kote seasoning blend seafood spice african flavor umami savory delicious authentic nigerian cooking ingredient natural vibrant aromatic traditional"
+    "metadata": "seafood protein delicacy fish kote fishfood aquatic pet supplement protein rich nutritious colorful vibrant healthy aquarium feeder flake food tropical freshwater"
   },
   {
     "_id": "67a3e9128f76755bc9adc65f",
@@ -272,7 +272,7 @@
     "createdAt": "2025-02-05T22:41:22.606Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "canned seafood protein fresh fish seafood tilapia delicious mild flaky white protein healthy omega3 sustainable farmraised fillets grilling baking panfrying"
+    "metadata": "canned seafood protein fresh seafood tilapia mild flaky white fish sustainable healthy protein delicious grill bake panfry dinner appetizer fillet"
   },
   {
     "_id": "67a3e9128f76755bc9adc663",
@@ -285,9 +285,9 @@
     ],
     "name": "fish - hake",
     "createdAt": "2025-02-05T22:41:22.886Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-25T00:35:05.025Z",
     "variantCount": 3,
-    "metadata": "seafood protein fish hake whitefish sustainable seafood atlantic northatlantic mildflavor flaky delicious versatile mildsweet proteinrich healthy lowfat grilling baking panfrying fishing"
+    "metadata": "seafood protein fish hake whitefish sustainable seafood atlantic ocean mildflavor flaky delicious healthy protein lean dinner fish fillets sustainablefishing"
   },
   {
     "_id": "67a3e9138f76755bc9adc667",
@@ -298,9 +298,9 @@
     ],
     "name": "fish - sawa",
     "createdAt": "2025-02-05T22:41:23.165Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 1,
-    "metadata": "seafood fresh delicacy fresh fish african delicacy protein rich savory delicious unique flavor african cuisine tilapia alternative sustainable sourced aquaculture farmraised"
+    "updatedAt": "2025-05-25T00:36:30.683Z",
+    "variantCount": 2,
+    "metadata": "seafood fresh delicacy fresh fish african delicacy protein rich savory flavorful traditional recipe nigerian cuisine grilled fried smoked healthy sustainable delicious"
   },
   {
     "_id": "67a3e9138f76755bc9adc669",
@@ -315,22 +315,22 @@
     "createdAt": "2025-02-05T22:41:23.443Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "seafood fish protein fresh seafood croaker fish brackishwater estuarine delicious panfried grilled baked sustainable protein omega3 tasty local delicacy"
+    "metadata": "seafood fish protein fresh seafood delicious mild flavor estuarine bottomfeeder brackishwater sustainable tasty panfried baked grilled dinner appetizer protein rich"
   },
   {
     "_id": "67a3e9138f76755bc9adc66d",
     "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230838766-yn7flyvcgo.JPG",
     "generatedDescription": "",
     "generatedCategories": [
-      "Crayfish ",
-      "Crayfish ",
-      "Crayfish "
+      "Crayfish",
+      "Crayfish",
+      "Crayfish"
     ],
     "name": "crayfish",
     "createdAt": "2025-02-05T22:41:23.722Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 3,
-    "metadata": "seafood shellfish delicacy crayfish freshwater crustacean seafood delicacy louisiana crawfish etouffee bisque boil cajun boil seasoning spicy boil crawfish boil crayfish tails appetizer delicious sustainable aquatic harvest"
+    "updatedAt": "2025-05-25T00:41:55.575Z",
+    "variantCount": 4,
+    "metadata": "seafood shellfish delicacy freshwater crustacean crawfish louisiana cajun seafood boil appetizer delicious succulent river delicacy bbq grilling eating"
   },
   {
     "_id": "67a3e9148f76755bc9adc671",
@@ -342,11 +342,11 @@
       "Vegetable oil (Kings)",
       "Vegetable oil (Kings)"
     ],
-    "name": "vegetable oil (kings)",
+    "name": "vegetable oil (Devon kings)",
     "createdAt": "2025-02-05T22:41:24.000Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-25T00:20:55.445Z",
     "variantCount": 4,
-    "metadata": "cooking oil vegetable fat culinary ingredient cooking oil vegetable oil culinary baking frying versatile neutral flavor kitchen staple affordable pantry essential healthy cooking"
+    "metadata": "cooking oil vegetable fat culinary ingredient cooking oil vegetable oil devon kings refined neutral versatile baking frying cooking healthy pantry staple kitchen essential premium quality affordable everyday use"
   },
   {
     "_id": "67a3e9148f76755bc9adc676",
@@ -362,7 +362,7 @@
     "createdAt": "2025-02-05T22:41:24.278Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 4,
-    "metadata": "cooking oil vegetable fat culinary ingredient cooking oil vegetable oil refined neutral flavor versatile baking frying deepfrying healthy neutral taste kitchen essential pantry staple food ingredient"
+    "metadata": "cooking oil vegetable fat culinary ingredient cooking oil vegetable oil frying oil baking oil healthy oil versatile oil neutral flavor high smoke point culinary essential kitchen staple pantry staple affordable everyday cooking"
   },
   {
     "_id": "67a3e9148f76755bc9adc67b",
@@ -375,9 +375,9 @@
     ],
     "name": "palm oil - local",
     "createdAt": "2025-02-05T22:41:24.566Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-25T00:27:04.500Z",
     "variantCount": 3,
-    "metadata": "cooking oil vegetable fat culinary ingredient local sustainable vegetable oil tropical ingredient cooking baking food processing malaysia indonesia indonesiaorigin natural fatty acids plantbased traditional ingredient"
+    "metadata": "cooking oil vegetable fat culinary ingredient local sustainable vegetable oil cooking baking ingredient tropical plant malaysia indonesia nigeria food processing natural flavor richness emulsifier texture enhancer traditional cuisine"
   },
   {
     "_id": "67a3e9148f76755bc9adc67f",
@@ -395,22 +395,20 @@
     "createdAt": "2025-02-05T22:41:24.846Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 6,
-    "metadata": "vegetable fruit ingredient tomato fruit vegetable garden fresh juicy red ripe sweet tangy antioxidant healthy organic seasonal versatile cooking ingredient sauce canning"
+    "metadata": "vegetable fruit ingredient fresh juicy red fruit vegetable garden organic healthy antioxidant summer ripe seasonal versatile culinary ingredient italian cooking plantbased"
   },
   {
     "_id": "67a3e9158f76755bc9adc686",
     "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739231079607-5z8sca4t4tv.jpg",
     "generatedDescription": "",
     "generatedCategories": [
-      "Tomato paste - Gino original",
-      "Tomato paste - Gino original",
-      "Tomato paste - Gino original"
+      "Cooking essentials"
     ],
     "name": "tomato paste - gino original",
     "createdAt": "2025-02-05T22:41:25.126Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-25T00:30:10.580Z",
     "variantCount": 3,
-    "metadata": "sauce condiment ingredient tomato paste gino original italian authentic rich flavor concentrated umami savory pantry staple cooking ingredient versatile mediterranean classic"
+    "metadata": "sauce condiment ingredient tomato paste gino original italian authentic concentrated umami savory rich flavourful cooking ingredient pantry staple essential gourmet premium versatile delicious"
   },
   {
     "_id": "67a3e9158f76755bc9adc68a",
@@ -419,13 +417,14 @@
     "generatedCategories": [
       "Tomato paste - Gino jollof",
       "Tomato paste - Gino Jollof",
-      "Tomato paste - Gino Jollof"
+      "Tomato paste - Gino Jollof",
+      "Cooking essentials"
     ],
     "name": "tomato paste - gino jollof",
     "createdAt": "2025-02-05T22:41:25.404Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-25T00:28:54.645Z",
     "variantCount": 3,
-    "metadata": "sauce condiment ingredient tomato paste gino jollof authentic african flavor rich concentrated savory umami intensely flavored vibrant red cooking ingredient spice seasoning westafrican cuisine delicious hearty flavorful"
+    "metadata": "sauce condiment ingredient tomato paste gino jollof african cooking flavor rich tomato concentrate savory authentic nigeria westafrica vibrant intense deep red umami"
   },
   {
     "_id": "67a3e9158f76755bc9adc68e",
@@ -438,7 +437,7 @@
     "createdAt": "2025-02-05T22:41:25.695Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "spice blend soup base seasoning mix pepper soup spice blend payoor special nigeria authentic flavorful aromatic spicy comforting hearty warming traditional nigerian soup base seasoning mix"
+    "metadata": "spice blend soup base seasoning mix pepper soup mix payoor special spice blend nigeria authentic flavourful aromatic warming soup base easy cooking traditional african comfortfood delicious spicy savory rich hearty seasoning"
   },
   {
     "_id": "67a3e9158f76755bc9adc690",
@@ -451,7 +450,7 @@
     "createdAt": "2025-02-05T22:41:25.975Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "spice seasoning condiment red pepper flakes chili powder spicy seasoning heat flavor italian cajun korean mexican vibrant aromatic natural ingredient cooking baking"
+    "metadata": "spice seasoning condiment chili flakes crushed red pepper spicy heat seasoning cooking flavor italian cajun mexican vibrant aromatic pungent fiery flavor boost"
   },
   {
     "_id": "67a3e9168f76755bc9adc692",
@@ -464,7 +463,7 @@
     "createdAt": "2025-02-05T22:41:26.256Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "spice seasoning flavor cameroun pepper ground spice african westafrican pungent aromatic flavorful heat spicy unique natural authentic gourmet culinary ingredient"
+    "metadata": "spice seasoning flavor cameroun pepper ground spice african heat aromatic flavorful fiery pungent complex unique authentic exotic culinary seasoning westafrica"
   },
   {
     "_id": "67a3e9168f76755bc9adc694",
@@ -483,7 +482,7 @@
     "createdAt": "2025-02-05T22:41:26.534Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 7,
-    "metadata": "spice seasoning vegetable bell pepper ata rodo roasted chili spanish paprika smoky sweet heat african spice seasoning vegetable vibrant red flavourful cooking"
+    "metadata": "spice seasoning vegetable bell pepper ata rodo red pepper african cuisine westafrican cooking spicy vibrant flavorful roasting grilling stirfry ingredient vegetable fresh produce"
   },
   {
     "_id": "67a3e9168f76755bc9adc69c",
@@ -502,7 +501,7 @@
     "createdAt": "2025-02-05T22:41:26.814Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 7,
-    "metadata": "spice seasoning flavor pepper tatase hot chili spice westafrican nigeria savory flavorful aromatic vibrant culinary ingredient heat seasoning"
+    "metadata": "spice seasoning flavor pepper tatase spicy african westafrican nigeria condiment flavor vibrant aromatic heat seasoning traditional cooking"
   },
   {
     "_id": "67a3e9178f76755bc9adc6a4",
@@ -516,7 +515,7 @@
     "createdAt": "2025-02-05T22:41:27.096Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "root vegetable starchy food healthy carb yam root vegetable tuber african caribbean tropical orange purple starchy sweet carbohydrate energy rich nutritious versatile cooking baking roasting boiling mash fries side dish healthy natural wholesome traditional antioxidant fiber"
+    "metadata": "root vegetable starchy food healthy carb yam root vegetable african caribbean tropical orange purple starchy carbohydrate nutritious vitaminb6 potassium fiberrich versatile baking boiling roasting sweet potato alternative"
   },
   {
     "_id": "67a3e9178f76755bc9adc6a7",
@@ -531,7 +530,7 @@
     "createdAt": "2025-02-05T22:41:27.377Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "vegetable tuber starch purple potato heirloom vegetable irish variety creamy texture subtly sweet earthy flavor nutritious antioxidant rich unique flavor heirloompotato irishpotato hearty comfortfood german potato"
+    "metadata": "vegetable tuber starch purple potato heirloom vegetable tuber starchy colorful antioxidant creamy unique earthy flavorful german heirloom heirloomvariety heirloompotatoes wellness healthy wholesome vibrant nutrientdense delicious baking mashing roasting\n"
   },
   {
     "_id": "67a3e9178f76755bc9adc6ab",
@@ -543,9 +542,9 @@
     ],
     "name": "sweet potato",
     "createdAt": "2025-02-05T22:41:27.657Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 2,
-    "metadata": "vegetable starch healthy sweet potato root vegetable orange vibrant earthy nutritious antioxidant fiber rich versatile baking roasting mashing baking powder creamy antioxidant source vitamin a healthy side dish autumn harvest fall season"
+    "updatedAt": "2025-05-25T00:45:04.132Z",
+    "variantCount": 4,
+    "metadata": "vegetable starch healthy sweetpotato orange root vegetable nutritious antioxidant fiber rich versatile healthy vitamin a baking roasting steaming earthy flavor autumn harvest autumn produce fall harvest vitamin rich antioxidant powerhouse orange flesh vibrant flavor delicious side dish"
   },
   {
     "_id": "67a3e9178f76755bc9adc6ae",
@@ -558,7 +557,7 @@
     "createdAt": "2025-02-05T22:41:27.935Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "protein breakfast versatile breakfast protein breakfastfood baking cooking ingredient versatile nutritious breakfast staple organic brown white free range farmfresh delicious wholesome"
+    "metadata": "protein breakfast versatile breakfast protein breakfastfood cooking baking ingredient breakfastitem organic free range brown white farm fresh culinary delicious simple nutritious versatile cooking staple"
   },
   {
     "_id": "67a3e9188f76755bc9adc6b0",
@@ -572,7 +571,7 @@
     "createdAt": "2025-02-05T22:41:28.216Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "vegetable aromatic ingredient red onion allium vegetable savory pungent flavorful cooking baking roasting grilling salads tangy vibrant earthy heirloom organic fresh"
+    "metadata": "vegetable aromatic ingredient red onion allium vegetable savory pungent aromatic versatile cooking baking grilling roasting salad"
   },
   {
     "_id": "67a3e9188f76755bc9adc6b3",
@@ -587,9 +586,9 @@
     ],
     "name": "garri - yellow",
     "createdAt": "2025-02-05T22:41:28.496Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 5,
-    "metadata": "staple food grain product african cuisine garri yellow cassava granules african staple food westafrican snack glutenfree versatile grainy textured traditional snack energy boost carbohydrate rich\n\n\n\n"
+    "updatedAt": "2025-05-25T01:19:49.134Z",
+    "variantCount": 4,
+    "metadata": "staple food grain product african cuisine garri yellow cassava granules african staple food nigeria westafrica snack glutenfree versatile snackable carbohydrate energy source traditional flavourful gritty texture"
   },
   {
     "_id": "67a3e9188f76755bc9adc6b9",
@@ -604,7 +603,7 @@
     "createdAt": "2025-02-05T22:41:28.776Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "staple food grain product african cuisine garri white cassava granules african staple food nigeria westafrica processed cassava glutenfree fiberrich snack traditional food carbohydrate baking frying eba fufu"
+    "metadata": "staple food grain product african cuisine garri white cassava processed african staple grain glutenfree fiberrich versatile snack food nigeria westafrica traditional rustic authentic homemade"
   },
   {
     "_id": "67a3e9198f76755bc9adc6bd",
@@ -618,7 +617,7 @@
     "createdAt": "2025-02-05T22:41:29.056Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "staple food grain product african cuisine garri ijebu cassava granules african staple food nigeria westafrica traditional snack glutenfree versatile grainy snack tasty affordable rustic textured carbohydrate"
+    "metadata": "staple food grain product african cuisine garri ijebu cassava granules african staple food nigeria westafrica glutenfree versatile snack side dish traditional grainy textured delicious affordable cooking ingredient"
   },
   {
     "_id": "67a3e9198f76755bc9adc6c0",
@@ -631,7 +630,7 @@
     "createdAt": "2025-02-05T22:41:29.338Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "seasoning condiment flavor enhancer salt mr chef seasoning culinary essential flavor enhancer gourmet cooking ingredient premium quality fine grain mineral rich table salt baking spice"
+    "metadata": "seasoning condiment flavor enhancer salt mr chef gourmet seasoning culinary ingredient premium quality finishing salt artisanal handharvested flavor enhancer mineral rich natural pure delicious"
   },
   {
     "_id": "67a3e9198f76755bc9adc6c2",
@@ -644,7 +643,7 @@
     "createdAt": "2025-02-05T22:41:29.632Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "spice seasoning flavor curry powder spice blend aromatic indian flavor warm savory versatile cooking seasoning exotic fragrant flavorful authentic traditional"
+    "metadata": "spice seasoning flavor curry spice blend indian aromatic flavorful warm savory versatile cooking baking seasoning grilling roasting authentic traditional exotic flavorful"
   },
   {
     "_id": "67a3e9198f76755bc9adc6c4",
@@ -657,7 +656,7 @@
     "createdAt": "2025-02-05T22:41:29.924Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "spice blend seasoning mix flavor enhancer curry powder spice blend indian aromatic flavorful warm savory versatile cooking seasoning authentic traditional exotic fragrant vibrant delicious"
+    "metadata": "spice blend seasoning mix flavor enhancer curry spice blend aromatic flavorful indian subcontinent savory cooking seasoning versatile aromatic blend turmeric coriander cumin chili pepper warm fragrant authentic"
   },
   {
     "_id": "67a3e91a8f76755bc9adc6c6",
@@ -670,7 +669,7 @@
     "createdAt": "2025-02-05T22:41:30.216Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "herb seasoning flavor culinary herb thyme spice supreme aromatic mediterranean european savory flavorful versatile cooking baking seasoning garden fresh fragrant earthy"
+    "metadata": "herb seasoning flavor thyme herb spice culinary aromatic mediterranean savory flavoring delicious fragrant herb garden cooking mediterranean origin versatile culinary"
   },
   {
     "_id": "67a3e91a8f76755bc9adc6c8",
@@ -682,9 +681,9 @@
     ],
     "name": "plantain unripe",
     "createdAt": "2025-02-05T22:41:30.496Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-25T00:16:58.939Z",
     "variantCount": 2,
-    "metadata": "vegetable starch ingredient plantain unripe green savory starchy tropical caribbean african cooking baking frying grilling side dish vegetable potassium fiber nutritious versatile.\n"
+    "metadata": "vegetable starch ingredient plantain unripe green vegetable starch carb savory cooking baking fritters chips ripe alternative african caribbean latinamerican versatile healthy fiber potassium"
   },
   {
     "_id": "67a3e91a8f76755bc9adc6cb",
@@ -695,9 +694,9 @@
     ],
     "name": "plantain ripe",
     "createdAt": "2025-02-05T22:41:30.777Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 1,
-    "metadata": "fruit snack tropical ripe plantain sweet starchy tropical caribbean latin american dessert snack baking frying grilling bakingingredient yellow brown flavorful naturally sweet nutritious potassium source"
+    "updatedAt": "2025-05-25T00:18:53.734Z",
+    "variantCount": 3,
+    "metadata": "fruit snack tropical ripe plantain sweet yellow tropical caribbean fried baked mashed dessert savory side dish caribbeanorigin energyfruit potassium antioxidant"
   },
   {
     "_id": "67a3e91b8f76755bc9adc6cd",
@@ -710,7 +709,7 @@
     "createdAt": "2025-02-05T22:41:31.056Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "instant noodles snack noodles indomie instant savory spicy flavorful asian southeastasian comfortfood snack quickmeal affordable convenient authentic indonesia halal vegetarian easyprepare"
+    "metadata": "instant noodles snack noodles indomie instant savory spicy asian indonesia authentic comfortfood quickmeal affordable delicious flavorful snack easycooking versatile budgetfriendly"
   },
   {
     "_id": "67a3e91b8f76755bc9adc6cf",
@@ -724,7 +723,7 @@
     "createdAt": "2025-02-05T22:41:31.336Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "seafood protein delicacy fresh seafood delicious pink succulent tasty gulf gulfshrimp farmed wildcaught protein lowcarb healthy grilling baking eating appetizer entree seafood boil dinner party"
+    "metadata": "seafood protein delicacy fresh seafood pink delicious gulf gulfshrimp wildcaught farmed appetizer entree grilling baking sauteing frozen sustainable ocean delicious nutritious protein healthy"
   },
   {
     "_id": "67a3e91b8f76755bc9adc6d2",
@@ -738,7 +737,7 @@
     "createdAt": "2025-02-05T22:41:31.617Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "seafood protein delicacy seafood crustacean shrimp prawn shellfish delicious protein ocean fresh tasty savory appetizer maincourse grilling baking asian european tropical"
+    "metadata": "seafood protein delicacy shrimp seafood crustacean delicious protein ocean fresh sustainable healthy tasty appetizer maincourse grilling baking asian cuisine gourmet delicacy tropical"
   },
   {
     "_id": "67a3e91b8f76755bc9adc6d5",
@@ -753,7 +752,7 @@
     "createdAt": "2025-02-05T22:41:31.923Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "fruits snacks healthy crisp tart juicy sweet green refreshing healthy snack orchard fresh vibrant tangy delicious bite sized"
+    "metadata": "fruits snacks healthy crisp tart juicy green sweet refreshing tangy orchard fruit healthy snack vibrant color delicious baking apples"
   },
   {
     "_id": "67a3e91c8f76755bc9adc6d9",
@@ -767,7 +766,7 @@
     "createdAt": "2025-02-05T22:41:32.203Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "fruit snack healthy fruit sweet juicy purple green red snack healthy delicious antioxidant vineyard fresh organic tablewine grapejuice refreshing flavorful natural"
+    "metadata": "fruit snack healthy fruit sweet juicy snack healthy delicious antioxidant purple green red wine making fresh organic natural refreshing vibrant table grape vineyard"
   },
   {
     "_id": "67a3e91c8f76755bc9adc6dc",
@@ -780,7 +779,7 @@
     "createdAt": "2025-02-05T22:41:32.483Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "tropical fruit sweet snack fresh produce pineapple cotonou ripe ready tropical sweet juicy golden exotic fruit fresh delicious vibrant tangy refreshing flavorful tropicalorigin"
+    "metadata": "tropical fruit sweet snack fresh produce pineapple cotonou ripe ready tropical fruit sweet juicy delicious exotic vibrant yellow flavor refreshment snack dessert smoothie tropicalfruit"
   },
   {
     "_id": "67a3e91c8f76755bc9adc6de",
@@ -793,7 +792,7 @@
     "createdAt": "2025-02-05T22:41:32.763Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "tropical fruit fresh produce exotic snack pineapple cotonou unripe tart acidic tropical fruit green firm refreshing juicy sweet tangy african import fresh produce healthy snack"
+    "metadata": "tropical fruit fresh produce exotic snack pineapple cotonou unripe tart acidic firm tropical fruit green yellow juicy refreshing sweet tangy african produce exotic flavor harvest"
   },
   {
     "_id": "67a3e91d8f76755bc9adc6e0",
@@ -802,11 +801,11 @@
     "generatedCategories": [
       "Banana (Regular bunch -ripe)"
     ],
-    "name": "banana (regular bunch -ripe)",
+    "name": "banana  (regular bunch -ripe) ",
     "createdAt": "2025-02-05T22:41:33.057Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-26T03:17:53.578Z",
     "variantCount": 1,
-    "metadata": "fruit snack healthy banana fruit ripe sweet yellow potassium tropical healthy snack breakfast smoothie dessert naturallydelicious potassiumrich"
+    "metadata": "fruit snack healthy banana ripe fruit sweet yellow potassium healthy snack tropical dessert breakfast smoothie baking fresh"
   },
   {
     "_id": "67a3e91d8f76755bc9adc6e2",
@@ -817,9 +816,9 @@
     ],
     "name": "pineapple ( bendel unripe)",
     "createdAt": "2025-02-05T22:41:33.338Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-26T03:17:56.077Z",
     "variantCount": 1,
-    "metadata": "tropical fruit unripe produce exotic snack pineapple bendel unripe tart acidic tropical juicy sweet vibrant yellow green tangy refreshing exotic fruit bendelvariety"
+    "metadata": "tropical fruit unripe produce exotic snack pineapple bendel unripe tart acidic tropical juicy vibrant green tangy sweet refreshing fruity exotic bendelvariety firm slightlysour"
   },
   {
     "_id": "67a3e91d8f76755bc9adc6e4",
@@ -832,7 +831,7 @@
     "createdAt": "2025-02-05T22:41:33.647Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "tropical fruit sweet snack healthy dessert tropical fruit sweet juicy tangy yellow vibrant refreshing exotic bendel ripe tropicalsweetness summery delicious bendel cultivar"
+    "metadata": "tropical fruit sweet snack healthy dessert tropical fruit sweet juicy tangy refreshing bendel pineapple ripe golden yellow exotic tropical flavor vitamin rich bendel cultivar delicious breakfast snack smoothie baking"
   },
   {
     "_id": "67a3e91d8f76755bc9adc6e6",
@@ -845,7 +844,7 @@
     "createdAt": "2025-02-05T22:41:33.926Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "fruit snack healthy banana unripe green firm starchy tropical fruit potassium healthy snack baking unripeplantain cooking ingredient breakfast smoothie unripebanana"
+    "metadata": "fruit snack healthy banana unripe green firm starchy tropical fruit potassium healthy snack breakfast smoothie baking unripeplantain"
   },
   {
     "_id": "67a3e91e8f76755bc9adc6e8",
@@ -860,7 +859,7 @@
     "createdAt": "2025-02-05T22:41:34.206Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "citrus fruit sour lemon foreign citrus fruit tangy aromatic refreshing zesty yellow fruit juice ingredient mediterranean european italian sicilian premium quality sweet sour"
+    "metadata": "citrus fruit sour lemon foreign citrus fruit tangy aromatic bright yellow zest flavor juice refreshing mediterranean italian sicilian european gourmet ingredient culinary"
   },
   {
     "_id": "67a3e91e8f76755bc9adc6ec",
@@ -876,7 +875,7 @@
     "createdAt": "2025-02-05T22:41:34.499Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 4,
-    "metadata": "dried fruit natural sweetener healthy snack fresh fruit sweet natural seasonal delicious healthy dessert baking snack treat organic tropical orchard summer autumn winter juicy ripe flavorful"
+    "metadata": "dried fruit natural sweetener healthy snack fresh fruit sweet juicy seasonal delicious healthy dessert snack refreshing summer fruitgift treat organic natural"
   },
   {
     "_id": "67a3e91e8f76755bc9adc6f1",
@@ -891,7 +890,7 @@
     "createdAt": "2025-02-05T22:41:34.779Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "vegetable healthy crunchy orange root vegetable crunchy sweet nutritious vitamin a antioxidant healthy snack garden fresh organic natural earthy fiber rich versatile cooking baking roasting juicing"
+    "metadata": "vegetable healthy crunchy orange root vegetable crunchy sweet healthy nutritious beta carotene vitamin a garden fresh organic natural wholesome earthy vibrant colorful antioxidant"
   },
   {
     "_id": "67a3e91f8f76755bc9adc6f5",
@@ -902,22 +901,9 @@
     ],
     "name": "black amala flour [elubo] -",
     "createdAt": "2025-02-05T22:41:35.059Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 1,
-    "metadata": "gluten-free traditional flour black amala flour elubo yam cassava african staple glutenfree nutritious fiberrich versatile native africanorigin traditional westafrican dough"
-  },
-  {
-    "_id": "67a3e91f8f76755bc9adc6f7",
-    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233005868-vkp6r7vxbro.jpg",
-    "generatedDescription": "",
-    "generatedCategories": [
-      "Black Amala Flour [Elubo]"
-    ],
-    "name": "black amala flour [elubo]",
-    "createdAt": "2025-02-05T22:41:35.341Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 1,
-    "metadata": "gluten-free traditional flour black amala flour elubo yam cassava staple african nigeria westafrica glutenfree nutritious fiberrich versatile traditional native africanorigin grainy texture earthy flavor authentic cooking"
+    "updatedAt": "2025-05-26T03:25:58.923Z",
+    "variantCount": 2,
+    "metadata": "gluten-free traditional flour black amala flour elubo yam cassava westafrican staple glutenfree fiberrich nutritious traditional african cooking recipe authentic flavor dietary fiber healthy food versatile ingredient."
   },
   {
     "_id": "67a3e91f8f76755bc9adc6f9",
@@ -931,7 +917,7 @@
     "createdAt": "2025-02-05T22:41:35.639Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "gluten-free traditional flour white amala flour elubo cassava staple african food glutenfree traditional native nigeria westafrica creamy texture smooth consistency unprocessed natural authentic dietaryfiber grain"
+    "metadata": "gluten-free traditional flour white amala elubo yam cassava flour african staple food glutenfree naturallyvegan traditional nigeria westafrica cooking ingredient healthy fiber rich versatile cooking"
   },
   {
     "_id": "67a3e91f8f76755bc9adc6fc",
@@ -945,7 +931,7 @@
     "createdAt": "2025-02-05T22:41:35.920Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "vegetable fresh colorful bell peppers colorful vegetables fresh produce sweet crunchy vibrant green red yellow healthy snack salad cooking grilling roasting versatile"
+    "metadata": "vegetable fresh colorful bell pepper mix colorful vegetables sweet crisp fresh green red yellow versatile healthy cooking baking grilling salad"
   },
   {
     "_id": "67a3e9208f76755bc9adc6ff",
@@ -956,9 +942,9 @@
     ],
     "name": "sweet bell pepper [green]",
     "createdAt": "2025-02-05T22:41:36.208Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 2,
-    "metadata": "vegetable fresh healthy green bell pepper vegetable crisp juicy sweet fresh crunchy versatile salad cooking grilling roasting healthy antioxidant"
+    "updatedAt": "2025-05-25T00:11:47.133Z",
+    "variantCount": 3,
+    "metadata": "vegetable fresh healthy green bell pepper vegetable fresh produce crunchy sweet mild flavor salad stirfry grilling roasting healthy vitaminc antioxidant vibrant color"
   },
   {
     "_id": "67a3e9208f76755bc9adc702",
@@ -971,7 +957,7 @@
     "createdAt": "2025-02-05T22:41:36.501Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "vegetable fresh healthy red bell pepper sweet crisp juicy crunchy vibrant colorful vegetable fresh produce healthy antioxidant vitaminc grilling roasting salad"
+    "metadata": "vegetable fresh healthy red bell pepper sweet vegetable crunchy vibrant colorful crisp juicy fresh garden produce healthy antioxidant vitaminc"
   },
   {
     "_id": "67a3e9208f76755bc9adc705",
@@ -982,9 +968,9 @@
     ],
     "name": "sweet bell pepper  [yellow]",
     "createdAt": "2025-02-05T22:41:36.781Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-25T00:24:01.917Z",
     "variantCount": 2,
-    "metadata": "vegetable fresh healthy yellow bell pepper sweet crisp juicy vegetable fresh produce healthy vibrant colorful mild flavor cooking ingredient garden harvest"
+    "metadata": "vegetable fresh healthy yellow bell pepper sweet crisp juicy vibrant fruity crunchy vegetable fresh produce healthy colorful cooking versatile"
   },
   {
     "_id": "67a3e9218f76755bc9adc708",
@@ -999,7 +985,7 @@
     "createdAt": "2025-02-05T22:41:37.062Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "soup ingredient african cuisine thickener ogbono seed unblended african staple soup thickener traditional nigerian delicious authentic natural wholesome fiber rich hearty flavor"
+    "metadata": "soup ingredient african cuisine thickener ogbono seed african staple thickening agent traditional soup ingredient westafrican cuisine authentic natural unprocessed unblended nigerian flavor rich texture savory earthy flavorful cooking ingredient"
   },
   {
     "_id": "67a3e9218f76755bc9adc70c",
@@ -1011,22 +997,24 @@
     ],
     "name": "ogbono blended",
     "createdAt": "2025-02-05T22:41:37.370Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 2,
-    "metadata": "soup ingredient african cuisine thickener ogbono seed african spice thickener soup base flavorful traditional nigerian authentic aromatic hearty savory delicious ingredient"
+    "updatedAt": "2025-05-25T00:56:49.118Z",
+    "variantCount": 3,
+    "metadata": "soup ingredient african cuisine thickener ogbono seed african soup thickener traditional nigerian flavor rich authentic savory earthy natural wholesome hearty delicious unique ingredient"
   },
   {
     "_id": "67a3e9218f76755bc9adc70f",
     "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739233376050-yvsv1zg31c.png",
     "generatedDescription": "",
     "generatedCategories": [
-      "Egusi [seed],Egusi [seed],Egusi [seed] hand peeled"
+      "Egusi [seed]",
+      "Egusi [seed]",
+      "Egusi [seed] hand peeled"
     ],
     "name": "egusi [seed]",
     "createdAt": "2025-02-05T22:41:37.651Z",
-    "updatedAt": "2025-03-20T08:32:45.657Z",
-    "variantCount": 3,
-    "metadata": "nutritious seed ingredient egusi seed nigerian westafrican staple ingredient cooking seed protein fiber rich flavorful soup stew ingredient african cuisine traditional cooking"
+    "updatedAt": "2025-05-25T01:07:08.898Z",
+    "variantCount": 6,
+    "metadata": "nutritious seed ingredient egusi seed nigerian african melon seed soup ingredient traditional staple flavor rich nutritious protein fiber african cuisine westafrican cooking authentic flavor"
   },
   {
     "_id": "67a3e9218f76755bc9adc713",
@@ -1040,7 +1028,7 @@
     "createdAt": "2025-02-05T22:41:37.932Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "nigerian stew combo nigerian stew base tomato tatashe shombo authentic naija flavor rich savory aromatic spicy blend traditional cooking essential fresh ingredients homemade taste african cuisine"
+    "metadata": "nigerian stew combo naija stew blend tomato tatashe shombo authentic nigerian flavor rich aromatic traditional spice seasoning westafrican cooking homemade fresh delicious"
   },
   {
     "_id": "67a3e9228f76755bc9adc718",
@@ -1053,7 +1041,7 @@
     "createdAt": "2025-02-05T22:41:38.494Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "vegetable spice ingredient pepper tatashe african nigeria westafrica vegetable spice flavor heat vibrant red green fresh grilling roasting stewing flavorful seasoning"
+    "metadata": "vegetable spice ingredient pepper tatashe african vegetable spice ingredient fresh vibrant flavorful nigerian cuisine seasoning cooking aromatic red heat"
   },
   {
     "_id": "67a3e9228f76755bc9adc71a",
@@ -1067,7 +1055,7 @@
     "createdAt": "2025-02-05T22:41:38.775Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "spice seasoning flavor pepper shombo spicy hot african caribbean fruit vegetable vibrant flavorful aromatic heat ingredient cooking seasoning"
+    "metadata": "spice seasoning flavor pepper shombo spicy capsicum hot chili vibrant flavorful nigerian westafrican cuisine cooking ingredient fresh produce"
   },
   {
     "_id": "67a3e9238f76755bc9adc71d",
@@ -1077,11 +1065,11 @@
       "Cow meat - beef",
       "Cow meat - beef"
     ],
-    "name": "cow meat - beef",
+    "name": "cow meat - beef [with bone]",
     "createdAt": "2025-02-05T22:41:39.059Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-26T04:29:23.953Z",
     "variantCount": 2,
-    "metadata": "red meat protein source animal product beef red meat protein steak ground beef roast ribeye tenderloin hearty flavorful grilling barbecue steakhouse premium delicious nutritious iron zinc essential amino acids healthy savory robust rich satisfying"
+    "metadata": "red meat protein source animal product beef bone in primal cut steak roast chuck brisket ribeye shortrib ground beef protein hearty savory classic delicious grilling roasting stewing flavorful substantial premium meat"
   },
   {
     "_id": "67a3e9238f76755bc9adc720",
@@ -1094,7 +1082,7 @@
     "createdAt": "2025-02-05T22:41:39.340Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "lean protein poultry fresh meat chicken breast meat protein lean healthy grilling baking cooking versatile poultry dinner recipe delicious affordable fresh premium"
+    "metadata": "lean protein poultry fresh meat chicken breast meat poultry protein lean healthy grilling baking cooking versatile dinner lunch supper boneless skinless fresh frozen."
   },
   {
     "_id": "67a3e9238f76755bc9adc722",
@@ -1107,7 +1095,7 @@
     "createdAt": "2025-02-05T22:41:39.620Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "chicken sausage premium premium chicken sausage savory juicy grilled panfried breakfast lunch dinner protein packed flavorful delicious versatile easy cooking mild spicy italian herb seasoned"
+    "metadata": "chicken sausage premium chicken sausage premium savory grilled pan fried breakfast lunch dinner protein packed delicious juicy flavorful seasoned mild spicy italian herb blend natural ingredients"
   },
   {
     "_id": "67a3e9238f76755bc9adc724",
@@ -1122,7 +1110,7 @@
     "createdAt": "2025-02-05T22:41:39.901Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "smoked fish seafood smoked fish panla philippine seafood delicacy savory authentic traditional regional cuisine delicious filipino appetizer snack appetizer appetizer"
+    "metadata": "smoked fish seafood smoked panla fish filipino seafood savory delicious appetizer snack appetizer seafood snack flavorful oceanic premium delicacy authentic philippines"
   },
   {
     "_id": "67a3e9248f76755bc9adc728",
@@ -1133,9 +1121,9 @@
     ],
     "name": "stock fish - [dice flesh]",
     "createdAt": "2025-02-05T22:41:40.184Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 1,
-    "metadata": "seafood dried protein dried fish norway cod sustainable protein seafood traditional norwegian delicacy flavorful authentic cured fish premium quality artisanal ingredient coastal cuisine."
+    "updatedAt": "2025-05-26T03:32:03.634Z",
+    "variantCount": 2,
+    "metadata": "seafood dried protein dried fish norway cod stockfish air dried seafood authentic traditional flavorful protein rich chewy sustainable nordic cuisine premium quality."
   },
   {
     "_id": "67a3e9248f76755bc9adc72a",
@@ -1149,7 +1137,7 @@
     "createdAt": "2025-02-05T22:41:40.495Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "meat protein delicacy ponmo meat chewy flavorful african delicacy cowhide tripe savory traditional nigeria westafrica protein rich texture rich taste"
+    "metadata": "meat protein delicacy ponmo meat chewy flavorful african nigeria westafrica delicacy protein savory snack traditional offal browned rich taste"
   },
   {
     "_id": "67a3e9248f76755bc9adc72d",
@@ -1163,7 +1151,7 @@
     "createdAt": "2025-02-05T22:41:40.776Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "seafood delicacy protein snail small escargot delicacy protein source african cuisine sustainable gourmet appetizer slowcooked tender richflavor unique"
+    "metadata": "seafood delicacy protein snail small escargot delicacy protein source african cuisine gourmet slowcooked tender flavorful unique edible"
   },
   {
     "_id": "67a3e9258f76755bc9adc730",
@@ -1176,7 +1164,7 @@
     "createdAt": "2025-02-05T22:41:41.057Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "dried fish seafood protein stockfish head okporoko nigerian dried fish smoky savory protein rich traditional african delicacy umami flavor appetizer snack ingredient seasoning robust authentic flavor"
+    "metadata": "dried fish seafood protein stockfish head okporoko dried fish african delicacy protein rich smoky flavor umami seafood traditional nigeria westafrica savory appetizer snack fermented appetizer"
   },
   {
     "_id": "67a3e9258f76755bc9adc732",
@@ -1191,7 +1179,7 @@
     "createdAt": "2025-02-05T22:41:41.344Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "seafood shellfish delicacy periwinkle shellfish seafood edible mollusk african delicacy coastal nigeria brackishwater sustainable protein savory umami tasty unique ingredient traditional cuisine local delicacy flavorful oceanic"
+    "metadata": "seafood shellfish delicacy periwinkle shellfish seafood edible mollusk african delicacy coastal nigeria swampy briny flavorful protein sustainable ocean harvest unique texture savory traditional cuisine"
   },
   {
     "_id": "67a3e9258f76755bc9adc736",
@@ -1204,7 +1192,7 @@
     "createdAt": "2025-02-05T22:41:41.625Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "herb seasoning flavoring bay leaf aromatic herb culinary spice flavoring savory dishes mediterranean cooking italian cuisine bay laurel fragrant leaves essential oil dried herb natural flavor enhancer traditional cooking"
+    "metadata": "herb seasoning flavoring bay leaf herb spice aromatic culinary flavoring mediterranean cooking italian seasoning greek cuisine bay laurel dried leaves fragrant savory flavoring"
   },
   {
     "_id": "67a3e9258f76755bc9adc738",
@@ -1218,7 +1206,7 @@
     "createdAt": "2025-02-05T22:41:41.905Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "spice seasoning natural tiger nutmeg spice aromatic warm fragrant baking curry indian asian premium quality flavorful natural authentic fresh ground"
+    "metadata": "spice seasoning natural tiger nutmeg spice aromatic warm fragrant baking curry indian indonesia asian fragrant sweet savory flavorful premium quality culinary essential"
   },
   {
     "_id": "67a3e9268f76755bc9adc73b",
@@ -1230,9 +1218,9 @@
     ],
     "name": "goat meat",
     "createdAt": "2025-02-05T22:41:42.198Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 2,
-    "metadata": "meat protein red goat meat red meat protein source flavorful savory hearty african cuisine gamey lean sustainable pasture raised delicious grilling roasting stewing ethnic food"
+    "updatedAt": "2025-05-26T03:36:31.910Z",
+    "variantCount": 1,
+    "metadata": "meat protein red goat meat red meat protein lean delicious savory hearty flavorful african cuisine nigeria ghana caribbean island meat grilling roasting stewing ethnic food sustainable healthy"
   },
   {
     "_id": "67a3e9268f76755bc9adc73e",
@@ -1245,7 +1233,7 @@
     "createdAt": "2025-02-05T22:41:42.480Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "vegetable leafy nutritious ugu leaves african vegetable leafygreen nutritious vitamin rich antioxidant fiber healthy greens soup stew egusi spinach traditional african cuisine fresh organic delicious"
+    "metadata": "vegetable leafy nutritious ugwu leaves nigerian vegetable leafygreen african cuisine healthy delicious vibrant green nutritious antioxidant rich soup stew egusi bitterleaf stew side dish traditional african food"
   },
   {
     "_id": "67a3e9268f76755bc9adc740",
@@ -1258,7 +1246,7 @@
     "createdAt": "2025-02-05T22:41:42.760Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "seasoning cubes chicken chicken seasoning cubes savory flavor enhancer umami bouillon cube cooking ingredient taste enhancer convenient affordable versatile delicious pantry staple seasoning"
+    "metadata": "seasoning cubes chicken chicken seasoning cube savory flavor enhancer cooking ingredient bouillon cube umami taste boost seasoning blend convenient easycook pantry staple kitchen essential delicious affordable authentic taste"
   },
   {
     "_id": "67a3e9278f76755bc9adc742",
@@ -1271,7 +1259,7 @@
     "createdAt": "2025-02-05T22:41:43.039Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "instant noodles chicken flavor convenience food instant noodles chicken flavour savoury convenient quick meal snack tasty comfortfood easyprepare flavorful seasoning cookingbase"
+    "metadata": "instant noodles chicken flavor convenience food instant noodles chicken flavour savoury umami seasoning convenient quick cooking easy meal flavour enhancer tasty comfortfood pantry staple maggi star tablet"
   },
   {
     "_id": "67a3e9278f76755bc9adc744",
@@ -1284,7 +1272,7 @@
     "createdAt": "2025-02-05T22:41:43.326Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "leafy vegetable traditional okazi leafygreen vegetable nigerian soup ingredient traditional african delicacy healthy nutritious fiberrich antioxidant leafy vibrant green flavorful\n\n\n\n"
+    "metadata": "leafy vegetable traditional okazi leafygreen vegetable nigerian staple soup ingredient nutritious antioxidant africanfood healthy vibrant green flavorful traditional recipe"
   },
   {
     "_id": "67a3e9278f76755bc9adc746",
@@ -1297,7 +1285,7 @@
     "createdAt": "2025-02-05T22:41:43.605Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "fermented seasoning legumes fermented bean seasoning african cuisine iru umami savory protein rich traditional nigerian fermented flavorful spice ingredient depth complexity"
+    "metadata": "fermented seasoning legumes fermented bean protein savory umami nigerian traditional iru seasoning flavoring african cuisine proteinrich savorydepth fermentedfood staple ingredient richflavor authentic taste"
   },
   {
     "_id": "67a3e9278f76755bc9adc748",
@@ -1310,7 +1298,7 @@
     "createdAt": "2025-02-05T22:41:43.884Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "seasoning spice flavoring garlic powder seasoning spice savory aromatic flavorful versatile cooking baking pantry essential allnatural organic glutenfree vegan"
+    "metadata": "seasoning spice flavoring garlic powder seasoning spice savory aromatic flavorful versatile cooking baking pantry staple natural preservativefree allspice"
   },
   {
     "_id": "67a3e9288f76755bc9adc74a",
@@ -1324,7 +1312,7 @@
     "createdAt": "2025-02-05T22:41:44.163Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "organ meat protein source nutrient-rich organ meat protein iron b vitamins nutrient dense rich flavor savory hearty natural wholefood healthy traditional offal delicious versatile cooking ingredient"
+    "metadata": "organ meat protein source nutrient-rich organ meat protein iron b vitamins nutrient dense healthy rich flavor savory pate terrine liverwurst delicious versatile cooking ingredient natural wholefood"
   },
   {
     "_id": "67a3e9288f76755bc9adc74d",
@@ -1337,7 +1325,7 @@
     "createdAt": "2025-02-05T22:41:44.441Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "vegetable side snack sweetcorn fresh kernels yellow juicy summer vegetable grilling roasting cob sweet vibrant seasonal delicious wholesome farm fresh harvest"
+    "metadata": "vegetable side snack sweetcorn fresh vegetable maize kernels yellow juicy summertime grilling roasting buttery delicious healthy antioxidant rich farmfresh seasonal"
   },
   {
     "_id": "67a3e9288f76755bc9adc74f",
@@ -1350,7 +1338,7 @@
     "createdAt": "2025-02-05T22:41:44.738Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "vegetable legume healthy fresh green peas vegetables frozen peas sweet peas garden peas organic peas vibrant green nutritious protein fiber delicious versatile healthy plantbased"
+    "metadata": "vegetable legume healthy fresh green peas vegetable pod sweet crisp garden vibrant organic naturally delicious plantbased healthy nutritious flavorful side dish ingredient"
   },
   {
     "_id": "67a3e9298f76755bc9adc751",
@@ -1363,7 +1351,7 @@
     "createdAt": "2025-02-05T22:41:45.017Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "spice seasoning flavoring ginger spice aromatic warming flavorful baking cooking curry chai tea antioxidant digestive healthy natural organic premium indian asian culinary essential"
+    "metadata": "spice seasoning flavoring ginger spice aromatic warming flavorful antioxidant digestive healthy baking curry chai tea essential cooking ingredient natural unprocessed"
   },
   {
     "_id": "67a3e9298f76755bc9adc753",
@@ -1376,7 +1364,7 @@
     "createdAt": "2025-02-05T22:41:45.295Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "herbal seasoning vegetable uziza leaves african herb spice flavor pepper aromatic traditional nigeria westafrica cooking seasoning flavorful fragrant fresh green leafy vegetable"
+    "metadata": "herbal seasoning vegetable uziza leaves african spice aromatic herb fresh green nigeria westafrica flavorful culinary ingredient traditional seasoning spicy aromatic potent herb"
   },
   {
     "_id": "67a3e9298f76755bc9adc755",
@@ -1391,7 +1379,7 @@
     "createdAt": "2025-02-05T22:41:45.573Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "vegetable healthy green garden egg green african vegetable small fruit eggplant shadeplant tropical produce nutritious antioxidant heirloom flavor"
+    "metadata": "vegetable healthy green garden egg green eggplant small vegetable african snack nutritious fiber rich healthy appetizer unique flavor tropical produce"
   },
   {
     "_id": "67a3e9298f76755bc9adc759",
@@ -1404,7 +1392,7 @@
     "createdAt": "2025-02-05T22:41:45.856Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "vegetable leafy nutritious ewedu leaf nigerian soup ingredient leafygreen african cuisine healthy vegetable nutritious traditional soup base fresh vibrant flavorful bitterleaf."
+    "metadata": "vegetable leafy nutritious ewedu leaf nigerian soup ingredient vegetable leafygreen healthy nutritious fiber rich african cuisine traditional westafrican flavor delicacy green stew spinach alternative"
   },
   {
     "_id": "67a3e92a8f76755bc9adc75b",
@@ -1417,7 +1405,7 @@
     "createdAt": "2025-02-05T22:41:46.135Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "flatbread middle eastern wrap shawarma bread flatbread middleeastern wrap pita bread arabic versatile delicious pliable warm soft grillable sandwich bread flavor absorbent."
+    "metadata": "flatbread middle eastern wrap shawarma bread flatbread middleeastern wrap pita arabic versatile pliable soft delicious filling streetfood lunch dinner appetizer."
   },
   {
     "_id": "67a3e92a8f76755bc9adc75d",
@@ -1430,7 +1418,7 @@
     "createdAt": "2025-02-05T22:41:46.437Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "condiment spread dressing creamy southern mayonnaise bama classic condiment tangy rich flavorful smooth spread sandwich recipe bbq coleslaw potato salad louisiana american comfortfood"
+    "metadata": "condiment spread dressing creamy southern classic mayonnaise tangy rich smooth delicious flavorful condiment baking spreading sandwich filling iconic bama alabama homemade traditional comfortfood"
   },
   {
     "_id": "67a3e92a8f76755bc9adc75f",
@@ -1443,7 +1431,7 @@
     "createdAt": "2025-02-05T22:41:46.716Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "nigerian vegetable soup nigerian food yoruba cuisine swallow staple dish semolina flour elastic dough traditional african delicacy creamy texture filling breakfast lunch dinner"
+    "metadata": "nigerian vegetable soup eto tete fermented yam ivorian westafrican savory side dish traditional breakfast flavorful authentic ivorianfood unique texture chewy delicious filling."
   },
   {
     "_id": "67a3e92a8f76755bc9adc761",
@@ -1457,7 +1445,7 @@
     "createdAt": "2025-02-05T22:41:46.995Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "herbal beverage natural zobo leaf hibiscus leaf african herb beverage ingredient natural digestive antioxidant refreshing flavor antioxidant properties traditional african drink"
+    "metadata": "herbal beverage natural zobo leaf hibiscus leaf african drink nigeria herbal tea refreshing natural antioxidant traditional beverage healthy tasty vibrant green leafy ingredient"
   },
   {
     "_id": "67a3e92b8f76755bc9adc764",
@@ -1471,7 +1459,7 @@
     "createdAt": "2025-02-05T22:41:47.274Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "herbal drink natural beverage refreshing infusion zobo leaf blended drinkable refreshing african nigeria hibiscus floral tangy antioxidant healthy natural botanical traditional beverage"
+    "metadata": "herbal drink natural beverage refreshing infusion zobo leaf blended nigeria hibiscus drink refreshing natural antioxidant fiberrich nutritious beverage africanhealth wellness powder smoothie ingredient healthy boost"
   },
   {
     "_id": "67a3e92b8f76755bc9adc767",
@@ -1485,7 +1473,7 @@
     "createdAt": "2025-02-05T22:41:47.558Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "sweetener ingredient additive sweet granular crystalline sweetener baking dessert candy flavoring natural ingredient pure delicious baking ingredient cooking ingredient confectionery ingredient refreshment\n\n\n\n"
+    "metadata": "sweetener ingredient additive sweet granular sweetener baking ingredient candy flavoring dessert ingredient natural sweetener refined sugar organic cane sugar brown sugar powdered sugar confectioners sugar baking food additive"
   },
   {
     "_id": "67a3e92b8f76755bc9adc76a",
@@ -1498,7 +1486,7 @@
     "createdAt": "2025-02-05T22:41:47.857Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "vegetable herb leafy oha leaves nigerian vegetable leafygreen superfood african cuisine healthy vibrant nutritious antioxidant natural wildharvested traditional medicine bitterleaf alternative fresh green"
+    "metadata": "vegetable herb leafy oha leaves african vegetable leafygreen superfood nutritious vibrant healthy traditional nigeria westafrica indigenous antioxidant fiber rich culinary unique flavor\n\n\n\n"
   },
   {
     "_id": "67a3e92c8f76755bc9adc76c",
@@ -1512,7 +1500,7 @@
     "createdAt": "2025-02-05T22:41:48.135Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "fermented condiment seasoning ogiri fermented melonseed nigerian delicacy savory spread protein rich traditional african flavor umami fermentedfood condiment spread"
+    "metadata": "fermented condiment seasoning ogiri fermented beans nigerian traditional savory protein rich flavorful umami condiment african cuisine delicious fermented food westafrican staple ingredient"
   },
   {
     "_id": "67a3e92c8f76755bc9adc76f",
@@ -1526,7 +1514,7 @@
     "createdAt": "2025-02-05T22:41:48.422Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "vegetable starch ingredient cocoyam root starch thickening agent soup base african cuisine texture enhancer natural binder glutenfree traditional ingredient caribbean cooking vegetable pureed"
+    "metadata": "vegetable starch ingredient cocoyam root vegetable soup thickener natural starch glutenfree fiberrich nutritious caribbean african pacific island food traditional ingredient creamy texture cooking ingredient versatile staple"
   },
   {
     "_id": "67a3e92c8f76755bc9adc772",
@@ -1537,9 +1525,9 @@
     ],
     "name": "dry smoked catfish",
     "createdAt": "2025-02-05T22:41:48.731Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 1,
-    "metadata": "smoked fish dried seafood gourmet snack smoked catfish louisiana seafood delicious savory southern appetizer snack protein rich unique flavorful mild smoky delta fresh premium artisan"
+    "updatedAt": "2025-05-26T03:42:07.919Z",
+    "variantCount": 2,
+    "metadata": "smoked fish dried seafood gourmet snack smoked catfish louisiana seafood southern delicacy premium artisan flavor rich smoky tender flaky appetizer entree sustainable wildcaught delicious appetizer unique"
   },
   {
     "_id": "67a3e92d8f76755bc9adc774",
@@ -1552,7 +1540,7 @@
     "createdAt": "2025-02-05T22:41:49.009Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "vegetable leafy cruciferous cabbage vegetable cruciferous leafy green healthy nutritious fiber antioxidant vitamins versatile cooking hearty coleslaw salad braised roasted stirfry"
+    "metadata": "vegetable leafy cruciferous cruciferous vegetable green leafy healthy nutritious fiber rich versatile cooking baking coleslaw fermentation slaw hearty affordable seasonal farmfresh organic"
   },
   {
     "_id": "67a3e92d8f76755bc9adc776",
@@ -1566,7 +1554,7 @@
     "createdAt": "2025-02-05T22:41:49.288Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "pasta italian staple pasta italian noodle long wheat grain dinner lunch carb comfortfood classic versatile simple authentic traditional european cuisine"
+    "metadata": "pasta italian staple pasta italian staple long strand wheat durum semolina classic traditional comforting versatile dinner lunch side dish affordable easy cooking."
   },
   {
     "_id": "67a3e92d8f76755bc9adc779",
@@ -1581,7 +1569,7 @@
     "createdAt": "2025-02-05T22:41:49.566Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "vegetable dish cuisine okro vegetable green pod african stew soup gumbo fiber healthy nutritious versatile unique africanorigin plant based"
+    "metadata": "vegetable dish cuisine okro vegetable green stew ingredient african cuisine healthy fiberrich nutritious unique flavor stew soup gumbo vegan friendly natural plantbased"
   },
   {
     "_id": "67a3e92d8f76755bc9adc77d",
@@ -1594,7 +1582,7 @@
     "createdAt": "2025-02-05T22:41:49.871Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "spice seasoning herb uda seed negro pepper spice african nigeria seasoning flavorful aromatic heat culinary ingredient authentic traditional westafrican"
+    "metadata": "spice seasoning herb uda seed negro pepper spice african pepper spice westafrica flavor ingredient aromatic heat culinary unique traditional authentic nigerian"
   },
   {
     "_id": "67a3e92e8f76755bc9adc77f",
@@ -1609,7 +1597,7 @@
     "createdAt": "2025-02-05T22:41:50.151Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "vegetable salad healthy cucumber refreshing hydrating vegetable crisp green healthy salad snack organic garden produce cool summer"
+    "metadata": "vegetable salad healthy cucumber refreshing hydrating vegetable green crisp juicy salad healthy snack versatile garden fresh organic lowcalorie refreshing"
   },
   {
     "_id": "67a3e92e8f76755bc9adc783",
@@ -1623,7 +1611,7 @@
     "createdAt": "2025-02-05T22:41:50.431Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "fruit refreshing summer watermelon fruit summer sweet juicy refreshing hydrating pink red green picnic healthy snack seasonal vibrant refreshing thirstquenching delicious tropical"
+    "metadata": "fruit refreshing summer watermelon fruit summer sweet refreshing juicy hydrating picnic outdoor healthy vibrant red pink green delicious seasonal"
   },
   {
     "_id": "67a3e92e8f76755bc9adc786",
@@ -1638,7 +1626,7 @@
     "createdAt": "2025-02-05T22:41:50.713Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "citrus fruit snack citrus fruit juicy sweet tangy vitaminc healthy breakfast snack fruit orange color vibrant refreshing tropical citrusy delicious"
+    "metadata": "citrus fruit snack citrus fruit juicy sweet tangy bright orange vitamin c healthy snack breakfast fruit vibrant refreshing seasonal tropical delicious"
   },
   {
     "_id": "67a3e92e8f76755bc9adc78a",
@@ -1652,7 +1640,7 @@
     "createdAt": "2025-02-05T22:41:50.994Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "fruit healthy green avocado healthy fruit green creamy delicious nutritious fiber rich vitamins antioxidant vegan plantbased breakfast smoothie salad guacamole spread mexican california hass"
+    "metadata": "fruit healthy green creamy green fruit healthy delicious nutritious versatile breakfast smoothie salad guacamole fresh ripe organic antioxidant"
   },
   {
     "_id": "67a3e92f8f76755bc9adc78d",
@@ -1666,7 +1654,7 @@
     "createdAt": "2025-02-05T22:41:51.275Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "herb seasoning flavor garlic bulb aromatic pungent flavorful allium vegetable italian cuisine cooking ingredient herb spice seasoning savory flavorful delicious healthy organic fresh natural"
+    "metadata": "herb seasoning flavor garlic aromatic pungent flavorful allium bulb spice herb cooking ingredient savory italian mediterranean asian culinary flavor enhancer bulb fresh dried minced granulated"
   },
   {
     "_id": "67a3e92f8f76755bc9adc790",
@@ -1679,7 +1667,7 @@
     "createdAt": "2025-02-05T22:41:51.555Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "fertilizer mineral nutrient potash potassium fertilizer plantfood agriculture potassiumchloride mineral soilamendment cropnutrition essentialnutrient sustainablefarming amendment gardening hydroponics"
+    "metadata": "fertilizer mineral nutrient potash fertilizer potassium chloride potash salt agriculture crop nutrient soil amendment potassium mineral plant food potassium source sustainable farming fertilizer boost"
   },
   {
     "_id": "67a3e92f8f76755bc9adc792",
@@ -1692,7 +1680,7 @@
     "createdAt": "2025-02-05T22:41:51.863Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "seasoning ingredient preservative aluminum astringent deodorant antiperspirant waterpurification tanning pottery mordant alumstone crystalline mineral rock baking chemical ingredient skincare vintage"
+    "metadata": "seasoning ingredient preservative aluminum salt astringent deodorant antiperspirant waterpurification tanning mordant baking powder ingredient aluminum compound chemical element powder granular crystal"
   },
   {
     "_id": "67a3e9308f76755bc9adc794",
@@ -1708,7 +1696,7 @@
     "createdAt": "2025-02-05T22:41:52.142Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 4,
-    "metadata": "snack superfood tuber tigernut ancient grain prebiotic fiber sweet nutty african root vegetable sustainable vegan organic healthy snack natural ingredient nutritious delicious raw food"
+    "metadata": "snack superfood tuber tigernut ancient root vegetable prebiotic fiber nutritious naturally sweet earthy vegan glutenfree african origin delicious snack healthy snack superfood unique taste ingredient"
   },
   {
     "_id": "67a3e9308f76755bc9adc799",
@@ -1721,7 +1709,7 @@
     "createdAt": "2025-02-05T22:41:52.421Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "vegetable herb garnish spring onion allium vegetable herb green onion scallion fresh mild flavor culinary garnish salad soup stirfry aromatic allium family"
+    "metadata": "vegetable herb garnish spring onion fresh green allium vegetable herb mild flavor salad garnish soup stirfry cooking ingredient versatile garden grown culinary aromatic"
   },
   {
     "_id": "67a3e9308f76755bc9adc79b",
@@ -1734,7 +1722,7 @@
     "createdAt": "2025-02-05T22:41:52.709Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "vegetable herb ingredient bitterleaf whole herb african vegetable leafy green healthy nutritious traditional spice soup stew flavorful bitter taste culinary ingredient natural unprocessed"
+    "metadata": "vegetable herb ingredient bitterleaf whole african herb leafy vegetable traditional soup ingredient flavorful bitter taste healthy nutritious antioxidant fiberrich spicy westafrican cooking"
   },
   {
     "_id": "67a3e9308f76755bc9adc79d",
@@ -1747,7 +1735,7 @@
     "createdAt": "2025-02-05T22:41:52.988Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "vegetable leafy ingredient bitterleaf chopped african vegetable leafy green soup ingredient healthy flavorful traditional nigerian bitter indigenous antioxidant culinary spice"
+    "metadata": "vegetable leafy ingredient bitterleaf chopped african vegetable leafygreen healthy soup stew nigerian spice flavor aromatic traditional fresh frozen nutritious antioxidant"
   },
   {
     "_id": "67a3e9318f76755bc9adc79f",
@@ -1760,7 +1748,7 @@
     "createdAt": "2025-02-05T22:41:53.295Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "herb seasoning garnish fresh herb green leafy vegetable culinary garnish italian parsley flatleaf parsley curly parsley aromatic flavorful mediterranean garden organic vibrant healthy culinary ingredient"
+    "metadata": "herb seasoning garnish fresh herb leafy green parsley flatleaf curly italian garnish aromatic flavorful culinary spice organic garden vegetable healthy antioxidant"
   },
   {
     "_id": "67a3e9318f76755bc9adc7a1",
@@ -1774,7 +1762,7 @@
     "createdAt": "2025-02-05T22:41:53.575Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "vegetable healthy green cruciferous vegetable green healthy fiber antioxidant vitamins nutritious superfood plantbased lowcarb fresh organic farmfresh vibrant wholesome delicious."
+    "metadata": "vegetable healthy green cruciferous vegetable green florets healthy nutritious fiber rich antioxidant vitamins minerals plantbased vegan glutenfree versatile cooking roasting steaming stirfry side dish"
   },
   {
     "_id": "67a3e9318f76755bc9adc7a4",
@@ -1787,7 +1775,7 @@
     "createdAt": "2025-02-05T22:41:53.856Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "spicy seasoning condiment payoor suya pepper spicy nigerian african seasoning flavorful aromatic smoky delicious grilling roasting snacks authentic homemade traditional"
+    "metadata": "spicy seasoning condiment payoor suya pepper nigerian spice flavorful spicy savory aromatic grilling seasoning delicious authentic westafrican homemade"
   },
   {
     "_id": "67a3e9328f76755bc9adc7a6",
@@ -1801,7 +1789,7 @@
     "createdAt": "2025-02-05T22:41:54.137Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "seafood fish protein sole fish african delicacy seafood fresh premium tasty nutritious sustainable healthy flavorful unique artisanal seafoodlover"
+    "metadata": "seafood fish protein fresh fish seafood sustainable protein healthy delicious african traditional nigerian delicacy abo fish premium quality artisanal smallbusiness"
   },
   {
     "_id": "67a3e9328f76755bc9adc7a9",
@@ -1815,7 +1803,7 @@
     "createdAt": "2025-02-05T22:41:54.418Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "vegetable side dish snack sweet corn vegetable summer fresh juicy yellow kernels delicious grilling roasting buttery sweet harvest seasonal farm produce homegrown"
+    "metadata": "vegetable side dish snack fresh corn sweet vegetable summer grilling roasting kernels vibrant juicy golden delicious farm fresh seasonal harvest"
   },
   {
     "_id": "67a3e9328f76755bc9adc7ac",
@@ -1829,7 +1817,7 @@
     "createdAt": "2025-02-05T22:41:54.698Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "vegetable plant-based nutritious eggplant vegetable purple hearty glossy flavorful versatile stirfry grilling baking mediterranean asian hearty nutritious fiber rich antioxidant"
+    "metadata": "vegetable plant-based nutritious eggplant vegetable purple aubergine nightshade hearty savory grilling roasting stirfry mediterranean italian asian versatile healthy fiber rich antioxidants vitamins plantbased"
   },
   {
     "_id": "67a3e9328f76755bc9adc7af",
@@ -1841,9 +1829,9 @@
     ],
     "name": "chia seed",
     "createdAt": "2025-02-05T22:41:54.979Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
-    "variantCount": 2,
-    "metadata": "superfood health snack chia seeds superfood tiny grain black seed vegan glutenfree fiber rich omega3 healthy snack nutritious ancient grain plantbased energy boost baking ingredient smoothie booster"
+    "updatedAt": "2025-05-26T03:50:58.797Z",
+    "variantCount": 3,
+    "metadata": "superfood health snack chia seed superfood tiny seed ancient grain glutenfree vegan healthy fiber rich omega3 nutrients protein source energy boost baking smoothie breakfast snack"
   },
   {
     "_id": "67a3e9338f76755bc9adc7b2",
@@ -1857,7 +1845,7 @@
     "createdAt": "2025-02-05T22:41:55.261Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "baking ingredient cooking staple pantry essential all purpose baking flour wheat gluten bread pastry cakes cookies pie dough crusts pastrymaking bakingingredients baking supplies sweet savory baking"
+    "metadata": "baking ingredient cooking staple pantry essential allpurpose baking bread pastry cakes cookies sweet savory gluten wheat unbleached premium quality pastry flour baking flour kitchen essentials baking ingredients"
   },
   {
     "_id": "67a3e9338f76755bc9adc7b5",
@@ -1871,7 +1859,7 @@
     "createdAt": "2025-02-05T22:41:55.541Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "fruit tropical snack agbalumo african fruit tropical citrus tangy sweet juicy exotic nigeria africanorigin delicious healthy flavorful unique\n\n\n\n"
+    "metadata": "fruit tropical snack agbalumo african fruit tropical citrus sweet tangy juicy unique flavor exotic nigeria westafrica seasonal healthy antioxidant vitaminc delicious snack"
   },
   {
     "_id": "67a3e9338f76755bc9adc7b8",
@@ -1885,7 +1873,7 @@
     "createdAt": "2025-02-05T22:41:55.822Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "fruit tropical nut tropical fruit exotic delicious creamy nutty sustainable africanfood southasia nigeria ghana cameroon nigeriafood fiberrich vitamins minerals antioxidant unique flavour traditionalfood plantbased"
+    "metadata": "fruit tropical nut tropical fruit edible seed african cuisine sustainable harvest creamy flavor nutritious fiber rich traditional ingredient versatile cooking oil natural sweetener"
   },
   {
     "_id": "67a3e9348f76755bc9adc7bb",
@@ -1898,7 +1886,7 @@
     "createdAt": "2025-02-05T22:41:56.102Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "herb seasoning vegetable herb aromatic citrusy lemony fragrant tropical culinary edible flavorful refreshing zesty vibrant green culinaryingredient southeastasian garnish"
+    "metadata": "herb seasoning vegetable fragrant herb savory leaves southeastasian cuisine thai vietnamese laotian cambodian cooking aromatic fresh green spicy culinary ingredient natural flavor enhancer"
   },
   {
     "_id": "67a3e9348f76755bc9adc7bd",
@@ -1911,7 +1899,7 @@
     "createdAt": "2025-02-05T22:41:56.413Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "herb seasoning garnish fragrant herb chopped fresh aromatic citrusy floral tropical herbaceous southeastasian culinary flavoring ingredient unique flavor intense aroma cooking garnish"
+    "metadata": "herb seasoning garnish herb fresh aromatic citrusy lemonlime fragrant floral tropical zesty culinary seasoning garnish flavoring aromaticleaf"
   },
   {
     "_id": "67a3e9348f76755bc9adc7bf",
@@ -1925,7 +1913,7 @@
     "createdAt": "2025-02-05T22:41:56.693Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "salad vegetable fresh crisp green leafy vegetable salad fresh healthy organic romaine iceberg butter lettuce romaine lettuce crunchy mild flavorful versatile garden vegetables"
+    "metadata": "salad vegetable fresh crisp green leafy vegetable salad fresh healthy organic romaine iceberg butterhead red leaf boston bibb crunchy refreshing garden grown farm fresh."
   },
   {
     "_id": "67a3e9348f76755bc9adc7c2",
@@ -1941,7 +1929,7 @@
     "createdAt": "2025-02-05T22:41:56.974Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 4,
-    "metadata": "instant flour staple ayoola poundo yam pounded yam westafrican authentic traditional starchy hearty filling glutenfree nutritious smooth creamy delicious versatile side dish comfortfood nigerian food"
+    "metadata": "instant flour staple ayoola poundo yam cassava westafrican staple traditional authentic glutenfree nutritious hearty texture smooth creamy versatile africanfood nigeria food"
   },
   {
     "_id": "67a3e9358f76755bc9adc7c7",
@@ -1955,20 +1943,20 @@
     "createdAt": "2025-02-05T22:41:57.254Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "starchy traditional nigerian poundo yam starchy root vegetable westafrican food traditional dish hearty comfortfood authentic nigeria ghana versatile cooking staple delicious nutritious filling texture creamy fluffy pounded"
+    "metadata": "starchy traditional nigerian poundo yam starchy root vegetable westafrican staple traditional food authentic nigerian cuisine smooth creamy texture hearty filling naturally glutenfree nutritious fiberrich versatile delicious comfortfood"
   },
   {
     "_id": "67a3e9358f76755bc9adc7ca",
     "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739235974390-co3e82cqlus.jpeg",
     "generatedDescription": "",
     "generatedCategories": [
-      "Dish wash - Morning Fresh "
+      "Dish wash - Morning Fresh"
     ],
-    "name": "dish wash - morning fresh",
+    "name": "dish wash - morning fresh (1000ml)",
     "createdAt": "2025-02-05T22:41:57.563Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-26T04:02:49.299Z",
     "variantCount": 1,
-    "metadata": "cleaning household detergent dishwashing detergent fresh scent morning clean dishes sparkling plates grease cutting powerful automatic dishwasher safe citrus aroma invigorating fragrance bright kitchen"
+    "metadata": "cleaning household detergent dish soap morning fresh 1000ml fresh scent powerful clean grease cutting sparkling dishes liquid detergent kitchen cleaning household essential brightens dishes citrus fragrance value pack concentrated formula"
   },
   {
     "_id": "67a3e9358f76755bc9adc7cc",
@@ -1981,7 +1969,7 @@
     "createdAt": "2025-02-05T22:41:57.851Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "pasta italian comfort pasta italian semolina wheat dried durum simple authentic classic pantry staple delicious easy cooking versatile meal base"
+    "metadata": "pasta italian comfort pasta italian dried durum wheat semolina pantry staple dinner side dish comfortfood glutenfriendly easycooking versatile delicious affordable"
   },
   {
     "_id": "67a3e9368f76755bc9adc7ce",
@@ -1997,7 +1985,7 @@
     "createdAt": "2025-02-05T22:41:58.132Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 4,
-    "metadata": "instant noodles savory snack onion flavor indomie onion noodles instant savory asian comfortfood snack flavorful authentic indonesia cheap quick meal easy"
+    "metadata": "instant noodles savory snack onion flavor indomie noodle onion savory instant noodle asian comfortfood flavorful snack affordable quickmeal delicious umami authentic indonesia halal vegetarian"
   },
   {
     "_id": "67a3e9368f76755bc9adc7d3",
@@ -2013,7 +2001,7 @@
     "createdAt": "2025-02-05T22:41:58.413Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 4,
-    "metadata": "instant noodles chicken soup spicy dish indomie chicken peppersoup noodles spicy savory instant comfortfood nigerian flavor authentic seasoning quickmeal delicious affordable snack"
+    "metadata": "instant noodles chicken soup spicy dish indomie noodle chicken peppersoup instant noodles savory spicy african flavour nigeria comfortfood quickmeal affordable delicious authentic"
   },
   {
     "_id": "67a3e9368f76755bc9adc7d8",
@@ -2026,7 +2014,7 @@
     "createdAt": "2025-02-05T22:41:58.694Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "pasta italian cuisine honeywell spaghetti pasta italian pantry staple cooking ingredient versatile meal easyrecipe familyfavorite comfortfood delicious affordable pantryessential"
+    "metadata": "pasta italian cuisine honeywell spaghetti pasta italian pantry staple cooking ingredient convenient easy meal dinner lunch box pantry food wheat based delicious classic"
   },
   {
     "_id": "67a3e9368f76755bc9adc7da",
@@ -2042,7 +2030,7 @@
     "createdAt": "2025-02-05T22:41:58.974Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 4,
-    "metadata": "instant noodle snack indomie noodle chicken flavor instant noodle asianfood comfortfood savory snack quickmeal authentic indonesia halal delicious affordable pantry staple"
+    "metadata": "instant noodle snack indomie noodles original chicken instant noodles asian food snack comfortfood savory noodles quickmeal budgetfriendly delicious authentic indonesia flavorful"
   },
   {
     "_id": "67a3e9378f76755bc9adc7df",
@@ -2057,7 +2045,7 @@
     "createdAt": "2025-02-05T22:41:59.255Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "chocolate drink health supplement energy booster chocolate malt drink health nutrition energy kids family breakfast delicious vitamin fortified immunity boosting tasty classic indian"
+    "metadata": "chocolate drink health supplement energy booster chocolate malt drink energy boost health nourishment vitamins minerals taste delicious family favourite breakfast beverage kids adults chocolatey malty creamy iconic brand"
   },
   {
     "_id": "67a3e9378f76755bc9adc7e3",
@@ -2075,7 +2063,7 @@
     "createdAt": "2025-02-05T22:41:59.537Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 6,
-    "metadata": "dairy cream evaporated hollandia fullcream evaporated milk dairy creamy rich nutritious breakfast baking cooking versatile family essential ingredient"
+    "metadata": "dairy cream evaporated hollandia evaporated milk full cream dairy milk creamy rich essential baking cooking versatile pantry staple nutritious calcium vitamin d dutch origin"
   },
   {
     "_id": "67a3e9378f76755bc9adc7ea",
@@ -2088,7 +2076,7 @@
     "createdAt": "2025-02-05T22:41:59.816Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "beverage tea herbal classic black tea english breakfast everyday blend refreshing aromatic traditional beverage hotdrink pantry staple comforting familiar taste british tea strong flavor caffeine boost delicious"
+    "metadata": "beverage tea herbal black tea classic blend english breakfast breakfast tea everyday tea traditional tea refreshing hot beverage aromatic flavorful robust rich taste caffeine boost pantry staple delicious beverage"
   },
   {
     "_id": "67a3e9388f76755bc9adc7ec",
@@ -2104,7 +2092,7 @@
     "createdAt": "2025-02-05T22:42:00.098Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 4,
-    "metadata": "beverage fruit juice apple juice kids snack refreshing fruity portable juicebox sweet childhood treat drink pouch convenient lunchbox"
+    "metadata": "beverage fruit juice apple juice kids drink pouch refreshing fruity sweet summertime snack convenient portable delicious treat childhood classic nostalgic fruityflavor"
   },
   {
     "_id": "67a3e9388f76755bc9adc7f1",
@@ -2119,7 +2107,7 @@
     "createdAt": "2025-02-05T22:42:00.378Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "beverage fruit snack orange juice drink kids snack refreshing fruity sweet portable convenient juicebox childhood classic summertime thirstquenching delicious"
+    "metadata": "beverage fruit snack orange juice drink kids snack refreshing fruity portable delicious summertime childhood classic juicebox sweet tangy convenient"
   },
   {
     "_id": "67a3e9388f76755bc9adc7f5",
@@ -2132,7 +2120,7 @@
     "createdAt": "2025-02-05T22:42:00.679Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 1,
-    "metadata": "beverage fruit snack orange juice drink kids snack fruity refreshing sweet tangy portable convenient iconic childhood classic tropical citrus delicious"
+    "metadata": "beverage fruit snack orange juice drink kids snack refreshing fruity portable sweet tangy convenient iconic childhood classic juicebox"
   },
   {
     "_id": "67a3e9388f76755bc9adc7f7",
@@ -2144,9 +2132,9 @@
     ],
     "name": "titus sardine",
     "createdAt": "2025-02-05T22:42:00.957Z",
-    "updatedAt": "2025-02-13T00:00:01.541Z",
+    "updatedAt": "2025-05-26T04:04:53.220Z",
     "variantCount": 2,
-    "metadata": "canned seafood protein snack omega-rich sardine seafood canned fish ocean protein omega3 healthy sustainable delicious pantry staple mediterranean portuguese spanish flavor umami"
+    "metadata": "canned seafood protein snack omega-rich sardine canned seafood fish ocean wildcaught protein omega3 healthy sustainable delicious pantry staple snack premium quality mediterranean flavor"
   },
   {
     "_id": "67a3e9398f76755bc9adc7fa",
@@ -2160,7 +2148,7 @@
     "createdAt": "2025-02-05T22:42:01.265Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "breakfast cereal crunchy snack whole grain cornflakes breakfast cereal classic original crunchy toasted maize grain wholesome breakfast affordable family breakfast traditional"
+    "metadata": "breakfast cereal crunchy snack whole grain cornflakes breakfast cereal classic original crunchy wholesome grain breakfast food delicious affordable breakfast staple"
   },
   {
     "_id": "67a3e9398f76755bc9adc7fd",
@@ -2175,7 +2163,7 @@
     "createdAt": "2025-02-05T22:42:01.544Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 3,
-    "metadata": "breakfast cereal crunchy snack whole grain classic cereal breakfast flakes simple crunchy toasted corn grain hearty wholesome family breakfast iconic kellogg's traditional breakfast filler wholesome goodness"
+    "metadata": "breakfast cereal crunchy snack whole grain classic cereal breakfast flakes toasted corn crunchy wholesome simple breakfast grain kellogg's traditional iconic breakfast cereal nostalgic breakfast kids breakfast family breakfast delicious affordable breakfast"
   },
   {
     "_id": "67a3e9398f76755bc9adc801",
@@ -2189,7 +2177,7 @@
     "createdAt": "2025-02-05T22:42:01.823Z",
     "updatedAt": "2025-02-13T00:00:01.541Z",
     "variantCount": 2,
-    "metadata": "tuber vegetable starch water yam tuber root vegetable african caribbean westafrican starchy nutritious earthy versatile cooking baking roasting traditional food yam sweetpotato alternative fiber rich carbohydrate source"
+    "metadata": "tuber vegetable starch water yam african root vegetable starchy carbohydrate nutritious fiberrich earthy tropical westafrica traditional food sweet flavor versatile cooking baking roasting steaming healthy organic natural"
   },
   {
     "_id": "67c07dbb2a158f9f04705a9a",
@@ -2201,7 +2189,7 @@
     "createdAt": "2025-02-27T14:59:07.169Z",
     "updatedAt": "2025-02-27T14:59:07.169Z",
     "__v": 0,
-    "metadata": "tropical fruit healthy snack versatile ingredient tropical fruit sweet creamy delicious hydrating natural vegan plantbased healthy exotic tropical coconutty versatile cooking baking beverage fiber antioxidant"
+    "metadata": "tropical fruit healthy snack versatile ingredient tropical fruit sweet creamy versatile delicious hydrating natural organic healthy vegan dairyfree plantbased tropical exotic refreshment snack ingredient baking smoothie.\n"
   },
   {
     "_id": "67c07eac2a158f9f04705cc9",
@@ -2213,7 +2201,7 @@
     "createdAt": "2025-02-27T15:03:08.613Z",
     "updatedAt": "2025-02-27T15:03:08.613Z",
     "__v": 0,
-    "metadata": "fruit snack dessert pear fruit sweet juicy crisp refreshing healthy snack autumn harvest orchard fruit dessert baking fresh natural delicious green yellow"
+    "metadata": "fruit snack dessert pear fruit sweet juicy crisp refreshing healthy snack autumn harvest delicious orchard fruit dessert baking snackable seasonal"
   },
   {
     "_id": "67c07fc52a158f9f04705e78",
@@ -2225,7 +2213,7 @@
     "createdAt": "2025-02-27T15:07:49.767Z",
     "updatedAt": "2025-02-27T15:07:49.767Z",
     "__v": 0,
-    "metadata": "fruit refreshing summer watermelon big juicy sweet refreshing summer fruit picnic healthy vibrant red delicious hydrating thirstquenching large slice picnicfood"
+    "metadata": "fruit refreshing summer watermelon big fruit sweet juicy refreshing summer picnic healthy vibrant red flesh hydrating thirstquenching large slice picnicfood"
   },
   {
     "_id": "67c080192a158f9f04705ef8",
@@ -2237,7 +2225,7 @@
     "createdAt": "2025-02-27T15:09:13.881Z",
     "updatedAt": "2025-02-27T15:09:13.881Z",
     "__v": 0,
-    "metadata": "fruit refreshing summer watermelon fruit juicy refreshing summer sweet hydrating pink red green picnic snack healthy vibrant seasonal fruitmedium"
+    "metadata": "fruit refreshing summer watermelon fruit medium juicy refreshing sweet summer picnic hydrating healthy vibrant pink edible flesh"
   },
   {
     "_id": "67c081b42a158f9f0470627b",
@@ -2249,7 +2237,7 @@
     "createdAt": "2025-02-27T15:16:04.816Z",
     "updatedAt": "2025-02-27T15:18:51.041Z",
     "__v": 0,
-    "metadata": "spice herb flavor ginger spice root aromatic warming digestive healthy natural antioxidant flavorful tea baking cooking asian indian caribbean medicinal antioxidant antiinflammatory"
+    "metadata": "spice herb flavor ginger spice root rhizome aromatic flavorful warming digestive antioxidant antiinflammatory natural healing culinary ingredient baking tea smoothie healthy organic"
   },
   {
     "_id": "67c464782a158f9f04707a5d",
@@ -2261,7 +2249,7 @@
     "createdAt": "2025-03-02T14:00:24.778Z",
     "updatedAt": "2025-03-02T14:03:29.978Z",
     "__v": 0,
-    "metadata": " superfood moringa leaf powder antioxidant antiinflammatory nutrientdense organic vegan vegetarian healthy supplement energy boost immunity support natural wellness greenpowder detox cleanse vitamins minerals antioxidants fiber rich plantbased"
+    "metadata": " superfood leafygreen nutrientdense antioxidant antiinflammatory energyboost immunity support vitamins minerals organic natural detox cleanse wellness health supplement powder capsule supplement sustainable farm fresh green"
   },
   {
     "_id": "67c465432a158f9f04707e03",
@@ -2273,7 +2261,7 @@
     "createdAt": "2025-03-02T14:03:47.941Z",
     "updatedAt": "2025-03-02T14:03:47.941Z",
     "__v": 0,
-    "metadata": " cinnamon sticks spice baking flavoring aromatic warm sweet fragrant delicious natural authentic holiday festive baking ingredients cooking essential premium quality"
+    "metadata": " cinnamon spice baking fragrance warm flavor aromatic natural fragrant holiday christmas baking cooking essential oil aromatherapy spice rack"
   },
   {
     "_id": "67c465732a158f9f04707e95",
@@ -2287,7 +2275,7 @@
     "createdAt": "2025-03-02T14:04:35.233Z",
     "updatedAt": "2025-03-02T14:21:31.227Z",
     "__v": 0,
-    "metadata": " sugarcane sweet tropical grass biofuel sweetener molasses fiber renewable energy tropicalplant rawmaterial agriculture juice natural ingredient crop\n"
+    "metadata": " sugarcane sweet tropical plant biofuel renewable rawmaterial molasses byproduct juice natural sweetener agriculture harvest tropicalfruit renewableenergy fiber energy crop processing fermentation rum agricole"
   },
   {
     "_id": "67c465f02a158f9f04708298",
@@ -2299,7 +2287,7 @@
     "createdAt": "2025-03-02T14:06:40.035Z",
     "updatedAt": "2025-03-02T14:06:40.035Z",
     "__v": 0,
-    "metadata": " beetroot earthy root vegetable vibrant purple antioxidant rich mineral source nutritious fiber vegetable sweet savory versatile healthy organic natural farmfresh"
+    "metadata": " beetroot root vegetable earthy sweet vibrant purple red nutrientdense antioxidant fiberrich versatile organic healthy delicious raw roasted juice smoothie vegan"
   },
   {
     "_id": "67c466212a158f9f0470832a",
@@ -2311,7 +2299,7 @@
     "createdAt": "2025-03-02T14:07:29.979Z",
     "updatedAt": "2025-03-02T14:09:45.869Z",
     "__v": 0,
-    "metadata": " celery leaf fresh herb vegetable green crunchy flavorful aromatic organic healthy plant based antioxidant fiber rich culinary garnish"
+    "metadata": " crisp leafy green vegetable celerystalk organic fresh healthy lowcalorie flavorful crunchy aromatic salad soup stock garnish"
   },
   {
     "_id": "67c466e62a158f9f04708700",
@@ -2325,7 +2313,7 @@
     "createdAt": "2025-03-02T14:10:46.781Z",
     "updatedAt": "2025-03-02T14:15:01.753Z",
     "__v": 0,
-    "metadata": " turmeric spice golden antioxidant antiinflammatory organic natural flavorful healthy traditional indian ayurveda curcumin vibrant warming culinary ingredient"
+    "metadata": " turmeric spice antioxidant antiinflammatory golden healing organic flavorful curry indian ayurvedic healthy natural vibrant culinary ingredient root powder"
   },
   {
     "_id": "67c468672a158f9f04708e28",
@@ -2339,7 +2327,7 @@
     "createdAt": "2025-03-02T14:17:11.004Z",
     "updatedAt": "2025-03-02T14:19:24.102Z",
     "__v": 0,
-    "metadata": " cayenne pepper spice supreme heat vibrant flavor culinary ingredient fiery seasoning cooking aromatic bold intense delicious premium natural"
+    "metadata": " cayenne pepper supreme spice hot flavor heat culinary ingredient seasoning vibrant red chili pepper culinary zest flavorful aromatic"
   },
   {
     "_id": "67c7434a2a158f9f0470b2e0",
@@ -2351,7 +2339,7 @@
     "createdAt": "2025-03-04T18:15:38.667Z",
     "updatedAt": "2025-03-04T18:26:28.031Z",
     "__v": 0,
-    "metadata": " tropical fruit sweet juicy ripe vibrant yellow orange fragrant delicious refreshing summery exotic healthy vitamin a vitamin c antioxidant antioxidantrich tropicalflavor mangoes"
+    "metadata": " tropical fruit sweet juicy mango delicious vibrant yellow orange juicy refreshing summery tropical flavor antioxidant vitamin a vitamin c healthy snack smoothie ingredient dessert mangoes"
   },
   {
     "_id": "67c75f972a158f9f0470c74e",
@@ -2363,7 +2351,7 @@
     "createdAt": "2025-03-04T20:16:23.166Z",
     "updatedAt": "2025-03-04T20:22:11.204Z",
     "__v": 0,
-    "metadata": " fresh herb aromatic culinary mint refreshing garden organic flavorful garnish cocktail ingredient green vibrant cool summer"
+    "metadata": " mint leaf herb fresh aromatic culinary garnish mojito flavour refreshing garden organic fragrant green leaves summer cocktail"
   },
   {
     "_id": "67cf72d72a158f9f0470e7a3",
@@ -2375,7 +2363,7 @@
     "createdAt": "2025-03-10T23:16:39.634Z",
     "updatedAt": "2025-03-10T23:16:39.634Z",
     "__v": 0,
-    "metadata": " rosemary herb culinary fragrant aromatic mediterranean cooking organic fresh dried leaves flavorful seasoning garden spice italian greek flavorful natural"
+    "metadata": " rosemary leaves herb culinary fragrant aromatic mediterranean garden fresh dried organic flavorful cooking seasoning herbivore edible plant"
   },
   {
     "_id": "67cf739e2a158f9f0470ec17",
@@ -2387,7 +2375,7 @@
     "createdAt": "2025-03-10T23:19:58.163Z",
     "updatedAt": "2025-03-10T23:19:58.163Z",
     "__v": 0,
-    "metadata": " supreme italian seasoning herb blend aromatic flavorful savory classic authentic premium culinary spice kitchen pantry"
+    "metadata": " supreme italian herbs blend savory aromatic flavorful authentic mediterranean seasoning premium quality delicious versatile cooking"
   },
   {
     "_id": "67cf74132a158f9f0470eda8",
@@ -2399,7 +2387,7 @@
     "createdAt": "2025-03-10T23:21:55.430Z",
     "updatedAt": "2025-03-10T23:21:55.430Z",
     "__v": 0,
-    "metadata": " barilla spaghetti grossi pasta italian durumwheat longshape classic authentic traditional italiancuisine pantry staple familyfavorite everydaymeal"
+    "metadata": " barilla spaghetti grossi italian pasta long strand classic durumwheat semolina authentic traditional dinner lunch family meal simple delicious easycook versatile"
   },
   {
     "_id": "67cfe6052a158f9f0470f0cb",
@@ -2411,7 +2399,7 @@
     "createdAt": "2025-03-11T07:28:05.039Z",
     "updatedAt": "2025-03-11T07:28:05.039Z",
     "__v": 0,
-    "metadata": " butter spread dairy creamy delicious baking cooking breakfast sandwich family everyday kitchen staple traditional european dairy product"
+    "metadata": " butter dairy spread creamy breakfast baking cooking spreads flavourful margarine delicious everyday cooking baking versatile blueband"
   },
   {
     "_id": "67cfe8e92a158f9f04710dc5",
@@ -2423,6 +2411,45 @@
     "createdAt": "2025-03-11T07:40:25.062Z",
     "updatedAt": "2025-03-11T07:40:25.062Z",
     "__v": 0,
-    "metadata": " spice aromatic pungent warm flavorful culinary baking essential fragrant aromatic clove whole dried aromatic flavor antioxidant natural spice baking culinary"
+    "metadata": " cloves spice aromatic pungent warm baking cooking flavoring essentialoil antioxidant aromaticflavor culinary herb fragrant healing"
+  },
+  {
+    "_id": "683269bbb967f2149db27c34",
+    "name": "Bonita spaghetti",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1748134328174-3sd6l1t7bjn.jpeg",
+    "generatedDescription": "Spaghetti",
+    "generatedCategories": [
+      "Cooking essentials"
+    ],
+    "variantCount": 1,
+    "createdAt": "2025-05-25T00:52:11.482Z",
+    "updatedAt": "2025-05-25T00:53:23.067Z",
+    "metadata": " spaghetti pasta italian durumwheat longshape classic pantry staple cooking baking versatile affordable delicious simple"
+  },
+  {
+    "_id": "6833ddda03a4fe115affeaae",
+    "name": "Banana- native (ripe)",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1748229587616-lldooss8lf.JPG",
+    "generatedDescription": "",
+    "generatedCategories": [
+      "fruit"
+    ],
+    "variantCount": 1,
+    "createdAt": "2025-05-26T03:19:54.221Z",
+    "updatedAt": "2025-05-26T03:20:34.653Z",
+    "metadata": " banana native ripe sweet tropical fruit potassium healthy snack dessert smoothie baking natural organic delicious yellow fragrant"
+  },
+  {
+    "_id": "6833ed5f03a4fe115affeab4",
+    "name": "Ram meat - full (SMALL)",
+    "image": "https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1748233534982-k2uqia1na5k.webp",
+    "generatedDescription": "Ram is sorted, cleaned, and repacked for you, to make sure it is delivered under the best hygienic conditions.",
+    "generatedCategories": [
+      "protein"
+    ],
+    "variantCount": 1,
+    "createdAt": "2025-05-26T04:26:07.425Z",
+    "updatedAt": "2025-05-26T04:27:07.659Z",
+    "metadata": " ram meat full small protein gamey heritage traditional flavorful ethicallysourced pastureraised robust hearty unique delicious artisan meat"
   }
 ]
