@@ -91,3 +91,6 @@ services:
 networks:
   shopping_assistant:
     driver: bridge
+
+volumes:
+  esdata:
