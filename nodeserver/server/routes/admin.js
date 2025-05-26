@@ -72,7 +72,12 @@ function verifyAdminToken (req, res, next) {
 }
 
 adminRoute.use((req, res, next) => {
-  if (['/admin/login', '/admin/register'].includes(req.path)) return next()
+  if (
+    ['/admin/login', '/admin/register', '/admin/orders/reference'].includes(
+      req.path
+    )
+  )
+    return next()
   return verifyAdminToken(req, res, next)
 })
 

@@ -171,11 +171,13 @@
 
                 <div class="checkout__bottom">
                     <div class="checkout__content--body">
-                        <button class="button-primary disabled-btn" v-if="!allowOrderCreation">Confirm
-                            Order</button>
                         <button class="button-primary" v-if="allowOrderCreation" @click="createOrder"
-                            :class="{ 'disabled-btn': loading }">{{ loading ? 'Creating your order...' : `Confirm
-                            Order`}}</button>
+                            :class="{ 'disabled-btn': loading }">
+                            {{ loading ? 'Creating your order...' : `Confirm Order` }}
+                        </button>
+                        <button class="button-primary disabled-btn" v-else>
+                            Add required details to confirm
+                        </button>
                     </div>
                 </div>
 
@@ -219,9 +221,9 @@ export default {
             const ready =
                 this.delivery_address.trim().length > 0 &&
                 this.delivery_date !== null &&
-                this.subtotal > 0;
+                this.subtotal > 0 &&
+                this.phone_number.trim().length > 0;
 
-            //console.log('Allow Order Creation:', ready);
             return ready;
         },
         getNext7Days() {
