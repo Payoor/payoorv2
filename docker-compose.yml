@@ -12,6 +12,8 @@ services:
       - xpack.security.enabled=false
     networks:
       - shopping_assistant
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
       interval: 10s
