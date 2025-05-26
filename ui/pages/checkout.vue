@@ -129,10 +129,14 @@
 
 
                             <div class="checkout__input">
-                                <textarea class="checkout__field" v-model="checkout_inputs[checkout_input]"
+                                <input v-if="checkout_input === 'phone_number'" class="checkout__field" type="tel"
+                                    inputmode="numeric" pattern="[0-9]*" v-model="checkout_inputs[checkout_input]"
+                                    :placeholder="place_holder" @click.stop="" />
+                                <textarea v-else class="checkout__field" v-model="checkout_inputs[checkout_input]"
                                     :placeholder="place_holder" @input="autoResize" @click.stop=""
                                     ref="textarea"></textarea>
                             </div>
+
 
                             <div class="checkout__bottom">
                                 <button class="button-primary"
