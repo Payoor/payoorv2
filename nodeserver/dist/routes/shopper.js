@@ -12,6 +12,7 @@ var _Checkout = _interopRequireDefault(require("../models/Checkout"));
 var _User = _interopRequireDefault(require("../models/User"));
 var _Order = _interopRequireDefault(require("../models/Order"));
 var _authMiddleware = _interopRequireDefault(require("../middleware/authMiddleware"));
+var _CouponClass = _interopRequireDefault(require("../CouponClass"));
 var _redisconf = require("../redisconf");
 var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _ElasticSearchClass = _interopRequireDefault(require("../controllers/ElasticSearchClass"));
@@ -199,37 +200,49 @@ shopperRoute.get('/shopper/getoption', _authMiddleware["default"], /*#__PURE__*/
 }());
 shopperRoute.get('/shopper/init/checkout', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var jwt, fee, servicecharge;
+    var jwt, userId, _yield$Promise$all, _yield$Promise$all2, fee, servicecharge, latestCheckout, phone_number, delivery_address;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
           _context5.prev = 0;
           jwt = req.query.jwt;
-          _context5.next = 4;
-          return _redisconf.redisClient.hGet('admindirective', 'deliveryfee');
-        case 4:
-          fee = _context5.sent;
-          _context5.next = 7;
-          return _redisconf.redisClient.hGet('admindirective', 'servicecharge');
-        case 7:
-          servicecharge = _context5.sent;
+          userId = req.userId;
+          _context5.next = 5;
+          return Promise.all([_redisconf.redisClient.hGet('admindirective', 'deliveryfee'), _redisconf.redisClient.hGet('admindirective', 'servicecharge'), _Checkout["default"].findOne({
+            user_id: userId
+          }).sort({
+            created_at: -1
+          }).lean()]);
+        case 5:
+          _yield$Promise$all = _context5.sent;
+          _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 3);
+          fee = _yield$Promise$all2[0];
+          servicecharge = _yield$Promise$all2[1];
+          latestCheckout = _yield$Promise$all2[2];
+          phone_number = (latestCheckout === null || latestCheckout === void 0 ? void 0 : latestCheckout.phone_number) || '';
+          delivery_address = (latestCheckout === null || latestCheckout === void 0 ? void 0 : latestCheckout.delivery_address) || '';
           res.status(200).json({
             message: 'Checkout data',
             jwt: jwt,
             fee: Number(fee),
-            servicecharge: Number(servicecharge)
+            servicecharge: Number(servicecharge),
+            phone_number: phone_number,
+            delivery_address: delivery_address
           });
-          _context5.next = 14;
+          _context5.next = 19;
           break;
-        case 11:
-          _context5.prev = 11;
+        case 15:
+          _context5.prev = 15;
           _context5.t0 = _context5["catch"](0);
-          console.log(_context5.t0);
-        case 14:
+          console.error('Error fetching checkout data:', _context5.t0);
+          res.status(500).json({
+            error: 'Internal server error'
+          });
+        case 19:
         case "end":
           return _context5.stop();
       }
-    }, _callee5, null, [[0, 11]]);
+    }, _callee5, null, [[0, 15]]);
   }));
   return function (_x9, _x0) {
     return _ref5.apply(this, arguments);
@@ -636,4 +649,118 @@ shopperRoute.get('/shopper/user/getorder/', _authMiddleware["default"], /*#__PUR
 }());
 shopperRoute.get('/shopper/google/search-places', _authMiddleware["default"], _GoogleApiController["default"].searchPlaces);
 shopperRoute.get('/shopper/google/use-current-location', _authMiddleware["default"], _GoogleApiController["default"].reverseGeocode);
+shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE__*/function () {
+  var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res) {
+    var coupon_code, userId, key, raw, couponConfig, type, redeemed, typeKey, typeRaw, couponTypeConfig, ttl, createdAt, discount, now, isExpired, usedCheckout, usedOrder;
+    return _regeneratorRuntime().wrap(function _callee0$(_context1) {
+      while (1) switch (_context1.prev = _context1.next) {
+        case 0:
+          _context1.prev = 0;
+          coupon_code = req.body.coupon_code;
+          userId = req.userId;
+          if (!(!coupon_code || typeof coupon_code !== 'string')) {
+            _context1.next = 5;
+            break;
+          }
+          return _context1.abrupt("return", res.status(401).json({
+            success: false,
+            message: 'Coupon code is required and must be a string'
+          }));
+        case 5:
+          // Get the coupon from Redis
+          key = "coupon:code:".concat(coupon_code);
+          _context1.next = 8;
+          return _redisconf.redisClient.get(key);
+        case 8:
+          raw = _context1.sent;
+          if (raw) {
+            _context1.next = 11;
+            break;
+          }
+          return _context1.abrupt("return", res.status(404).json({
+            success: false,
+            message: 'Coupon code not found or expired'
+          }));
+        case 11:
+          couponConfig = JSON.parse(raw);
+          type = couponConfig.type, redeemed = couponConfig.redeemed;
+          typeKey = "coupon:type:".concat(type);
+          _context1.next = 16;
+          return _redisconf.redisClient.get(typeKey);
+        case 16:
+          typeRaw = _context1.sent;
+          if (typeRaw) {
+            _context1.next = 19;
+            break;
+          }
+          return _context1.abrupt("return", res.status(404).json({
+            success: false,
+            message: 'Coupon type not found or expired'
+          }));
+        case 19:
+          couponTypeConfig = JSON.parse(typeRaw);
+          ttl = couponTypeConfig.ttl, createdAt = couponTypeConfig.createdAt, discount = couponTypeConfig.discount;
+          now = Date.now();
+          isExpired = now > createdAt + ttl * 1000;
+          if (!isExpired) {
+            _context1.next = 25;
+            break;
+          }
+          return _context1.abrupt("return", res.status(410).json({
+            success: false,
+            message: 'Coupon code has expired'
+          }));
+        case 25:
+          _context1.next = 27;
+          return _Checkout["default"].findOne({
+            user_id: userId,
+            promo_code: coupon_code
+          }).select('_id');
+        case 27:
+          usedCheckout = _context1.sent;
+          if (!usedCheckout) {
+            _context1.next = 34;
+            break;
+          }
+          _context1.next = 31;
+          return _Order["default"].findOne({
+            checkout_id: usedCheckout._id
+          });
+        case 31:
+          usedOrder = _context1.sent;
+          if (!usedOrder) {
+            _context1.next = 34;
+            break;
+          }
+          return _context1.abrupt("return", res.status(409).json({
+            success: false,
+            message: 'You have already used this coupon code'
+          }));
+        case 34:
+          return _context1.abrupt("return", res.status(200).json({
+            success: true,
+            message: 'Coupon code applied successfully',
+            discount: discount || {},
+            // could contain flat, percentage, or freeDelivery
+            type: type,
+            expires_in: Math.floor((createdAt + ttl * 1000 - now) / 1000)
+          }));
+        case 37:
+          _context1.prev = 37;
+          _context1.t0 = _context1["catch"](0);
+          console.error('Error applying coupon:', _context1.t0);
+          return _context1.abrupt("return", res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+          }));
+        case 41:
+        case "end":
+          return _context1.stop();
+      }
+    }, _callee0, null, [[0, 37]]);
+  }));
+  return function (_x17, _x18) {
+    return _ref0.apply(this, arguments);
+  };
+}());
 var _default = exports["default"] = shopperRoute; //https://chatgpt.com/c/6819039c-9ad4-8005-8400-d2567db4dc3c

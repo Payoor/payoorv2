@@ -100,6 +100,10 @@
                                 promo
                                 code</button>
                         </div>
+
+                        <div v-if="coupon_error_message" class="checkout__error">
+                            ⚠️ {{ coupon_error_message }}
+                        </div>
                     </div>
 
                 </div>
@@ -203,6 +207,8 @@ export default {
             delivery_date: null,
             delivery_instruction: "",
             promo_code: "",
+            coupon_code_length: 10,
+            coupon_discount: 0,
             subtotal: 0,
             delivery_fee: 0,
             service_charge: 0,
@@ -212,7 +218,8 @@ export default {
             phone_number: '',
             checkout_inputs: {},
             checkout_input: null,
-            locationLoading: false
+            locationLoading: false,
+            coupon_error_message: '',
         }
     },
     computed: {
@@ -253,6 +260,16 @@ export default {
     },
     mounted() {
         this.initCheckout();
+    },
+    watch: {
+        promo_code(newVal) {
+            if (newVal.length === this.coupon_code_length) {
+                this.applyPromoCode(newVal.trim());
+            } else {
+                this.coupon_discount = 0;
+                //this.recalculateTotal();
+            }
+        }
     },
     methods: {
         async reverseGeocode({ latitude, longitude }) {
@@ -334,7 +351,15 @@ export default {
 
                 const data = await response.json();
 
-                const { fee, servicecharge } = data;
+                const {
+                    fee,
+                    servicecharge,
+                    phone_number = '',
+                    delivery_address = ''
+                } = data;
+
+                this.phone_number = phone_number;
+                this.delivery_address = delivery_address;
 
                 this.subtotal = cartTotal
 
@@ -401,7 +426,7 @@ export default {
 
                 const { newcheckout } = data;
 
-                console.log(newcheckout)
+                // console.log(newcheckout)
 
                 this.loading = false;
 
@@ -445,7 +470,61 @@ export default {
             if (checkout_input === 'promo_code') {
                 this.promo_code = this.checkout_inputs[checkout_input] ? this.checkout_inputs[checkout_input] : '';
             }
-        }
+        },
+        async applyPromoCode(code) {
+            try {
+                const token = localStorage.getItem('jwt');
+
+                const response = await fetch(`${serverurl}/shopper/apply-coupon`, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ coupon_code: code })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    const discount = data.discount || {};
+                    let total = this.subtotal;
+                    let delivery_fee = this.delivery_fee;
+                    let service_charge = this.service_charge;
+
+                    if (discount.freeDelivery) {
+                        delivery_fee = 0;
+                    }
+
+                    if (discount.percentage) {
+                        total -= (discount.percentage / 100) * total;
+                    }
+
+                    if (discount.flat) {
+                        total -= discount.flat;
+                    }
+
+                    if (total < 0) total = 0;
+
+                    this.delivery_fee = delivery_fee;
+                    this.total = Math.round(total + delivery_fee + service_charge);
+                    this.promo_code = code;
+                    this.coupon_discount = discount;
+                    this.coupon_error_message = ''; // clear previous error
+                } else {
+                    this.coupon_discount = 0;
+                    this.promo_code = '';
+                    this.total = this.subtotal + this.delivery_fee + this.service_charge;
+                    this.coupon_error_message = data.message || 'Failed to apply coupon.';
+                }
+            } catch (error) {
+                console.error('Coupon apply error:', error);
+                this.coupon_discount = 0;
+                this.promo_code = '';
+                this.total = this.subtotal + this.delivery_fee + this.service_charge;
+                this.coupon_error_message = 'Network or server error while applying coupon.';
+            }
+        },
     }
 }
 </script>
@@ -767,5 +846,13 @@ export default {
             transform: rotate(360deg);
         }
     }
+}
+
+.checkout__error {
+    color: red;
+    margin-top: 1rem;
+    font-weight: 500;
+    text-align: center;
+    display: flex
 }
 </style>

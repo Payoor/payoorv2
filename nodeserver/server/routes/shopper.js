@@ -7,6 +7,7 @@ import User from '../models/User'
 import Order from '../models/Order'
 
 import authMiddleware from '../middleware/authMiddleware'
+import CouponClass from '../CouponClass'
 
 import { redisClient } from '../redisconf'
 
@@ -43,8 +44,8 @@ shopperRoute.post('/shopper/message', authMiddleware, async (req, res) => {
 
     const { total, hits } = data.hits
 
-    const totalItems = total.value;
-    const currentCount = page * size 
+    const totalItems = total.value
+    const currentCount = page * size
 
     res.status(200).json({
       message: 'message sent',
@@ -127,21 +128,28 @@ shopperRoute.get('/shopper/getoption', authMiddleware, async (req, res) => {
 shopperRoute.get('/shopper/init/checkout', authMiddleware, async (req, res) => {
   try {
     const { jwt } = req.query
+    const userId = req.userId
 
-    const fee = await redisClient.hGet('admindirective', 'deliveryfee')
-    const servicecharge = await redisClient.hGet(
-      'admindirective',
-      'servicecharge'
-    )
+    const [fee, servicecharge, latestCheckout] = await Promise.all([
+      redisClient.hGet('admindirective', 'deliveryfee'),
+      redisClient.hGet('admindirective', 'servicecharge'),
+      Checkout.findOne({ user_id: userId }).sort({ created_at: -1 }).lean()
+    ])
+
+    const phone_number = latestCheckout?.phone_number || ''
+    const delivery_address = latestCheckout?.delivery_address || ''
 
     res.status(200).json({
       message: 'Checkout data',
       jwt,
       fee: Number(fee),
-      servicecharge: Number(servicecharge)
+      servicecharge: Number(servicecharge),
+      phone_number,
+      delivery_address
     })
   } catch (error) {
-    console.log(error)
+    console.error('Error fetching checkout data:', error)
+    res.status(500).json({ error: 'Internal server error' })
   }
 })
 
@@ -430,6 +438,90 @@ shopperRoute.get(
   authMiddleware,
   GoogleApiController.reverseGeocode
 )
+
+shopperRoute.post('/shopper/apply-coupon', authMiddleware, async (req, res) => {
+  try {
+    const { coupon_code } = req.body
+    const userId = req.userId
+
+    if (!coupon_code || typeof coupon_code !== 'string') {
+      return res.status(401).json({
+        success: false,
+        message: 'Coupon code is required and must be a string'
+      })
+    }
+
+    // Get the coupon from Redis
+    const key = `coupon:code:${coupon_code}`
+    const raw = await redisClient.get(key)
+
+    if (!raw) {
+      return res.status(404).json({
+        success: false,
+        message: 'Coupon code not found or expired'
+      })
+    }
+
+    const couponConfig = JSON.parse(raw)
+    const { type, redeemed } = couponConfig
+
+    const typeKey = `coupon:type:${type}`
+    const typeRaw = await redisClient.get(typeKey)
+
+    if (!typeRaw) {
+      return res.status(404).json({
+        success: false,
+        message: 'Coupon type not found or expired'
+      })
+    }
+
+    const couponTypeConfig = JSON.parse(typeRaw)
+    const { ttl, createdAt, discount } = couponTypeConfig
+
+    const now = Date.now()
+    const isExpired = now > createdAt + ttl * 1000
+
+    if (isExpired) {
+      return res.status(410).json({
+        success: false,
+        message: 'Coupon code has expired'
+      })
+    }
+
+    // Check if the user has already used this coupon in a completed order
+    const usedCheckout = await Checkout.findOne({
+      user_id: userId,
+      promo_code: coupon_code
+    }).select('_id')
+
+    if (usedCheckout) { 
+      const usedOrder = await Order.findOne({
+        checkout_id: usedCheckout._id
+      })
+
+      if (usedOrder) {
+        return res.status(409).json({
+          success: false,
+          message: 'You have already used this coupon code'
+        })
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Coupon code applied successfully',
+      discount: discount || {}, // could contain flat, percentage, or freeDelivery
+      type,
+      expires_in: Math.floor((createdAt + ttl * 1000 - now) / 1000)
+    })
+  } catch (error) {
+    console.error('Error applying coupon:', error)
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    })
+  }
+})
 
 export default shopperRoute
 

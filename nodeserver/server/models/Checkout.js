@@ -61,6 +61,6 @@ const CheckoutSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-})
+});
 
-module.exports = mongoose.model('Checkout', CheckoutSchema)
+module.exports = mongoose.model('Checkout', CheckoutSchema);
