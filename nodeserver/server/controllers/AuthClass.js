@@ -209,7 +209,7 @@ class AuthClass {
         console.timeEnd('[verifyOtp] Redis SETEX')
 
         console.log('[verifyOtp] Cleaning up OTP key')
-        await redisClient.del(hashedKey)
+        //await redisClient.del(hashedKey)
       } catch (redisWriteErr) {
         console.error('[verifyOtp] Redis SET/DEL failed:', redisWriteErr)
       }

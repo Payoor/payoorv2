@@ -13,6 +13,8 @@ import shopperRoute from './routes/shopper';
 import authRoute from './routes/auth';
 import adminRoute from './routes/admin';
 
+import TelegramBotClass from './TelegramBotClass'
+
 const port = process.env.PORT;
 
 app.use(express.json());

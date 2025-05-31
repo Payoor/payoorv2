@@ -12,25 +12,35 @@ var redisClient = redis.createClient({
 var isConnected = false;
 function connectRedis() {
   return _connectRedis.apply(this, arguments);
-}
+} // Event listeners for better visibility
 function _connectRedis() {
   _connectRedis = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           if (isConnected) {
-            _context.next = 4;
+            _context.next = 13;
             break;
           }
-          _context.next = 3;
+          _context.prev = 1;
+          console.log('🔌 Connecting to Redis...');
+          _context.next = 5;
           return redisClient.connect();
-        case 3:
+        case 5:
           isConnected = true;
-        case 4:
+          console.log('✅ Connected to Redis');
+          _context.next = 13;
+          break;
+        case 9:
+          _context.prev = 9;
+          _context.t0 = _context["catch"](1);
+          console.error('❌ Failed to connect to Redis:', _context.t0);
+          throw _context.t0;
+        case 13:
         case "end":
           return _context.stop();
       }
-    }, _callee);
+    }, _callee, null, [[1, 9]]);
   }));
   return _connectRedis.apply(this, arguments);
 }

@@ -280,16 +280,14 @@ var AuthClass = /*#__PURE__*/function () {
             case 65:
               console.timeEnd('[verifyOtp] Redis SETEX');
               console.log('[verifyOtp] Cleaning up OTP key');
-              _context4.next = 69;
-              return _redisconf.redisClient.del(hashedKey);
-            case 69:
-              _context4.next = 74;
+              //await redisClient.del(hashedKey)
+              _context4.next = 72;
               break;
-            case 71:
-              _context4.prev = 71;
+            case 69:
+              _context4.prev = 69;
               _context4.t3 = _context4["catch"](61);
               console.error('[verifyOtp] Redis SET/DEL failed:', _context4.t3);
-            case 74:
+            case 72:
               return _context4.abrupt("return", res.status(200).json({
                 success: true,
                 message: 'OTP verified',
@@ -300,19 +298,19 @@ var AuthClass = /*#__PURE__*/function () {
                   token: token
                 }
               }));
-            case 77:
-              _context4.prev = 77;
+            case 75:
+              _context4.prev = 75;
               _context4.t4 = _context4["catch"](0);
               console.error('[verifyOtp] Fatal error:', _context4.t4);
               return _context4.abrupt("return", res.status(500).json({
                 success: false,
                 message: 'Internal server error'
               }));
-            case 81:
+            case 79:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[0, 77], [7, 15], [21, 29], [49, 57], [61, 71]]);
+        }, _callee4, null, [[0, 75], [7, 15], [21, 29], [49, 57], [61, 69]]);
       }));
       function verifyOtp(_x6, _x7) {
         return _verifyOtp.apply(this, arguments);
