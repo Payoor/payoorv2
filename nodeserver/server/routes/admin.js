@@ -19,7 +19,7 @@ const crypto = require('crypto')
 import Order from '../models/Order'
 import Admin from '../models/Admin.js'
 
-import telegramBot from '../TelegramBotClass'
+//import telegramBot from '../TelegramBotClass'
 
 import payoorDBConnection from '../payoordb'
 
@@ -105,9 +105,9 @@ adminRoute.post(
 
       await newOrder.save()
 
-      telegramBot.callBot(
+     /* telegramBot.callBot(
         `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
-      )
+      )*/
 
       return res.sendStatus(200)
     } catch (error) {
@@ -208,9 +208,9 @@ adminRoute.post('/admin/paystack/payment-response', async (req, res) => {
         `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`
       )
 
-      telegramBot.callBot(
+      /*telegramBot.callBot(
         `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
-      )
+      )*/
 
       return res.sendStatus(200)
     }

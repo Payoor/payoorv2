@@ -13,7 +13,6 @@ var _multer = _interopRequireDefault(require("multer"));
 var _fs = _interopRequireDefault(require("fs"));
 var _Order = _interopRequireDefault(require("../models/Order"));
 var _Admin = _interopRequireDefault(require("../models/Admin.js"));
-var _TelegramBotClass = _interopRequireDefault(require("../TelegramBotClass"));
 var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _orderconfirmEmail = _interopRequireDefault(require("../utils/orderconfirmEmail"));
 var _excluded = ["_id", "__v"],
@@ -39,6 +38,9 @@ var _require = require('@aws-sdk/client-s3'),
   PutObjectCommand = _require.PutObjectCommand,
   DeleteObjectCommand = _require.DeleteObjectCommand;
 var crypto = require('crypto');
+
+//import telegramBot from '../TelegramBotClass'
+
 var ObjectId = _mongoose["default"].Types.ObjectId;
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -121,17 +123,16 @@ adminRoute.post('/admin/paystack/payment-response/development', /*#__PURE__*/fun
           _context.next = 7;
           return newOrder.save();
         case 7:
-          _TelegramBotClass["default"].callBot("new order ".concat(process.env.PAYOOR_URL, "/admin/order?reference=").concat(newOrder._id));
           return _context.abrupt("return", res.sendStatus(200));
-        case 11:
-          _context.prev = 11;
+        case 10:
+          _context.prev = 10;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0);
-        case 14:
+        case 13:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 11]]);
+    }, _callee, null, [[0, 10]]);
   }));
   return function (_x, _x2) {
     return _ref.apply(this, arguments);
@@ -252,7 +253,7 @@ adminRoute.post('/admin/paystack/payment-response', /*#__PURE__*/function () {
         case 5:
           _req$body = req.body, event = _req$body.event, data = _req$body.data;
           if (!(event === 'charge.success')) {
-            _context3.next = 16;
+            _context3.next = 15;
             break;
           }
           metadata = data.metadata;
@@ -267,22 +268,21 @@ adminRoute.post('/admin/paystack/payment-response', /*#__PURE__*/function () {
           _context3.next = 14;
           return (0, _orderconfirmEmail["default"])(userId, "".concat(process.env.PAYOOR_URL, "/userorder/").concat(newOrder._id));
         case 14:
-          _TelegramBotClass["default"].callBot("new order ".concat(process.env.PAYOOR_URL, "/admin/order?reference=").concat(newOrder._id));
           return _context3.abrupt("return", res.sendStatus(200));
-        case 16:
+        case 15:
           return _context3.abrupt("return", res.sendStatus(200));
-        case 19:
-          _context3.prev = 19;
+        case 18:
+          _context3.prev = 18;
           _context3.t0 = _context3["catch"](0);
           console.log(_context3.t0);
           return _context3.abrupt("return", res.status(500).json({
             error: 'Server error'
           }));
-        case 23:
+        case 22:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[0, 19]]);
+    }, _callee3, null, [[0, 18]]);
   }));
   return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
