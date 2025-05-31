@@ -41,7 +41,7 @@ var elasticsearchUrl = process.env.ELASTICSEARCHURL;
 var productIndex = 'products';
 var elasticSearchCl = new _ElasticSearchClass["default"](elasticsearchUrl);
 var shopperRoute = (0, _express["default"])();
-shopperRoute.post('/shopper/message', _authMiddleware["default"], /*#__PURE__*/function () {
+shopperRoute.post('/shopper/message', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
     var message, page, size, data, _data$hits, total, hits, totalItems, currentCount;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -126,7 +126,7 @@ shopperRoute.post('/shopper/message/suggest', _authMiddleware["default"], /*#__P
     return _ref2.apply(this, arguments);
   };
 }());
-shopperRoute.get('/shopper/getoptions', _authMiddleware["default"], /*#__PURE__*/function () {
+shopperRoute.get('/shopper/getoptions', /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
     var mongooseid, productId, variantsCollection, variants;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {

@@ -29,7 +29,7 @@ const elasticSearchCl = new ElasticSearchClass(elasticsearchUrl)
 
 const shopperRoute = express()
 
-shopperRoute.post('/shopper/message', authMiddleware, async (req, res) => {
+shopperRoute.post('/shopper/message', async (req, res) => {
   try {
     const { message } = req.body
     const page = parseInt(req.query.page) || 1
@@ -83,7 +83,7 @@ shopperRoute.post(
   }
 )
 
-shopperRoute.get('/shopper/getoptions', authMiddleware, async (req, res) => {
+shopperRoute.get('/shopper/getoptions', async (req, res) => {
   try {
     const { mongooseid } = req.query
 
