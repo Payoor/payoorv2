@@ -159,28 +159,42 @@ shopperRoute.post(
   async (req, res) => {
     try {
       const { jwt } = req.query
-
       const { checkout } = req.body
 
       const validUser = await User.findByToken(jwt)
 
-      if (validUser) {
-        let newCheckout = new Checkout(checkout)
-        newCheckout.user_id = validUser._id
-
-        await newCheckout.save()
-
-        //console.log(newCheckout)
-
-        res.status(200).json({
-          message: 'Checkout data',
-          newcheckout: newCheckout
-        })
-      } else {
-        res.status(404).json({ message: 'invalid user' })
+      if (!validUser) {
+        return res.status(404).json({ message: 'invalid user' })
       }
+
+      if (checkout.promo_code && typeof checkout.promo_code === 'string') {
+        const coupon = await CouponClass.getCoupon(checkout.promo_code)
+
+        if (coupon && coupon.type) {
+          checkout.promo_code_type = coupon.type
+        } else {
+          return res.status(400).json({
+            message: 'Invalid or expired coupon code'
+          })
+        }
+      }
+
+      const newCheckout = new Checkout({
+        ...checkout,
+        user_id: validUser._id
+      })
+
+      await newCheckout.save()
+
+      console.log(newCheckout)
+
+      res.status(200).json({
+        message: 'Checkout data',
+        newcheckout: newCheckout
+      })
     } catch (error) {
       console.log(error)
+      res.status(500).json({ message: 'Internal server error' })
     }
   }
 )
@@ -488,23 +502,40 @@ shopperRoute.post('/shopper/apply-coupon', authMiddleware, async (req, res) => {
       })
     }
 
-    // Check if the user has already used this coupon in a completed order
-    const usedCheckout = await Checkout.findOne({
+    const usedCodeCheckout = await Checkout.findOne({
       user_id: userId,
       promo_code: coupon_code
     }).select('_id')
 
-    if (usedCheckout) { 
+    let usedCoupon = false
+
+    if (usedCodeCheckout) {
       const usedOrder = await Order.findOne({
-        checkout_id: usedCheckout._id
+        checkout_id: usedCodeCheckout._id
       })
 
-      if (usedOrder) {
-        return res.status(409).json({
-          success: false,
-          message: 'You have already used this coupon code'
-        })
-      }
+      if (usedOrder) usedCoupon = true
+    }
+
+    const usedTypeCheckout = await Checkout.findOne({
+      user_id: userId,
+      promo_code_type: type
+    }).select('_id')
+
+    if (usedTypeCheckout) {
+      const usedOrder = await Order.findOne({
+        checkout_id: usedTypeCheckout._id
+      })
+
+      if (usedOrder) usedCoupon = true
+    }
+
+    if (usedCoupon) {
+      return res.status(409).json({
+        success: false,
+        message:
+          'You have already used this coupon code or a coupon of this type'
+      })
     }
 
     return res.status(200).json({

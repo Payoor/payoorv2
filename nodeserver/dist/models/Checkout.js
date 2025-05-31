@@ -27,6 +27,10 @@ var CheckoutSchema = new mongoose.Schema({
     type: String,
     "default": ''
   },
+  promo_code_type: {
+    type: String,
+    "default": ''
+  },
   promo_code: {
     type: String,
     "default": ''

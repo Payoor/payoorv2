@@ -18,12 +18,12 @@ var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _ElasticSearchClass = _interopRequireDefault(require("../controllers/ElasticSearchClass"));
 var _GoogleApiController = _interopRequireDefault(require("../controllers/GoogleApiController"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -250,7 +250,7 @@ shopperRoute.get('/shopper/init/checkout', _authMiddleware["default"], /*#__PURE
 }());
 shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-    var jwt, checkout, validUser, newCheckout;
+    var jwt, checkout, validUser, coupon, newCheckout;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
@@ -261,39 +261,59 @@ shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__P
           return _User["default"].findByToken(jwt);
         case 5:
           validUser = _context6.sent;
-          if (!validUser) {
-            _context6.next = 14;
+          if (validUser) {
+            _context6.next = 8;
             break;
           }
-          newCheckout = new _Checkout["default"](checkout);
-          newCheckout.user_id = validUser._id;
+          return _context6.abrupt("return", res.status(404).json({
+            message: 'invalid user'
+          }));
+        case 8:
+          if (!(checkout.promo_code && typeof checkout.promo_code === 'string')) {
+            _context6.next = 17;
+            break;
+          }
           _context6.next = 11;
-          return newCheckout.save();
+          return _CouponClass["default"].getCoupon(checkout.promo_code);
         case 11:
-          //console.log(newCheckout)
-
+          coupon = _context6.sent;
+          if (!(coupon && coupon.type)) {
+            _context6.next = 16;
+            break;
+          }
+          checkout.promo_code_type = coupon.type;
+          _context6.next = 17;
+          break;
+        case 16:
+          return _context6.abrupt("return", res.status(400).json({
+            message: 'Invalid or expired coupon code'
+          }));
+        case 17:
+          newCheckout = new _Checkout["default"](_objectSpread(_objectSpread({}, checkout), {}, {
+            user_id: validUser._id
+          }));
+          _context6.next = 20;
+          return newCheckout.save();
+        case 20:
+          console.log(newCheckout);
           res.status(200).json({
             message: 'Checkout data',
             newcheckout: newCheckout
           });
-          _context6.next = 15;
+          _context6.next = 28;
           break;
-        case 14:
-          res.status(404).json({
-            message: 'invalid user'
-          });
-        case 15:
-          _context6.next = 20;
-          break;
-        case 17:
-          _context6.prev = 17;
+        case 24:
+          _context6.prev = 24;
           _context6.t0 = _context6["catch"](0);
           console.log(_context6.t0);
-        case 20:
+          res.status(500).json({
+            message: 'Internal server error'
+          });
+        case 28:
         case "end":
           return _context6.stop();
       }
-    }, _callee6, null, [[0, 17]]);
+    }, _callee6, null, [[0, 24]]);
   }));
   return function (_x1, _x10) {
     return _ref6.apply(this, arguments);
@@ -651,7 +671,7 @@ shopperRoute.get('/shopper/google/search-places', _authMiddleware["default"], _G
 shopperRoute.get('/shopper/google/use-current-location', _authMiddleware["default"], _GoogleApiController["default"].reverseGeocode);
 shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res) {
-    var coupon_code, userId, key, raw, couponConfig, type, redeemed, typeKey, typeRaw, couponTypeConfig, ttl, createdAt, discount, now, isExpired, usedCheckout, usedOrder;
+    var coupon_code, userId, key, raw, couponConfig, type, redeemed, typeKey, typeRaw, couponTypeConfig, ttl, createdAt, discount, now, isExpired, usedCodeCheckout, usedCoupon, usedOrder, usedTypeCheckout, _usedOrder;
     return _regeneratorRuntime().wrap(function _callee0$(_context1) {
       while (1) switch (_context1.prev = _context1.next) {
         case 0:
@@ -717,26 +737,48 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
             promo_code: coupon_code
           }).select('_id');
         case 27:
-          usedCheckout = _context1.sent;
-          if (!usedCheckout) {
+          usedCodeCheckout = _context1.sent;
+          usedCoupon = false;
+          if (!usedCodeCheckout) {
             _context1.next = 34;
             break;
           }
-          _context1.next = 31;
+          _context1.next = 32;
           return _Order["default"].findOne({
-            checkout_id: usedCheckout._id
+            checkout_id: usedCodeCheckout._id
           });
-        case 31:
+        case 32:
           usedOrder = _context1.sent;
-          if (!usedOrder) {
-            _context1.next = 34;
+          if (usedOrder) usedCoupon = true;
+        case 34:
+          _context1.next = 36;
+          return _Checkout["default"].findOne({
+            user_id: userId,
+            promo_code_type: type
+          }).select('_id');
+        case 36:
+          usedTypeCheckout = _context1.sent;
+          if (!usedTypeCheckout) {
+            _context1.next = 42;
+            break;
+          }
+          _context1.next = 40;
+          return _Order["default"].findOne({
+            checkout_id: usedTypeCheckout._id
+          });
+        case 40:
+          _usedOrder = _context1.sent;
+          if (_usedOrder) usedCoupon = true;
+        case 42:
+          if (!usedCoupon) {
+            _context1.next = 44;
             break;
           }
           return _context1.abrupt("return", res.status(409).json({
             success: false,
-            message: 'You have already used this coupon code'
+            message: 'You have already used this coupon code or a coupon of this type'
           }));
-        case 34:
+        case 44:
           return _context1.abrupt("return", res.status(200).json({
             success: true,
             message: 'Coupon code applied successfully',
@@ -745,19 +787,19 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
             type: type,
             expires_in: Math.floor((createdAt + ttl * 1000 - now) / 1000)
           }));
-        case 37:
-          _context1.prev = 37;
+        case 47:
+          _context1.prev = 47;
           _context1.t0 = _context1["catch"](0);
           console.error('Error applying coupon:', _context1.t0);
           return _context1.abrupt("return", res.status(500).json({
             success: false,
             message: 'Internal server error'
           }));
-        case 41:
+        case 51:
         case "end":
           return _context1.stop();
       }
-    }, _callee0, null, [[0, 37]]);
+    }, _callee0, null, [[0, 47]]);
   }));
   return function (_x17, _x18) {
     return _ref0.apply(this, arguments);

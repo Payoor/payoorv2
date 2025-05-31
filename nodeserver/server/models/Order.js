@@ -10,7 +10,7 @@ const OrderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Checkout',
     required: true
-  }
+  },
 })
 
 module.exports = mongoose.model('Order', OrderSchema)
