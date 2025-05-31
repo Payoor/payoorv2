@@ -9,9 +9,9 @@ require('./db');
 
 const { redisClient, connectRedis } = require('./redisconf');
 
-const shopperRoute = require('./routes/shopper');
-const authRoute = require('./routes/auth');
-const adminRoute = require('./routes/admin');
+import shopperRoute from './routes/shopper';
+import authRoute from './routes/auth';
+import adminRoute from './routes/admin';
 
 const port = process.env.PORT;
 
@@ -22,7 +22,7 @@ app.get('/', async (req, res) => {
   res.status(200).json({
     message: 'server is up and running here now',
   });
-});
+}); 
 
 app.use(shopperRoute);
 app.use(authRoute);
@@ -30,7 +30,7 @@ app.use(adminRoute);
 
 async function startServer() {
   try {
-    await connectRedis(); // ensures Redis is connected BEFORE usage
+    await connectRedis();
     console.log('🚀 Connected to Redis');
 
     app.listen(port, () => {
