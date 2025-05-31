@@ -39,7 +39,7 @@ services:
     container_name: nodeserver
     build: ./nodeserver  # Node.js app directory
     ports:
-      - "3001:3000"  # Expose port 80 on the host
+      - "3001:3001"  # Expose port 80 on the host
     networks:
       - shopping_assistant
     volumes:
