@@ -128,7 +128,7 @@ class AuthClass {
     }
   }
 
-  //console.log('toute')
+  //console.log('toute');
 
   static async verifyOtp (req, res) {
     try {
