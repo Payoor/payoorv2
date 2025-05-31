@@ -18,6 +18,8 @@ const port = process.env.PORT
 app.use(express.json())
 
 app.get('/', async (req, res) => {
+  console.log('✅ GET / hit');
+  
   res.status(200).json({
     message: 'server is up and running here now'
   })

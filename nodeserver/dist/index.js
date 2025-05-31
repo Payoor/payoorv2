@@ -22,10 +22,11 @@ app.get('/', /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
+          console.log('✅ GET / hit');
           res.status(200).json({
             message: 'server is up and running here now'
           });
-        case 1:
+        case 2:
         case "end":
           return _context.stop();
       }
