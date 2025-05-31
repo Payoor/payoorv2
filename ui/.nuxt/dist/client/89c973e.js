@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[7],{319:function(n,o,t){"use strict";t.d(o,"a",(function(){return e}));t(57),t(78);var e=function(){if("undefined"!=typeof window&&window.location.hostname.includes("payoor"))return"https://api.payoor.store";return"http://localhost"}()}}]);

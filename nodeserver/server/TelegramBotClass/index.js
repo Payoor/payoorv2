@@ -373,7 +373,7 @@ export class TelegramBotClass {
   }
 }
 
-const telegramBot = new TelegramBotClass(redisClient)
-telegramBot.startBot()
+//const telegramBot = new TelegramBotClass(redisClient)
+//telegramBot.startBot()
 
-export default telegramBot
+//export default telegramBot

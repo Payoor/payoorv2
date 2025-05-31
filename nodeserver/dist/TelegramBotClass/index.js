@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.TelegramBotClass = void 0;
+exports.TelegramBotClass = void 0;
 var _fs = _interopRequireDefault(require("fs"));
 var _path = _interopRequireDefault(require("path"));
 var _exceljs = _interopRequireDefault(require("exceljs"));
@@ -440,7 +440,6 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
       return callBot;
     }()
   }]);
-}();
-var telegramBot = new TelegramBotClass(_redisconf.redisClient);
-telegramBot.startBot();
-var _default = exports["default"] = telegramBot;
+}(); //const telegramBot = new TelegramBotClass(redisClient)
+//telegramBot.startBot()
+//export default telegramBot
