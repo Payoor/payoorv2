@@ -52,23 +52,6 @@ services:
       - mongodb
     restart: always
 
-  nodeapi:
-    container_name: nodeapi
-    build: ./nodeapi  # Node.js app directory
-    ports:
-      - "3002:3000"  # Expose port 80 on the host
-    networks:
-      - shopping_assistant
-    volumes:
-      - ./nodeapi:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - redisdb
-      - mongodb
-    restart: always
-
   nginx:
     container_name: nginx
     image: nginx:alpine

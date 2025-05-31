@@ -132,6 +132,8 @@ class AuthClass {
     try {
       const { submittedOtp } = req.body
 
+      console.log('[verifyOtp] Received OTP:', submittedOtp)
+
       if (!submittedOtp) {
         return res
           .status(400)
@@ -139,7 +141,17 @@ class AuthClass {
       }
 
       const hashedKey = `otp:code:${hashOtp(submittedOtp)}`
-      const identifier = await redisClient.get(hashedKey)
+      console.log('[verifyOtp] Hashed OTP key:', hashedKey)
+
+      let identifier
+      try {
+        console.time('[verifyOtp] Redis GET')
+        identifier = await redisClient.get(hashedKey)
+        console.timeEnd('[verifyOtp] Redis GET')
+      } catch (redisErr) {
+        console.error('[verifyOtp] Redis GET failed:', redisErr)
+        return res.status(500).json({ success: false, message: 'Redis error' })
+      }
 
       if (!identifier) {
         return res
@@ -147,32 +159,58 @@ class AuthClass {
           .json({ success: false, message: 'OTP expired or invalid' })
       }
 
-      let user = await User.findByIdentifier(identifier)
+      let user
+      try {
+        console.time('[verifyOtp] Mongo FIND')
+        user = await User.findByIdentifier(identifier)
+        console.timeEnd('[verifyOtp] Mongo FIND')
+      } catch (mongoErr) {
+        console.error('[verifyOtp] MongoDB query failed:', mongoErr)
+        return res
+          .status(500)
+          .json({ success: false, message: 'User DB error' })
+      }
 
       if (!user) {
-        const identifierValueType = identifierType(identifier)
+        const type = identifierType(identifier)
+        console.log('[verifyOtp] Creating new user of type:', type)
 
-        if (identifierValueType === 'email') {
+        if (type === 'email') {
           user = await User.create({ email: identifier })
-        } else if (identifierValueType === 'phone') {
+        } else if (type === 'phone') {
           user = await User.create({ phoneNumber: identifier })
         } else {
           return res.status(400).json({
             success: false,
-            message: 'Identifier is neither a valid email nor phone number'
+            message: 'Identifier is neither email nor phone number'
           })
         }
       }
 
-      const token = await user.generateAuthToken()
+      let token
+      try {
+        console.time('[verifyOtp] Generate Token')
+        token = await user.generateAuthToken()
+        console.timeEnd('[verifyOtp] Generate Token')
+      } catch (tokenErr) {
+        console.error('[verifyOtp] Token generation failed:', tokenErr)
+        return res.status(500).json({ success: false, message: 'Token error' })
+      }
 
-      await redisClient.setEx(
-        `auth:session:${token}`,
-        2592000,
-        user._id.toString()
-      )
+      try {
+        console.time('[verifyOtp] Redis SETEX')
+        await redisClient.setEx(
+          `auth:session:${token}`,
+          2592000,
+          user._id.toString()
+        )
+        console.timeEnd('[verifyOtp] Redis SETEX')
 
-      await redisClient.del(hashedKey)
+        console.log('[verifyOtp] Cleaning up OTP key')
+        await redisClient.del(hashedKey)
+      } catch (redisWriteErr) {
+        console.error('[verifyOtp] Redis SET/DEL failed:', redisWriteErr)
+      }
 
       return res.status(200).json({
         success: true,
@@ -184,8 +222,8 @@ class AuthClass {
           token
         }
       })
-    } catch (error) {
-      console.error('OTP verification error:', error)
+    } catch (err) {
+      console.error('[verifyOtp] Fatal error:', err)
       return res
         .status(500)
         .json({ success: false, message: 'Internal server error' })

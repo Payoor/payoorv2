@@ -18,4 +18,4 @@ authRoute.get('/shopper/auth/validuser', AuthClass.getValidUser);
 
 authRoute.post('/shopper/auth/signout', AuthClass.signOut);
 
-export default authRoute 
+export default authRoute;
