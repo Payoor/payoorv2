@@ -1,9 +1,13 @@
 const TelegramBot = require('node-telegram-bot-api')
+import fs from 'fs'
+import path from 'path'
+import ExcelJS from 'exceljs'
 import { redisClient } from '../redisconf'
 import CouponClass from '../CouponClass'
 
 import Order from '../models/Order'
 import Checkout from '../models/Checkout'
+import User from '../models/User'
 
 function parseTtlToSeconds (input) {
   const match = input.match(/^([0-9]+)([smhdw])$/i)
@@ -76,6 +80,7 @@ export class TelegramBotClass {
 /createcoupontype <type> <ttl> [flat=500] [percentage=10] [freeDelivery=true]
 /generatecoupon <type>
 /getcoupontype <code>
+/couponusage <code>
 /listcoupons <type>
 /listcoupontypes
 /deletecouponcode <code>
@@ -88,7 +93,8 @@ export class TelegramBotClass {
 
 🔐 *Super Admin*:
 /listadmins
-/removeadmin <chat_id>`
+/removeadmin <chat_id>
+/exportusers`
           )
         }
 
@@ -100,12 +106,9 @@ export class TelegramBotClass {
             )
           }
 
-          // 1. Find all checkout IDs with this promo code
-          const checkouts = await Checkout.find({ promo_code: `${arg1}`.toUpperCase() }).select(
-            '_id'
-          )
-
-         // console.log(checkouts, arg1, 'checkouts')
+          const checkouts = await Checkout.find({
+            promo_code: `${arg1}`.toUpperCase()
+          }).select('_id')
 
           if (!checkouts.length) {
             return this.bot.sendMessage(
@@ -115,8 +118,6 @@ export class TelegramBotClass {
           }
 
           const checkoutIds = checkouts.map(c => c._id)
-
-          // 2. Find total Orders with those checkouts
           const usageCount = await Order.countDocuments({
             checkout_id: { $in: checkoutIds }
           })
@@ -139,11 +140,12 @@ export class TelegramBotClass {
           }
 
           const ttl = parseTtlToSeconds(arg2)
-          if (!ttl)
+          if (!ttl) {
             return this.bot.sendMessage(
               telegramid,
               '❌ Invalid TTL format. Use 30s, 15m, 1h, 2d, 1w'
             )
+          }
 
           const discount = {}
           for (let i = 2; i < args.length; i++) {
@@ -175,11 +177,13 @@ export class TelegramBotClass {
         }
 
         if (command === '/generatecoupon') {
-          if (!arg1)
+          if (!arg1) {
             return this.bot.sendMessage(
               telegramid,
               '⚠️ Usage: /generatecoupon <type>'
             )
+          }
+
           const { code, expiresIn } = await CouponClass.createCoupon(arg1)
           return this.bot.sendMessage(
             telegramid,
@@ -188,17 +192,21 @@ export class TelegramBotClass {
         }
 
         if (command === '/getcoupontype') {
-          if (!arg1)
+          if (!arg1) {
             return this.bot.sendMessage(
               telegramid,
               '⚠️ Usage: /getcoupontype <code>'
             )
+          }
+
           const coupon = await CouponClass.getCoupon(arg1)
-          if (!coupon)
+          if (!coupon) {
             return this.bot.sendMessage(
               telegramid,
               '❌ Coupon not found or expired.'
             )
+          }
+
           return this.bot.sendMessage(
             telegramid,
             `🎫 *Coupon Info*:\nType: ${coupon.type}\nCreated At: ${new Date(
@@ -210,17 +218,21 @@ export class TelegramBotClass {
         }
 
         if (command === '/listcoupons') {
-          if (!arg1)
+          if (!arg1) {
             return this.bot.sendMessage(
               telegramid,
               '⚠️ Usage: /listcoupons <type>'
             )
+          }
+
           const codes = await CouponClass.listCoupons(arg1)
-          if (!codes.length)
+          if (!codes.length) {
             return this.bot.sendMessage(
               telegramid,
               '📭 No coupons found under this type.'
             )
+          }
+
           const list = codes.map((code, i) => `${i + 1}. ${code}`).join('\n')
           return this.bot.sendMessage(
             telegramid,
@@ -230,8 +242,10 @@ export class TelegramBotClass {
 
         if (command === '/listcoupontypes') {
           const types = await this.redisClient.sMembers('coupon:types')
-          if (!types.length)
+          if (!types.length) {
             return this.bot.sendMessage(telegramid, '📭 No coupon types found.')
+          }
+
           const list = types.map((t, i) => `${i + 1}. ${t}`).join('\n')
           return this.bot.sendMessage(
             telegramid,
@@ -240,11 +254,13 @@ export class TelegramBotClass {
         }
 
         if (command === '/deletecouponcode') {
-          if (!arg1)
+          if (!arg1) {
             return this.bot.sendMessage(
               telegramid,
               '⚠️ Usage: /deletecouponcode <code>'
             )
+          }
+
           const key = `coupon:code:${arg1}`
           const removed = await this.redisClient.del(key)
           return this.bot.sendMessage(
@@ -256,11 +272,13 @@ export class TelegramBotClass {
         }
 
         if (command === '/deletecoupontype') {
-          if (!arg1)
+          if (!arg1) {
             return this.bot.sendMessage(
               telegramid,
               '⚠️ Usage: /deletecoupontype <type>'
             )
+          }
+
           const key = `coupon:type:${arg1}`
           await this.redisClient.del(key)
           await this.redisClient.sRem('coupon:types', arg1)
@@ -270,7 +288,64 @@ export class TelegramBotClass {
           )
         }
 
-        // Other admin commands omitted for brevity (deliveryfee, servicecharge, admins...)
+        if (command === '/exportusers') {
+          if (!isSuperAdmin) {
+            return this.bot.sendMessage(
+              telegramid,
+              '🚫 Only Super Admin can export users.'
+            )
+          }
+
+          try {
+            const users = await User.find().lean()
+
+            console.log(users, 'users');
+            
+            if (!users.length) {
+              return this.bot.sendMessage(telegramid, '📭 No users found.')
+            }
+
+            const workbook = new ExcelJS.Workbook()
+            const worksheet = workbook.addWorksheet('Users')
+
+            const headers = Object.keys(users[0]).filter(
+              key => !['password', '__v'].includes(key)
+            )
+            worksheet.addRow(headers)
+
+            users.forEach(user => {
+              const row = headers.map(h => {
+                const value = user[h]
+                return typeof value === 'object' && value !== null
+                  ? JSON.stringify(value)
+                  : value
+              })
+              worksheet.addRow(row)
+            })
+
+            const filePath = path.join('/tmp', `users_${Date.now()}.xlsx`)
+            await workbook.xlsx.writeFile(filePath)
+
+            await this.bot.sendDocument(
+              telegramid,
+              filePath,
+              {},
+              {
+                filename: 'users_export.xlsx',
+                contentType:
+                  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              }
+            )
+
+            fs.unlink(filePath, () => {})
+          } catch (err) {
+            console.error('❌ Error exporting users:', err)
+            return this.bot.sendMessage(
+              telegramid,
+              '❗ Failed to export users. Try again later.'
+            )
+          }
+        }
       } catch (err) {
         console.error('Telegram bot error:', err)
         await this.bot.sendMessage(
