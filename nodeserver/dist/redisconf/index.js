@@ -21,3 +21,6 @@ redisClient.on('reconnecting', function () {
 redisClient.on('error', function (err) {
   console.error('Redis Client Error:', err);
 });
+
+//docker exec -it b3e983938e8a bash
+//ps aux | grep node
