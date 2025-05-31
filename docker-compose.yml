@@ -28,12 +28,12 @@ services:
       - shopping_assistant
 
   # MongoDB service
-  mongodb:
-    container_name: mongodb
-    image: mongo
-    restart: always
-    networks:
-      - shopping_assistant
+  #mongodb:
+  #  container_name: mongodb
+   # image: mongo
+   # restart: always
+  #  networks:
+  #    - shopping_assistant
   # Node.js application service
   nodeserver:
     container_name: nodeserver
