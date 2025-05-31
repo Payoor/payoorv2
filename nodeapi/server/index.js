@@ -5,18 +5,22 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-import './db'
+import './db';
+
+import authRoute from './routes/auth';
 
 const app = express()
 const port = process.env.PORT
 
-app.use(express.json())
+app.use(express.json());
+
+app.use(authRoute)
 
 app.get('/', async (req, res) => {
   console.log('✅ GET / hit')
 
   res.status(200).json({
-    message: 'server is up and running here now'
+    message: 'server is up and running here now yo'
   })
 })
 
