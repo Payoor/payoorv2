@@ -150,7 +150,7 @@ var AuthClass = /*#__PURE__*/function () {
         return _saveOtpToIdentifier.apply(this, arguments);
       }
       return saveOtpToIdentifier;
-    }()
+    }() //console.log('toute')
   }, {
     key: "verifyOtp",
     value: function () {

@@ -128,6 +128,8 @@ class AuthClass {
     }
   }
 
+  //console.log('toute')
+
   static async verifyOtp (req, res) {
     try {
       const { submittedOtp } = req.body
