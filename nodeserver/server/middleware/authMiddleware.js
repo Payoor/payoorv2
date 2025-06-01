@@ -10,7 +10,9 @@ const authMiddleware = async (req, res, next) => {
         .json({ success: false, message: 'Token is required' })
     }
  
-    const userId = await redisClient.get(`auth:session:${token}`)
+    const userId = await redisClient.get(`auth:session:${token}`);
+
+    console.log(userId);
 
     if (!userId) {
       return res

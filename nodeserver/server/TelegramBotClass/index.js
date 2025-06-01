@@ -53,14 +53,14 @@ export class TelegramBotClass {
 
       try {
         if (messageText === this.admin_code.toLowerCase()) {
-          await this.redisClient.sAdd(this.admin_list_key, telegramid)
+          await this.redisClient.sadd(this.admin_list_key, telegramid)
           return this.bot.sendMessage(
             telegramid,
             '✅ Admin access granted. Use /help to view commands.'
           )
         }
 
-        const isAdmin = await this.redisClient.sIsMember(
+        const isAdmin = await this.redisClient.sismember(
           this.admin_list_key,
           telegramid
         )
@@ -96,6 +96,38 @@ export class TelegramBotClass {
 /removeadmin <chat_id>
 /exportusers`
           )
+        }
+
+        if (command === '/listadmins') {
+          if (!isSuperAdmin) {
+            return this.bot.sendMessage(
+              telegramid,
+              '🚫 Only Super Admin can list admins.'
+            )
+          }
+
+          try {
+            const adminIds = await this.redisClient.smembers(
+              this.admin_list_key
+            )
+
+            if (!adminIds.length) {
+              return this.bot.sendMessage(telegramid, '📭 No admins found.')
+            }
+
+            const list = adminIds.map((id, i) => `${i + 1}. ${id}`).join('\n')
+            return this.bot.sendMessage(
+              telegramid,
+              `🧑‍💼 *Registered Admins:*\n${list}`,
+              { parse_mode: 'Markdown' }
+            )
+          } catch (err) {
+            console.error('❌ Error listing admins:', err)
+            return this.bot.sendMessage(
+              telegramid,
+              '❗ Failed to fetch admin list. Try again.'
+            )
+          }
         }
 
         if (command === '/couponusage') {
@@ -241,7 +273,7 @@ export class TelegramBotClass {
         }
 
         if (command === '/listcoupontypes') {
-          const types = await this.redisClient.sMembers('coupon:types')
+          const types = await this.redisClient.smembers('coupon:types')
           if (!types.length) {
             return this.bot.sendMessage(telegramid, '📭 No coupon types found.')
           }
@@ -281,7 +313,7 @@ export class TelegramBotClass {
 
           const key = `coupon:type:${arg1}`
           await this.redisClient.del(key)
-          await this.redisClient.sRem('coupon:types', arg1)
+          await this.redisClient.srem('coupon:types', arg1)
           return this.bot.sendMessage(
             telegramid,
             `🗑️ Coupon type '${arg1}' deleted.`
@@ -299,8 +331,8 @@ export class TelegramBotClass {
           try {
             const users = await User.find().lean()
 
-            console.log(users, 'users');
-            
+            console.log(users, 'users')
+
             if (!users.length) {
               return this.bot.sendMessage(telegramid, '📭 No users found.')
             }
@@ -359,7 +391,7 @@ export class TelegramBotClass {
   async callBot (message) {
     if (!message?.length) return
     try {
-      const adminIds = await this.redisClient.sMembers(this.admin_list_key)
+      const adminIds = await this.redisClient.smembers(this.admin_list_key)
       for (const id of adminIds) {
         try {
           await this.bot.sendMessage(id, message)

@@ -32,7 +32,7 @@ app.use(adminRoute);
 
 async function startServer() {
   try {
-    await connectRedis();
+    //await connectRedis();
     console.log('🚀 Connected to Redis');
 
     app.listen(port, () => {

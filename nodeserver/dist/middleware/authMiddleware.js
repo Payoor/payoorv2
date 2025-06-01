@@ -30,33 +30,34 @@ var authMiddleware = /*#__PURE__*/function () {
           return _redisconf.redisClient.get("auth:session:".concat(token));
         case 6:
           userId = _context.sent;
+          console.log(userId);
           if (userId) {
-            _context.next = 9;
+            _context.next = 10;
             break;
           }
           return _context.abrupt("return", res.status(401).json({
             success: false,
             message: 'Invalid or expired token'
           }));
-        case 9:
+        case 10:
           req.userId = userId;
           req.token = token;
           next();
-          _context.next = 18;
+          _context.next = 19;
           break;
-        case 14:
-          _context.prev = 14;
+        case 15:
+          _context.prev = 15;
           _context.t0 = _context["catch"](0);
           console.error('Auth middleware error:', _context.t0);
           return _context.abrupt("return", res.status(500).json({
             success: false,
             message: 'Internal server error'
           }));
-        case 18:
+        case 19:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 14]]);
+    }, _callee, null, [[0, 15]]);
   }));
   return function authMiddleware(_x, _x2, _x3) {
     return _ref.apply(this, arguments);

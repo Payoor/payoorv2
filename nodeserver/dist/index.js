@@ -50,26 +50,21 @@ function _startServer() {
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.prev = 0;
-          _context2.next = 3;
-          return connectRedis();
-        case 3:
-          console.log('🚀 Connected to Redis');
-          app.listen(port, function () {
-            console.log("\u2705 Server is running on port ".concat(port));
-          });
-          _context2.next = 11;
-          break;
-        case 7:
-          _context2.prev = 7;
-          _context2.t0 = _context2["catch"](0);
-          console.error('❌ Failed to connect to Redis:', _context2.t0);
-          process.exit(1);
-        case 11:
+          try {
+            //await connectRedis();
+            console.log('🚀 Connected to Redis');
+            app.listen(port, function () {
+              console.log("\u2705 Server is running on port ".concat(port));
+            });
+          } catch (error) {
+            console.error('❌ Failed to connect to Redis:', error);
+            process.exit(1);
+          }
+        case 1:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[0, 7]]);
+    }, _callee2);
   }));
   return _startServer.apply(this, arguments);
 }

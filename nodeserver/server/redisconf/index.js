@@ -1,9 +1,17 @@
-const redis = require('redis')
+const Redis = require('ioredis')
 
-const redisClient = redis.createClient({
+const redisClient = new Redis({
+  port: 6379, // Redis port
+  host: "redisdb", // Redis host
+  //username: 'default', // needs Redis >= 6
+  //password: 'my-top-secret',
+  db: 0
+})
+
+/*const redisClient = redis.createClient({
   url: process.env.REDIS_URL,
   database: 0
-})
+})*/
 
 let isConnected = false
 

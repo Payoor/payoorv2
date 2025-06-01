@@ -41,7 +41,7 @@ var elasticsearchUrl = process.env.ELASTICSEARCHURL;
 var productIndex = 'products';
 var elasticSearchCl = new _ElasticSearchClass["default"](elasticsearchUrl);
 var shopperRoute = (0, _express["default"])();
-shopperRoute.post('/shopper/message', /*#__PURE__*/function () {
+shopperRoute.post('/shopper/message', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
     var message, page, size, data, _data$hits, total, hits, totalItems, currentCount;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -126,7 +126,7 @@ shopperRoute.post('/shopper/message/suggest', _authMiddleware["default"], /*#__P
     return _ref2.apply(this, arguments);
   };
 }());
-shopperRoute.get('/shopper/getoptions', /*#__PURE__*/function () {
+shopperRoute.get('/shopper/getoptions', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
     var mongooseid, productId, variantsCollection, variants;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -208,7 +208,7 @@ shopperRoute.get('/shopper/init/checkout', _authMiddleware["default"], /*#__PURE
           jwt = req.query.jwt;
           userId = req.userId;
           _context5.next = 5;
-          return Promise.all([_redisconf.redisClient.hGet('admindirective', 'deliveryfee'), _redisconf.redisClient.hGet('admindirective', 'servicecharge'), _Checkout["default"].findOne({
+          return Promise.all([_redisconf.redisClient.hget('admindirective', 'deliveryfee'), _redisconf.redisClient.hget('admindirective', 'servicecharge'), _Checkout["default"].findOne({
             user_id: userId
           }).sort({
             created_at: -1
@@ -295,25 +295,26 @@ shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__P
           _context6.next = 20;
           return newCheckout.save();
         case 20:
-          console.log(newCheckout);
+          //console.log(newCheckout)
+
           res.status(200).json({
             message: 'Checkout data',
             newcheckout: newCheckout
           });
-          _context6.next = 28;
+          _context6.next = 27;
           break;
-        case 24:
-          _context6.prev = 24;
+        case 23:
+          _context6.prev = 23;
           _context6.t0 = _context6["catch"](0);
           console.log(_context6.t0);
           res.status(500).json({
             message: 'Internal server error'
           });
-        case 28:
+        case 27:
         case "end":
           return _context6.stop();
       }
-    }, _callee6, null, [[0, 24]]);
+    }, _callee6, null, [[0, 23]]);
   }));
   return function (_x1, _x10) {
     return _ref6.apply(this, arguments);

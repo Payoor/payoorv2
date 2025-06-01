@@ -63,7 +63,7 @@ class CouponClass {
     await redisClient.set(key, JSON.stringify(config))
 
     // 👉 Add to set of coupon types
-    await redisClient.sAdd('coupon:types', type)
+    await redisClient.sadd('coupon:types', type)
 
     return {
       success: true,
@@ -98,8 +98,8 @@ class CouponClass {
       redeemed: false
     }
 
-    await redisClient.setEx(couponKey, ttl, JSON.stringify(metadata))
-    await redisClient.sAdd(`coupon:type:${type}:codes`, code)
+    await redisClient.set(couponKey, JSON.stringify(metadata), 'EX', ttl)
+    await redisClient.sadd(`coupon:type:${type}:codes`, code)
 
     return { code, type, expiresIn: ttl }
   }
@@ -131,7 +131,7 @@ class CouponClass {
   }
 
   static async listCoupons (type) {
-    const codes = await redisClient.sMembers(`coupon:type:${type}:codes`)
+    const codes = await redisClient.smembers(`coupon:type:${type}:codes`)
     return codes
   }
 

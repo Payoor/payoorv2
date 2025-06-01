@@ -131,7 +131,7 @@ var AuthClass = /*#__PURE__*/function () {
             case 3:
               key = "otp:code:".concat(hashOtp(otp));
               _context3.next = 6;
-              return _redisconf.redisClient.setEx(key, 600, identifier.toLowerCase().trim());
+              return _redisconf.redisClient.set(key, identifier.toLowerCase().trim(), 'EX', 600);
             case 6:
               console.log("Mapped hashed OTP to identifier. Key: ".concat(key));
               return _context3.abrupt("return", true);
@@ -276,18 +276,21 @@ var AuthClass = /*#__PURE__*/function () {
               _context4.prev = 61;
               console.time('[verifyOtp] Redis SETEX');
               _context4.next = 65;
-              return _redisconf.redisClient.setEx("auth:session:".concat(token), 2592000, user._id.toString());
+              return _redisconf.redisClient.set("auth:session:".concat(token), user._id.toString(), 'EX', 2592000 // 30 days in seconds
+              );
             case 65:
               console.timeEnd('[verifyOtp] Redis SETEX');
               console.log('[verifyOtp] Cleaning up OTP key');
-              //await redisClient.del(hashedKey)
-              _context4.next = 72;
-              break;
+              _context4.next = 69;
+              return _redisconf.redisClient.del(hashedKey);
             case 69:
-              _context4.prev = 69;
+              _context4.next = 74;
+              break;
+            case 71:
+              _context4.prev = 71;
               _context4.t3 = _context4["catch"](61);
               console.error('[verifyOtp] Redis SET/DEL failed:', _context4.t3);
-            case 72:
+            case 74:
               return _context4.abrupt("return", res.status(200).json({
                 success: true,
                 message: 'OTP verified',
@@ -298,19 +301,19 @@ var AuthClass = /*#__PURE__*/function () {
                   token: token
                 }
               }));
-            case 75:
-              _context4.prev = 75;
+            case 77:
+              _context4.prev = 77;
               _context4.t4 = _context4["catch"](0);
               console.error('[verifyOtp] Fatal error:', _context4.t4);
               return _context4.abrupt("return", res.status(500).json({
                 success: false,
                 message: 'Internal server error'
               }));
-            case 79:
+            case 81:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[0, 75], [7, 15], [21, 29], [49, 57], [61, 69]]);
+        }, _callee4, null, [[0, 77], [7, 15], [21, 29], [49, 57], [61, 71]]);
       }));
       function verifyOtp(_x6, _x7) {
         return _verifyOtp.apply(this, arguments);
@@ -386,9 +389,7 @@ var AuthClass = /*#__PURE__*/function () {
             case 25:
               token = _context5.sent;
               _context5.next = 28;
-              return _redisconf.redisClient.setEx("auth:session:".concat(token), 2592000,
-              // 30 days
-              user._id.toString());
+              return _redisconf.redisClient.set("auth:session:".concat(token), user._id.toString(), 'EX', 2592000);
             case 28:
               console.log({
                 id: user._id,
@@ -449,7 +450,7 @@ var AuthClass = /*#__PURE__*/function () {
               }));
             case 9:
               _context6.next = 11;
-              return this.findByToken(jwttoken);
+              return _User["default"].findByToken(jwttoken);
             case 11:
               user = _context6.sent;
               if (!user) {
@@ -478,7 +479,7 @@ var AuthClass = /*#__PURE__*/function () {
             case "end":
               return _context6.stop();
           }
-        }, _callee6, this, [[0, 18]]);
+        }, _callee6, null, [[0, 18]]);
       }));
       function getValidUser(_x0, _x1) {
         return _getValidUser.apply(this, arguments);

@@ -118,7 +118,7 @@ class AuthClass {
       }
 
       const key = `otp:code:${hashOtp(otp)}`
-      await redisClient.setEx(key, 600, identifier.toLowerCase().trim())
+      await redisClient.set(key, identifier.toLowerCase().trim(), 'EX', 600)
 
       console.log(`Mapped hashed OTP to identifier. Key: ${key}`)
       return true
@@ -201,15 +201,17 @@ class AuthClass {
 
       try {
         console.time('[verifyOtp] Redis SETEX')
-        await redisClient.setEx(
+        await redisClient.set(
           `auth:session:${token}`,
-          2592000,
-          user._id.toString()
+          user._id.toString(),
+          'EX',
+          2592000 // 30 days in seconds
         )
+
         console.timeEnd('[verifyOtp] Redis SETEX')
 
         console.log('[verifyOtp] Cleaning up OTP key')
-        //await redisClient.del(hashedKey)
+        await redisClient.del(hashedKey)
       } catch (redisWriteErr) {
         console.error('[verifyOtp] Redis SET/DEL failed:', redisWriteErr)
       }
@@ -281,10 +283,11 @@ class AuthClass {
 
       const token = await user.generateAuthToken()
 
-      await redisClient.setEx(
+      await redisClient.set(
         `auth:session:${token}`,
-        2592000, // 30 days
-        user._id.toString()
+        user._id.toString(),
+        'EX',
+        2592000
       )
 
       console.log({
@@ -324,7 +327,7 @@ class AuthClass {
           message: 'User found'
         })
       } else {
-        const user = await this.findByToken(jwttoken)
+        const user = await User.findByToken(jwttoken)
 
         if (user) {
           await user.removeToken(jwttoken)

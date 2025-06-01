@@ -29,7 +29,7 @@ const elasticSearchCl = new ElasticSearchClass(elasticsearchUrl)
 
 const shopperRoute = express()
 
-shopperRoute.post('/shopper/message', async (req, res) => {
+shopperRoute.post('/shopper/message', authMiddleware, async (req, res) => {
   try {
     const { message } = req.body
     const page = parseInt(req.query.page) || 1
@@ -83,7 +83,7 @@ shopperRoute.post(
   }
 )
 
-shopperRoute.get('/shopper/getoptions', async (req, res) => {
+shopperRoute.get('/shopper/getoptions', authMiddleware, async (req, res) => {
   try {
     const { mongooseid } = req.query
 
@@ -131,8 +131,8 @@ shopperRoute.get('/shopper/init/checkout', authMiddleware, async (req, res) => {
     const userId = req.userId
 
     const [fee, servicecharge, latestCheckout] = await Promise.all([
-      redisClient.hGet('admindirective', 'deliveryfee'),
-      redisClient.hGet('admindirective', 'servicecharge'),
+      redisClient.hget('admindirective', 'deliveryfee'),
+      redisClient.hget('admindirective', 'servicecharge'),
       Checkout.findOne({ user_id: userId }).sort({ created_at: -1 }).lean()
     ])
 
@@ -186,7 +186,7 @@ shopperRoute.post(
 
       await newCheckout.save()
 
-      console.log(newCheckout)
+      //console.log(newCheckout)
 
       res.status(200).json({
         message: 'Checkout data',

@@ -21,7 +21,7 @@ services:
       retries: 5
   redisdb:
     container_name: redisdb
-    image: redis:5
+    image: redis:6-alpine3.21
     command: redis-server --appendonly yes --save 900 1 300 10 60 10000
     restart: always
     networks:

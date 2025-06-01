@@ -93,7 +93,7 @@ var CouponClass = /*#__PURE__*/function () {
               return _redisconf.redisClient.set(key, JSON.stringify(config));
             case 22:
               _context.next = 24;
-              return _redisconf.redisClient.sAdd('coupon:types', type);
+              return _redisconf.redisClient.sadd('coupon:types', type);
             case 24:
               return _context.abrupt("return", {
                 success: true,
@@ -149,10 +149,10 @@ var CouponClass = /*#__PURE__*/function () {
                 redeemed: false
               };
               _context2.next = 14;
-              return _redisconf.redisClient.setEx(couponKey, ttl, JSON.stringify(metadata));
+              return _redisconf.redisClient.set(couponKey, JSON.stringify(metadata), 'EX', ttl);
             case 14:
               _context2.next = 16;
-              return _redisconf.redisClient.sAdd("coupon:type:".concat(type, ":codes"), code);
+              return _redisconf.redisClient.sadd("coupon:type:".concat(type, ":codes"), code);
             case 16:
               return _context2.abrupt("return", {
                 code: code,
@@ -259,7 +259,7 @@ var CouponClass = /*#__PURE__*/function () {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
               _context5.next = 2;
-              return _redisconf.redisClient.sMembers("coupon:type:".concat(type, ":codes"));
+              return _redisconf.redisClient.smembers("coupon:type:".concat(type, ":codes"));
             case 2:
               codes = _context5.sent;
               return _context5.abrupt("return", codes);
