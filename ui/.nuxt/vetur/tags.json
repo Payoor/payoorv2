@@ -47,6 +47,9 @@
   "LandingFooter": {
     "description": "Auto imported from components/LandingFooter.vue"
   },
+  "LoadingAnimation": {
+    "description": "Auto imported from components/LoadingAnimation.vue"
+  },
   "OrderDisplay": {
     "description": "Auto imported from components/OrderDisplay.vue"
   },

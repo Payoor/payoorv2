@@ -224,9 +224,11 @@ export default {
     },
     computed: {
         ...mapState("cart", {
-            //cartTotal: (state) => state.total,
             cartItems: (state) => state.items,
             cartTotalItems: (state) => state.totalItems
+        }),
+        ...mapState("user", {
+            currentUser: (state) => state.currentUser
         }),
         allowOrderCreation() {
             const ready =
@@ -243,10 +245,14 @@ export default {
                 'August', 'September', 'October', 'November', 'December'];
 
             const result = [];
+            const now = new Date();
 
-            for (let i = 0; i < 7; i++) {
+            // Determine start offset
+            const startOffset = now.getHours() >= 17 ? 1 : 0;
+
+            for (let i = startOffset; i < startOffset + 7; i++) {
                 const currentDate = new Date();
-                currentDate.setDate(currentDate.getDate() + i);
+                currentDate.setDate(now.getDate() + i);
 
                 result.push({
                     day: daysOfWeek[currentDate.getDay()],
@@ -256,7 +262,8 @@ export default {
             }
 
             return result;
-        },
+        }
+
     },
     mounted() {
         this.initCheckout();
@@ -358,7 +365,7 @@ export default {
                     delivery_address = ''
                 } = data;
 
-                this.phone_number = phone_number;
+                this.phone_number = phone_number || this.currentUser.phoneNumber;
                 this.delivery_address = delivery_address;
 
                 this.subtotal = cartTotal

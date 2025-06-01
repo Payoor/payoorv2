@@ -322,9 +322,27 @@ class AuthClass {
       const userId = await redisClient.get(`auth:session:${jwttoken}`)
 
       if (userId) {
+        const user = await User.findByToken(jwttoken)
+
+        let name = ''
+        let email = ''
+        let phoneNumber = ''
+
+        if (user) {
+          name = user.name
+          phoneNumber = user.phoneNumber
+          email = user.email
+        }
+
         return res.status(200).json({
           success: true,
-          message: 'User found'
+          message: 'User found',
+          user: {
+            name,
+            email,
+            phoneNumber,
+            detailsAdded: Boolean(phoneNumber && email)
+          }
         })
       } else {
         const user = await User.findByToken(jwttoken)
@@ -343,6 +361,48 @@ class AuthClass {
       return res
         .status(500)
         .json({ success: false, message: 'Internal server error' })
+    }
+  }
+
+  static async updateDetails (req, res) {
+    try {
+      const { phoneNumber, name } = req.body
+      const userId = req.userId
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: 'Unauthorized: user ID not found in request'
+        })
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { name, phoneNumber },
+        { new: true }
+      )
+
+      if (!updatedUser) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        })
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'User details updated successfully',
+        user: {
+          name: updatedUser.name,
+          phoneNumber: updatedUser.phoneNumber
+        }
+      })
+    } catch (error) {
+      console.error('Error updating user details:', error)
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error'
+      })
     }
   }
 

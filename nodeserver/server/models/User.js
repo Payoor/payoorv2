@@ -2,6 +2,11 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
 const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    trim: true,
+    lowercase: true
+  },
   email: {
     type: String,
     trim: true,
@@ -79,7 +84,7 @@ UserSchema.methods.removeToken = function (token) {
 
   return user.updateOne({
     $pull: {
-      tokens: { token }
+      tokens: { token } 
     }
   })
 }

@@ -2,8 +2,14 @@
     <div>
         <div class="chatinput">
             <textarea v-model="userinput" class="chatinput__field" :placeholder="placeholder" @input="autoResize"
-                @keydown.enter="handleEnter" ref="textarea">
+                @keydown.enter="handleEnter" ref="textarea" v-if="currentUser.name && currentUser.phoneNumber && currentUser.detailsAdded">
 </textarea>
+
+            <input v-model="userinput" class="chatinput__field" type="tel" :placeholder="placeholder"
+                v-if="isPhoneMode" />
+
+            <input v-model="userinput" class="chatinput__field" type="tel" :placeholder="placeholder"
+                v-if="isNameMode" />
 
 
             <div class="chatinput__sendbtn slide-fade-in-up" :class="{
@@ -22,7 +28,10 @@
     </div>
 </template>
 
+
 <script>
+import { mapState } from "vuex";
+
 import { serverurl } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 import product_mixin from "@/mixins/product_mixin";
@@ -32,7 +41,7 @@ export default {
     data() {
         return {
             userinput: "",
-            placeholder: "Enter your list",
+            //placeholder: "Enter your list",
         };
     },
     watch: {
@@ -48,6 +57,28 @@ export default {
                     //this.autoComplete(newValue);
                 }
             }
+        }
+    },
+    computed: {
+        ...mapState("user", {
+            currentUser: (state) => state.currentUser
+        }),
+        placeholder() {
+            if (!this.currentUser.phoneNumber) {
+                return "Please add your phone number...";
+            }
+
+            if (this.currentUser.phoneNumber && !this.currentUser.name) {
+                return "Please add your name...";
+            }
+
+            return "Enter your list";
+        },
+        isPhoneMode() {
+            return !this.currentUser.phoneNumber;
+        },
+        isNameMode() {
+            return !this.currentUser.name && this.currentUser.phoneNumber;
         }
     },
     mounted() {
@@ -96,6 +127,19 @@ export default {
             const { userinput } = this;
 
             if (userinput) {
+
+                if (this.isPhoneMode) {
+                    this.$store.dispatch('user/setUserPhoneNumber', userinput);
+                    this.userinput = "";
+                    return;
+                }
+
+                if (this.isNameMode) {
+                    this.$store.dispatch('user/setUserName', userinput);
+                    this.userinput = "";
+                    return;
+                }
+
                 if (userinput.length) {
                     this.$emit("update:products", []);
                     this.postMessageToServer();
@@ -106,10 +150,9 @@ export default {
             const width = window.innerWidth;
 
             if (width > 900) {
-                e.preventDefault(); // prevent newline
-                this.sendMessage(); // send the message
+                e.preventDefault();
+                this.sendMessage();
             }
-            // else: allow natural newline on mobile (no preventDefault)
         },
         async postMessageToServer() {
             const token = await this.getValidToken();

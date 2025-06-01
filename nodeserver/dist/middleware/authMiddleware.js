@@ -16,11 +16,7 @@ var authMiddleware = function authMiddleware(req, res, next) {
         message: 'Token is required'
       });
     }
-
-    // Verify and decode the token
     var decoded = _jsonwebtoken["default"].verify(token, process.env.JWT_SECRET);
-
-    // Attach user data to the request object
     req.userId = decoded._id;
     req.user = decoded;
     req.token = token;

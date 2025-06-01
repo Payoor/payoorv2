@@ -71,11 +71,13 @@ export default {
     },
     async mounted() {
         const token = await this.getValidToken();
+
         if (token) {
             this.getValidUser(token);
         } else {
             this.redirectHome();
         }
+
         this.$store.dispatch('cart/initializeCart');
         this.menuopen = window.innerWidth > 900 && this.jwt;
         window.addEventListener('resize', this.handleResize);
@@ -96,12 +98,19 @@ export default {
         async getValidUser(token) {
             try {
                 const response = await fetch(`${serverurl}/shopper/auth/validuser?jwttoken=${token}`);
+
                 if (response.status !== 200) {
                     localStorage.removeItem('jwt');
 
                     return this.redirectHome()
                 };
-                await response.json();
+
+                const data = await response.json();
+                const { user } = data;
+
+                // console.log(user)
+
+                this.$store.dispatch('user/addCurrentUser', user);
             } catch (error) {
                 console.log(error);
             }

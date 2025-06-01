@@ -14,6 +14,7 @@ export const LandingCategories = () => import('../../components/LandingCategorie
 export const LandingCopy = () => import('../../components/LandingCopy.vue' /* webpackChunkName: "components/landing-copy" */).then(c => wrapFunctional(c.default || c))
 export const LandingFaq = () => import('../../components/LandingFaq.vue' /* webpackChunkName: "components/landing-faq" */).then(c => wrapFunctional(c.default || c))
 export const LandingFooter = () => import('../../components/LandingFooter.vue' /* webpackChunkName: "components/landing-footer" */).then(c => wrapFunctional(c.default || c))
+export const LoadingAnimation = () => import('../../components/LoadingAnimation.vue' /* webpackChunkName: "components/loading-animation" */).then(c => wrapFunctional(c.default || c))
 export const OrderDisplay = () => import('../../components/OrderDisplay.vue' /* webpackChunkName: "components/order-display" */).then(c => wrapFunctional(c.default || c))
 export const OtpInput = () => import('../../components/OtpInput.vue' /* webpackChunkName: "components/otp-input" */).then(c => wrapFunctional(c.default || c))
 

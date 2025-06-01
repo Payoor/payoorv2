@@ -9,7 +9,7 @@
         <div class="orders__content">
             <div class="orders__content--body">
                 <div v-if="loading" class="orders__loading">
-                    <div class="spinner"></div>
+                    <LoadingAnimation />
                 </div>
 
                 <div v-else-if="orders.length === 0" class="orders__empty">

@@ -4,14 +4,47 @@
             <div class="chatbody__content" ref="scrollContainer">
                 <div>
                     <div v-if="searchloading" class="chatbody__loading">
-                        <div class="spinner"></div>
+                        <LoadingAnimation />
                     </div>
 
-                    <div v-else class="chatbody__products">
-                        <div v-for="(product, index) in products" :key="product._id" :ref="setLastProductRef(index)">
-                            <ChatCard :product="product" />
+                    <div v-if="currentUser.email">
+                        <div class="chatbody__products"
+                            v-if="currentUser.phoneNumber && currentUser.name && currentUser.detailsAdded">
+                            <div v-for="(product, index) in products" :key="product._id"
+                                :ref="setLastProductRef(index)">
+                                <ChatCard :product="product" />
+                            </div>
                         </div>
 
+                        <div v-if="!currentUser.detailsAdded">
+                            <div class="chatbody__products user-details"
+                                v-if="!currentUser.phoneNumber || !currentUser.name || !currentUser.detailsAdded">
+                                <div class="chatbody__userdetails">
+                                    <p class="chatbody__userdetails--ai">Please add your phone number...</p>
+
+                                    <div class="chatbody__userdetails--prompt">
+                                        <span></span>
+                                        <span class="content" v-if="tempPhoneNumber.length">{{ tempPhoneNumber }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="chatbody__products user-details"
+                                v-if="!currentUser.name && currentUser.phoneNumber || !currentUser.detailsAdded && currentUser.name">
+                                <div class="chatbody__userdetails">
+                                    <p class="chatbody__userdetails--ai">Please add your name...</p>
+
+                                    <div class="chatbody__userdetails--prompt">
+                                        <span></span>
+                                        <span class="content" v-if="tempUserName.length">{{ tempUserName }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="" v-if="globalLoading">
+                                <LoadingAnimation />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -21,6 +54,8 @@
 
 
 <script>
+import { mapState } from "vuex";
+
 import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {
@@ -31,6 +66,14 @@ export default {
         return {
             observer: null,
         };
+    },
+    computed: {
+        ...mapState("user", {
+            currentUser: (state) => state.currentUser,
+            tempUserName: (state) => state.currentUser.name ? state.currentUser.name : "",
+            tempPhoneNumber: (state) => state.currentUser.phoneNumber ? state.currentUser.phoneNumber : "",
+            globalLoading: (state) => state.loading
+        }),
     },
     methods: {
         setLastProductRef(index) {
@@ -56,7 +99,7 @@ export default {
                     ([entry]) => {
                         if (entry.isIntersecting && !this.searchloading) {
                             this.$emit('load-more');
-                            console.log('Approaching last element — loading more');
+                            //console.log('Approaching last element — loading more');
                         }
                     },
                     {
@@ -123,6 +166,44 @@ export default {
             grid-auto-rows: 29rem;
             width: auto;
 
+        }
+
+        &.user-details {
+            grid-auto-rows: 10rem;
+        }
+    }
+
+    &__userdetails {
+        grid-column: 1 / -1;
+
+        font-size: 1.7rem;
+
+        padding-top: 4rem;
+
+        &--ai {
+            color: $primary-color;
+            font-weight: 500;
+
+            animation: slideFadeInUp 0.3s ease-out forwards;
+        }
+
+        &--prompt {
+            color: $black;
+            display: flex;
+            justify-content: space-between;
+
+            & span {
+
+                &.content {
+                    background: $primary-color;
+                    color: $white;
+                    padding: 1rem;
+                    border-radius: 3rem;
+                    font-weight: 400;
+
+                    animation: slideFadeInUp 0.3s ease-out forwards;
+                }
+            }
         }
     }
 

@@ -8,10 +8,8 @@ const authMiddleware = (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Token is required' })
     }
 
-    // Verify and decode the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-    // Attach user data to the request object
     req.userId = decoded._id
     req.user = decoded
     req.token = token

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="loading && !option" class="chatoption__loader">
-            <div class="spinner"></div>
+            <LoadingAnimation />
         </div>
 
         <div class="chatoption slide-fade-in-up" v-else-if="option">

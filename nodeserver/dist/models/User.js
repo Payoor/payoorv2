@@ -3,6 +3,11 @@
 var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 var UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    trim: true,
+    lowercase: true
+  },
   email: {
     type: String,
     trim: true,

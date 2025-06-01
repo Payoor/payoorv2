@@ -22,5 +22,6 @@ You can directly use them in pages and other components without the need to impo
 - `<LandingCopy>` | `<landing-copy>` (components/LandingCopy.vue)
 - `<LandingFaq>` | `<landing-faq>` (components/LandingFaq.vue)
 - `<LandingFooter>` | `<landing-footer>` (components/LandingFooter.vue)
+- `<LoadingAnimation>` | `<loading-animation>` (components/LoadingAnimation.vue)
 - `<OrderDisplay>` | `<order-display>` (components/OrderDisplay.vue)
 - `<OtpInput>` | `<otp-input>` (components/OtpInput.vue)
