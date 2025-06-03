@@ -20,7 +20,7 @@
 
         <div v-if="view_options">
             <ChatOptions :options="options" :toggleViewOptions="toggleViewOptions" :productname="name"
-                :productimg="imageUrl" :mongooseid="product._mongooseid" />
+                :productimg="imageUrl" :mongooseid="product._mongooseid" :productDescription="productDescription" />
         </div>
     </div>
 </template>
@@ -53,6 +53,9 @@ export default {
             return typeof this.product.metadata === 'string'
                 ? this.product.metadata.split(' ').map(item => item.trim()).slice(0, 2)
                 : (Array.isArray(this.product.metadata) ? this.product.metadata.slice(0, 3) : []);
+        },
+        productDescription() {
+            return this.product.generatedDescription
         }
     },
     methods: {

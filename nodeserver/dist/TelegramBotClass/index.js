@@ -330,27 +330,20 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                 return _context.abrupt("return", _this.bot.sendMessage(telegramid, "\uD83D\uDDD1\uFE0F Coupon type '".concat(arg1, "' deleted.")));
               case 121:
                 if (!(command === '/exportusers')) {
-                  _context.next = 148;
+                  _context.next = 145;
                   break;
                 }
-                if (isSuperAdmin) {
-                  _context.next = 124;
-                  break;
-                }
-                return _context.abrupt("return", _this.bot.sendMessage(telegramid, '🚫 Only Super Admin can export users.'));
-              case 124:
-                _context.prev = 124;
-                _context.next = 127;
+                _context.prev = 122;
+                _context.next = 125;
                 return _User["default"].find().lean();
-              case 127:
+              case 125:
                 users = _context.sent;
-                console.log(users, 'users');
                 if (users.length) {
-                  _context.next = 131;
+                  _context.next = 128;
                   break;
                 }
                 return _context.abrupt("return", _this.bot.sendMessage(telegramid, '📭 No users found.'));
-              case 131:
+              case 128:
                 workbook = new _exceljs["default"].Workbook();
                 worksheet = workbook.addWorksheet('Users');
                 headers = Object.keys(users[0]).filter(function (key) {
@@ -365,37 +358,37 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                   worksheet.addRow(row);
                 });
                 filePath = _path["default"].join('/tmp', "users_".concat(Date.now(), ".xlsx"));
-                _context.next = 139;
+                _context.next = 136;
                 return workbook.xlsx.writeFile(filePath);
-              case 139:
-                _context.next = 141;
+              case 136:
+                _context.next = 138;
                 return _this.bot.sendDocument(telegramid, filePath, {}, {
                   filename: 'users_export.xlsx',
                   contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 });
-              case 141:
+              case 138:
                 _fs["default"].unlink(filePath, function () {});
-                _context.next = 148;
+                _context.next = 145;
                 break;
-              case 144:
-                _context.prev = 144;
-                _context.t2 = _context["catch"](124);
+              case 141:
+                _context.prev = 141;
+                _context.t2 = _context["catch"](122);
                 console.error('❌ Error exporting users:', _context.t2);
                 return _context.abrupt("return", _this.bot.sendMessage(telegramid, '❗ Failed to export users. Try again later.'));
-              case 148:
-                _context.next = 155;
+              case 145:
+                _context.next = 152;
                 break;
-              case 150:
-                _context.prev = 150;
+              case 147:
+                _context.prev = 147;
                 _context.t3 = _context["catch"](7);
                 console.error('Telegram bot error:', _context.t3);
-                _context.next = 155;
+                _context.next = 152;
                 return _this.bot.sendMessage(telegramid, '❗ An error occurred. Please try again.');
-              case 155:
+              case 152:
               case "end":
                 return _context.stop();
             }
-          }, _callee, null, [[7, 150], [23, 33], [58, 65], [124, 144]]);
+          }, _callee, null, [[7, 147], [23, 33], [58, 65], [122, 141]]);
         }));
         return function (_x) {
           return _ref.apply(this, arguments);

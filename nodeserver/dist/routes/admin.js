@@ -32,7 +32,7 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 var axios = require('axios');
-var ELASTIC_URL = 'http://payoorv2-elasticsearch-1:9200';
+var ELASTIC_URL = process.env.ELASTICSEARCHURL;
 var _require = require('@aws-sdk/client-s3'),
   S3Client = _require.S3Client,
   PutObjectCommand = _require.PutObjectCommand,
@@ -253,7 +253,7 @@ adminRoute.post('/admin/paystack/payment-response', /*#__PURE__*/function () {
         case 5:
           _req$body = req.body, event = _req$body.event, data = _req$body.data;
           if (!(event === 'charge.success')) {
-            _context3.next = 15;
+            _context3.next = 16;
             break;
           }
           metadata = data.metadata;
@@ -268,21 +268,22 @@ adminRoute.post('/admin/paystack/payment-response', /*#__PURE__*/function () {
           _context3.next = 14;
           return (0, _orderconfirmEmail["default"])(userId, "".concat(process.env.PAYOOR_URL, "/userorder/").concat(newOrder._id));
         case 14:
+          telegramBot.callBot("new order ".concat(process.env.PAYOOR_URL, "/admin/order?reference=").concat(newOrder._id));
           return _context3.abrupt("return", res.sendStatus(200));
-        case 15:
+        case 16:
           return _context3.abrupt("return", res.sendStatus(200));
-        case 18:
-          _context3.prev = 18;
+        case 19:
+          _context3.prev = 19;
           _context3.t0 = _context3["catch"](0);
           console.log(_context3.t0);
           return _context3.abrupt("return", res.status(500).json({
             error: 'Server error'
           }));
-        case 22:
+        case 23:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[0, 18]]);
+    }, _callee3, null, [[0, 19]]);
   }));
   return function (_x5, _x6) {
     return _ref3.apply(this, arguments);

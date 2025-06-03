@@ -2,7 +2,7 @@
     <div class="addresslist">
         <div class="addresslist__content">
             <div v-if="loading" class="addresslist__loading">
-                <span class="spinner"></span> Searching for places...
+                <LoadingAnimation /> Searching for places...
             </div>
 
             <div class="addresslist__item" v-for="{ formatted_address, icon } in addressesList" :key="formatted_address"

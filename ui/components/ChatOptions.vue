@@ -19,7 +19,7 @@
             <div class="chatoptions__content--body">
                 <div class="chatoptions__options">
                     <div v-if="loading" class="chatoptions__loading">
-                        <div class="spinner"></div>
+                        <LoadingAnimation />
                     </div>
 
                     <div v-else>

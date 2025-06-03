@@ -2603,11 +2603,11 @@ function mergeProperty(storeModule, moduleData, property) {
 // CONCATENATED MODULE: ./.nuxt/components/index.js
 const AddressList = () => __webpack_require__.e(/* import() | components/address-list */ 1).then(__webpack_require__.bind(null, 128)).then(c => wrapFunctional(c.default || c));
 const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 2).then(__webpack_require__.bind(null, 129)).then(c => wrapFunctional(c.default || c));
-const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 3).then(__webpack_require__.bind(null, 46)).then(c => wrapFunctional(c.default || c));
+const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 3).then(__webpack_require__.bind(null, 47)).then(c => wrapFunctional(c.default || c));
 const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 4).then(__webpack_require__.bind(null, 131)).then(c => wrapFunctional(c.default || c));
 const ChatCard = () => __webpack_require__.e(/* import() | components/chat-card */ 5).then(__webpack_require__.bind(null, 101)).then(c => wrapFunctional(c.default || c));
 const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 6).then(__webpack_require__.bind(null, 132)).then(c => wrapFunctional(c.default || c));
-const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 7).then(__webpack_require__.bind(null, 51)).then(c => wrapFunctional(c.default || c));
+const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 7).then(__webpack_require__.bind(null, 52)).then(c => wrapFunctional(c.default || c));
 const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 8).then(__webpack_require__.bind(null, 133)).then(c => wrapFunctional(c.default || c));
 const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 9).then(__webpack_require__.bind(null, 62)).then(c => wrapFunctional(c.default || c));
 const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 10).then(__webpack_require__.bind(null, 76)).then(c => wrapFunctional(c.default || c));
@@ -2617,7 +2617,7 @@ const LandingCategories = () => __webpack_require__.e(/* import() | components/l
 const LandingCopy = () => __webpack_require__.e(/* import() | components/landing-copy */ 14).then(__webpack_require__.bind(null, 103)).then(c => wrapFunctional(c.default || c));
 const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 15).then(__webpack_require__.bind(null, 99)).then(c => wrapFunctional(c.default || c));
 const LandingFooter = () => __webpack_require__.e(/* import() | components/landing-footer */ 16).then(__webpack_require__.bind(null, 100)).then(c => wrapFunctional(c.default || c));
-const LoadingAnimation = () => __webpack_require__.e(/* import() | components/loading-animation */ 17).then(__webpack_require__.bind(null, 55)).then(c => wrapFunctional(c.default || c));
+const LoadingAnimation = () => __webpack_require__.e(/* import() | components/loading-animation */ 17).then(__webpack_require__.bind(null, 51)).then(c => wrapFunctional(c.default || c));
 const OrderDisplay = () => __webpack_require__.e(/* import() | components/order-display */ 18).then(__webpack_require__.bind(null, 70)).then(c => wrapFunctional(c.default || c));
 const OtpInput = () => __webpack_require__.e(/* import() | components/otp-input */ 19).then(__webpack_require__.bind(null, 97)).then(c => wrapFunctional(c.default || c));
 
@@ -2792,6 +2792,8 @@ async function createApp(ssrContext, config = {}) {
         "defer": true
       }, {
         "src": "\u002Fscripts\u002Findex.js"
+      }, {
+        "src": "\u002Fscripts\u002Ffirebase.js"
       }],
       "style": []
     },

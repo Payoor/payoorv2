@@ -45,7 +45,9 @@ shopperRoute.post('/shopper/message', authMiddleware, async (req, res) => {
     const { total, hits } = data.hits
 
     const totalItems = total.value
-    const currentCount = page * size
+    const currentCount = page * size;
+
+    //console.log(hits)
 
     res.status(200).json({
       message: 'message sent',
@@ -197,7 +199,7 @@ shopperRoute.post(
       res.status(500).json({ message: 'Internal server error' })
     }
   }
-)
+);
 
 shopperRoute.get(
   '/shopper/paystack/generate-paystack-link',
@@ -237,7 +239,7 @@ shopperRoute.get(
 
       const { email, user_id, total } = checkoutWithUser
 
-      console.log(checkoutWithUser)
+     // console.log(checkoutWithUser)
 
       const params = JSON.stringify({
         email: email,

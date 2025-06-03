@@ -62,7 +62,7 @@ shopperRoute.post('/shopper/message', _authMiddleware["default"], /*#__PURE__*/f
           data = _context.sent;
           _data$hits = data.hits, total = _data$hits.total, hits = _data$hits.hits;
           totalItems = total.value;
-          currentCount = page * size;
+          currentCount = page * size; //console.log(hits)
           res.status(200).json({
             message: 'message sent',
             input: message,
@@ -370,8 +370,7 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
             error: 'Invalid Checkout ID'
           }));
         case 11:
-          email = checkoutWithUser.email, user_id = checkoutWithUser.user_id, total = checkoutWithUser.total;
-          console.log(checkoutWithUser);
+          email = checkoutWithUser.email, user_id = checkoutWithUser.user_id, total = checkoutWithUser.total; // console.log(checkoutWithUser)
           params = JSON.stringify({
             email: email,
             amount: Math.round(total * 100),
@@ -391,7 +390,7 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
               'Content-Type': 'application/json'
             }
           };
-          _context7.next = 17;
+          _context7.next = 16;
           return new Promise(function (resolve, reject) {
             var req = _https["default"].request(options, function (res) {
               var data = '';
@@ -410,16 +409,16 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
             req.write(params);
             req.end();
           });
-        case 17:
+        case 16:
           paystackRes = _context7.sent;
           if (paystackRes.status) {
-            _context7.next = 20;
+            _context7.next = 19;
             break;
           }
           return _context7.abrupt("return", res.status(400).json({
             error: paystackRes.message
           }));
-        case 20:
+        case 19:
           res.status(200).json({
             success: true,
             data: {
@@ -428,20 +427,20 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
               accessCode: paystackRes.data.access_code
             }
           });
-          _context7.next = 27;
+          _context7.next = 26;
           break;
-        case 23:
-          _context7.prev = 23;
+        case 22:
+          _context7.prev = 22;
           _context7.t0 = _context7["catch"](3);
           console.error('Error generating paystack link:', _context7.t0);
           return _context7.abrupt("return", res.status(500).json({
             error: 'Server error'
           }));
-        case 27:
+        case 26:
         case "end":
           return _context7.stop();
       }
-    }, _callee7, null, [[3, 23]]);
+    }, _callee7, null, [[3, 22]]);
   }));
   return function (_x11, _x12) {
     return _ref7.apply(this, arguments);

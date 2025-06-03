@@ -6,7 +6,7 @@ import multer from 'multer'
 import fs from 'fs'
 const axios = require('axios')
 
-const ELASTIC_URL = 'http://payoorv2-elasticsearch-1:9200'
+const ELASTIC_URL = process.env.ELASTICSEARCHURL;
 
 const {
   S3Client,
@@ -105,7 +105,7 @@ adminRoute.post(
 
       await newOrder.save()
 
-     /* telegramBot.callBot(
+      /* telegramBot.callBot(
         `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
       )*/
 
@@ -208,9 +208,9 @@ adminRoute.post('/admin/paystack/payment-response', async (req, res) => {
         `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`
       )
 
-      /*telegramBot.callBot(
+      telegramBot.callBot(
         `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
-      )*/
+      )
 
       return res.sendStatus(200)
     }

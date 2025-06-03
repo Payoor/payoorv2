@@ -13,7 +13,7 @@ const authMiddleware = (req, res, next) => {
     req.userId = decoded._id
     req.user = decoded
     req.token = token
-
+ 
     next()
   } catch (err) {
     console.error('JWT Auth error:', err)

@@ -321,17 +321,17 @@ export class TelegramBotClass {
         }
 
         if (command === '/exportusers') {
-          if (!isSuperAdmin) {
+          /*if (!isSuperAdmin) {
             return this.bot.sendMessage(
               telegramid,
               '🚫 Only Super Admin can export users.'
             )
-          }
+          }*/
 
           try {
             const users = await User.find().lean()
 
-            console.log(users, 'users')
+            //console.log(users, 'users')
 
             if (!users.length) {
               return this.bot.sendMessage(telegramid, '📭 No users found.')

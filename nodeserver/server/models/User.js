@@ -25,12 +25,12 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     unique: true,
     sparse: true,
-    validate: {
+    /*validate: {
       validator: function (v) {
         return !v || /^\+?[1-9]\d{1,14}$/.test(v)
       },
       message: props => `${props.value} is not a valid phone number!`
-    }
+    }*/
   },
   tokens: [
     {

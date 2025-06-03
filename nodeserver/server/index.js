@@ -7,6 +7,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 require('./db');
 
+
+
 const { redisClient, connectRedis } = require('./redisconf');
 
 import shopperRoute from './routes/shopper';
