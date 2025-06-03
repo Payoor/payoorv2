@@ -8,7 +8,7 @@
             <input v-model="userinput" class="chatinput__field" type="tel" :placeholder="placeholder"
                 v-if="isPhoneMode" />
 
-            <input v-model="userinput" class="chatinput__field" type="tel" :placeholder="placeholder"
+            <input v-model="userinput" class="chatinput__field" type="text" :placeholder="placeholder"
                 v-if="isNameMode" />
 
 
