@@ -122,7 +122,7 @@ export default {
     //height: 100vh;
     overflow: hidden;
     //background: $sky-blue-3;
-    min-height: 200vh; //development
+    //min-height: 200vh; //development
 
     &__header {
         @include fixed-header;
@@ -360,14 +360,18 @@ export default {
             position: absolute;
             border-radius: 1rem;
             width: 100%;
-            height: 100%;
+            height: 59%;
             border: none;
             outline: none;
             background: $white;
-
             resize: none;
             font-size: 1.6rem;
             padding: 1rem 2rem;
+            min-height: 5.4em;
+            max-height: 10.8em;
+            overflow-y: auto;
+            line-height: 1.8em;
+            top: 1rem;
         }
 
         &--buttonarea {
