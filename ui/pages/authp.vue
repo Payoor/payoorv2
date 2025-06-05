@@ -254,7 +254,7 @@ export default {
 
     &__formarea {
         height: 100vh;
-        //position: fixed;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
