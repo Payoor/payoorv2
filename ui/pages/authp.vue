@@ -233,7 +233,7 @@ export default {
 <style lang="scss" scoped>
 .auth-page {
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
     background: $sky-blue-3;
 
