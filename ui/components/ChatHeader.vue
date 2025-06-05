@@ -20,12 +20,12 @@
                 <CartButton :showicon="true" />
             </div>
 
-            <div class="chat-header__burger" :class="{ unauth: !jwt, green }" @click.stop="toggleSideMenu">
+            <div class="chat-header__burger" :class="{ unauth: !jwtToken, green }" @click.stop="toggleSideMenu">
                 <span></span><span></span><span></span>
             </div>
         </div>
 
-        <div class="chat-header__menu" v-if="menuopen" :class="{ auth: jwt }" @click.stop="toggleSideMenu">
+        <div class="chat-header__menu" v-if="menuopen" :class="{ auth: jwtToken }" @click.stop="toggleSideMenu">
             <div class="chat-header__menubody slide-in-left">
                 <div class="chat-header__menuitems">
                     <figure class="chat-header__left--logo bottom-1rem">
@@ -37,7 +37,12 @@
                         <span class="label" @click="$router.push('/aboutus')">About us</span>
                     </div>
 
-                    <div class="chat-header__menuitem" v-if="jwt" @click="goToUserOrders">
+                    <div class="chat-header__menuitem" v-if="!jwtToken">
+                        <span class="svg"></span>
+                        <span class="label" @click="$router.push('/authp')">Sign In/Sign Up</span>
+                    </div>
+
+                    <div class="chat-header__menuitem" v-if="jwtToken" @click="goToUserOrders">
                         <span class="svg"></span>
                         <span class="label">Orders</span>
                     </div>
@@ -48,7 +53,7 @@
                         <span class="svg"></span>
                     </div>
 
-                    <div class="chat-header__menuitem" v-if="jwt">
+                    <div class="chat-header__menuitem" v-if="jwtToken">
                         <span class="svg"></span>
                         <span class="label" @click="signOut">Signout</span>
                     </div>
@@ -59,6 +64,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { serverurl } from '@/api';
 import jwt_mixin from '@/mixins/jwt_mixin';
 
@@ -68,6 +74,13 @@ export default {
     emits: ['update:authValue'],
     data() {
         return { menuopen: false };
+    },
+    computed: {
+        ...mapState("user", {
+            currentUser: (state) => state.currentUser,
+            isLoading: (state) => state.loading,
+            jwtToken: (state) => state.jwtToken
+        }),
     },
     async mounted() {
         const token = await this.getValidToken();
@@ -79,7 +92,7 @@ export default {
         }
 
         this.$store.dispatch('cart/initializeCart');
-        this.menuopen = window.innerWidth > 900 && this.jwt;
+        this.menuopen = window.innerWidth > 900 && this.jwtToken;
         window.addEventListener('resize', this.handleResize);
     },
     beforeDestroy() {
@@ -100,7 +113,7 @@ export default {
                 const response = await fetch(`${serverurl}/shopper/auth/validuser?jwttoken=${token}`);
 
                 if (response.status !== 200) {
-                    localStorage.removeItem('jwt');
+                    this.$store.dispatch('user/removeJwtToken');
 
                     return this.redirectHome()
                 };
@@ -108,8 +121,8 @@ export default {
                 const data = await response.json();
                 const { user } = data;
 
-                // console.log(user)
-
+                console.log(user, 'curent user here')
+                this.$store.dispatch('user/setJwtToken', token);
                 this.$store.dispatch('user/addCurrentUser', user);
             } catch (error) {
                 console.log(error);
@@ -126,12 +139,17 @@ export default {
         },
         async signOut() {
             try {
+                this.$store.dispatch('user/setLoading', true);
+
                 const token = await this.getValidToken();
+
                 if (!token) {
                     this.$emit('update:authValue', null);
-                    this.$router.push({ path: '/', query: { ...this.$route.query } });
-                    return
-                };
+                    // Remove specific query params
+                    const { unwantedParam1, unwantedParam2, ...cleanQuery } = this.$route.query;
+                    this.$router.push({ path: '/', query: cleanQuery });
+                    return;
+                }
 
                 const response = await fetch(`${serverurl}/shopper/auth/signout`, {
                     method: 'POST',
@@ -139,10 +157,16 @@ export default {
                 });
 
                 if (!response.ok) throw new Error('Failed to sign out');
+
                 await response.json();
-                localStorage.removeItem('jwt');
+                this.$store.dispatch('user/removeJwtToken');
+                this.$store.dispatch('user/removeCurrentUser');
                 this.$emit('update:authValue', null);
-                this.$router.push({ path: '/', query: { ...this.$route.query } });
+
+                const { email, phoneNumber, name, ...cleanQuery } = this.$route.query;
+                this.$router.push({ path: '/', query: cleanQuery });
+
+                this.$store.dispatch('user/setLoading', false);
             } catch (error) {
                 console.error('Sign out failed:', error.message);
             }
@@ -159,7 +183,7 @@ export default {
     padding: 3rem;
 
     @include respond(phone) {
-        padding: 1rem;
+        padding: 2rem;
         padding-top: 2rem;
     }
 
@@ -220,7 +244,7 @@ export default {
             }
 
             &.green {
-                height: 4.5rem;
+                height: 3.5rem;
             }
         }
     }

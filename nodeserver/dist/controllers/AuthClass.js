@@ -160,137 +160,135 @@ var AuthClass = /*#__PURE__*/function () {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
               _context4.prev = 0;
-              submittedOtp = req.body.submittedOtp;
-              console.log('[verifyOtp] Received OTP:', submittedOtp);
+              submittedOtp = req.body.submittedOtp; //console.log('[verifyOtp] Received OTP:', submittedOtp)
               if (submittedOtp) {
-                _context4.next = 5;
+                _context4.next = 4;
                 break;
               }
               return _context4.abrupt("return", res.status(400).json({
                 success: false,
                 message: 'OTP is required'
               }));
-            case 5:
-              hashedKey = "otp:code:".concat(hashOtp(submittedOtp));
-              console.log('[verifyOtp] Hashed OTP key:', hashedKey);
-              _context4.prev = 7;
+            case 4:
+              hashedKey = "otp:code:".concat(hashOtp(submittedOtp)); //console.log('[verifyOtp] Hashed OTP key:', hashedKey)
+              _context4.prev = 5;
               console.time('[verifyOtp] Redis GET');
-              _context4.next = 11;
+              _context4.next = 9;
               return _redisconf.redisClient.get(hashedKey);
-            case 11:
+            case 9:
               identifier = _context4.sent;
               console.timeEnd('[verifyOtp] Redis GET');
-              _context4.next = 19;
+              _context4.next = 17;
               break;
-            case 15:
-              _context4.prev = 15;
-              _context4.t0 = _context4["catch"](7);
+            case 13:
+              _context4.prev = 13;
+              _context4.t0 = _context4["catch"](5);
               console.error('[verifyOtp] Redis GET failed:', _context4.t0);
               return _context4.abrupt("return", res.status(500).json({
                 success: false,
                 message: 'Redis error'
               }));
-            case 19:
+            case 17:
               if (identifier) {
-                _context4.next = 21;
+                _context4.next = 19;
                 break;
               }
               return _context4.abrupt("return", res.status(401).json({
                 success: false,
                 message: 'OTP expired or invalid'
               }));
-            case 21:
-              _context4.prev = 21;
+            case 19:
+              _context4.prev = 19;
               console.time('[verifyOtp] Mongo FIND');
-              _context4.next = 25;
+              _context4.next = 23;
               return _User["default"].findByIdentifier(identifier);
-            case 25:
+            case 23:
               user = _context4.sent;
               console.timeEnd('[verifyOtp] Mongo FIND');
-              _context4.next = 33;
+              _context4.next = 31;
               break;
-            case 29:
-              _context4.prev = 29;
-              _context4.t1 = _context4["catch"](21);
+            case 27:
+              _context4.prev = 27;
+              _context4.t1 = _context4["catch"](19);
               console.error('[verifyOtp] MongoDB query failed:', _context4.t1);
               return _context4.abrupt("return", res.status(500).json({
                 success: false,
                 message: 'User DB error'
               }));
-            case 33:
+            case 31:
               if (user) {
-                _context4.next = 49;
+                _context4.next = 47;
                 break;
               }
               type = identifierType(identifier);
               console.log('[verifyOtp] Creating new user of type:', type);
               if (!(type === 'email')) {
-                _context4.next = 42;
+                _context4.next = 40;
                 break;
               }
-              _context4.next = 39;
+              _context4.next = 37;
               return _User["default"].create({
                 email: identifier
               });
-            case 39:
+            case 37:
               user = _context4.sent;
-              _context4.next = 49;
+              _context4.next = 47;
               break;
-            case 42:
+            case 40:
               if (!(type === 'phone')) {
-                _context4.next = 48;
+                _context4.next = 46;
                 break;
               }
-              _context4.next = 45;
+              _context4.next = 43;
               return _User["default"].create({
                 phoneNumber: identifier
               });
-            case 45:
+            case 43:
               user = _context4.sent;
-              _context4.next = 49;
+              _context4.next = 47;
               break;
-            case 48:
+            case 46:
               return _context4.abrupt("return", res.status(400).json({
                 success: false,
                 message: 'Identifier is neither email nor phone number'
               }));
-            case 49:
-              _context4.prev = 49;
+            case 47:
+              _context4.prev = 47;
               console.time('[verifyOtp] Generate Token');
-              _context4.next = 53;
+              _context4.next = 51;
               return user.generateAuthToken();
-            case 53:
+            case 51:
               token = _context4.sent;
               console.timeEnd('[verifyOtp] Generate Token');
-              _context4.next = 61;
+              _context4.next = 59;
               break;
-            case 57:
-              _context4.prev = 57;
-              _context4.t2 = _context4["catch"](49);
+            case 55:
+              _context4.prev = 55;
+              _context4.t2 = _context4["catch"](47);
               console.error('[verifyOtp] Token generation failed:', _context4.t2);
               return _context4.abrupt("return", res.status(500).json({
                 success: false,
                 message: 'Token error'
               }));
-            case 61:
-              _context4.prev = 61;
+            case 59:
+              _context4.prev = 59;
               console.time('[verifyOtp] Redis SETEX');
-              _context4.next = 65;
+              _context4.next = 63;
               return _redisconf.redisClient.set("auth:session:".concat(token), user._id.toString(), 'EX', 2592000 // 30 days in seconds
               );
-            case 65:
+            case 63:
               console.timeEnd('[verifyOtp] Redis SETEX');
               console.log('[verifyOtp] Cleaning up OTP key');
-              _context4.next = 69;
+              _context4.next = 67;
               return _redisconf.redisClient.del(hashedKey);
-            case 69:
-              _context4.next = 74;
+            case 67:
+              _context4.next = 72;
               break;
-            case 71:
-              _context4.prev = 71;
-              _context4.t3 = _context4["catch"](61);
+            case 69:
+              _context4.prev = 69;
+              _context4.t3 = _context4["catch"](59);
               console.error('[verifyOtp] Redis SET/DEL failed:', _context4.t3);
-            case 74:
+            case 72:
               return _context4.abrupt("return", res.status(200).json({
                 success: true,
                 message: 'OTP verified',
@@ -298,22 +296,23 @@ var AuthClass = /*#__PURE__*/function () {
                   id: user._id,
                   email: user.email,
                   phoneNumber: user.phoneNumber,
+                  name: user.name,
                   token: token
                 }
               }));
-            case 77:
-              _context4.prev = 77;
+            case 75:
+              _context4.prev = 75;
               _context4.t4 = _context4["catch"](0);
               console.error('[verifyOtp] Fatal error:', _context4.t4);
               return _context4.abrupt("return", res.status(500).json({
                 success: false,
                 message: 'Internal server error'
               }));
-            case 81:
+            case 79:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[0, 77], [7, 15], [21, 29], [49, 57], [61, 71]]);
+        }, _callee4, null, [[0, 75], [5, 13], [19, 27], [47, 55], [59, 69]]);
       }));
       function verifyOtp(_x6, _x7) {
         return _verifyOtp.apply(this, arguments);

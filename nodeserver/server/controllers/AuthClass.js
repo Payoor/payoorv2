@@ -134,7 +134,7 @@ class AuthClass {
     try {
       const { submittedOtp } = req.body
 
-      console.log('[verifyOtp] Received OTP:', submittedOtp)
+      //console.log('[verifyOtp] Received OTP:', submittedOtp)
 
       if (!submittedOtp) {
         return res
@@ -143,7 +143,7 @@ class AuthClass {
       }
 
       const hashedKey = `otp:code:${hashOtp(submittedOtp)}`
-      console.log('[verifyOtp] Hashed OTP key:', hashedKey)
+      //console.log('[verifyOtp] Hashed OTP key:', hashedKey)
 
       let identifier
       try {
@@ -223,6 +223,7 @@ class AuthClass {
           id: user._id,
           email: user.email,
           phoneNumber: user.phoneNumber,
+          name: user.name,
           token
         }
       })

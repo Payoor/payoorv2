@@ -3,46 +3,15 @@
         <div class="chatbody">
             <div class="chatbody__content" ref="scrollContainer">
                 <div>
-                    <div v-if="searchloading" class="chatbody__loading">
+                    <div v-if="searchloading || globalLoading" class="chatbody__loading">
                         <LoadingAnimation />
                     </div>
 
-                    <div v-if="currentUser.email">
-                        <div class="chatbody__products"
-                            v-if="currentUser.phoneNumber && currentUser.name && currentUser.detailsAdded">
+                    <div>
+                        <div class="chatbody__products">
                             <div v-for="(product, index) in products" :key="product._id"
                                 :ref="setLastProductRef(index)">
                                 <ChatCard :product="product" />
-                            </div>
-                        </div>
-
-                        <div v-if="!currentUser.detailsAdded">
-                            <div class="chatbody__products user-details"
-                                v-if="!currentUser.phoneNumber || !currentUser.name || !currentUser.detailsAdded">
-                                <div class="chatbody__userdetails">
-                                    <p class="chatbody__userdetails--ai">Please add your phone number...</p>
-
-                                    <div class="chatbody__userdetails--prompt">
-                                        <span></span>
-                                        <span class="content" v-if="tempPhoneNumber.length">{{ tempPhoneNumber }}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="chatbody__products user-details"
-                                v-if="!currentUser.name && currentUser.phoneNumber || !currentUser.detailsAdded && currentUser.name">
-                                <div class="chatbody__userdetails">
-                                    <p class="chatbody__userdetails--ai">Please add your name...</p>
-
-                                    <div class="chatbody__userdetails--prompt">
-                                        <span></span>
-                                        <span class="content" v-if="tempUserName.length">{{ tempUserName }}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="" v-if="globalLoading">
-                                <LoadingAnimation />
                             </div>
                         </div>
                     </div>
@@ -74,6 +43,10 @@ export default {
             tempPhoneNumber: (state) => state.currentUser.phoneNumber ? state.currentUser.phoneNumber : "",
             globalLoading: (state) => state.loading
         }),
+        cleanedUserName() {
+            if (!this.currentUser?.name) return '';
+            return this.currentUser.name.split(' ')[0].replace(/\s+/g, '');
+        }
     },
     methods: {
         setLastProductRef(index) {

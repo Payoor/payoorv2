@@ -1,5 +1,5 @@
 <template>
-    <div class="chat-categories__categories">
+    <div class="chat-categories__categories" :class="{ 'home-white': home }">
         <div class="chat-categories__category" v-for="(category, index) in categories" :key="index"
             :class="[category.class, { currentcat: currentcat === index }]" @click="searchCategory(index)"
             :style="{ currentcat: currentcat === index }">
@@ -28,6 +28,7 @@ import jwt_mixin from "@/mixins/jwt_mixin";
 import product_mixin from "@/mixins/product_mixin";
 
 export default {
+    props: ['prevent_click', 'home'],
     mixins: [jwt_mixin, product_mixin],
     data() {
         return {
@@ -58,7 +59,7 @@ export default {
                     class: 'fruits'
                 }
             ],
-            animatedIndices: [] 
+            animatedIndices: []
         };
     },
     methods: {
@@ -66,6 +67,10 @@ export default {
             return text.length > maxLength ? text.substring(0, maxLength).trim() + '...' : text;
         },
         searchCategory(index) {
+            if (this.prevent_click) {
+                return;
+            }
+
             const category = this.categories[index];
 
             this.currentcat = index;
@@ -85,6 +90,8 @@ export default {
 
             // Post the message to the server
             await this.postMessageFromQuery(value);
+
+            this.$emit("update:replyuser");
         }
     }
 };
@@ -95,9 +102,8 @@ export default {
 <style lang="scss" scoped>
 .chat-categories {
 
-
     &__categories {
-        background: $white;
+        background: $sky-blue-3;
         display: flex;
         justify-content: flex-start;
         width: 100%;
@@ -105,6 +111,10 @@ export default {
         overflow-y: hidden;
         padding: 1rem;
         @include hide-scrollbar;
+
+        &.home-white {
+            background: $white;
+        }
     }
 
 

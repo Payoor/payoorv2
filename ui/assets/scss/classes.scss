@@ -49,4 +49,8 @@
         stroke: $primary-color;
         stroke-linecap: round;
     }
-  }
+}
+
+.blur-effect {
+    filter: blur(3px)
+}

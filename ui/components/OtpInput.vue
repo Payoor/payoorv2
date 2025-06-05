@@ -26,6 +26,12 @@ export default {
             default: false,
         },
     },
+    mounted() {
+        this.$store.dispatch('user/setOtpMode', true);
+    },
+    beforeDestroy() {
+        this.$store.dispatch('user/setOtpMode', false);
+    },
     emits: ["update:modelValue"],
     data() {
         return {

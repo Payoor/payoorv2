@@ -6,8 +6,10 @@ import scrollBehavior from './router.scrollBehavior.js'
 
 const _0b411c9a = () => interopDefault(import('../pages/aboutus.vue' /* webpackChunkName: "pages/aboutus" */))
 const _dd64b54c = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
+const _57c1bc10 = () => interopDefault(import('../pages/authp.vue' /* webpackChunkName: "pages/authp" */))
 const _b50a5bf0 = () => interopDefault(import('../pages/cart.vue' /* webpackChunkName: "pages/cart" */))
 const _0973792e = () => interopDefault(import('../pages/checkout.vue' /* webpackChunkName: "pages/checkout" */))
+const _efc75772 = () => interopDefault(import('../pages/home.vue' /* webpackChunkName: "pages/home" */))
 const _29fc7b4d = () => interopDefault(import('../pages/orders.vue' /* webpackChunkName: "pages/orders" */))
 const _25be1b4e = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
 const _0ce7be1c = () => interopDefault(import('../pages/admin/dashboard.vue' /* webpackChunkName: "pages/admin/dashboard" */))
@@ -36,6 +38,10 @@ export const routerOptions = {
     component: _dd64b54c,
     name: "admin"
   }, {
+    path: "/authp",
+    component: _57c1bc10,
+    name: "authp"
+  }, {
     path: "/cart",
     component: _b50a5bf0,
     name: "cart"
@@ -43,6 +49,10 @@ export const routerOptions = {
     path: "/checkout",
     component: _0973792e,
     name: "checkout"
+  }, {
+    path: "/home",
+    component: _efc75772,
+    name: "home"
   }, {
     path: "/orders",
     component: _29fc7b4d,

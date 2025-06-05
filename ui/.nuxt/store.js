@@ -14,6 +14,7 @@ let store = {};
   store.modules = store.modules || {}
 
   resolveStoreModules(require('../store/cart.js'), 'cart.js')
+  resolveStoreModules(require('../store/shop.js'), 'shop.js')
   resolveStoreModules(require('../store/user.js'), 'user.js')
 
   // If the environment supports hot reloading...

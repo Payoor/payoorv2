@@ -32,6 +32,9 @@
   "GoogleBtn": {
     "description": "Auto imported from components/GoogleBtn.vue"
   },
+  "Home": {
+    "description": "Auto imported from components/Home.vue"
+  },
   "Landing": {
     "description": "Auto imported from components/Landing.vue"
   },
@@ -46,6 +49,9 @@
   },
   "LandingFooter": {
     "description": "Auto imported from components/LandingFooter.vue"
+  },
+  "LandingPage": {
+    "description": "Auto imported from components/LandingPage.vue"
   },
   "LoadingAnimation": {
     "description": "Auto imported from components/LoadingAnimation.vue"

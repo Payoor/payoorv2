@@ -43,7 +43,7 @@ module.exports =
 /******/
 /******/ 		// "0" is the signal for "already loaded"
 /******/ 		if(installedChunks[chunkId] !== 0) {
-/******/ 			var chunk = require("./" + ({"1":"components/address-list","2":"components/authenticator","3":"components/cart-button","4":"components/chat-body","5":"components/chat-card","6":"components/chat-categories","7":"components/chat-header","8":"components/chat-input","9":"components/chat-option","10":"components/chat-options","11":"components/google-btn","12":"components/landing","13":"components/landing-categories","14":"components/landing-copy","15":"components/landing-faq","16":"components/landing-footer","17":"components/loading-animation","18":"components/order-display","19":"components/otp-input","20":"pages/aboutus","21":"pages/admin/dashboard","22":"pages/admin/index","23":"pages/admin/order/index","24":"pages/auth/googlecallback","25":"pages/cart","26":"pages/checkout","27":"pages/index","28":"pages/orders","29":"pages/payment","30":"pages/userorder/_orderid"}[chunkId]||chunkId) + ".js");
+/******/ 			var chunk = require("./" + ({"1":"components/address-list","2":"components/authenticator","3":"components/cart-button","4":"components/chat-body","5":"components/chat-card","6":"components/chat-categories","7":"components/chat-header","8":"components/chat-input","9":"components/chat-option","10":"components/chat-options","11":"components/google-btn","12":"components/home","13":"components/landing","14":"components/landing-categories","15":"components/landing-copy","16":"components/landing-faq","17":"components/landing-footer","18":"components/landing-page","19":"components/loading-animation","20":"components/order-display","21":"components/otp-input","22":"pages/aboutus","23":"pages/admin/dashboard","24":"pages/admin/index","25":"pages/admin/order/index","26":"pages/auth/googlecallback","27":"pages/authp","28":"pages/cart","29":"pages/checkout","30":"pages/home","31":"pages/index","32":"pages/orders","33":"pages/payment","34":"pages/userorder/_orderid"}[chunkId]||chunkId) + ".js");
 /******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids;
 /******/ 			for(var moduleId in moreModules) {
 /******/ 				modules[moduleId] = moreModules[moduleId];
@@ -526,7 +526,7 @@ module.exports = require("vue-lazyload");
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(41);
+module.exports = __webpack_require__(42);
 
 
 /***/ }),
@@ -644,7 +644,7 @@ __webpack_require__(6).default("1adb391c", content, true)
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(5);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.i, "@keyframes slideFadeInUp{0%{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes slide-in-left{0%{opacity:0;transform:translateX(-100%)}to{opacity:1;transform:translateX(0)}}@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-10px)}to{transform:translateY(0)}}@keyframes spin{to{transform:rotate(1turn)}}.slide-in-left{animation:slide-in-left .5s ease-out forwards}.button-primary{background:#249b48;border:none;border-radius:1rem;color:#fff;font-weight:500;outline:none;padding:1rem}.transparent-button{background:transparent;border:1px solid #249b48;color:#249b48}.disabled-btn{opacity:.4}.floating-element{animation:float 3s ease-in-out infinite;animation-delay:0s;transition:transform .2s ease}.no-scroll{height:100vh!important;overflow:hidden!important}.spinner{animation:spin 1s linear infinite;border:4px solid rgba(36,155,72,.3);border-radius:50%;border-top-color:#249b48;height:3rem;width:3rem}.spinner.path{stroke:#249b48;stroke-linecap:round}*,:after,:before{box-sizing:inherit;margin:0;padding:0}html{background:#249b48;font-size:62.5%}@media only screen and (max-width:75em){html{font-size:56.25%}}@media only screen and (max-width:56.25em){html{font-size:55%}}@media only screen and (max-width:37.5em){html{font-size:50%}}@media only screen and (min-width:112.5em){html{font-size:65%}}body{background:#249b48;box-sizing:border-box;display:none;font-family:\"Poppins\",sans-serif}@media only screen and (max-width:56.25em){body{padding:0}}::-moz-selection{background-color:#249b48;color:#fff}::selection{background-color:#249b48;color:#fff}::-webkit-scrollbar{height:8px;width:8px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background-color:#249b48;border:none;border-radius:10px}::-webkit-scrollbar-thumb:hover{background-color:#1a7235}*{scrollbar-color:#249b48 transparent;scrollbar-width:thin}", ""]);
+___CSS_LOADER_EXPORT___.push([module.i, "@keyframes slideFadeInUp{0%{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes slide-in-left{0%{opacity:0;transform:translateX(-100%)}to{opacity:1;transform:translateX(0)}}@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-10px)}to{transform:translateY(0)}}@keyframes spin{to{transform:rotate(1turn)}}.slide-in-left{animation:slide-in-left .5s ease-out forwards}.button-primary{background:#249b48;border:none;border-radius:1rem;color:#fff;font-weight:500;outline:none;padding:1rem}.transparent-button{background:transparent;border:1px solid #249b48;color:#249b48}.disabled-btn{opacity:.4}.floating-element{animation:float 3s ease-in-out infinite;animation-delay:0s;transition:transform .2s ease}.no-scroll{height:100vh!important;overflow:hidden!important}.spinner{animation:spin 1s linear infinite;border:4px solid rgba(36,155,72,.3);border-radius:50%;border-top-color:#249b48;height:3rem;width:3rem}.spinner.path{stroke:#249b48;stroke-linecap:round}.blur-effect{filter:blur(3px)}.landing{overflow-x:hidden}.landing__top{background:#b6edf2;display:grid;grid-template-columns:repeat(2,1fr);height:100vh;left:0;position:fixed;top:0;width:100%}@media only screen and (max-width:56.25em){.landing__top{display:flex}}.landing__topleft{display:flex;justify-content:center}@media only screen and (max-width:56.25em){.landing__topleft{display:block;width:100%}}.landing__topleft--auth{padding:0 10rem;width:100rem}@media only screen and (max-width:56.25em){.landing__topleft--auth{padding:0;width:auto}}.landing__topright,.landing__topright--img{align-items:center;display:flex;justify-content:center}.landing__topright--img{transform:scale(1.1);width:100rem}.landing__topright--img img{height:100%;-o-object-fit:contain;object-fit:contain;width:100%}@media only screen and (max-width:56.25em){.landing__topright{display:none}}.landing__content{background:#249b48;margin-top:100vh;position:relative}.landing__seemore{bottom:10rem;display:flex;justify-content:center;left:0;position:absolute;width:100%}.landing__seemore button{background:transparent;border:1px solid #fff;border-radius:3rem;color:#fff;cursor:pointer;font-size:1.4rem;font-weight:600;padding:1rem 4rem}.landing__cloud{bottom:0;height:34rem;position:absolute;transform:scale(1.1);width:100vw;z-index:3}.landing__cloud img{height:100%;-o-object-fit:cover;object-fit:cover;width:100%}*,:after,:before{box-sizing:inherit;margin:0;padding:0}html{background:#249b48;font-size:62.5%}@media only screen and (max-width:75em){html{font-size:56.25%}}@media only screen and (max-width:56.25em){html{font-size:55%}}@media only screen and (max-width:37.5em){html{font-size:50%}}@media only screen and (min-width:112.5em){html{font-size:65%}}body{background:#249b48;box-sizing:border-box;display:none;font-family:\"Poppins\",sans-serif}@media only screen and (max-width:56.25em){body{padding:0}}::-moz-selection{background-color:#249b48;color:#fff}::selection{background-color:#249b48;color:#fff}::-webkit-scrollbar{height:8px;width:8px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background-color:#249b48;border:none;border-radius:10px}::-webkit-scrollbar-thumb:hover{background-color:#1a7235}*{scrollbar-color:#249b48 transparent;scrollbar-width:thin}", ""]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {};
 module.exports = ___CSS_LOADER_EXPORT___;
@@ -920,6 +920,12 @@ module.exports = require("core-js/modules/esnext.set.union.js");
 
 /***/ }),
 /* 40 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -930,12 +936,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
 
 const state = () => ({
-  currentUser: {},
-  loading: false
+  currentUser: {
+    otpMode: false
+    //name: '',
+    //phoneNumber: '',
+    //email: ''
+  },
+  loading: false,
+  jwtToken: null
 });
 const mutations = {
   SET_CURRENT_USER(state, user) {
     state.currentUser = user;
+    console.log(state.currentUser, 'state.current User');
   },
   REMOVE_CURRENT_USER(state) {
     state.currentUser = {};
@@ -952,14 +965,32 @@ const mutations = {
       phoneNumber
     };
   },
+  SET_USER_EMAIL(state, email) {
+    state.currentUser = {
+      ...state.currentUser,
+      email
+    };
+  },
   SET_USER_DETAILS_ADDED(state, status) {
     state.currentUser = {
       ...state.currentUser,
       detailsAdded: status
     };
   },
+  SET_OTP_MODE(state, otpMode) {
+    state.currentUser = {
+      ...state.currentUser,
+      otpMode
+    };
+  },
   SET_LOADING(state, status) {
     state.loading = status;
+  },
+  SET_JWT_TOKEN(state, token) {
+    state.jwtToken = token;
+  },
+  REMOVE_JWT_TOKEN(state) {
+    state.jwtToken = null;
   }
 };
 const actions = {
@@ -980,10 +1011,37 @@ const actions = {
     commit('SET_USER_NAME', name);
     await dispatch('updateUserDetails');
   },
+  setLoading({
+    commit
+  }, status) {
+    commit('SET_LOADING', status); // Commit the loading state change
+  },
   setUserPhoneNumber({
     commit
   }, phoneNumber) {
     commit('SET_USER_PHONE_NUMBER', phoneNumber);
+  },
+  setOtpMode({
+    commit
+  }, otpMode) {
+    commit('SET_OTP_MODE', otpMode);
+  },
+  setUserEmail({
+    commit
+  }, email) {
+    commit('SET_USER_EMAIL', email);
+  },
+  setJwtToken({
+    commit
+  }, token) {
+    localStorage.setItem('jwt', token);
+    commit('SET_JWT_TOKEN', token);
+  },
+  removeJwtToken({
+    commit
+  }) {
+    localStorage.removeItem('jwt');
+    commit('REMOVE_JWT_TOKEN');
   },
   async updateUserDetails({
     state,
@@ -1003,7 +1061,8 @@ const actions = {
         },
         body: JSON.stringify({
           name: state.currentUser.name,
-          phoneNumber: state.currentUser.phoneNumber
+          phoneNumber: state.currentUser.phoneNumber,
+          email: state.currentUser.email
         })
       });
       if (!response.ok) {
@@ -1021,6 +1080,9 @@ const actions = {
       if (user.phoneNumber) {
         commit('SET_USER_PHONE_NUMBER', user.phoneNumber);
       }
+      if (user.email) {
+        commit('SET_USER_EMAIL', user.email); // Commit email to the store
+      }
       commit('SET_USER_DETAILS_ADDED', true);
       return data;
     } catch (error) {
@@ -1033,7 +1095,7 @@ const actions = {
 };
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1054,11 +1116,13 @@ __webpack_require__.d(components_namespaceObject, "ChatInput", function() { retu
 __webpack_require__.d(components_namespaceObject, "ChatOption", function() { return ChatOption; });
 __webpack_require__.d(components_namespaceObject, "ChatOptions", function() { return ChatOptions; });
 __webpack_require__.d(components_namespaceObject, "GoogleBtn", function() { return GoogleBtn; });
+__webpack_require__.d(components_namespaceObject, "Home", function() { return Home; });
 __webpack_require__.d(components_namespaceObject, "Landing", function() { return Landing; });
 __webpack_require__.d(components_namespaceObject, "LandingCategories", function() { return LandingCategories; });
 __webpack_require__.d(components_namespaceObject, "LandingCopy", function() { return LandingCopy; });
 __webpack_require__.d(components_namespaceObject, "LandingFaq", function() { return LandingFaq; });
 __webpack_require__.d(components_namespaceObject, "LandingFooter", function() { return LandingFooter; });
+__webpack_require__.d(components_namespaceObject, "LandingPage", function() { return LandingPage; });
 __webpack_require__.d(components_namespaceObject, "LoadingAnimation", function() { return LoadingAnimation; });
 __webpack_require__.d(components_namespaceObject, "OrderDisplay", function() { return OrderDisplay; });
 __webpack_require__.d(components_namespaceObject, "OtpInput", function() { return OtpInput; });
@@ -1792,17 +1856,19 @@ function shouldScrollToTop(route) {
 
 
 
-const _0b411c9a = () => interopDefault(__webpack_require__.e(/* import() | pages/aboutus */ 20).then(__webpack_require__.bind(null, 166)));
-const _dd64b54c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/index */ 22).then(__webpack_require__.bind(null, 156)));
-const _b50a5bf0 = () => interopDefault(__webpack_require__.e(/* import() | pages/cart */ 25).then(__webpack_require__.bind(null, 157)));
-const _0973792e = () => interopDefault(__webpack_require__.e(/* import() | pages/checkout */ 26).then(__webpack_require__.bind(null, 158)));
-const _29fc7b4d = () => interopDefault(__webpack_require__.e(/* import() | pages/orders */ 28).then(__webpack_require__.bind(null, 159)));
-const _25be1b4e = () => interopDefault(__webpack_require__.e(/* import() | pages/payment */ 29).then(__webpack_require__.bind(null, 160)));
-const _0ce7be1c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/dashboard */ 21).then(__webpack_require__.bind(null, 165)));
-const _4c8a984e = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/order/index */ 23).then(__webpack_require__.bind(null, 161)));
-const _d51f82e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/auth/googlecallback */ 24).then(__webpack_require__.bind(null, 162)));
-const _60a90fcc = () => interopDefault(__webpack_require__.e(/* import() | pages/index */ 27).then(__webpack_require__.bind(null, 163)));
-const _8e720484 = () => interopDefault(__webpack_require__.e(/* import() | pages/userorder/_orderid */ 30).then(__webpack_require__.bind(null, 164)));
+const _0b411c9a = () => interopDefault(__webpack_require__.e(/* import() | pages/aboutus */ 22).then(__webpack_require__.bind(null, 177)));
+const _dd64b54c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/index */ 24).then(__webpack_require__.bind(null, 164)));
+const _57c1bc10 = () => interopDefault(__webpack_require__.e(/* import() | pages/authp */ 27).then(__webpack_require__.bind(null, 165)));
+const _b50a5bf0 = () => interopDefault(__webpack_require__.e(/* import() | pages/cart */ 28).then(__webpack_require__.bind(null, 166)));
+const _0973792e = () => interopDefault(__webpack_require__.e(/* import() | pages/checkout */ 29).then(__webpack_require__.bind(null, 167)));
+const _efc75772 = () => interopDefault(__webpack_require__.e(/* import() | pages/home */ 30).then(__webpack_require__.bind(null, 163)));
+const _29fc7b4d = () => interopDefault(__webpack_require__.e(/* import() | pages/orders */ 32).then(__webpack_require__.bind(null, 168)));
+const _25be1b4e = () => interopDefault(__webpack_require__.e(/* import() | pages/payment */ 33).then(__webpack_require__.bind(null, 169)));
+const _0ce7be1c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/dashboard */ 23).then(__webpack_require__.bind(null, 176)));
+const _4c8a984e = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/order/index */ 25).then(__webpack_require__.bind(null, 170)));
+const _d51f82e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/auth/googlecallback */ 26).then(__webpack_require__.bind(null, 171)));
+const _60a90fcc = () => interopDefault(__webpack_require__.e(/* import() | pages/index */ 31).then(__webpack_require__.bind(null, 172)));
+const _8e720484 = () => interopDefault(__webpack_require__.e(/* import() | pages/userorder/_orderid */ 34).then(__webpack_require__.bind(null, 173)));
 const emptyFn = () => {};
 external_vue_default.a.use(external_vue_router_default.a);
 const routerOptions = {
@@ -1820,6 +1886,10 @@ const routerOptions = {
     component: _dd64b54c,
     name: "admin"
   }, {
+    path: "/authp",
+    component: _57c1bc10,
+    name: "authp"
+  }, {
     path: "/cart",
     component: _b50a5bf0,
     name: "cart"
@@ -1827,6 +1897,10 @@ const routerOptions = {
     path: "/checkout",
     component: _0973792e,
     name: "checkout"
+  }, {
+    path: "/home",
+    component: _efc75772,
+    name: "home"
   }, {
     path: "/orders",
     component: _29fc7b4d,
@@ -2499,7 +2573,8 @@ let store_store = {};
   // Enforce store modules
   store_store.modules = store_store.modules || {};
   resolveStoreModules(__webpack_require__(23), 'cart.js');
-  resolveStoreModules(__webpack_require__(40), 'user.js');
+  resolveStoreModules(__webpack_require__(40), 'shop.js');
+  resolveStoreModules(__webpack_require__(41), 'user.js');
 
   // If the environment supports hot reloading...
 })();
@@ -2601,25 +2676,27 @@ function mergeProperty(storeModule, moduleData, property) {
   }
 }
 // CONCATENATED MODULE: ./.nuxt/components/index.js
-const AddressList = () => __webpack_require__.e(/* import() | components/address-list */ 1).then(__webpack_require__.bind(null, 128)).then(c => wrapFunctional(c.default || c));
-const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 2).then(__webpack_require__.bind(null, 129)).then(c => wrapFunctional(c.default || c));
-const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 3).then(__webpack_require__.bind(null, 47)).then(c => wrapFunctional(c.default || c));
-const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 4).then(__webpack_require__.bind(null, 131)).then(c => wrapFunctional(c.default || c));
-const ChatCard = () => __webpack_require__.e(/* import() | components/chat-card */ 5).then(__webpack_require__.bind(null, 101)).then(c => wrapFunctional(c.default || c));
-const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 6).then(__webpack_require__.bind(null, 132)).then(c => wrapFunctional(c.default || c));
-const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 7).then(__webpack_require__.bind(null, 52)).then(c => wrapFunctional(c.default || c));
-const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 8).then(__webpack_require__.bind(null, 133)).then(c => wrapFunctional(c.default || c));
-const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 9).then(__webpack_require__.bind(null, 62)).then(c => wrapFunctional(c.default || c));
-const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 10).then(__webpack_require__.bind(null, 76)).then(c => wrapFunctional(c.default || c));
-const GoogleBtn = () => __webpack_require__.e(/* import() | components/google-btn */ 11).then(__webpack_require__.bind(null, 98)).then(c => wrapFunctional(c.default || c));
-const Landing = () => __webpack_require__.e(/* import() | components/landing */ 12).then(__webpack_require__.bind(null, 130)).then(c => wrapFunctional(c.default || c));
-const LandingCategories = () => __webpack_require__.e(/* import() | components/landing-categories */ 13).then(__webpack_require__.bind(null, 102)).then(c => wrapFunctional(c.default || c));
-const LandingCopy = () => __webpack_require__.e(/* import() | components/landing-copy */ 14).then(__webpack_require__.bind(null, 103)).then(c => wrapFunctional(c.default || c));
-const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 15).then(__webpack_require__.bind(null, 99)).then(c => wrapFunctional(c.default || c));
-const LandingFooter = () => __webpack_require__.e(/* import() | components/landing-footer */ 16).then(__webpack_require__.bind(null, 100)).then(c => wrapFunctional(c.default || c));
-const LoadingAnimation = () => __webpack_require__.e(/* import() | components/loading-animation */ 17).then(__webpack_require__.bind(null, 51)).then(c => wrapFunctional(c.default || c));
-const OrderDisplay = () => __webpack_require__.e(/* import() | components/order-display */ 18).then(__webpack_require__.bind(null, 70)).then(c => wrapFunctional(c.default || c));
-const OtpInput = () => __webpack_require__.e(/* import() | components/otp-input */ 19).then(__webpack_require__.bind(null, 97)).then(c => wrapFunctional(c.default || c));
+const AddressList = () => __webpack_require__.e(/* import() | components/address-list */ 1).then(__webpack_require__.bind(null, 133)).then(c => wrapFunctional(c.default || c));
+const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 2).then(__webpack_require__.bind(null, 174)).then(c => wrapFunctional(c.default || c));
+const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 3).then(__webpack_require__.bind(null, 49)).then(c => wrapFunctional(c.default || c));
+const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 4).then(__webpack_require__.bind(null, 110)).then(c => wrapFunctional(c.default || c));
+const ChatCard = () => __webpack_require__.e(/* import() | components/chat-card */ 5).then(__webpack_require__.bind(null, 98)).then(c => wrapFunctional(c.default || c));
+const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 6).then(__webpack_require__.bind(null, 94)).then(c => wrapFunctional(c.default || c));
+const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 7).then(__webpack_require__.bind(null, 53)).then(c => wrapFunctional(c.default || c));
+const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 8).then(__webpack_require__.bind(null, 95)).then(c => wrapFunctional(c.default || c));
+const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 9).then(__webpack_require__.bind(null, 63)).then(c => wrapFunctional(c.default || c));
+const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 10).then(__webpack_require__.bind(null, 77)).then(c => wrapFunctional(c.default || c));
+const GoogleBtn = () => __webpack_require__.e(/* import() | components/google-btn */ 11).then(__webpack_require__.bind(null, 136)).then(c => wrapFunctional(c.default || c));
+const Home = () => __webpack_require__.e(/* import() | components/home */ 12).then(__webpack_require__.bind(null, 135)).then(c => wrapFunctional(c.default || c));
+const Landing = () => __webpack_require__.e(/* import() | components/landing */ 13).then(__webpack_require__.bind(null, 175)).then(c => wrapFunctional(c.default || c));
+const LandingCategories = () => __webpack_require__.e(/* import() | components/landing-categories */ 14).then(__webpack_require__.bind(null, 99)).then(c => wrapFunctional(c.default || c));
+const LandingCopy = () => __webpack_require__.e(/* import() | components/landing-copy */ 15).then(__webpack_require__.bind(null, 100)).then(c => wrapFunctional(c.default || c));
+const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 16).then(__webpack_require__.bind(null, 96)).then(c => wrapFunctional(c.default || c));
+const LandingFooter = () => __webpack_require__.e(/* import() | components/landing-footer */ 17).then(__webpack_require__.bind(null, 97)).then(c => wrapFunctional(c.default || c));
+const LandingPage = () => __webpack_require__.e(/* import() | components/landing-page */ 18).then(__webpack_require__.bind(null, 134)).then(c => wrapFunctional(c.default || c));
+const LoadingAnimation = () => __webpack_require__.e(/* import() | components/loading-animation */ 19).then(__webpack_require__.bind(null, 52)).then(c => wrapFunctional(c.default || c));
+const OrderDisplay = () => __webpack_require__.e(/* import() | components/order-display */ 20).then(__webpack_require__.bind(null, 76)).then(c => wrapFunctional(c.default || c));
+const OtpInput = () => __webpack_require__.e(/* import() | components/otp-input */ 21).then(__webpack_require__.bind(null, 109)).then(c => wrapFunctional(c.default || c));
 
 // nuxt/nuxt.js#8607
 function wrapFunctional(options) {
@@ -3281,13 +3358,13 @@ const createNext = ssrContext => opts => {
 });
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 module.exports = require("lodash/debounce");
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = require("url");

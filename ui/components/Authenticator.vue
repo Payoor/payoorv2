@@ -98,7 +98,7 @@ import { serverurl } from '@/api';
 
 export default {
     data() {
-        return {
+        return { 
             value: "",
             auth_method: 'email',
             loading: false,

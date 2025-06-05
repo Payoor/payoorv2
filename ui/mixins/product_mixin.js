@@ -9,7 +9,7 @@ export default {
       products: []
     }
   },
-  emits: ['update:products'],
+  emits: ['update:products', 'update:replyuser'],
   methods: {
     async postMessageFromQuery (message) {
       const token = localStorage.getItem('jwt')

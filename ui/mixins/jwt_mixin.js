@@ -4,7 +4,7 @@ export default {
     return {
       loading: false,
       validToken: null,
-      excludedPaths: ['/aboutus', '/admin']
+      excludedPaths: ['/aboutus', '/admin', '/authp']
     }
   },
   methods: {

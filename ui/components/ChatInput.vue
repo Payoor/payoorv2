@@ -1,15 +1,22 @@
 <template>
     <div>
         <div class="chatinput">
-            <textarea v-model="userinput" class="chatinput__field" :placeholder="placeholder" @input="autoResize"
-                @keydown.enter="handleEnter" ref="textarea" v-if="currentUser.name && currentUser.phoneNumber && currentUser.detailsAdded">
+            <div v-if="!currentUser.otpMode">
+                <textarea v-model="userinput" class="chatinput__field" :placeholder="placeholder" @input="autoResize"
+                    @keydown.enter="handleEnter" ref="textarea"
+                    v-if="currentUser.name && currentUser.phoneNumber && currentUser.detailsAdded"
+                    :disabled="isLoading || currentUser.otpMode">
 </textarea>
 
-            <input v-model="userinput" class="chatinput__field" type="tel" :placeholder="placeholder"
-                v-if="isPhoneMode" />
+                <input v-model="userinput" class="chatinput__field" type="email" :placeholder="placeholder"
+                    v-if="isEmailMode" :disabled="isLoading || currentUser.otpMode" />
 
-            <input v-model="userinput" class="chatinput__field" type="text" :placeholder="placeholder"
-                v-if="isNameMode" />
+                <input v-model="userinput" class="chatinput__field" type="tel" :placeholder="placeholder"
+                    v-if="isPhoneMode && !isEmailMode" :disabled="isLoading || currentUser.otpMode" />
+
+                <input v-model="userinput" class="chatinput__field" type="text" :placeholder="placeholder"
+                    v-if="isNameMode" :disabled="isLoading || currentUser.otpMode" />
+            </div>
 
 
             <div class="chatinput__sendbtn slide-fade-in-up" :class="{
@@ -31,48 +38,51 @@
 
 <script>
 import { mapState } from "vuex";
-
 import { serverurl } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 import product_mixin from "@/mixins/product_mixin";
 
 export default {
+    props: ['getOtp'],
     mixins: [jwt_mixin, product_mixin],
     data() {
         return {
             userinput: "",
-            //placeholder: "Enter your list",
         };
     },
     watch: {
+        currentUser(newVal) {
+            console.log(newVal)
+        },
         userinput(newValue) {
             const wordArray = newValue.trim().split(/\s+/); // split by spaces
             const wordCount = wordArray.length;
-
-            //  console.log(wordArray, wordCount)
-
             if (wordCount >= 1) {
                 if (wordCount >= 5 || wordArray[0].length >= 5) {
                     // console.log('hello wordcound')
-                    //this.autoComplete(newValue);
                 }
             }
         }
     },
     computed: {
         ...mapState("user", {
-            currentUser: (state) => state.currentUser
+            currentUser: (state) => state.currentUser,
+            isLoading: (state) => state.loading
         }),
         placeholder() {
+            if (!this.currentUser.email) {
+                return "Enter your email address"
+            }
             if (!this.currentUser.phoneNumber) {
                 return "Please add your phone number...";
             }
-
             if (this.currentUser.phoneNumber && !this.currentUser.name) {
                 return "Please add your name...";
             }
-
             return "Enter your list";
+        },
+        isEmailMode() {
+            return !this.currentUser.email;
         },
         isPhoneMode() {
             return !this.currentUser.phoneNumber;
@@ -83,6 +93,22 @@ export default {
     },
     mounted() {
         const message = this.$route.query.message;
+
+        if (this.$route.name === 'authp') {
+            const { email, phoneNumber, name } = this.$route.query;
+
+            if (phoneNumber) {
+                this.$store.dispatch('user/setUserPhoneNumber', phoneNumber);
+            }
+
+            if (name) {
+                this.$store.dispatch('user/setUserName', name);
+            }
+
+            if (email) {
+                this.$store.dispatch('user/setUserEmail', email);
+            }
+        }
 
         if (message) {
             this.postMessageFromQuery(message);
@@ -96,53 +122,66 @@ export default {
                 textarea.style.height = `${textarea.scrollHeight}px`;
             });
         },
-        async autoComplete(queryText) {
-            try {
-                const token = await this.getValidToken();
 
-                const response = await fetch(`${serverurl}/shopper/message/suggest?query=${queryText}`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    }
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error performing autocomplete:', errorData);
-                    return;
-                }
-
-                const data = await response.json();
-                // console.log('Autocomplete response:', data);
-            } catch (error) {
-                console.error('Error performing autocomplete:', error.message);
-            }
-        },
-        sendMessage() {
+        async sendMessage() {
             const { userinput } = this;
 
-            if (userinput) {
+            if (userinput.trim()) {
+                if (this.isEmailMode) {
 
-                if (this.isPhoneMode) {
+                    if (this.getOtp) {
+                        await this.getOtp(userinput);
+                    }
+
+                    this.$store.dispatch('user/setUserEmail', userinput);
+                    this.$store.dispatch('user/setOtpMode', true);
+                    this.userinput = "";
+
+                    this.$router.push({
+                        query: {
+                            ...this.$route.query,
+                            email: this.currentUser.email,
+                        }
+                    });
+                } else if (this.isPhoneMode) {
                     this.$store.dispatch('user/setUserPhoneNumber', userinput);
                     this.userinput = "";
-                    return;
-                }
 
-                if (this.isNameMode) {
+                    this.$router.push({
+                        query: {
+                            ...this.$route.query,
+                            email: this.currentUser.email,
+                            phoneNumber: this.currentUser.phoneNumber,
+                        }
+                    });
+                } else if (this.isNameMode) {
                     this.$store.dispatch('user/setUserName', userinput);
                     this.userinput = "";
-                    return;
-                }
 
-                if (userinput.length) {
+                    this.$router.push({
+                        path: '/',
+                        query: {
+                            ...this.$route.query,
+                            email: this.currentUser.email,
+                            phoneNumber: this.currentUser.phoneNumber,
+                            name: this.currentUser.name,
+                        }
+                    });
+                } else {
                     this.$emit("update:products", []);
-                    this.postMessageToServer();
+
+                    this.$router.push({
+                        query: {
+                            message: userinput.trim(),
+                            email: this.currentUser.email,
+                            phoneNumber: this.currentUser.phoneNumber,
+                            name: this.currentUser.name,
+                        }
+                    });
+
+
+                    await this.postMessageToServer();
+                    this.$emit("update:replyuser");
                 }
             }
         },
@@ -231,10 +270,10 @@ export default {
                 if (this.setLoading) this.setLoading(false);
             }
         }
-
     }
 };
 </script>
+
 
 <style lang="scss" scoped>
 .chatinput {
