@@ -54,15 +54,15 @@
                         </div>
                     </div>
 
-                </div>
-
-                <div class="landing__greencloud">
-                    <div class="landing__learnmore">
-                        <button class="landing__learnmore--btn" @click="scrollToTop">Learn more</button>
+                    <div class="landing__greencloud">
+                        <div class="landing__learnmore">
+                            <button class="landing__learnmore--btn" @click="scrollToTop">Learn more</button>
+                        </div>
+                        <figure class="mobile">
+                            <img src="/svg/greencloud.svg" />
+                        </figure>
                     </div>
-                    <figure class="mobile">
-                        <img src="/svg/greencloud.svg" />
-                    </figure>
+
                 </div>
             </div>
 
@@ -209,6 +209,8 @@ export default {
 
         z-index: 3;
         padding-top: 11rem;
+
+        height: 86rem;
     }
 
     &__animation {
@@ -236,6 +238,8 @@ export default {
             position: absolute;
             left: 0;
             height: auto;
+            //transform: scale(.9) !important;
+            top: -3rem;
 
             &.hand-receiver {
                 z-index: 2;
@@ -258,21 +262,21 @@ export default {
 
             @keyframes slideInFromLeft {
                 0% {
-                    transform: translateX(-100%);
+                    transform: translateX(-100%) scale(.9);
                 }
 
                 100% {
-                    transform: translateX(0);
+                    transform: translateX(0) scale(.9);
                 }
             }
 
             @keyframes slideInFromRight {
                 0% {
-                    transform: translateX(100%);
+                    transform: translateX(100%) scale(.9);
                 }
 
                 100% {
-                    transform: translateX(0);
+                    transform: translateX(0) scale(.9);
                 }
             }
         }
@@ -281,15 +285,19 @@ export default {
 
     &__greeting {
         height: 100vh;
+        height: 86rem;
         position: fixed;
         top: 0;
         width: 100vw;
         left: 0;
         background: $sky-blue-3;
+
+        //background: red;
     }
 
     &__greencloud {
         position: fixed;
+        position: absolute;
         bottom: -20rem;
         left: 0;
         width: 100vw;
@@ -313,11 +321,13 @@ export default {
             height: 100%;
             width: 100%;
             object-fit: cover;
+
+            transform: translateY(6rem);
         }
 
         @keyframes slideInFromBottom {
             0% {
-                bottom: -20rem;
+                bottom: -5rem;
             }
 
             100% {
@@ -403,6 +413,8 @@ export default {
         display: flex;
         justify-content: center;
         top: 13rem;
+
+        z-index: 4;
 
         &--btn {
             border: 1px solid $white;
