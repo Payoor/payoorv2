@@ -74,7 +74,7 @@ export default {
         bottomTranslateStyle() {
             return {
                 transform: this.isBottomHidden ? `translateY(${this.translateAmount}px)` : 'translateY(0)',
-                transition: 'transform 0.3s ease-out', 
+                transition: 'transform 0.3s ease-out',
             };
         },
     },
@@ -85,7 +85,7 @@ export default {
     },
     methods: {
         async updateNaturalLangResponse() {
-            const queryMessage = this.$route.query.message;
+            const queryMessage = this.$route.query.category ? this.$route.query.category : this.$route.query.message;
             const message = queryMessage
                 ? `Here's what I found for "${queryMessage}"`
                 : `Hello, ${this.cleanedUserName}, how may I help you with your shopping list?`;
@@ -182,15 +182,15 @@ export default {
 
             if (chatBody) {
                 const currentScrollTop = chatBody.scrollTop;
-                const scrollThreshold = 10; 
+                const scrollThreshold = 10;
 
                 if (Math.abs(currentScrollTop - this.lastScrollTop) > scrollThreshold) {
                     if (currentScrollTop > this.lastScrollTop) {
                         console.log('Scrolling Downwards - Hiding bottom');
-                        this.isBottomHidden = true; 
+                        this.isBottomHidden = true;
                     } else if (currentScrollTop < this.lastScrollTop) {
                         console.log('Scrolling Upwards - Showing bottom');
-                        this.isBottomHidden = false; 
+                        this.isBottomHidden = false;
                     }
                 }
 
@@ -227,9 +227,9 @@ export default {
     &__chatbody {
         padding: 3rem;
         height: calc(100vh - 160px);
-    
+
         padding-top: 9rem;
-      
+
         background: $white;
         overflow-y: scroll;
         padding-bottom: 120px;
@@ -261,6 +261,11 @@ export default {
             font-weight: 300;
             color: $black;
             width: 82rem;
+
+            padding: 1.5rem;
+            background: $primary-color;
+            border-radius: 1.3rem;
+            color: $white;
 
             @include respond(tab-port) {
                 width: auto;

@@ -282,7 +282,7 @@ export default {
     }
 
     &__formquest {
-        transform: translateY(-20rem);
+        transform: translateY(-9rem);
     }
 
     &__h1 {

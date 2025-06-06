@@ -1,20 +1,27 @@
 <template>
-    <div class="chat-categories__categories" :class="{ 'home-white': home }">
-        <div class="chat-categories__category" v-for="(category, index) in categories" :key="index"
-            :class="[category.class, { currentcat: currentcat === index }]" @click="searchCategory(index)"
-            :style="{ currentcat: currentcat === index }">
-            <div class="chat-categories__category--left">
-                <figure class="chat-categories__category--png">
-                    <img v-lazy="category.image" alt="Category image" />
-                </figure>
+    <div>
+        <div class="chat-categories__body">
+            <div class="chat-categories__header">
+                <p>Explore Categories</p>
             </div>
+            <div class="chat-categories__categories" :class="{ 'home-white': home }">
+                <div class="chat-categories__category" v-for="(category, index) in categories" :key="index"
+                    :class="[category.class, { currentcat: currentcat === index }]" @click="searchCategory(index)"
+                    :style="{ currentcat: currentcat === index }">
+                    <div class="chat-categories__category--left">
+                        <figure class="chat-categories__category--png">
+                            <img v-lazy="category.image" alt="Category image" />
+                        </figure>
+                    </div>
 
-            <div class="chat-categories__category--right">
-                <div class="chat-categories__category--header">
-                    <h2>{{ category.name }}</h2>
-                </div>
-                <div class="chat-categories__category--description">
-                    <p>{{ truncate(category.description, 20) }}</p>
+                    <div class="chat-categories__category--right">
+                        <div class="chat-categories__category--header">
+                            <h2>{{ category.name }}</h2>
+                        </div>
+                        <div class="chat-categories__category--description">
+                            <p>{{ truncate(category.description, 20) }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,21 +82,22 @@ export default {
 
             this.currentcat = index;
 
-            this.setMessageAndPost(category.description)
+            this.setMessageAndPost(category.name, category.description)
         },
-        async setMessageAndPost(value) {
+        async setMessageAndPost(value, description) {
             this.$router.replace({
                 path: this.$route.path,
                 query: {
                     ...this.$route.query,
-                    message: value
+                    category: value,
+                    message: description
                 }
             });
 
             //console.log(value)
 
             // Post the message to the server
-            await this.postMessageFromQuery(value);
+            await this.postMessageFromQuery(description);
 
             this.$emit("update:replyuser");
         }
@@ -101,6 +109,13 @@ export default {
 
 <style lang="scss" scoped>
 .chat-categories {
+
+    &__header {
+        padding: 2rem 1rem;
+        font-weight: 500;
+        font-size: 1.5rem;
+        padding-bottom: 0;
+    }
 
     &__categories {
         background: $sky-blue-3;
