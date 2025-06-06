@@ -16,4 +16,4 @@ mongoose.connect(process.env.MONGO_URL, {
         console.error('Error connecting to MongoDB:', error);
     });
  
-export default mongoose; 
+export default mongoose;  

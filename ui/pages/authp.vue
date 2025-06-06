@@ -83,6 +83,9 @@ export default {
             allowResendOtpCounter: 50,
         }
     },
+    mounted() {
+        //this.loginWithGoogle();
+    },
     computed: {
         ...mapState("user", {
             currentUser: (state) => state.currentUser,
@@ -108,6 +111,21 @@ export default {
         }
     },
     methods: {
+        async loginWithGoogle() { 
+            const domain = 'https://us-east-1umg3xqcyz.auth.us-east-1.amazoncognito.com'; // Your Cognito domain
+            const clientId = '1tvnri1ecaqanirjd5t7u5kc17';
+            const redirectUri = 'https://shop.payoor.store/';
+            const scopes = ['openid', 'email', 'phone'].join('+'); // Optional: add 'profile' if you want name, picture, etc.
+
+            const loginUrl = `${domain}/oauth2/authorize` +
+                `?response_type=code` + // Using Authorization Code Flow
+                `&client_id=${clientId}` +
+                `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+                `&identity_provider=Google` +  // Redirect directly to Google
+                `&scope=${scopes}`;
+
+            window.location.href = loginUrl;
+        },
         async getOtp(value) {
             this.user_identifier = value;
             this.$store.dispatch('user/setLoading', true);

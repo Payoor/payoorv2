@@ -164,7 +164,8 @@ export default {
     padding-bottom: 19rem;
 
     &__header {
-        font-size: 1.9rem;
+        font-size: 2rem;
+        text-transform: capitalize;
         color: $black;
         display: flex;
         align-items: center;
@@ -177,6 +178,8 @@ export default {
         z-index: 3;
         background: $white;
 
+
+
         & span {
             cursor: pointer;
 
@@ -188,8 +191,8 @@ export default {
                 & svg {
                     height: 2rem;
                     width: 2rem;
-                    fill: $white;
-                    color: $white;
+                    fill: $primary-color;
+                    color: $primary-color;
                 }
             }
         }
