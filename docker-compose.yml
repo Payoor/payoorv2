@@ -36,9 +36,18 @@ services:
     networks:
       - shopping_assistant
 
+  # Build the nodeserver image once
+  nodeserver-build:
+    build: ./nodeserver
+    image: nodeserver-image
+    networks:
+      - shopping_assistant
+
+  # Containers from the same nodeserver image
+
   nodeserver:
     container_name: nodeserver
-    build: ./nodeserver 
+    image: nodeserver-image
     ports:
       - "3001:3001"
     networks:
@@ -61,7 +70,7 @@ services:
 
   nodeserver2:
     container_name: nodeserver2
-    build: ./nodeserver 
+    image: nodeserver-image
     ports:
       - "3002:3001"
     networks:
@@ -84,32 +93,9 @@ services:
 
   nodeserver3:
     container_name: nodeserver3
-    build: ./nodeserver 
+    image: nodeserver-image
     ports:
       - "3003:3001"
-    networks:
-      - shopping_assistant
-    volumes:
-      - ./nodeserver:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - redisdb
-      - mongodb
-    restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-
-  nodeserver4:
-    container_name: nodeserver4
-    build: ./nodeserver 
-    ports:
-      - "3004:3001"
     networks:
       - shopping_assistant
     volumes:
@@ -150,7 +136,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
-
 
   nginx:
     container_name: nginx
