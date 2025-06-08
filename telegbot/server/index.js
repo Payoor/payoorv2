@@ -9,6 +9,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 const { redisClient, connectRedis } = require('./redisconf');
 
+require('./db');
+
 const port = process.env.PORT;
 
 app.use(express.json());

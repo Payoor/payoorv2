@@ -14,6 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
 var _require = require('./redisconf'),
   redisClient = _require.redisClient,
   connectRedis = _require.connectRedis;
+require('./db');
 var port = process.env.PORT;
 app.use(express.json());
 app.get('/health', /*#__PURE__*/function () {
