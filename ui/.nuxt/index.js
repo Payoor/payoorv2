@@ -13,7 +13,7 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_plugin_4cf69087 from 'nuxt_plugin_plugin_4cf69087' // Source: ./components/plugin.js (mode: 'all')
+import nuxt_plugin_plugin_2e0ebfa4 from 'nuxt_plugin_plugin_2e0ebfa4' // Source: ./components/plugin.js (mode: 'all')
 import nuxt_plugin_vuelazyload_d07c1d40 from 'nuxt_plugin_vuelazyload_d07c1d40' // Source: ../plugins/vue-lazyload.js (mode: 'all')
 
 // Component: <ClientOnly>
@@ -214,8 +214,8 @@ async function createApp(ssrContext, config = {}) {
   }
   // Plugin execution
 
-  if (typeof nuxt_plugin_plugin_4cf69087 === 'function') {
-    await nuxt_plugin_plugin_4cf69087(app.context, inject)
+  if (typeof nuxt_plugin_plugin_2e0ebfa4 === 'function') {
+    await nuxt_plugin_plugin_2e0ebfa4(app.context, inject)
   }
 
   if (typeof nuxt_plugin_vuelazyload_d07c1d40 === 'function') {
