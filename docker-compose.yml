@@ -153,7 +153,6 @@ services:
       - nodeserver
       - nodeserver2
       - nodeserver3
-      - nodeserver4
     networks:
       - shopping_assistant
     restart: always
