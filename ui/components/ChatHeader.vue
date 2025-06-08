@@ -91,7 +91,7 @@ export default {
             this.redirectHome();
         }
 
-        this.$store.dispatch('cart/resetCart');
+        //this.$store.dispatch('cart/resetCart');
         this.$store.dispatch('cart/initializeCart');
         this.menuopen = window.innerWidth > 900 && this.jwtToken;
         window.addEventListener('resize', this.handleResize);
