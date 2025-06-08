@@ -7,21 +7,19 @@ if (process.env.NODE_ENV !== 'production') {
 
 require('./db');
 
-
-
 const { redisClient, connectRedis } = require('./redisconf');
 
 import shopperRoute from './routes/shopper';
 import authRoute from './routes/auth';
 import adminRoute from './routes/admin';
 
-import TelegramBotClass from './TelegramBotClass'
+//import TelegramBotClass from './TelegramBotClass'
 
 const port = process.env.PORT;
 
 app.use(express.json());
 
-app.get('/', async (req, res) => {
+app.get('/health', async (req, res) => {
   console.log('✅ GET / hit');
   res.status(200).json({
     message: 'server is up and running here now',

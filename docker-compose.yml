@@ -52,6 +52,12 @@ services:
       - redisdb
       - mongodb
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   nodeserver2:
     container_name: nodeserver2
@@ -69,6 +75,12 @@ services:
       - redisdb
       - mongodb
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   nodeserver3:
     container_name: nodeserver3
@@ -86,6 +98,12 @@ services:
       - redisdb
       - mongodb
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   nodeserver4:
     container_name: nodeserver4
@@ -103,6 +121,36 @@ services:
       - redisdb
       - mongodb
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  telegbot:
+    container_name: telegbot
+    build: ./telegbot 
+    ports:
+      - "3005:3001"
+    networks:
+      - shopping_assistant
+    volumes:
+      - ./telegbot:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - redisdb
+      - mongodb
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
 
   nginx:
     container_name: nginx
