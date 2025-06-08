@@ -35,13 +35,54 @@ app.get('/health', /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }());
+app.post('/notify', /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(req, res) {
+    var orderId, message, _t;
+    return _regenerator().w(function (_context2) {
+      while (1) switch (_context2.n) {
+        case 0:
+          _context2.p = 0;
+          orderId = req.body.orderId;
+          if (orderId) {
+            _context2.n = 1;
+            break;
+          }
+          return _context2.a(2, res.status(400).json({
+            message: 'Missing orderId in request body'
+          }));
+        case 1:
+          message = "\uD83D\uDED2 New order received: ".concat(process.env.PAYOOR_URL, "/admin/order?reference=").concat(orderId);
+          _context2.n = 2;
+          return _TelegramBotClass["default"].callBot(message);
+        case 2:
+          res.status(200).json({
+            message: 'Notification sent to Telegram bot.'
+          });
+          _context2.n = 4;
+          break;
+        case 3:
+          _context2.p = 3;
+          _t = _context2.v;
+          console.error('❌ Error notifying bot:', _t);
+          res.status(500).json({
+            message: 'Internal server error'
+          });
+        case 4:
+          return _context2.a(2);
+      }
+    }, _callee2, null, [[0, 3]]);
+  }));
+  return function (_x3, _x4) {
+    return _ref2.apply(this, arguments);
+  };
+}());
 function startServer() {
   return _startServer.apply(this, arguments);
 }
 function _startServer() {
-  _startServer = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
-    return _regenerator().w(function (_context2) {
-      while (1) switch (_context2.n) {
+  _startServer = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+    return _regenerator().w(function (_context3) {
+      while (1) switch (_context3.n) {
         case 0:
           try {
             //await connectRedis();
@@ -54,9 +95,9 @@ function _startServer() {
             process.exit(1);
           }
         case 1:
-          return _context2.a(2);
+          return _context3.a(2);
       }
-    }, _callee2);
+    }, _callee3);
   }));
   return _startServer.apply(this, arguments);
 }
