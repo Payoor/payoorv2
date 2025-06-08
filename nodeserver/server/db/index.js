@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true, 
-    //useUnifiedTopology: true
+    //useUnifiedTopology: true 
 })
     .then(() => {
         console.log(`database connection on ${process.env.MONGO_URL}`);
@@ -16,4 +16,4 @@ mongoose.connect(process.env.MONGO_URL, {
         console.error('Error connecting to MongoDB:', error);
     });
  
-export default mongoose;  
+export default mongoose;   

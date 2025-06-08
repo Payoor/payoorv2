@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 _mongoose["default"].connect(process.env.MONGO_URL, {
   useNewUrlParser: true
-  //useUnifiedTopology: true
+  //useUnifiedTopology: true 
 }).then(function () {
   console.log("database connection on ".concat(process.env.MONGO_URL));
   // dropIndex('filepath_1');
