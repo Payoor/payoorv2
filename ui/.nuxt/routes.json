@@ -2,85 +2,85 @@
   {
     "name": "aboutus",
     "path": "/aboutus",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/aboutus.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/aboutus.vue",
     "chunkName": "pages/aboutus",
-    "_name": "_0b411c9a"
+    "_name": "_3796093a"
   },
   {
     "name": "admin",
     "path": "/admin",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/index.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/admin/index.vue",
     "chunkName": "pages/admin/index",
-    "_name": "_dd64b54c"
+    "_name": "_ca61bd3e"
   },
   {
     "name": "authp",
     "path": "/authp",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/authp.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/authp.vue",
     "chunkName": "pages/authp",
-    "_name": "_57c1bc10"
+    "_name": "_e212ed52"
   },
   {
     "name": "cart",
     "path": "/cart",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/cart.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/cart.vue",
     "chunkName": "pages/cart",
-    "_name": "_b50a5bf0"
+    "_name": "_2b63bfe1"
   },
   {
     "name": "checkout",
     "path": "/checkout",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/checkout.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/checkout.vue",
     "chunkName": "pages/checkout",
-    "_name": "_0973792e"
+    "_name": "_730fd287"
   },
   {
     "name": "orders",
     "path": "/orders",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/orders.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/orders.vue",
     "chunkName": "pages/orders",
-    "_name": "_29fc7b4d"
+    "_name": "_4d3d5234"
   },
   {
     "name": "payment",
     "path": "/payment",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/payment.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/payment.vue",
     "chunkName": "pages/payment",
-    "_name": "_25be1b4e"
+    "_name": "_62f4b2d5"
   },
   {
     "name": "admin-dashboard",
     "path": "/admin/dashboard",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/dashboard.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/admin/dashboard.vue",
     "chunkName": "pages/admin/dashboard",
-    "_name": "_0ce7be1c"
+    "_name": "_41addea3"
   },
   {
     "name": "admin-order",
     "path": "/admin/order",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/order/index.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/admin/order/index.vue",
     "chunkName": "pages/admin/order/index",
-    "_name": "_4c8a984e"
+    "_name": "_150a62c0"
   },
   {
     "name": "auth-googlecallback",
     "path": "/auth/googlecallback",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/auth/googlecallback.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/auth/googlecallback.vue",
     "chunkName": "pages/auth/googlecallback",
-    "_name": "_d51f82e6"
+    "_name": "_7cd678d8"
   },
   {
     "name": "index",
     "path": "/",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/index.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/index.vue",
     "chunkName": "pages/index",
-    "_name": "_60a90fcc"
+    "_name": "_06e04561"
   },
   {
     "name": "userorder-orderid",
     "path": "/userorder/:orderid?",
-    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/userorder/_orderid.vue",
+    "component": "/var/www/dockerize-nuxt/nuxt-app/pages/userorder/_orderid.vue",
     "chunkName": "pages/userorder/_orderid",
-    "_name": "_8e720484"
+    "_name": "_150a3bd7"
   }
 ]
