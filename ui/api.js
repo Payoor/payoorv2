@@ -9,3 +9,5 @@ export const serverurl = (() => {
 
   return 'http://localhost'
 })()
+
+console.log(serverurl)

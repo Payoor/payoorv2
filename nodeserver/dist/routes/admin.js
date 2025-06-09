@@ -13,6 +13,8 @@ var _multer = _interopRequireDefault(require("multer"));
 var _fs = _interopRequireDefault(require("fs"));
 var _Order = _interopRequireDefault(require("../models/Order"));
 var _Admin = _interopRequireDefault(require("../models/Admin.js"));
+var _Checkout = _interopRequireDefault(require("../models/Checkout.js"));
+var _ProductVariant = _interopRequireDefault(require("../models/ProductVariant"));
 var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _orderconfirmEmail = _interopRequireDefault(require("../utils/orderconfirmEmail"));
 var _excluded = ["_id", "__v"],
@@ -91,7 +93,7 @@ function verifyAdminToken(req, res, next) {
   }
 }
 adminRoute.use(function (req, res, next) {
-  if (['/admin/login', '/admin/register', '/admin/orders/reference'].includes(req.path)) return next();
+  if (['/admin/login', '/admin/register', '/admin/orders/reference', '/admin/checkout', '/admin/getoption'].includes(req.path)) return next();
   return verifyAdminToken(req, res, next);
 });
 var s3Client = new S3Client({
@@ -102,7 +104,7 @@ var s3Client = new S3Client({
   }
 });
 adminRoute.post('/admin/paystack/payment-response/development', /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
+  var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res, next) {
     var checkout_id, newOrder;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -127,19 +129,19 @@ adminRoute.post('/admin/paystack/payment-response/development', /*#__PURE__*/fun
         case 10:
           _context.prev = 10;
           _context.t0 = _context["catch"](0);
-          console.log(_context.t0);
+          next(_context.t0);
         case 13:
         case "end":
           return _context.stop();
       }
     }, _callee, null, [[0, 10]]);
   }));
-  return function (_x, _x2) {
+  return function (_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 }());
 adminRoute.get('/admin/orders/reference', /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
+  var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res, next) {
     var _order$checkout_id$ca, _order$checkout_id$ca2, referenceId, order, cartItems, variantIds, variantsCollection, productCollection, variants, productIds, products, productMap, _iterator, _step, product, enrichedCart;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -220,22 +222,19 @@ adminRoute.get('/admin/orders/reference', /*#__PURE__*/function () {
         case 27:
           _context2.prev = 27;
           _context2.t0 = _context2["catch"](0);
-          console.log(_context2.t0);
-          return _context2.abrupt("return", res.status(500).json({
-            error: 'Server error'
-          }));
-        case 31:
+          next(_context2.t0);
+        case 30:
         case "end":
           return _context2.stop();
       }
     }, _callee2, null, [[0, 27]]);
   }));
-  return function (_x3, _x4) {
+  return function (_x4, _x5, _x6) {
     return _ref2.apply(this, arguments);
   };
 }());
 adminRoute.post('/admin/paystack/payment-response', /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+  var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res, next) {
     var signature, computedHash, _req$body, event, data, metadata, checkoutId, userId, newOrder, telegbotUrl;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
@@ -271,7 +270,7 @@ adminRoute.post('/admin/paystack/payment-response', /*#__PURE__*/function () {
           /*telegramBot.callBot(
             `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
           )*/
-          telegbotUrl = 'http://telegbot:3001/notify';
+          telegbotUrl = 'http://telegbot:3001/neworder';
           _context3.next = 17;
           return axios.post(telegbotUrl, {
             orderId: newOrder._id
@@ -283,22 +282,19 @@ adminRoute.post('/admin/paystack/payment-response', /*#__PURE__*/function () {
         case 21:
           _context3.prev = 21;
           _context3.t0 = _context3["catch"](0);
-          console.log(_context3.t0);
-          return _context3.abrupt("return", res.status(500).json({
-            error: 'Server error'
-          }));
-        case 25:
+          next(_context3.t0);
+        case 24:
         case "end":
           return _context3.stop();
       }
     }, _callee3, null, [[0, 21]]);
   }));
-  return function (_x5, _x6) {
+  return function (_x7, _x8, _x9) {
     return _ref3.apply(this, arguments);
   };
 }());
 adminRoute.post('/admin/register', /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+  var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res, next) {
     var creatorpw, _req$body2, email, password, existingAdmin, newAdmin;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
@@ -346,22 +342,19 @@ adminRoute.post('/admin/register', /*#__PURE__*/function () {
           res.status(201).json({
             message: 'Admin created successfully'
           });
-          _context4.next = 22;
+          _context4.next = 21;
           break;
         case 18:
           _context4.prev = 18;
           _context4.t0 = _context4["catch"](0);
-          console.error('Admin registration error:', _context4.t0);
-          res.status(500).json({
-            error: 'Server error'
-          });
-        case 22:
+          next(_context4.t0);
+        case 21:
         case "end":
           return _context4.stop();
       }
     }, _callee4, null, [[0, 18]]);
   }));
-  return function (_x7, _x8) {
+  return function (_x0, _x1, _x10) {
     return _ref4.apply(this, arguments);
   };
 }());
@@ -417,27 +410,24 @@ adminRoute.post('/admin/login', /*#__PURE__*/function () {
             message: 'Login successful',
             token: token
           });
-          _context5.next = 22;
+          _context5.next = 21;
           break;
         case 18:
           _context5.prev = 18;
           _context5.t0 = _context5["catch"](0);
-          console.error('Admin login error:', _context5.t0);
-          res.status(500).json({
-            error: 'Server error'
-          });
-        case 22:
+          next(_context5.t0);
+        case 21:
         case "end":
           return _context5.stop();
       }
     }, _callee5, null, [[0, 18]]);
   }));
-  return function (_x9, _x0) {
+  return function (_x11, _x12) {
     return _ref5.apply(this, arguments);
   };
 }());
 adminRoute.get('/admin/products-with-variants', /*#__PURE__*/function () {
-  var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+  var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res, next) {
     var page, limit, skip, search, variantsCollection, productCollection, query, totalProducts, products, productIds, variants, variantMap, _iterator2, _step2, variant, key, enrichedProducts;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
@@ -506,22 +496,19 @@ adminRoute.get('/admin/products-with-variants', /*#__PURE__*/function () {
         case 25:
           _context6.prev = 25;
           _context6.t0 = _context6["catch"](0);
-          console.error('Error fetching paginated products with variants:', _context6.t0);
-          return _context6.abrupt("return", res.status(500).json({
-            error: 'Server error'
-          }));
-        case 29:
+          next(_context6.t0);
+        case 28:
         case "end":
           return _context6.stop();
       }
     }, _callee6, null, [[0, 25]]);
   }));
-  return function (_x1, _x10) {
+  return function (_x13, _x14, _x15) {
     return _ref6.apply(this, arguments);
   };
 }());
 adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /*#__PURE__*/function () {
-  var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+  var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res, next) {
     var file, fileName, uploadParams, command, imageUrl;
     return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) switch (_context7.prev = _context7.next) {
@@ -555,22 +542,19 @@ adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /
         case 14:
           _context7.prev = 14;
           _context7.t0 = _context7["catch"](0);
-          console.error('Error uploading image:', _context7.t0);
-          return _context7.abrupt("return", res.status(500).json({
-            error: 'Server error'
-          }));
-        case 18:
+          next(_context7.t0);
+        case 17:
         case "end":
           return _context7.stop();
       }
     }, _callee7, null, [[0, 14]]);
   }));
-  return function (_x11, _x12) {
+  return function (_x16, _x17, _x18) {
     return _ref7.apply(this, arguments);
   };
 }());
 adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
-  var _ref8 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+  var _ref8 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res, next) {
     var _req$body4, name, image, generatedDescription, generatedCategories, newProduct, productCollection, result, product, _id, __v, removeIdField, productForIndexing;
     return _regeneratorRuntime().wrap(function _callee8$(_context8) {
       while (1) switch (_context8.prev = _context8.next) {
@@ -623,22 +607,19 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
         case 19:
           _context8.prev = 19;
           _context8.t0 = _context8["catch"](0);
-          console.error('Error creating product:', _context8.t0);
-          return _context8.abrupt("return", res.status(500).json({
-            error: 'Server error'
-          }));
-        case 23:
+          next(_context8.t0);
+        case 22:
         case "end":
           return _context8.stop();
       }
     }, _callee8, null, [[0, 19]]);
   }));
-  return function (_x13, _x14) {
+  return function (_x19, _x20, _x21) {
     return _ref8.apply(this, arguments);
   };
 }());
 adminRoute.post('/admin/add-variant/:productId', /*#__PURE__*/function () {
-  var _ref9 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
+  var _ref9 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res, next) {
     var productId, _req$body5, unit, price, availability, image, variantCollection, result, newVariant;
     return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) switch (_context9.prev = _context9.next) {
@@ -690,27 +671,24 @@ adminRoute.post('/admin/add-variant/:productId', /*#__PURE__*/function () {
           res.status(201).json({
             variant: newVariant
           });
-          _context9.next = 21;
+          _context9.next = 20;
           break;
         case 17:
           _context9.prev = 17;
           _context9.t0 = _context9["catch"](0);
-          console.error('Add variant error:', _context9.t0);
-          res.status(500).json({
-            error: 'Server error'
-          });
-        case 21:
+          next(_context9.t0);
+        case 20:
         case "end":
           return _context9.stop();
       }
     }, _callee9, null, [[0, 17]]);
   }));
-  return function (_x15, _x16) {
+  return function (_x22, _x23, _x24) {
     return _ref9.apply(this, arguments);
   };
 }());
 adminRoute.put('/admin/update-product/:productId', /*#__PURE__*/function () {
-  var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res) {
+  var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res, next) {
     var productId, _req$body6, name, image, generatedDescription, generatedCategories, synced_to_algolia, updateFields, updatedProduct, _id, __v, removeIdField, productForIndexing;
     return _regeneratorRuntime().wrap(function _callee0$(_context0) {
       while (1) switch (_context0.prev = _context0.next) {
@@ -761,27 +739,24 @@ adminRoute.put('/admin/update-product/:productId', /*#__PURE__*/function () {
           res.status(200).json({
             message: 'Product updated successfully'
           });
-          _context0.next = 22;
+          _context0.next = 21;
           break;
         case 18:
           _context0.prev = 18;
           _context0.t0 = _context0["catch"](0);
-          console.error('Update product error:', _context0.t0);
-          res.status(500).json({
-            error: 'Server error'
-          });
-        case 22:
+          next(_context0.t0);
+        case 21:
         case "end":
           return _context0.stop();
       }
     }, _callee0, null, [[0, 18]]);
   }));
-  return function (_x17, _x18) {
+  return function (_x25, _x26, _x27) {
     return _ref0.apply(this, arguments);
   };
 }());
 adminRoute.put('/admin/update-variant/:variantId', /*#__PURE__*/function () {
-  var _ref1 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee1(req, res) {
+  var _ref1 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee1(req, res, next) {
     var variantId, _req$body7, unit, price, availability, image, updateFields, result;
     return _regeneratorRuntime().wrap(function _callee1$(_context1) {
       while (1) switch (_context1.prev = _context1.next) {
@@ -816,27 +791,24 @@ adminRoute.put('/admin/update-variant/:variantId', /*#__PURE__*/function () {
           res.status(200).json({
             message: 'Variant updated successfully'
           });
-          _context1.next = 17;
+          _context1.next = 16;
           break;
         case 13:
           _context1.prev = 13;
           _context1.t0 = _context1["catch"](0);
-          console.error('Update variant error:', _context1.t0);
-          res.status(500).json({
-            error: 'Server error'
-          });
-        case 17:
+          next(_context1.t0);
+        case 16:
         case "end":
           return _context1.stop();
       }
     }, _callee1, null, [[0, 13]]);
   }));
-  return function (_x19, _x20) {
+  return function (_x28, _x29, _x30) {
     return _ref1.apply(this, arguments);
   };
 }());
 adminRoute["delete"]('/admin/delete-product/:productId', /*#__PURE__*/function () {
-  var _ref10 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res) {
+  var _ref10 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res, next) {
     var productId;
     return _regeneratorRuntime().wrap(function _callee10$(_context10) {
       while (1) switch (_context10.prev = _context10.next) {
@@ -856,29 +828,26 @@ adminRoute["delete"]('/admin/delete-product/:productId', /*#__PURE__*/function (
           res.status(200).json({
             message: 'Product and its variants deleted successfully'
           });
-          _context10.next = 13;
+          _context10.next = 12;
           break;
         case 9:
           _context10.prev = 9;
           _context10.t0 = _context10["catch"](0);
-          console.error('Delete product error:', _context10.t0);
-          res.status(500).json({
-            error: 'Server error'
-          });
-        case 13:
+          next(_context10.t0);
+        case 12:
         case "end":
           return _context10.stop();
       }
     }, _callee10, null, [[0, 9]]);
   }));
-  return function (_x21, _x22) {
+  return function (_x31, _x32, _x33) {
     return _ref10.apply(this, arguments);
   };
 }());
 
 // Server-side route for deleting a variant
 adminRoute["delete"]('/admin/delete-variant/:variantId', /*#__PURE__*/function () {
-  var _ref11 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res) {
+  var _ref11 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res, next) {
     var variantId, variantCollection, variant;
     return _regeneratorRuntime().wrap(function _callee11$(_context11) {
       while (1) switch (_context11.prev = _context11.next) {
@@ -920,22 +889,19 @@ adminRoute["delete"]('/admin/delete-variant/:variantId', /*#__PURE__*/function (
           res.status(200).json({
             message: 'Variant deleted successfully'
           });
-          _context11.next = 19;
+          _context11.next = 18;
           break;
         case 15:
           _context11.prev = 15;
           _context11.t0 = _context11["catch"](0);
-          console.error('Delete variant error:', _context11.t0);
-          res.status(500).json({
-            error: 'Server error'
-          });
-        case 19:
+          next(_context11.t0);
+        case 18:
         case "end":
           return _context11.stop();
       }
     }, _callee11, null, [[0, 15]]);
   }));
-  return function (_x23, _x24) {
+  return function (_x34, _x35, _x36) {
     return _ref11.apply(this, arguments);
   };
 }());
@@ -946,38 +912,130 @@ function generateUniqueFileName(originalname) {
 }
 function testTelegbotNotify() {
   return _testTelegbotNotify.apply(this, arguments);
-} //testTelegbotNotify()
+}
 function _testTelegbotNotify() {
-  _testTelegbotNotify = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
+  _testTelegbotNotify = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
     var telegbotUrl, response;
-    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
-      while (1) switch (_context12.prev = _context12.next) {
+    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+      while (1) switch (_context14.prev = _context14.next) {
         case 0:
           telegbotUrl = 'http://telegbot:3001/notify';
-          _context12.prev = 1;
-          _context12.next = 4;
+          _context14.prev = 1;
+          _context14.next = 4;
           return axios.post(telegbotUrl, {
             orderId: 'test-order-12345'
           });
         case 4:
-          response = _context12.sent;
+          response = _context14.sent;
           console.log('✅ Response from telegbot:', response.data);
+          _context14.next = 11;
+          break;
+        case 8:
+          _context14.prev = 8;
+          _context14.t0 = _context14["catch"](1);
+          if (_context14.t0.response) {
+            console.error('❌ Error response:', _context14.t0.response.status, _context14.t0.response.data);
+          } else {
+            console.error('❌ Request error:', _context14.t0.message);
+          }
+        case 11:
+        case "end":
+          return _context14.stop();
+      }
+    }, _callee14, null, [[1, 8]]);
+  }));
+  return _testTelegbotNotify.apply(this, arguments);
+}
+adminRoute.get('/admin/checkout', /*#__PURE__*/function () {
+  var _ref12 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res, next) {
+    var checkoutid, checkout;
+    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+      while (1) switch (_context12.prev = _context12.next) {
+        case 0:
+          _context12.prev = 0;
+          checkoutid = req.query.checkoutid;
+          _context12.next = 4;
+          return _Checkout["default"].findOne({
+            _id: checkoutid
+          }).populate({
+            path: 'user_id',
+            select: 'email phoneNumber'
+          });
+        case 4:
+          checkout = _context12.sent;
+          if (checkout) {
+            res.status(200).json({
+              checkout: checkout
+            });
+          } else {
+            res.status(400).json({
+              message: 'not found',
+              checkout: {}
+            });
+          }
           _context12.next = 11;
           break;
         case 8:
           _context12.prev = 8;
-          _context12.t0 = _context12["catch"](1);
-          if (_context12.t0.response) {
-            console.error('❌ Error response:', _context12.t0.response.status, _context12.t0.response.data);
-          } else {
-            console.error('❌ Request error:', _context12.t0.message);
-          }
+          _context12.t0 = _context12["catch"](0);
+          next(_context12.t0);
         case 11:
         case "end":
           return _context12.stop();
       }
-    }, _callee12, null, [[1, 8]]);
+    }, _callee12, null, [[0, 8]]);
   }));
-  return _testTelegbotNotify.apply(this, arguments);
-}
+  return function (_x37, _x38, _x39) {
+    return _ref12.apply(this, arguments);
+  };
+}());
+adminRoute.get('/admin/getoption', /*#__PURE__*/function () {
+  var _ref13 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee13(req, res, next) {
+    var mongooseid, objectId, variant;
+    return _regeneratorRuntime().wrap(function _callee13$(_context13) {
+      while (1) switch (_context13.prev = _context13.next) {
+        case 0:
+          _context13.prev = 0;
+          mongooseid = req.query.mongooseid;
+          objectId = new ObjectId(mongooseid);
+          _context13.next = 5;
+          return _ProductVariant["default"].findOne({
+            _id: objectId
+          }).populate({
+            path: 'productId',
+            select: 'name'
+          });
+        case 5:
+          variant = _context13.sent;
+          console.log(variant);
+          if (variant) {
+            _context13.next = 9;
+            break;
+          }
+          return _context13.abrupt("return", res.status(404).json({
+            message: 'Variant not found'
+          }));
+        case 9:
+          res.status(200).json({
+            message: 'Variant found',
+            variant: variant
+          });
+          _context13.next = 15;
+          break;
+        case 12:
+          _context13.prev = 12;
+          _context13.t0 = _context13["catch"](0);
+          next(_context13.t0);
+        case 15:
+        case "end":
+          return _context13.stop();
+      }
+    }, _callee13, null, [[0, 12]]);
+  }));
+  return function (_x40, _x41, _x42) {
+    return _ref13.apply(this, arguments);
+  };
+}());
+
+//testTelegbotNotify()
 var _default = exports["default"] = adminRoute;

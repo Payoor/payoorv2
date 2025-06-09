@@ -18,6 +18,8 @@ const crypto = require('crypto')
 
 import Order from '../models/Order'
 import Admin from '../models/Admin.js'
+import Checkout from '../models/Checkout.js'
+import ProductVariant from '../models/ProductVariant'
 
 //import telegramBot from '../TelegramBotClass'
 
@@ -73,9 +75,13 @@ function verifyAdminToken (req, res, next) {
 
 adminRoute.use((req, res, next) => {
   if (
-    ['/admin/login', '/admin/register', '/admin/orders/reference'].includes(
-      req.path
-    )
+    [
+      '/admin/login',
+      '/admin/register',
+      '/admin/orders/reference',
+      '/admin/checkout',
+      '/admin/getoption'
+    ].includes(req.path)
   )
     return next()
   return verifyAdminToken(req, res, next)
@@ -91,7 +97,7 @@ const s3Client = new S3Client({
 
 adminRoute.post(
   '/admin/paystack/payment-response/development',
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const { checkout_id } = req.query
 
@@ -111,12 +117,12 @@ adminRoute.post(
 
       return res.sendStatus(200)
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
 )
 
-adminRoute.get('/admin/orders/reference', async (req, res) => {
+adminRoute.get('/admin/orders/reference', async (req, res, next) => {
   try {
     const { referenceId } = req.query
 
@@ -172,12 +178,11 @@ adminRoute.get('/admin/orders/reference', async (req, res) => {
       phone_number: order.checkout_id.phone_number || null
     })
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({ error: 'Server error' })
+    next(error)
   }
 })
 
-adminRoute.post('/admin/paystack/payment-response', async (req, res) => {
+adminRoute.post('/admin/paystack/payment-response', async (req, res, next) => {
   try {
     const signature = req.headers['x-paystack-signature']
 
@@ -212,7 +217,7 @@ adminRoute.post('/admin/paystack/payment-response', async (req, res) => {
         `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
       )*/
 
-      const telegbotUrl = 'http://telegbot:3001/notify'
+      const telegbotUrl = 'http://telegbot:3001/neworder'
 
       await axios.post(telegbotUrl, {
         orderId: newOrder._id
@@ -223,12 +228,11 @@ adminRoute.post('/admin/paystack/payment-response', async (req, res) => {
 
     return res.sendStatus(200)
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({ error: 'Server error' })
+    next(error)
   }
 })
 
-adminRoute.post('/admin/register', async (req, res) => {
+adminRoute.post('/admin/register', async (req, res, next) => {
   try {
     const { creatorpw } = req.query
 
@@ -253,9 +257,8 @@ adminRoute.post('/admin/register', async (req, res) => {
     await newAdmin.save()
 
     res.status(201).json({ message: 'Admin created successfully' })
-  } catch (err) {
-    console.error('Admin registration error:', err)
-    res.status(500).json({ error: 'Server error' })
+  } catch (error) {
+    next(error)
   }
 })
 
@@ -286,13 +289,12 @@ adminRoute.post('/admin/login', async (req, res) => {
     )
 
     res.status(200).json({ message: 'Login successful', token })
-  } catch (err) {
-    console.error('Admin login error:', err)
-    res.status(500).json({ error: 'Server error' })
+  } catch (error) {
+    next(error)
   }
 })
 
-adminRoute.get('/admin/products-with-variants', async (req, res) => {
+adminRoute.get('/admin/products-with-variants', async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 10
@@ -344,15 +346,14 @@ adminRoute.get('/admin/products-with-variants', async (req, res) => {
       products: enrichedProducts
     })
   } catch (error) {
-    console.error('Error fetching paginated products with variants:', error)
-    return res.status(500).json({ error: 'Server error' })
+    next(error)
   }
 })
 
 adminRoute.post(
   '/admin/upload-image',
   uploadFileWithMulter().single('image'),
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' })
@@ -377,13 +378,12 @@ adminRoute.post(
 
       return res.status(200).json({ url: imageUrl })
     } catch (error) {
-      console.error('Error uploading image:', error)
-      return res.status(500).json({ error: 'Server error' })
+      next(error)
     }
   }
 )
 
-adminRoute.post('/admin/create-product', async (req, res) => {
+adminRoute.post('/admin/create-product', async (req, res, next) => {
   try {
     const { name, image, generatedDescription, generatedCategories } = req.body
 
@@ -421,12 +421,11 @@ adminRoute.post('/admin/create-product', async (req, res) => {
 
     return res.status(201).json({ product })
   } catch (error) {
-    console.error('Error creating product:', error)
-    return res.status(500).json({ error: 'Server error' })
+    next(error)
   }
 })
 
-adminRoute.post('/admin/add-variant/:productId', async (req, res) => {
+adminRoute.post('/admin/add-variant/:productId', async (req, res, next) => {
   try {
     const productId = new ObjectId(req.params.productId)
     const { unit, price, availability, image } = req.body
@@ -466,12 +465,11 @@ adminRoute.post('/admin/add-variant/:productId', async (req, res) => {
 
     res.status(201).json({ variant: newVariant })
   } catch (error) {
-    console.error('Add variant error:', error)
-    res.status(500).json({ error: 'Server error' })
+    next(error)
   }
 })
 
-adminRoute.put('/admin/update-product/:productId', async (req, res) => {
+adminRoute.put('/admin/update-product/:productId', async (req, res, next) => {
   try {
     const productId = new ObjectId(req.params.productId)
     const {
@@ -516,12 +514,11 @@ adminRoute.put('/admin/update-product/:productId', async (req, res) => {
 
     res.status(200).json({ message: 'Product updated successfully' })
   } catch (error) {
-    console.error('Update product error:', error)
-    res.status(500).json({ error: 'Server error' })
+    next(error)
   }
 })
 
-adminRoute.put('/admin/update-variant/:variantId', async (req, res) => {
+adminRoute.put('/admin/update-variant/:variantId', async (req, res, next) => {
   try {
     const variantId = new ObjectId(req.params.variantId)
     const { unit, price, availability, image } = req.body
@@ -545,56 +542,59 @@ adminRoute.put('/admin/update-variant/:variantId', async (req, res) => {
 
     res.status(200).json({ message: 'Variant updated successfully' })
   } catch (error) {
-    console.error('Update variant error:', error)
-    res.status(500).json({ error: 'Server error' })
+    next(error)
   }
 })
 
-adminRoute.delete('/admin/delete-product/:productId', async (req, res) => {
-  try {
-    const productId = new ObjectId(req.params.productId)
+adminRoute.delete(
+  '/admin/delete-product/:productId',
+  async (req, res, next) => {
+    try {
+      const productId = new ObjectId(req.params.productId)
 
-    await payoorDBConnection.db
-      .collection('newproducts')
-      .deleteOne({ _id: productId })
-    await payoorDBConnection.db
-      .collection('productvariants')
-      .deleteMany({ productId })
+      await payoorDBConnection.db
+        .collection('newproducts')
+        .deleteOne({ _id: productId })
+      await payoorDBConnection.db
+        .collection('productvariants')
+        .deleteMany({ productId })
 
-    res
-      .status(200)
-      .json({ message: 'Product and its variants deleted successfully' })
-  } catch (error) {
-    console.error('Delete product error:', error)
-    res.status(500).json({ error: 'Server error' })
+      res
+        .status(200)
+        .json({ message: 'Product and its variants deleted successfully' })
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 // Server-side route for deleting a variant
-adminRoute.delete('/admin/delete-variant/:variantId', async (req, res) => {
-  try {
-    const variantId = new ObjectId(req.params.variantId)
+adminRoute.delete(
+  '/admin/delete-variant/:variantId',
+  async (req, res, next) => {
+    try {
+      const variantId = new ObjectId(req.params.variantId)
 
-    const variantCollection =
-      payoorDBConnection.db.collection('productvariants')
-    const variant = await variantCollection.findOne({ _id: variantId })
+      const variantCollection =
+        payoorDBConnection.db.collection('productvariants')
+      const variant = await variantCollection.findOne({ _id: variantId })
 
-    if (!variant) return res.status(404).json({ error: 'Variant not found' })
+      if (!variant) return res.status(404).json({ error: 'Variant not found' })
 
-    await variantCollection.deleteOne({ _id: variantId })
-    await payoorDBConnection.db
-      .collection('newproducts')
-      .updateOne(
-        { _id: variant.productId },
-        { $inc: { variantCount: -1 }, $set: { updatedAt: new Date() } }
-      )
+      await variantCollection.deleteOne({ _id: variantId })
+      await payoorDBConnection.db
+        .collection('newproducts')
+        .updateOne(
+          { _id: variant.productId },
+          { $inc: { variantCount: -1 }, $set: { updatedAt: new Date() } }
+        )
 
-    res.status(200).json({ message: 'Variant deleted successfully' })
-  } catch (error) {
-    console.error('Delete variant error:', error)
-    res.status(500).json({ error: 'Server error' })
+      res.status(200).json({ message: 'Variant deleted successfully' })
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 function generateUniqueFileName (originalname) {
   const timestamp = Date.now()
@@ -624,8 +624,59 @@ async function testTelegbotNotify () {
       console.error('❌ Request error:', error.message)
     }
   }
-} 
- 
+}
+
+adminRoute.get('/admin/checkout', async (req, res, next) => {
+  try {
+    const { checkoutid } = req.query
+    const checkout = await Checkout.findOne({ _id: checkoutid }).populate({
+      path: 'user_id',
+      select: 'email phoneNumber'
+    })
+
+    if (checkout) {
+      res.status(200).json({
+        checkout
+      })
+    } else {
+      res.status(400).json({
+        message: 'not found',
+        checkout: {}
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.get('/admin/getoption', async (req, res, next) => {
+  try {
+    const { mongooseid } = req.query
+
+    const objectId = new ObjectId(mongooseid)
+
+    const variant = await ProductVariant.findOne({ _id: objectId }).populate({
+      path: 'productId',
+      select: 'name'
+    })
+
+    console.log(variant)
+
+    if (!variant) {
+      return res.status(404).json({
+        message: 'Variant not found'
+      })
+    }
+
+    res.status(200).json({
+      message: 'Variant found',
+      variant
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
 //testTelegbotNotify()
 
 export default adminRoute

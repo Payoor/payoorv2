@@ -88,7 +88,7 @@ export default {
         if (token) {
             this.getValidUser(token);
         } else {
-            this.redirectHome();
+            this.redirectHome(); 
         }
 
         //this.$store.dispatch('cart/resetCart');
@@ -121,9 +121,10 @@ export default {
                 };
 
                 const data = await response.json();
-                const { user } = data;
+                const { user, message } = data;
 
-                console.log(user, 'curent user here')
+                console.log(user, 'curent user here', message, 'messahge left');
+
                 this.$store.dispatch('user/setJwtToken', token);
                 this.$store.dispatch('user/addCurrentUser', user);
             } catch (error) {
@@ -131,7 +132,7 @@ export default {
             }
         },
         toggleSideMenu() {
-            this.menuopen = !this.menuopen;
+            this.menuopen = !this.menuopen; 
         },
         goBack() {
             this.$router.push({ path: this.backRoute, query: { ...this.$route.query } });

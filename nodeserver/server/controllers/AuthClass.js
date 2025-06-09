@@ -23,9 +23,11 @@ class AuthClass {
     return token
   }
 
-  static async sendEmailOtp (req, res) {
+  static async sendEmailOtp (req, res, next) {
     try {
       const { identifier } = req.body
+
+      console.log(identifier)
 
       if (!identifier) {
         return res.status(400).json({ error: 'Identifier is required' })
@@ -33,7 +35,7 @@ class AuthClass {
 
       const otp = await AuthClass.genOtp(identifier)
 
-      await AuthClass.saveOtpToIdentifier(otp, identifier)
+      await AuthClass.saveOtpToIdentifier(otp, identifier, next)
 
       const data = await resend.emails.send({
         from: 'Payoor <hello@otp.payoor.store>',
@@ -106,12 +108,11 @@ class AuthClass {
 
       res.status(200).json({ message: 'Authentication successful' })
     } catch (error) {
-      console.error('Authentication error:', error)
-      res.status(500).json({ error: 'Internal server error' })
+      next(error)
     }
   }
 
-  static async saveOtpToIdentifier (otp, identifier) {
+  static async saveOtpToIdentifier (otp, identifier, next) {
     try {
       if (!otp || !identifier) {
         throw new Error('OTP and identifier are required')
@@ -123,14 +124,13 @@ class AuthClass {
       console.log(`Mapped hashed OTP to identifier. Key: ${key}`)
       return true
     } catch (error) {
-      console.error('Failed to save OTP:', error)
-      return false
+      next(error)
     }
   }
 
   //console.log('toute');
 
-  static async verifyOtp (req, res) {
+  static async verifyOtp (req, res, next) {
     try {
       const { submittedOtp } = req.body
 
@@ -145,14 +145,15 @@ class AuthClass {
       const hashedKey = `otp:code:${hashOtp(submittedOtp)}`
       //console.log('[verifyOtp] Hashed OTP key:', hashedKey)
 
-      let identifier
+      let identifier;
+      
       try {
         console.time('[verifyOtp] Redis GET')
         identifier = await redisClient.get(hashedKey)
         console.timeEnd('[verifyOtp] Redis GET')
       } catch (redisErr) {
         console.error('[verifyOtp] Redis GET failed:', redisErr)
-        return res.status(500).json({ success: false, message: 'Redis error' })
+        next(redisErr)
       }
 
       if (!identifier) {
@@ -168,9 +169,7 @@ class AuthClass {
         console.timeEnd('[verifyOtp] Mongo FIND')
       } catch (mongoErr) {
         console.error('[verifyOtp] MongoDB query failed:', mongoErr)
-        return res
-          .status(500)
-          .json({ success: false, message: 'User DB error' })
+        next(mongoErr)
       }
 
       if (!user) {
@@ -189,14 +188,14 @@ class AuthClass {
         }
       }
 
-      let token
+      let token;
+
       try {
         console.time('[verifyOtp] Generate Token')
         token = await user.generateAuthToken()
         console.timeEnd('[verifyOtp] Generate Token')
       } catch (tokenErr) {
-        console.error('[verifyOtp] Token generation failed:', tokenErr)
-        return res.status(500).json({ success: false, message: 'Token error' })
+        next(tokenErr)
       }
 
       try {
@@ -213,7 +212,7 @@ class AuthClass {
         console.log('[verifyOtp] Cleaning up OTP key')
         await redisClient.del(hashedKey)
       } catch (redisWriteErr) {
-        console.error('[verifyOtp] Redis SET/DEL failed:', redisWriteErr)
+        next(redisWriteErr)
       }
 
       return res.status(200).json({
@@ -227,15 +226,12 @@ class AuthClass {
           token
         }
       })
-    } catch (err) {
-      console.error('[verifyOtp] Fatal error:', err)
-      return res
-        .status(500)
-        .json({ success: false, message: 'Internal server error' })
+    } catch (error) {
+      next(error)
     }
   }
 
-  static async googleAuth (req, res) {
+  static async googleAuth (req, res, next) {
     try {
       const { email, googleId, picture } = req.body
 
@@ -309,21 +305,23 @@ class AuthClass {
         }
       })
     } catch (error) {
-      console.error('Google Auth error:', error)
-      return res
-        .status(500)
-        .json({ success: false, message: 'Internal server error' })
+      next(error)
     }
   }
 
-  static async getValidUser (req, res) {
+  static async getValidUser (req, res, next) {
     try {
-      const { jwttoken } = req.query
+      //console.log('hello get bvalid user')
+      const { jwttoken } = req.query;
+
+      //console.log(jwttoken)
 
       const userId = await redisClient.get(`auth:session:${jwttoken}`)
 
       if (userId) {
         const user = await User.findByToken(jwttoken)
+
+        //console.log(user)
 
         let name = ''
         let email = ''
@@ -337,19 +335,20 @@ class AuthClass {
 
         return res.status(200).json({
           success: true,
-          message: 'User found',
+          message: 'User found here now',
           user: {
             name,
             email,
             phoneNumber,
-            detailsAdded: Boolean(phoneNumber && email)
+            detailsAdded: Boolean(phoneNumber && email),
+            deg: 'debug here'
           }
         })
       } else {
         const user = await User.findByToken(jwttoken)
 
         if (user) {
-          await user.removeToken(jwttoken)
+          await user.removeToken(jwttoken);
         }
 
         return res.status(404).json({
@@ -358,14 +357,11 @@ class AuthClass {
         })
       }
     } catch (error) {
-      console.log(error)
-      return res
-        .status(500)
-        .json({ success: false, message: 'Internal server error' })
+      next(error)
     }
   }
 
-  static async updateDetails (req, res) {
+  static async updateDetails (req, res, next) {
     try {
       const { phoneNumber, name } = req.body
       const userId = req.userId
@@ -399,15 +395,11 @@ class AuthClass {
         }
       })
     } catch (error) {
-      console.error('Error updating user details:', error)
-      return res.status(500).json({
-        success: false,
-        message: 'Internal server error'
-      })
+      next(error)
     }
   }
 
-  static async signOut (req, res) {
+  static async signOut (req, res, next) {
     try {
       const token = req.headers.authorization?.split(' ')[1]
 
@@ -432,10 +424,7 @@ class AuthClass {
         .status(200)
         .json({ success: true, message: 'Signed out successfully' })
     } catch (error) {
-      console.error('Sign out error:', error)
-      return res
-        .status(500)
-        .json({ success: false, message: 'Internal server error' })
+      next(error)
     }
   }
 }

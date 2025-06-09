@@ -8,6 +8,11 @@ import CouponClass from '../CouponClass'
 import Order from '../models/Order'
 import Checkout from '../models/Checkout'
 import User from '../models/User'
+import Product from '../models/Product'
+import ProductVariant from '../models/ProductVariant'
+
+const BOT_USERNAME = `alertpabot`
+const PAYOOR_URL = process.env.PAYOOR_URL
 
 function parseTtlToSeconds (input) {
   const match = input.match(/^([0-9]+)([smhdw])$/i)
@@ -43,6 +48,8 @@ export class TelegramBotClass {
 
   startBot () {
     this.bot.on('message', async msg => {
+      // console.log(msg, 'test message here')
+
       const telegramid = msg.chat.id.toString()
       const messageText = msg.text.toLowerCase().trim()
       const parts = messageText.split(' ')
@@ -94,8 +101,23 @@ export class TelegramBotClass {
 🔐 *Super Admin*:
 /listadmins
 /removeadmin <chat_id>
-/exportusers`
+/exportusers
+/viewcheckouts`
           )
+        }
+
+        if (command === '/start') {
+          //console.log(command, 'this is a start')
+          //console.log(arg1)
+          /*if (arg1.startsWith('checkout_')) {
+            const id_substring = arg1.substring('checkout_'.length)
+            const checkout_item = await Checkout.findOne({ _id: id_substring })
+
+            const idAsString = checkout_item._id.toString();
+
+            console.log(idAsString)
+            console.log(`${PAYOOR_URL}/admin/checkout?checkout=${idAsString}`)
+          }*/
         }
 
         if (command === '/listadmins') {
@@ -128,6 +150,52 @@ export class TelegramBotClass {
               '❗ Failed to fetch admin list. Try again.'
             )
           }
+        }
+
+        if (command === '/viewcheckouts') {
+          const checkouts = await Checkout.find().populate({
+            path: 'user_id',
+            select: 'email phoneNumber'
+          })
+
+          //console.log(checkouts)
+
+          const checkoutDetailsList = checkouts
+            .map(
+              ({
+                delivery_address,
+                _id,
+                user_id, // This will now be the populated user object
+                delivery_date,
+                delivery_instruction,
+                phone_number,
+                cart_items
+              }) => {
+                const email = user_id ? user_id.email : 'N/A';
+                const userPhoneNumber = user_id ? user_id.phoneNumber : 'N/A';
+
+                return `
+                    User Email:
+                    ${email}
+                    User Phone Number:
+                    ${userPhoneNumber}  
+                    Delivery Address:
+                    ${delivery_address}
+
+                    <a href="https://shop.payoor.store/admin/checkout?checkout=${_id.toString()}">View Order Details on Website</a> 
+                    ---------------------------------------
+                `
+              }
+            )
+            .join('')
+
+          //Cart Items: ${JSON.stringify(cart_items, null, 2)}
+
+          console.log(checkoutDetailsList)
+
+          this.bot.sendMessage(telegramid, checkoutDetailsList, {
+            parse_mode: 'HTML'
+          })
         }
 
         if (command === '/couponusage') {

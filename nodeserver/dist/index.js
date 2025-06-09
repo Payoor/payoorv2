@@ -10,6 +10,9 @@ function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 var express = require('express');
 var app = express();
+var fs = require('fs');
+var path = require('path');
+var axios = require('axios');
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -21,35 +24,95 @@ var _require = require('./redisconf'),
 
 var port = process.env.PORT;
 app.use(express.json());
+var errorLogPath = path.join(__dirname, 'error.log');
+var telegbotUrl = 'http://telegbot:3001/errorlog';
+console.log(errorLogPath);
 app.get('/health', /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
+  var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res, next) {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          console.log('✅ GET / hit');
-          res.status(200).json({
-            message: 'server is up and running here now'
-          });
-        case 2:
+          try {
+            console.log('✅ GET /health hit');
+            res.status(200).json({
+              message: 'server is up and running here now'
+            });
+          } catch (error) {
+            next(error);
+          }
+        case 1:
         case "end":
           return _context.stop();
       }
     }, _callee);
   }));
-  return function (_x, _x2) {
+  return function (_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 }());
 app.use(_shopper["default"]);
 app.use(_auth["default"]);
 app.use(_admin["default"]);
+app.use(/*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(err, req, res, next) {
+    var timestamp, errorMessage, response, statusCode;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          timestamp = new Date().toISOString();
+          errorMessage = "Error Details:\n" + "Timestamp: ".concat(timestamp, "\n") + "Request Method: ".concat(req.method, "\n") + "Request URL: ".concat(req.originalUrl, "\n") + "Error Message: ".concat(err.message, "\n") + "Stack Trace:\n".concat(err.stack, "\n\n") + "--- End of Error ---\n\n";
+          _context2.prev = 2;
+          _context2.next = 5;
+          return axios.post(telegbotUrl, errorMessage, {
+            headers: {
+              'Content-Type': 'text/plain',
+              'X-Error-Timestamp': timestamp
+            }
+          });
+        case 5:
+          response = _context2.sent;
+          if (response.status >= 200 && response.status < 300) {
+            console.log('Error message sent to telegbot successfully!');
+          } else {
+            console.error("Failed to send error message to telegbot. Status: ".concat(response.status, ", Body: ").concat(response.data));
+            fs.appendFile(errorLogPath, errorMessage, function (fileErr) {
+              if (fileErr) {
+                console.error('Failed to write error to fallback log file:', fileErr);
+              } else {
+                console.log("Error successfully logged to fallback file: ".concat(errorLogPath));
+              }
+            });
+          }
+          statusCode = 500;
+          res.status(statusCode).json({
+            stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack
+          });
+          _context2.next = 14;
+          break;
+        case 11:
+          _context2.prev = 11;
+          _context2.t0 = _context2["catch"](2);
+          //we'll only save to a file if this fails here
+          res.status(500).json({
+            message: 'Internal server error'
+          });
+        case 14:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2, null, [[2, 11]]);
+  }));
+  return function (_x4, _x5, _x6, _x7) {
+    return _ref2.apply(this, arguments);
+  };
+}());
 function startServer() {
   return _startServer.apply(this, arguments);
 }
 function _startServer() {
-  _startServer = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
+  _startServer = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
         case 0:
           try {
             //await connectRedis();
@@ -63,9 +126,9 @@ function _startServer() {
           }
         case 1:
         case "end":
-          return _context2.stop();
+          return _context3.stop();
       }
-    }, _callee2);
+    }, _callee3);
   }));
   return _startServer.apply(this, arguments);
 }

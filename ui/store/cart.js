@@ -1,3 +1,5 @@
+import { serverurl } from '@/api'
+
 export const state = () => ({
   items: {},
   total: 0,
@@ -53,6 +55,8 @@ export const actions = {
   addItem ({ commit }, payload) {
     const { id, quantity, price } = payload
 
+    console.log(id, quantity, price)
+
     commit('ADD_ITEM', { id, quantity, price })
   },
 
@@ -83,6 +87,44 @@ export const actions = {
       localStorage.removeItem('cartLength')
     } catch (err) {
       console.error('Failed to clear cart from localStorage:', err)
+    }
+  },
+
+  async syncCartToServer ({ state, commit }) {
+    try {
+      const token = localStorage.getItem('jwt')
+
+      const response = await fetch(`${serverurl}/shopper/cart`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Origin: window.location.origin,
+          'Access-Control-Request-Method': 'POST',
+          'Access-Control-Request-Headers': 'Content-Type'
+        },
+        body: JSON.stringify({
+          items: state.items,
+          totalItems: state.totalItems
+        })
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Error response:', errorData)
+        throw new Error(`Request failed with status ${response.status}`)
+      }
+
+      const data = await response.json()
+
+      const { user_cart } = data
+      const { items, totalItems } = user_cart
+
+      //commit('SET_CART_STATE', { items, total, totalItems })
+
+      console.log(data)
+    } catch (error) {
+      console.error('Failed to sync cart from localStorage to server:', error)
     }
   }
 }

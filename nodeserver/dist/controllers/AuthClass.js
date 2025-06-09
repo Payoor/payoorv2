@@ -59,36 +59,37 @@ var AuthClass = /*#__PURE__*/function () {
   }, {
     key: "sendEmailOtp",
     value: function () {
-      var _sendEmailOtp = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
+      var _sendEmailOtp = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res, next) {
         var identifier, otp, data;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
               identifier = req.body.identifier;
+              console.log(identifier);
               if (identifier) {
-                _context2.next = 4;
+                _context2.next = 5;
                 break;
               }
               return _context2.abrupt("return", res.status(400).json({
                 error: 'Identifier is required'
               }));
-            case 4:
-              _context2.next = 6;
+            case 5:
+              _context2.next = 7;
               return AuthClass.genOtp(identifier);
-            case 6:
+            case 7:
               otp = _context2.sent;
-              _context2.next = 9;
-              return AuthClass.saveOtpToIdentifier(otp, identifier);
-            case 9:
-              _context2.next = 11;
+              _context2.next = 10;
+              return AuthClass.saveOtpToIdentifier(otp, identifier, next);
+            case 10:
+              _context2.next = 12;
               return resend.emails.send({
                 from: 'Payoor <hello@otp.payoor.store>',
                 to: ["".concat(identifier)],
                 subject: 'Otp from Payoor',
                 html: "\n      <!DOCTYPE html>\n      <html>\n        <head>\n          <meta charset=\"UTF-8\">\n          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n          <title>Your Verification Code</title>\n        </head>\n        <body style=\"margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;\">\n          <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; background-color: #f4f4f4; padding: 20px;\">\n            <tr>\n              <td align=\"center\">\n                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);\">\n                  <!-- Header -->\n                  <tr>\n                    <td style=\"background-color: rgba(36, 155, 72, 1); padding: 30px 0; text-align: center;\">\n                      \n                    </td>\n                  </tr>\n                  \n                  <!-- Content -->\n                  <tr>\n                    <td style=\"padding: 40px 30px;\">\n                      <h1 style=\"margin: 0 0 20px; color: #333333; font-size: 24px; font-weight: bold;\">\n                        Verification Code\n                      </h1>\n                      <p style=\"margin: 0 0 30px; color: #666666; font-size: 16px; line-height: 24px;\">\n                        To complete your verification, please use the following code:\n                      </p>\n                      <div style=\"background-color: #f8f8f8; border-radius: 6px; padding: 20px; text-align: center; margin-bottom: 30px;\">\n                        <span style=\"font-family: monospace; font-size: 32px; font-weight: bold; letter-spacing: 4px; color: rgba(36, 155, 72, 1);\">\n                          ".concat(otp, "\n                        </span>\n                      </div>\n                      <p style=\"margin: 0 0 30px; color: #666666; font-size: 16px; line-height: 24px;\">\n                        This code will expire in 10 minutes for security purposes. If you didn't request this code, please ignore this email.\n                      </p>\n                      <p style=\"margin: 0; color: #666666; font-size: 14px; line-height: 20px;\">\n                        For security reasons, please do not share this code with anyone.\n                      </p>\n                    </td>\n                  </tr>\n                  \n                  <!-- Footer -->\n                  <tr>\n                    <td style=\"padding: 20px 30px; background-color: #f8f8f8; text-align: center;\">\n                      <p style=\"margin: 0; color: #999999; font-size: 14px;\">\n                        This is an automated message, please do not reply to this email.\n                      </p>\n                      <p style=\"margin: 10px 0 0; color: #999999; font-size: 14px;\">\n                        \xA9 2025 Payoor. All rights reserved.\n                      </p>\n                    </td>\n                  </tr>\n                </table>\n              </td>\n            </tr>\n          </table>\n        </body>\n      </html>\n    ")
               });
-            case 11:
+            case 12:
               data = _context2.sent;
               console.log(data, 'data');
               res.status(200).json({
@@ -96,20 +97,17 @@ var AuthClass = /*#__PURE__*/function () {
               });
               _context2.next = 20;
               break;
-            case 16:
-              _context2.prev = 16;
+            case 17:
+              _context2.prev = 17;
               _context2.t0 = _context2["catch"](0);
-              console.error('Authentication error:', _context2.t0);
-              res.status(500).json({
-                error: 'Internal server error'
-              });
+              next(_context2.t0);
             case 20:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, null, [[0, 16]]);
+        }, _callee2, null, [[0, 17]]);
       }));
-      function sendEmailOtp(_x2, _x3) {
+      function sendEmailOtp(_x2, _x3, _x4) {
         return _sendEmailOtp.apply(this, arguments);
       }
       return sendEmailOtp;
@@ -117,7 +115,7 @@ var AuthClass = /*#__PURE__*/function () {
   }, {
     key: "saveOtpToIdentifier",
     value: function () {
-      var _saveOtpToIdentifier = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(otp, identifier) {
+      var _saveOtpToIdentifier = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(otp, identifier, next) {
         var key;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
@@ -138,15 +136,14 @@ var AuthClass = /*#__PURE__*/function () {
             case 10:
               _context3.prev = 10;
               _context3.t0 = _context3["catch"](0);
-              console.error('Failed to save OTP:', _context3.t0);
-              return _context3.abrupt("return", false);
-            case 14:
+              next(_context3.t0);
+            case 13:
             case "end":
               return _context3.stop();
           }
         }, _callee3, null, [[0, 10]]);
       }));
-      function saveOtpToIdentifier(_x4, _x5) {
+      function saveOtpToIdentifier(_x5, _x6, _x7) {
         return _saveOtpToIdentifier.apply(this, arguments);
       }
       return saveOtpToIdentifier;
@@ -154,7 +151,7 @@ var AuthClass = /*#__PURE__*/function () {
   }, {
     key: "verifyOtp",
     value: function () {
-      var _verifyOtp = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+      var _verifyOtp = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res, next) {
         var submittedOtp, hashedKey, identifier, user, type, token;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
@@ -184,10 +181,7 @@ var AuthClass = /*#__PURE__*/function () {
               _context4.prev = 13;
               _context4.t0 = _context4["catch"](5);
               console.error('[verifyOtp] Redis GET failed:', _context4.t0);
-              return _context4.abrupt("return", res.status(500).json({
-                success: false,
-                message: 'Redis error'
-              }));
+              next(_context4.t0);
             case 17:
               if (identifier) {
                 _context4.next = 19;
@@ -211,10 +205,7 @@ var AuthClass = /*#__PURE__*/function () {
               _context4.prev = 27;
               _context4.t1 = _context4["catch"](19);
               console.error('[verifyOtp] MongoDB query failed:', _context4.t1);
-              return _context4.abrupt("return", res.status(500).json({
-                success: false,
-                message: 'User DB error'
-              }));
+              next(_context4.t1);
             case 31:
               if (user) {
                 _context4.next = 47;
@@ -260,35 +251,31 @@ var AuthClass = /*#__PURE__*/function () {
             case 51:
               token = _context4.sent;
               console.timeEnd('[verifyOtp] Generate Token');
-              _context4.next = 59;
+              _context4.next = 58;
               break;
             case 55:
               _context4.prev = 55;
               _context4.t2 = _context4["catch"](47);
-              console.error('[verifyOtp] Token generation failed:', _context4.t2);
-              return _context4.abrupt("return", res.status(500).json({
-                success: false,
-                message: 'Token error'
-              }));
-            case 59:
-              _context4.prev = 59;
+              next(_context4.t2);
+            case 58:
+              _context4.prev = 58;
               console.time('[verifyOtp] Redis SETEX');
-              _context4.next = 63;
+              _context4.next = 62;
               return _redisconf.redisClient.set("auth:session:".concat(token), user._id.toString(), 'EX', 2592000 // 30 days in seconds
               );
-            case 63:
+            case 62:
               console.timeEnd('[verifyOtp] Redis SETEX');
               console.log('[verifyOtp] Cleaning up OTP key');
-              _context4.next = 67;
+              _context4.next = 66;
               return _redisconf.redisClient.del(hashedKey);
-            case 67:
-              _context4.next = 72;
+            case 66:
+              _context4.next = 71;
               break;
-            case 69:
-              _context4.prev = 69;
-              _context4.t3 = _context4["catch"](59);
-              console.error('[verifyOtp] Redis SET/DEL failed:', _context4.t3);
-            case 72:
+            case 68:
+              _context4.prev = 68;
+              _context4.t3 = _context4["catch"](58);
+              next(_context4.t3);
+            case 71:
               return _context4.abrupt("return", res.status(200).json({
                 success: true,
                 message: 'OTP verified',
@@ -300,21 +287,17 @@ var AuthClass = /*#__PURE__*/function () {
                   token: token
                 }
               }));
-            case 75:
-              _context4.prev = 75;
+            case 74:
+              _context4.prev = 74;
               _context4.t4 = _context4["catch"](0);
-              console.error('[verifyOtp] Fatal error:', _context4.t4);
-              return _context4.abrupt("return", res.status(500).json({
-                success: false,
-                message: 'Internal server error'
-              }));
-            case 79:
+              next(_context4.t4);
+            case 77:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[0, 75], [5, 13], [19, 27], [47, 55], [59, 69]]);
+        }, _callee4, null, [[0, 74], [5, 13], [19, 27], [47, 55], [58, 68]]);
       }));
-      function verifyOtp(_x6, _x7) {
+      function verifyOtp(_x8, _x9, _x0) {
         return _verifyOtp.apply(this, arguments);
       }
       return verifyOtp;
@@ -322,7 +305,7 @@ var AuthClass = /*#__PURE__*/function () {
   }, {
     key: "googleAuth",
     value: function () {
-      var _googleAuth = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+      var _googleAuth = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res, next) {
         var _req$body, email, googleId, picture, user, updated, token;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
@@ -409,18 +392,14 @@ var AuthClass = /*#__PURE__*/function () {
             case 32:
               _context5.prev = 32;
               _context5.t0 = _context5["catch"](0);
-              console.error('Google Auth error:', _context5.t0);
-              return _context5.abrupt("return", res.status(500).json({
-                success: false,
-                message: 'Internal server error'
-              }));
-            case 36:
+              next(_context5.t0);
+            case 35:
             case "end":
               return _context5.stop();
           }
         }, _callee5, null, [[0, 32]]);
       }));
-      function googleAuth(_x8, _x9) {
+      function googleAuth(_x1, _x10, _x11) {
         return _googleAuth.apply(this, arguments);
       }
       return googleAuth;
@@ -428,13 +407,14 @@ var AuthClass = /*#__PURE__*/function () {
   }, {
     key: "getValidUser",
     value: function () {
-      var _getValidUser = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+      var _getValidUser = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res, next) {
         var jwttoken, userId, user, name, email, phoneNumber, _user;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
               _context6.prev = 0;
-              jwttoken = req.query.jwttoken;
+              //console.log('hello get bvalid user')
+              jwttoken = req.query.jwttoken; //console.log(jwttoken)
               _context6.next = 4;
               return _redisconf.redisClient.get("auth:session:".concat(jwttoken));
             case 4:
@@ -447,6 +427,7 @@ var AuthClass = /*#__PURE__*/function () {
               return _User["default"].findByToken(jwttoken);
             case 8:
               user = _context6.sent;
+              //console.log(user)
               name = '';
               email = '';
               phoneNumber = '';
@@ -457,12 +438,13 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context6.abrupt("return", res.status(200).json({
                 success: true,
-                message: 'User found',
+                message: 'User found here now',
                 user: {
                   name: name,
                   email: email,
                   phoneNumber: phoneNumber,
-                  detailsAdded: Boolean(phoneNumber && email)
+                  detailsAdded: Boolean(phoneNumber && email),
+                  deg: 'debug here'
                 }
               }));
             case 16:
@@ -482,23 +464,19 @@ var AuthClass = /*#__PURE__*/function () {
                 message: 'User not found'
               }));
             case 23:
-              _context6.next = 29;
+              _context6.next = 28;
               break;
             case 25:
               _context6.prev = 25;
               _context6.t0 = _context6["catch"](0);
-              console.log(_context6.t0);
-              return _context6.abrupt("return", res.status(500).json({
-                success: false,
-                message: 'Internal server error'
-              }));
-            case 29:
+              next(_context6.t0);
+            case 28:
             case "end":
               return _context6.stop();
           }
         }, _callee6, null, [[0, 25]]);
       }));
-      function getValidUser(_x0, _x1) {
+      function getValidUser(_x12, _x13, _x14) {
         return _getValidUser.apply(this, arguments);
       }
       return getValidUser;
@@ -506,7 +484,7 @@ var AuthClass = /*#__PURE__*/function () {
   }, {
     key: "updateDetails",
     value: function () {
-      var _updateDetails = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+      var _updateDetails = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res, next) {
         var _req$body2, phoneNumber, name, userId, updatedUser;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
@@ -552,18 +530,14 @@ var AuthClass = /*#__PURE__*/function () {
             case 13:
               _context7.prev = 13;
               _context7.t0 = _context7["catch"](0);
-              console.error('Error updating user details:', _context7.t0);
-              return _context7.abrupt("return", res.status(500).json({
-                success: false,
-                message: 'Internal server error'
-              }));
-            case 17:
+              next(_context7.t0);
+            case 16:
             case "end":
               return _context7.stop();
           }
         }, _callee7, null, [[0, 13]]);
       }));
-      function updateDetails(_x10, _x11) {
+      function updateDetails(_x15, _x16, _x17) {
         return _updateDetails.apply(this, arguments);
       }
       return updateDetails;
@@ -571,7 +545,7 @@ var AuthClass = /*#__PURE__*/function () {
   }, {
     key: "signOut",
     value: function () {
-      var _signOut = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+      var _signOut = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res, next) {
         var _req$headers$authoriz, token, user;
         return _regeneratorRuntime().wrap(function _callee8$(_context8) {
           while (1) switch (_context8.prev = _context8.next) {
@@ -613,18 +587,14 @@ var AuthClass = /*#__PURE__*/function () {
             case 16:
               _context8.prev = 16;
               _context8.t0 = _context8["catch"](0);
-              console.error('Sign out error:', _context8.t0);
-              return _context8.abrupt("return", res.status(500).json({
-                success: false,
-                message: 'Internal server error'
-              }));
-            case 20:
+              next(_context8.t0);
+            case 19:
             case "end":
               return _context8.stop();
           }
         }, _callee8, null, [[0, 16]]);
       }));
-      function signOut(_x12, _x13) {
+      function signOut(_x18, _x19, _x20) {
         return _signOut.apply(this, arguments);
       }
       return signOut;

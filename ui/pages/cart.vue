@@ -52,6 +52,11 @@ export default {
             cartTotalItems: (state) => state.totalItems
         }),
     },
+    mounted() {
+        //we call sync cart here
+        console.log('calling sync cart')
+        this.$store.dispatch("cart/syncCartToServer");
+    },
     methods: {
         continueShopping() {
             this.$router.push({

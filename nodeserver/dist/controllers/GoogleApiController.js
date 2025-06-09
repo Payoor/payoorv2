@@ -53,10 +53,8 @@ var GoogleApiController = /*#__PURE__*/function () {
             case 9:
               _context.prev = 9;
               _context.t0 = _context["catch"](0);
-              console.log('error here', _context.t0, 'error here');
-              _context.t0.payoorDevErrorMessage = 'Error searching location';
               next(_context.t0);
-            case 14:
+            case 12:
             case "end":
               return _context.stop();
           }
@@ -117,15 +115,13 @@ var GoogleApiController = /*#__PURE__*/function () {
               };
               return _context2.abrupt("return", res.status(200).json(_response));
             case 14:
-              _context2.next = 21;
+              _context2.next = 19;
               break;
             case 16:
               _context2.prev = 16;
               _context2.t0 = _context2["catch"](0);
-              console.log('error here', _context2.t0, 'error here');
-              _context2.t0.payoorDevErrorMessage = 'Error reading coordinates';
               next(_context2.t0);
-            case 21:
+            case 19:
             case "end":
               return _context2.stop();
           }

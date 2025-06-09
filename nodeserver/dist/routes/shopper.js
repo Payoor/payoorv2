@@ -11,6 +11,8 @@ var _https = _interopRequireDefault(require("https"));
 var _Checkout = _interopRequireDefault(require("../models/Checkout"));
 var _User = _interopRequireDefault(require("../models/User"));
 var _Order = _interopRequireDefault(require("../models/Order"));
+var _UserCart = _interopRequireDefault(require("../models/UserCart"));
+var _ProductVariant = _interopRequireDefault(require("../models/ProductVariant"));
 var _authMiddleware = _interopRequireDefault(require("../middleware/authMiddleware"));
 var _CouponClass = _interopRequireDefault(require("../CouponClass"));
 var _redisconf = require("../redisconf");
@@ -42,7 +44,7 @@ var productIndex = 'products';
 var elasticSearchCl = new _ElasticSearchClass["default"](elasticsearchUrl);
 var shopperRoute = (0, _express["default"])();
 shopperRoute.post('/shopper/message', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
+  var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res, next) {
     var message, page, size, data, _data$hits, total, hits, totalItems, currentCount;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -74,27 +76,25 @@ shopperRoute.post('/shopper/message', _authMiddleware["default"], /*#__PURE__*/f
             total: totalItems,
             hasMore: currentCount < totalItems // true if more pages remain
           });
-          _context.next = 17;
+          _context.next = 16;
           break;
         case 13:
           _context.prev = 13;
           _context.t0 = _context["catch"](0);
-          console.log(_context.t0);
-          res.status(500).json({
-            error: 'Internal server error'
-          });
-        case 17:
+          next(_context.t0);
+          //res.status(500).json({ error: 'Internal server error' })
+        case 16:
         case "end":
           return _context.stop();
       }
     }, _callee, null, [[0, 13]]);
   }));
-  return function (_x, _x2) {
+  return function (_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 }());
 shopperRoute.post('/shopper/message/suggest', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
+  var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res, next) {
     var query, hits;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -115,19 +115,19 @@ shopperRoute.post('/shopper/message/suggest', _authMiddleware["default"], /*#__P
         case 9:
           _context2.prev = 9;
           _context2.t0 = _context2["catch"](0);
-          console.log(_context2.t0);
+          next(_context2.t0);
         case 12:
         case "end":
           return _context2.stop();
       }
     }, _callee2, null, [[0, 9]]);
   }));
-  return function (_x3, _x4) {
+  return function (_x4, _x5, _x6) {
     return _ref2.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/getoptions', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+  var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res, next) {
     var mongooseid, productId, variantsCollection, variants;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
@@ -151,55 +151,66 @@ shopperRoute.get('/shopper/getoptions', _authMiddleware["default"], /*#__PURE__*
         case 10:
           _context3.prev = 10;
           _context3.t0 = _context3["catch"](0);
-          console.log(_context3.t0);
+          next(_context3.t0);
         case 13:
         case "end":
           return _context3.stop();
       }
     }, _callee3, null, [[0, 10]]);
   }));
-  return function (_x5, _x6) {
+  return function (_x7, _x8, _x9) {
     return _ref3.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/getoption', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var mongooseid, productId, variantsCollection, variant;
+  var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res, next) {
+    var mongooseid, objectId, variant;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           _context4.prev = 0;
           mongooseid = req.query.mongooseid;
-          productId = new ObjectId(mongooseid);
-          variantsCollection = _payoordb["default"].db.collection('productvariants');
-          _context4.next = 6;
-          return variantsCollection.findOne({
-            _id: productId
+          objectId = new ObjectId(mongooseid);
+          _context4.next = 5;
+          return _ProductVariant["default"].findOne({
+            _id: objectId
+          }).populate({
+            path: 'productId',
+            select: 'name'
           });
-        case 6:
+        case 5:
           variant = _context4.sent;
+          console.log(variant);
+          if (variant) {
+            _context4.next = 9;
+            break;
+          }
+          return _context4.abrupt("return", res.status(404).json({
+            message: 'Variant not found'
+          }));
+        case 9:
           res.status(200).json({
             message: 'Variant found',
             variant: variant
           });
-          _context4.next = 13;
+          _context4.next = 15;
           break;
-        case 10:
-          _context4.prev = 10;
+        case 12:
+          _context4.prev = 12;
           _context4.t0 = _context4["catch"](0);
-          console.log(_context4.t0);
-        case 13:
+          next(_context4.t0);
+        case 15:
         case "end":
           return _context4.stop();
       }
-    }, _callee4, null, [[0, 10]]);
+    }, _callee4, null, [[0, 12]]);
   }));
-  return function (_x7, _x8) {
+  return function (_x0, _x1, _x10) {
     return _ref4.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/init/checkout', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+  var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res, next) {
     var jwt, userId, _yield$Promise$all, _yield$Promise$all2, fee, servicecharge, latestCheckout, phone_number, delivery_address;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
@@ -229,27 +240,24 @@ shopperRoute.get('/shopper/init/checkout', _authMiddleware["default"], /*#__PURE
             phone_number: phone_number,
             delivery_address: delivery_address
           });
-          _context5.next = 19;
+          _context5.next = 18;
           break;
         case 15:
           _context5.prev = 15;
           _context5.t0 = _context5["catch"](0);
-          console.error('Error fetching checkout data:', _context5.t0);
-          res.status(500).json({
-            error: 'Internal server error'
-          });
-        case 19:
+          next(_context5.t0);
+        case 18:
         case "end":
           return _context5.stop();
       }
     }, _callee5, null, [[0, 15]]);
   }));
-  return function (_x9, _x0) {
+  return function (_x11, _x12, _x13) {
     return _ref5.apply(this, arguments);
   };
 }());
 shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+  var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res, next) {
     var jwt, checkout, validUser, coupon, newCheckout;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
@@ -301,27 +309,24 @@ shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__P
             message: 'Checkout data',
             newcheckout: newCheckout
           });
-          _context6.next = 27;
+          _context6.next = 26;
           break;
         case 23:
           _context6.prev = 23;
           _context6.t0 = _context6["catch"](0);
-          console.log(_context6.t0);
-          res.status(500).json({
-            message: 'Internal server error'
-          });
-        case 27:
+          next(_context6.t0);
+        case 26:
         case "end":
           return _context6.stop();
       }
     }, _callee6, null, [[0, 23]]);
   }));
-  return function (_x1, _x10) {
+  return function (_x14, _x15, _x16) {
     return _ref6.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+  var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res, next) {
     var checkout_id, _yield$Checkout$aggre, _yield$Checkout$aggre2, checkoutWithUser, email, user_id, total, params, options, paystackRes;
     return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) switch (_context7.prev = _context7.next) {
@@ -427,27 +432,24 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
               accessCode: paystackRes.data.access_code
             }
           });
-          _context7.next = 26;
+          _context7.next = 25;
           break;
         case 22:
           _context7.prev = 22;
           _context7.t0 = _context7["catch"](3);
-          console.error('Error generating paystack link:', _context7.t0);
-          return _context7.abrupt("return", res.status(500).json({
-            error: 'Server error'
-          }));
-        case 26:
+          next(_context7.t0);
+        case 25:
         case "end":
           return _context7.stop();
       }
     }, _callee7, null, [[3, 22]]);
   }));
-  return function (_x11, _x12) {
+  return function (_x17, _x18, _x19) {
     return _ref7.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/user/getorders', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref8 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+  var _ref8 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res, next) {
     var userId, userOrders, variantsCollection, productCollection, enrichedOrders, _iterator, _step, _loop;
     return _regeneratorRuntime().wrap(function _callee8$(_context9) {
       while (1) switch (_context9.prev = _context9.next) {
@@ -552,23 +554,19 @@ shopperRoute.get('/shopper/user/getorders', _authMiddleware["default"], /*#__PUR
         case 28:
           _context9.prev = 28;
           _context9.t2 = _context9["catch"](0);
-          console.error(_context9.t2);
-          return _context9.abrupt("return", res.status(500).json({
-            success: false,
-            message: 'Server error'
-          }));
-        case 32:
+          next(_context9.t2);
+        case 31:
         case "end":
           return _context9.stop();
       }
     }, _callee8, null, [[0, 28], [9, 18, 21, 24]]);
   }));
-  return function (_x13, _x14) {
+  return function (_x20, _x21, _x22) {
     return _ref8.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/user/getorder/', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref9 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
+  var _ref9 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res, next) {
     var _order$checkout_id$ca3, _order$checkout_id$ca4, userId, orderId, order, cartItems, variantIds, variantsCollection, productCollection, variants, productIds, products, productMap, _iterator3, _step3, product, enrichedCart;
     return _regeneratorRuntime().wrap(function _callee9$(_context0) {
       while (1) switch (_context0.prev = _context0.next) {
@@ -652,25 +650,21 @@ shopperRoute.get('/shopper/user/getorder/', _authMiddleware["default"], /*#__PUR
         case 28:
           _context0.prev = 28;
           _context0.t0 = _context0["catch"](0);
-          console.error(_context0.t0);
-          return _context0.abrupt("return", res.status(500).json({
-            success: false,
-            message: 'Server error'
-          }));
-        case 32:
+          next(_context0.t0);
+        case 31:
         case "end":
           return _context0.stop();
       }
     }, _callee9, null, [[0, 28]]);
   }));
-  return function (_x15, _x16) {
+  return function (_x23, _x24, _x25) {
     return _ref9.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/google/search-places', _authMiddleware["default"], _GoogleApiController["default"].searchPlaces);
 shopperRoute.get('/shopper/google/use-current-location', _authMiddleware["default"], _GoogleApiController["default"].reverseGeocode);
 shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res) {
+  var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res, next) {
     var coupon_code, userId, key, raw, couponConfig, type, redeemed, typeKey, typeRaw, couponTypeConfig, ttl, createdAt, discount, now, isExpired, usedCodeCheckout, usedCoupon, usedOrder, usedTypeCheckout, _usedOrder;
     return _regeneratorRuntime().wrap(function _callee0$(_context1) {
       while (1) switch (_context1.prev = _context1.next) {
@@ -790,19 +784,85 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
         case 47:
           _context1.prev = 47;
           _context1.t0 = _context1["catch"](0);
-          console.error('Error applying coupon:', _context1.t0);
-          return _context1.abrupt("return", res.status(500).json({
-            success: false,
-            message: 'Internal server error'
-          }));
-        case 51:
+          next(_context1.t0);
+        case 50:
         case "end":
           return _context1.stop();
       }
     }, _callee0, null, [[0, 47]]);
   }));
-  return function (_x17, _x18) {
+  return function (_x26, _x27, _x28) {
     return _ref0.apply(this, arguments);
+  };
+}());
+shopperRoute.post('/shopper/cart', _authMiddleware["default"], /*#__PURE__*/function () {
+  var _ref1 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee1(req, res, next) {
+    var _req$body, items, totalItems, foundUserCart, user_cart, subTotal, newUserCart;
+    return _regeneratorRuntime().wrap(function _callee1$(_context10) {
+      while (1) switch (_context10.prev = _context10.next) {
+        case 0:
+          _context10.prev = 0;
+          console.log(req.userId);
+          console.log(req.body);
+          _req$body = req.body, items = _req$body.items, totalItems = _req$body.totalItems;
+          _context10.next = 6;
+          return _UserCart["default"].findOne({
+            userId: req.userId
+          });
+        case 6:
+          foundUserCart = _context10.sent;
+          if (!foundUserCart) {
+            _context10.next = 14;
+            break;
+          }
+          console.log(foundUserCart, 'foundUserCart');
+          user_cart = foundUserCart;
+          subTotal = user_cart.calculateTotal();
+          res.status(200).json({
+            synced: true,
+            user_cart: user_cart
+          });
+
+          /*const updatedUserCart = await UserCart.findOneAndUpdate({
+            userId: req.userId
+          });*/
+          _context10.next = 22;
+          break;
+        case 14:
+          newUserCart = new _UserCart["default"]({
+            userId: req.userId,
+            items: items,
+            totalItems: totalItems
+          });
+          _context10.next = 17;
+          return newUserCart.save();
+        case 17:
+          console.log(newUserCart, 'newUserCart');
+          _context10.next = 20;
+          return _UserCart["default"].findOne({
+            userId: req.userId
+          });
+        case 20:
+          user_cart = _context10.sent;
+          res.status(200).json({
+            synced: true,
+            user_cart: user_cart
+          });
+        case 22:
+          _context10.next = 27;
+          break;
+        case 24:
+          _context10.prev = 24;
+          _context10.t0 = _context10["catch"](0);
+          next(_context10.t0);
+        case 27:
+        case "end":
+          return _context10.stop();
+      }
+    }, _callee1, null, [[0, 24]]);
+  }));
+  return function (_x29, _x30, _x31) {
+    return _ref1.apply(this, arguments);
   };
 }());
 var _default = exports["default"] = shopperRoute; //https://chatgpt.com/c/6819039c-9ad4-8005-8400-d2567db4dc3c

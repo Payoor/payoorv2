@@ -14,6 +14,7 @@ require('./db')
 const port = process.env.PORT
 
 app.use(express.json())
+app.use(express.text({ type: 'text/plain' }))
 
 app.get('/health', async (req, res) => {
   console.log('✅ GET / hit')
@@ -22,7 +23,34 @@ app.get('/health', async (req, res) => {
   })
 })
 
-app.post('/notify', async (req, res) => {
+app.post('/errorlog', async (req, res) => {
+  try {
+    const receivedErrorMessage = req.body
+
+    console.log('\n--- Received Error Log from Client ---')
+    console.log(receivedErrorMessage)
+    console.log('--- End of Received Error Log ---\n')
+
+    const timestamp = req.header('X-Error-Timestamp')
+    if (timestamp) {
+      console.log(`Received at: ${timestamp}`);
+
+      const message = receivedErrorMessage;
+
+      await telegramBot.callBot(`${message} ==> ${timestamp}`)
+    }
+
+    res
+      .status(200)
+      .json({ message: 'Error log received and processed by bot.' })
+  } catch (error) {
+    console.error('❌ Error in telegbot /errorlog route:', error)
+    // Ensure you send a 500 status back to the client if there's an issue processing
+    res.status(500).json({ message: 'Internal server error on bot side.' })
+  }
+})
+
+app.post('/neworder', async (req, res) => {
   try {
     const { orderId } = req.body
 

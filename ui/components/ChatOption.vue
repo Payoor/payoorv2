@@ -11,16 +11,27 @@
                 </figure>
 
                 <div class="chatoption__details">
+                    <p class="chatoption__details--productname">{{ product_name }}</p>
                     <p class="chatoption__details--name">{{ option.unit }}</p>
 
                     <p class="chatoption__details--price">
                         &#8358;
                         <span>{{ formatPrice(option.price) }}</span>
                     </p>
+
+                    <p class="chatoption__details--productquantity" v-if="admin">
+                        <span>Amount:</span>
+                        <span>{{ product_quantity }}</span>
+                    </p>
+
+                    <p class="chatoption__details--producttotal" v-if="admin">
+                        <span>Total:</span>
+                        <span>{{ (product_quantity * option.price) }}</span>
+                    </p>
                 </div>
             </div>
 
-            <div class="chatoption__right">
+            <div class="chatoption__right" v-if="!admin">
                 <div class="chatoption__delete" @click="removeItem">
                     <span class="svg">
                         <svg>
@@ -62,16 +73,32 @@ export default {
         },
         mongooseid: {
             type: String,
+        },
+        admin: {
+            type: Boolean,
+        },
+        product_quantity: {
+            type: Number,
         }
     },
     data() {
         return {
             quantity: 0,
             option: null,
-            loading: false
+            loading: false,
+            product_name: "",
+
         }
     },
     mounted() {
+        if (this.admin) {
+
+            this.getOptionForAdmin();
+
+            return;
+        }
+
+
         if (this.data) {
             this.option = this.data;
         } else {
@@ -153,6 +180,40 @@ export default {
                 const data = await response.json();
                 const { variant } = data;
                 this.option = variant;
+
+                this.product_name = variant.productId.name
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        async getOptionForAdmin() {
+            this.loading = true;
+
+            try {
+                const response = await fetch(`${serverurl}/admin/getoption?mongooseid=${this.mongooseid}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': window.location.origin,
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Error performing autocomplete:', errorData);
+                    return;
+                }
+
+                const data = await response.json();
+                const { variant } = data;
+                this.option = variant;
+                this.product_name = variant.productId.name
+
+                console.log(this.option, 'option shown here')
             } catch (error) {
                 console.error(error);
             } finally {
@@ -219,10 +280,15 @@ export default {
 
     &__details {
 
+        &--productname {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
         &--name {
-            font-size: 1.7rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
         }
 
         &--price {
@@ -233,6 +299,33 @@ export default {
             & span {
                 font-size: 600;
                 color: rgba($primary-color, 1);
+            }
+        }
+
+        &--productquantity {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+
+            & span {
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                margin-right: .5rem;
+                font-size: 1.2rem;
+            }
+        }
+
+        &--producttotal {
+            display: flex;
+            align-items: center;
+
+            & span {
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                margin-right: .5rem;
+                font-size: 1.2rem;
             }
         }
     }

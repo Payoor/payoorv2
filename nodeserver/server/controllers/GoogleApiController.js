@@ -27,9 +27,7 @@ class GoogleApiController {
             }
             return res.status(200).json(response);
         } catch (error) {
-            console.log('error here', error, 'error here')
-            error.payoorDevErrorMessage = 'Error searching location';
-            next(error);
+            next(error)
         }
     }
 
@@ -71,9 +69,7 @@ class GoogleApiController {
             }
 
         } catch (error) {
-            console.log('error here', error, 'error here')
-            error.payoorDevErrorMessage = 'Error reading coordinates';
-            next(error);
+            next(error)
         }
     }
 }

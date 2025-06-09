@@ -164,7 +164,7 @@ export default {
     padding-bottom: 19rem;
 
     &__header {
-        font-size: 2rem;
+        font-size: 1.8rem;
         text-transform: capitalize;
         color: $black;
         display: flex;

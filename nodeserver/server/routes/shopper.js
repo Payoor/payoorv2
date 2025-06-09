@@ -5,6 +5,8 @@ import https from 'https'
 import Checkout from '../models/Checkout'
 import User from '../models/User'
 import Order from '../models/Order'
+import UserCart from '../models/UserCart'
+import ProductVariant from '../models/ProductVariant'
 
 import authMiddleware from '../middleware/authMiddleware'
 import CouponClass from '../CouponClass'
@@ -29,45 +31,49 @@ const elasticSearchCl = new ElasticSearchClass(elasticsearchUrl)
 
 const shopperRoute = express()
 
-shopperRoute.post('/shopper/message', authMiddleware, async (req, res) => {
-  try {
-    const { message } = req.body
-    const page = parseInt(req.query.page) || 1
-    const size = parseInt(req.query.size) || 10
+shopperRoute.post(
+  '/shopper/message',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { message } = req.body
+      const page = parseInt(req.query.page) || 1
+      const size = parseInt(req.query.size) || 10
 
-    const data = await elasticSearchCl.findProducts({
-      query: message,
-      index: productIndex,
-      page,
-      size
-    })
+      const data = await elasticSearchCl.findProducts({
+        query: message,
+        index: productIndex,
+        page,
+        size
+      })
 
-    const { total, hits } = data.hits
+      const { total, hits } = data.hits
 
-    const totalItems = total.value
-    const currentCount = page * size;
+      const totalItems = total.value
+      const currentCount = page * size
 
-    //console.log(hits)
+      //console.log(hits)
 
-    res.status(200).json({
-      message: 'message sent',
-      input: message,
-      page,
-      size,
-      products: hits ? hits.map(hit => hit._source) : [],
-      total: totalItems,
-      hasMore: currentCount < totalItems // true if more pages remain
-    })
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({ error: 'Internal server error' })
+      res.status(200).json({
+        message: 'message sent',
+        input: message,
+        page,
+        size,
+        products: hits ? hits.map(hit => hit._source) : [],
+        total: totalItems,
+        hasMore: currentCount < totalItems // true if more pages remain
+      })
+    } catch (error) {
+      next(error)
+      //res.status(500).json({ error: 'Internal server error' })
+    }
   }
-})
+)
 
 shopperRoute.post(
   '/shopper/message/suggest',
   authMiddleware,
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const { query } = req.query
 
@@ -80,85 +86,104 @@ shopperRoute.post(
         hits
       })
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
 )
 
-shopperRoute.get('/shopper/getoptions', authMiddleware, async (req, res) => {
-  try {
-    const { mongooseid } = req.query
+shopperRoute.get(
+  '/shopper/getoptions',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { mongooseid } = req.query
 
-    const productId = new ObjectId(mongooseid)
+      const productId = new ObjectId(mongooseid)
 
-    const variantsCollection =
-      payoorDBConnection.db.collection('productvariants')
+      const variantsCollection =
+        payoorDBConnection.db.collection('productvariants')
 
-    const variants = await variantsCollection
-      .find({ productId: productId })
-      .toArray()
+      const variants = await variantsCollection
+        .find({ productId: productId })
+        .toArray()
 
-    res.status(200).json({
-      message: 'Variants found',
-      variants
-    })
-  } catch (error) {
-    console.log(error)
+      res.status(200).json({
+        message: 'Variants found',
+        variants
+      })
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
-shopperRoute.get('/shopper/getoption', authMiddleware, async (req, res) => {
-  try {
-    const { mongooseid } = req.query
+shopperRoute.get(
+  '/shopper/getoption',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { mongooseid } = req.query
 
-    const productId = new ObjectId(mongooseid)
+      const objectId = new ObjectId(mongooseid)
 
-    const variantsCollection =
-      payoorDBConnection.db.collection('productvariants')
+      const variant = await ProductVariant.findOne({ _id: objectId }).populate({
+        path: 'productId',
+        select: 'name'
+      })
 
-    const variant = await variantsCollection.findOne({ _id: productId })
+      console.log(variant)
 
-    res.status(200).json({
-      message: 'Variant found',
-      variant
-    })
-  } catch (error) {
-    console.log(error)
+      if (!variant) {
+        return res.status(404).json({
+          message: 'Variant not found'
+        })
+      }
+
+      res.status(200).json({
+        message: 'Variant found',
+        variant
+      })
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
-shopperRoute.get('/shopper/init/checkout', authMiddleware, async (req, res) => {
-  try {
-    const { jwt } = req.query
-    const userId = req.userId
+shopperRoute.get(
+  '/shopper/init/checkout',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { jwt } = req.query
+      const userId = req.userId
 
-    const [fee, servicecharge, latestCheckout] = await Promise.all([
-      redisClient.hget('admindirective', 'deliveryfee'),
-      redisClient.hget('admindirective', 'servicecharge'),
-      Checkout.findOne({ user_id: userId }).sort({ created_at: -1 }).lean()
-    ])
+      const [fee, servicecharge, latestCheckout] = await Promise.all([
+        redisClient.hget('admindirective', 'deliveryfee'),
+        redisClient.hget('admindirective', 'servicecharge'),
+        Checkout.findOne({ user_id: userId }).sort({ created_at: -1 }).lean()
+      ])
 
-    const phone_number = latestCheckout?.phone_number || ''
-    const delivery_address = latestCheckout?.delivery_address || ''
+      const phone_number = latestCheckout?.phone_number || ''
+      const delivery_address = latestCheckout?.delivery_address || ''
 
-    res.status(200).json({
-      message: 'Checkout data',
-      jwt,
-      fee: Number(fee),
-      servicecharge: Number(servicecharge),
-      phone_number,
-      delivery_address
-    })
-  } catch (error) {
-    console.error('Error fetching checkout data:', error)
-    res.status(500).json({ error: 'Internal server error' })
+      res.status(200).json({
+        message: 'Checkout data',
+        jwt,
+        fee: Number(fee),
+        servicecharge: Number(servicecharge),
+        phone_number,
+        delivery_address
+      })
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 shopperRoute.post(
   '/shopper/create/checkout',
   authMiddleware,
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const { jwt } = req.query
       const { checkout } = req.body
@@ -195,16 +220,15 @@ shopperRoute.post(
         newcheckout: newCheckout
       })
     } catch (error) {
-      console.log(error)
-      res.status(500).json({ message: 'Internal server error' })
+      next(error)
     }
   }
-);
+)
 
 shopperRoute.get(
   '/shopper/paystack/generate-paystack-link',
   authMiddleware,
-  async (req, res) => {
+  async (req, res, next) => {
     const { checkout_id } = req.query
 
     if (!checkout_id) {
@@ -239,7 +263,7 @@ shopperRoute.get(
 
       const { email, user_id, total } = checkoutWithUser
 
-     // console.log(checkoutWithUser)
+      // console.log(checkoutWithUser)
 
       const params = JSON.stringify({
         email: email,
@@ -293,8 +317,7 @@ shopperRoute.get(
         }
       })
     } catch (error) {
-      console.error('Error generating paystack link:', error)
-      return res.status(500).json({ error: 'Server error' })
+      next(error)
     }
   }
 )
@@ -302,14 +325,14 @@ shopperRoute.get(
 shopperRoute.get(
   '/shopper/user/getorders',
   authMiddleware,
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const { userId } = req
 
       const userOrders = await Order.find({ user_id: userId }).populate(
         'checkout_id'
       )
- 
+
       const variantsCollection =
         payoorDBConnection.db.collection('productvariants')
       const productCollection = payoorDBConnection.db.collection('newproducts')
@@ -360,11 +383,7 @@ shopperRoute.get(
         orders: enrichedOrders
       })
     } catch (error) {
-      console.error(error)
-      return res.status(500).json({
-        success: false,
-        message: 'Server error'
-      })
+      next(error)
     }
   }
 )
@@ -372,7 +391,7 @@ shopperRoute.get(
 shopperRoute.get(
   '/shopper/user/getorder/',
   authMiddleware,
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const { userId } = req
       const { orderId } = req.query
@@ -434,11 +453,7 @@ shopperRoute.get(
         cart: enrichedCart
       })
     } catch (error) {
-      console.error(error)
-      return res.status(500).json({
-        success: false,
-        message: 'Server error'
-      })
+      next(error)
     }
   }
 )
@@ -455,104 +470,152 @@ shopperRoute.get(
   GoogleApiController.reverseGeocode
 )
 
-shopperRoute.post('/shopper/apply-coupon', authMiddleware, async (req, res) => {
+shopperRoute.post(
+  '/shopper/apply-coupon',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { coupon_code } = req.body
+      const userId = req.userId
+
+      if (!coupon_code || typeof coupon_code !== 'string') {
+        return res.status(401).json({
+          success: false,
+          message: 'Coupon code is required and must be a string'
+        })
+      }
+
+      // Get the coupon from Redis
+      const key = `coupon:code:${coupon_code}`
+      const raw = await redisClient.get(key)
+
+      if (!raw) {
+        return res.status(404).json({
+          success: false,
+          message: 'Coupon code not found or expired'
+        })
+      }
+
+      const couponConfig = JSON.parse(raw)
+      const { type, redeemed } = couponConfig
+
+      const typeKey = `coupon:type:${type}`
+      const typeRaw = await redisClient.get(typeKey)
+
+      if (!typeRaw) {
+        return res.status(404).json({
+          success: false,
+          message: 'Coupon type not found or expired'
+        })
+      }
+
+      const couponTypeConfig = JSON.parse(typeRaw)
+      const { ttl, createdAt, discount } = couponTypeConfig
+
+      const now = Date.now()
+      const isExpired = now > createdAt + ttl * 1000
+
+      if (isExpired) {
+        return res.status(410).json({
+          success: false,
+          message: 'Coupon code has expired'
+        })
+      }
+
+      const usedCodeCheckout = await Checkout.findOne({
+        user_id: userId,
+        promo_code: coupon_code
+      }).select('_id')
+
+      let usedCoupon = false
+
+      if (usedCodeCheckout) {
+        const usedOrder = await Order.findOne({
+          checkout_id: usedCodeCheckout._id
+        })
+
+        if (usedOrder) usedCoupon = true
+      }
+
+      const usedTypeCheckout = await Checkout.findOne({
+        user_id: userId,
+        promo_code_type: type
+      }).select('_id')
+
+      if (usedTypeCheckout) {
+        const usedOrder = await Order.findOne({
+          checkout_id: usedTypeCheckout._id
+        })
+
+        if (usedOrder) usedCoupon = true
+      }
+
+      if (usedCoupon) {
+        return res.status(409).json({
+          success: false,
+          message:
+            'You have already used this coupon code or a coupon of this type'
+        })
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'Coupon code applied successfully',
+        discount: discount || {}, // could contain flat, percentage, or freeDelivery
+        type,
+        expires_in: Math.floor((createdAt + ttl * 1000 - now) / 1000)
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+shopperRoute.post('/shopper/cart', authMiddleware, async (req, res, next) => {
   try {
-    const { coupon_code } = req.body
-    const userId = req.userId
+    console.log(req.userId)
+    console.log(req.body)
+    const { items, totalItems } = req.body
 
-    if (!coupon_code || typeof coupon_code !== 'string') {
-      return res.status(401).json({
-        success: false,
-        message: 'Coupon code is required and must be a string'
-      })
-    }
+    const foundUserCart = await UserCart.findOne({ userId: req.userId })
+    let user_cart
 
-    // Get the coupon from Redis
-    const key = `coupon:code:${coupon_code}`
-    const raw = await redisClient.get(key)
+    if (foundUserCart) {
+      console.log(foundUserCart, 'foundUserCart')
 
-    if (!raw) {
-      return res.status(404).json({
-        success: false,
-        message: 'Coupon code not found or expired'
-      })
-    }
+      user_cart = foundUserCart
 
-    const couponConfig = JSON.parse(raw)
-    const { type, redeemed } = couponConfig
+      const subTotal = user_cart.calculateTotal()
 
-    const typeKey = `coupon:type:${type}`
-    const typeRaw = await redisClient.get(typeKey)
-
-    if (!typeRaw) {
-      return res.status(404).json({
-        success: false,
-        message: 'Coupon type not found or expired'
-      })
-    }
-
-    const couponTypeConfig = JSON.parse(typeRaw)
-    const { ttl, createdAt, discount } = couponTypeConfig
-
-    const now = Date.now()
-    const isExpired = now > createdAt + ttl * 1000
-
-    if (isExpired) {
-      return res.status(410).json({
-        success: false,
-        message: 'Coupon code has expired'
-      })
-    }
-
-    const usedCodeCheckout = await Checkout.findOne({
-      user_id: userId,
-      promo_code: coupon_code
-    }).select('_id')
-
-    let usedCoupon = false
-
-    if (usedCodeCheckout) {
-      const usedOrder = await Order.findOne({
-        checkout_id: usedCodeCheckout._id
+      res.status(200).json({
+        synced: true,
+        user_cart
       })
 
-      if (usedOrder) usedCoupon = true
-    }
-
-    const usedTypeCheckout = await Checkout.findOne({
-      user_id: userId,
-      promo_code_type: type
-    }).select('_id')
-
-    if (usedTypeCheckout) {
-      const usedOrder = await Order.findOne({
-        checkout_id: usedTypeCheckout._id
+      /*const updatedUserCart = await UserCart.findOneAndUpdate({
+        userId: req.userId
+      });*/
+    } else {
+      const newUserCart = new UserCart({
+        userId: req.userId,
+        items,
+        totalItems
       })
 
-      if (usedOrder) usedCoupon = true
-    }
+      await newUserCart.save()
 
-    if (usedCoupon) {
-      return res.status(409).json({
-        success: false,
-        message:
-          'You have already used this coupon code or a coupon of this type'
+      console.log(newUserCart, 'newUserCart')
+
+      user_cart = await UserCart.findOne({ userId: req.userId })
+
+      res.status(200).json({
+        synced: true,
+        user_cart
       })
     }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Coupon code applied successfully',
-      discount: discount || {}, // could contain flat, percentage, or freeDelivery
-      type,
-      expires_in: Math.floor((createdAt + ttl * 1000 - now) / 1000)
-    })
+    //CartClass
   } catch (error) {
-    console.error('Error applying coupon:', error)
-    return res.status(500).json({
-      success: false,
-      message: 'Internal server error'
-    })
+    next(error)
   }
 })
 

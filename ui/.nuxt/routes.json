@@ -49,6 +49,13 @@
     "_name": "_25be1b4e"
   },
   {
+    "name": "admin-checkout",
+    "path": "/admin/checkout",
+    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/checkout.vue",
+    "chunkName": "pages/admin/checkout",
+    "_name": "_612343ee"
+  },
+  {
     "name": "admin-dashboard",
     "path": "/admin/dashboard",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/dashboard.vue",
