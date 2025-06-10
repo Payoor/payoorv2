@@ -10,7 +10,12 @@
             </div>
 
             <div class="chatcard__viewmore" @click.stop="toggleViewOptions">
-                <button>View {{ options }} options</button>
+                <button :disabled="loading">
+                    <div class="chatcard__viewmore--flex">
+                        <span>View {{ options }} options</span>
+                        <span v-if="loading" class="spinner"></span>
+                    </div>
+                </button>
             </div>
 
             <div class="chatcard__tags">
@@ -36,7 +41,8 @@ export default {
     },
     data() {
         return {
-            view_options: false
+            view_options: false,
+            loading: false // Introduce a loading state
         }
     },
     computed: {
@@ -59,7 +65,17 @@ export default {
         }
     },
     methods: {
-        toggleViewOptions() {
+        async toggleViewOptions() {
+            this.loading = true; // Set loading to true when the async operation starts
+            try {
+                await this.$store.dispatch("cart/syncCartToServer");
+            } catch (error) {
+                console.error("Error syncing cart to server:", error);
+                // Optionally handle the error, e.g., show a toast notification
+            } finally {
+                this.loading = false; // Set loading to false when the async operation completes (success or failure)
+            }
+
             this.view_options = !this.view_options;
         },
         formatTag(tag) {
@@ -92,6 +108,19 @@ export default {
 
     &__viewmore {
 
+        &--flex {
+            display: flex;
+            align-items: center;
+
+            & span {
+                flex-shrink: 0;
+
+                &:nth-child(1) {
+                    margin-right: .4rem;
+                }
+            }
+        }
+
         & button {
             outline: none;
             border: none;
@@ -102,6 +131,16 @@ export default {
             cursor: pointer;
             padding: 1rem;
             font-size: 1.4rem;
+            display: flex;
+            /* Use flexbox for centering content */
+            justify-content: center;
+            align-items: center;
+
+            &:disabled {
+                opacity: 0.7;
+                /* Dim the button when disabled */
+                cursor: not-allowed;
+            }
         }
     }
 
@@ -133,6 +172,26 @@ export default {
 
             margin-right: .5rem;
         }
+    }
+}
+
+/* Spinner Animation */
+.spinner {
+    border: .4rem solid rgba(255, 255, 255, 0.3);
+    border-top: .4rem solid #fff;
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }
 </style>

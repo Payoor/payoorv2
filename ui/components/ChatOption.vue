@@ -147,6 +147,8 @@ export default {
             const safeCartLength = Object.keys(safeCartItems).length;
             const total = this.cartTotal;
 
+            console.log(total, 'check the total here')
+
             try {
                 localStorage.setItem('cartItems', JSON.stringify(safeCartItems));
                 localStorage.setItem('cartTotal', JSON.stringify(total));

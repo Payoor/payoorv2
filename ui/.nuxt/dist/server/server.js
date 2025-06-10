@@ -721,19 +721,19 @@ const mutations = {
     quantity,
     price
   }) {
+    const prevQuantity = state.items[id] || 0;
+    const delta = quantity - prevQuantity;
     state.items[id] = quantity;
-    const total = state.total;
-    const updatedTotal = total + price;
-    state.total = updatedTotal;
+    state.total = state.total + price * delta;
     const totalItems = [...state.totalItems, id];
-    const uniqueArray = [...new Set(totalItems)];
-    state.totalItems = uniqueArray;
+    state.totalItems = [...new Set(totalItems)];
   },
   REMOVE_ITEM(state, {
     id,
     quantity,
     price
   }) {
+    const prevQuantity = state.items[id] || 0;
     if (quantity === 0) {
       state.totalItems = state.totalItems.filter(itemId => itemId !== id);
       const {
@@ -741,10 +741,12 @@ const mutations = {
         ...updatedItems
       } = state.items;
       state.items = updatedItems;
+      state.total = Math.max(0, state.total - price * prevQuantity);
     } else {
+      const delta = (state.items[id] || 0) - quantity;
       state.items[id] = quantity;
+      state.total = Math.max(0, state.total - price * delta);
     }
-    state.total = Math.max(0, state.total - price);
     console.log('state.total', state.total, state.items);
   },
   SET_CART_STATE(state, {
@@ -771,7 +773,6 @@ const actions = {
       quantity,
       price
     } = payload;
-    console.log(id, quantity, price);
     commit('ADD_ITEM', {
       id,
       quantity,
@@ -796,17 +797,57 @@ const actions = {
     commit
   }) {
     try {
-      const items = JSON.parse(localStorage.getItem('cartItems') || '{}');
-      const total = JSON.parse(localStorage.getItem('cartTotal') || '0');
-      const totalItems = Object.keys(items);
+      const storedItems = localStorage.getItem('cartItems');
+      const storedTotal = localStorage.getItem('cartTotal');
+      const hasAnyLocalCartData = storedItems !== null && storedTotal !== null;
+      if (hasAnyLocalCartData) {
+        const localItems = JSON.parse(storedItems || '{}');
+        const localTotal = JSON.parse(storedTotal || '0');
+        const localTotalItems = Object.keys(localItems);
+        commit('SET_CART_STATE', {
+          items: localItems,
+          total: localTotal,
+          totalItems: localTotalItems
+        });
+        return;
+      }
+    } catch (e) {
+      console.warn('Failed to load cart from localStorage due to parsing error, falling back to server:', e);
+    }
+    const token = localStorage.getItem('jwt');
+    fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "a"]}/shopper/initialize`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    }).then(data => {
+      const {
+        user_cart,
+        total
+      } = data;
+      const items = user_cart.items || {};
+      const totalItems = user_cart.totalItems || [];
       commit('SET_CART_STATE', {
         items,
         total,
         totalItems
       });
-    } catch (error) {
-      console.error('Failed to initialize cart from localStorage:', error);
-    }
+      localStorage.setItem('cartItems', JSON.stringify(items));
+      localStorage.setItem('cartTotal', JSON.stringify(total));
+    }).catch(error => {
+      console.error('Failed to initialize cart from backend:', error);
+      commit('SET_CART_STATE', {
+        items: {},
+        total: 0,
+        totalItems: []
+      });
+    });
   },
   resetCart({
     commit
@@ -825,6 +866,11 @@ const actions = {
     commit
   }) {
     try {
+      const hasItemsToSync = Object.keys(state.items || {}).length > 0;
+      if (!hasItemsToSync) {
+        console.log('No items to sync — skipping server call.');
+        return;
+      }
       const token = localStorage.getItem('jwt');
       const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "a"]}/shopper/cart`, {
         method: 'POST',
@@ -847,16 +893,19 @@ const actions = {
       }
       const data = await response.json();
       const {
-        user_cart
+        user_cart,
+        total
       } = data;
       const {
         items,
         totalItems
       } = user_cart;
-
-      //commit('SET_CART_STATE', { items, total, totalItems })
-
-      console.log(data);
+      commit('SET_CART_STATE', {
+        items,
+        total,
+        totalItems
+      });
+      console.log('Cart synced successfully:', data);
     } catch (error) {
       console.error('Failed to sync cart from localStorage to server:', error);
     }
@@ -2723,13 +2772,13 @@ function mergeProperty(storeModule, moduleData, property) {
 // CONCATENATED MODULE: ./.nuxt/components/index.js
 const AddressList = () => __webpack_require__.e(/* import() | components/address-list */ 1).then(__webpack_require__.bind(null, 134)).then(c => wrapFunctional(c.default || c));
 const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 2).then(__webpack_require__.bind(null, 177)).then(c => wrapFunctional(c.default || c));
-const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 3).then(__webpack_require__.bind(null, 49)).then(c => wrapFunctional(c.default || c));
+const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 3).then(__webpack_require__.bind(null, 47)).then(c => wrapFunctional(c.default || c));
 const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 4).then(__webpack_require__.bind(null, 110)).then(c => wrapFunctional(c.default || c));
 const ChatCard = () => __webpack_require__.e(/* import() | components/chat-card */ 5).then(__webpack_require__.bind(null, 98)).then(c => wrapFunctional(c.default || c));
 const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 6).then(__webpack_require__.bind(null, 94)).then(c => wrapFunctional(c.default || c));
 const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 7).then(__webpack_require__.bind(null, 53)).then(c => wrapFunctional(c.default || c));
 const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 8).then(__webpack_require__.bind(null, 95)).then(c => wrapFunctional(c.default || c));
-const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 9).then(__webpack_require__.bind(null, 62)).then(c => wrapFunctional(c.default || c));
+const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 9).then(__webpack_require__.bind(null, 59)).then(c => wrapFunctional(c.default || c));
 const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 10).then(__webpack_require__.bind(null, 77)).then(c => wrapFunctional(c.default || c));
 const GoogleBtn = () => __webpack_require__.e(/* import() | components/google-btn */ 11).then(__webpack_require__.bind(null, 137)).then(c => wrapFunctional(c.default || c));
 const Home = () => __webpack_require__.e(/* import() | components/home */ 12).then(__webpack_require__.bind(null, 136)).then(c => wrapFunctional(c.default || c));
@@ -2739,7 +2788,7 @@ const LandingCopy = () => __webpack_require__.e(/* import() | components/landing
 const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 16).then(__webpack_require__.bind(null, 96)).then(c => wrapFunctional(c.default || c));
 const LandingFooter = () => __webpack_require__.e(/* import() | components/landing-footer */ 17).then(__webpack_require__.bind(null, 97)).then(c => wrapFunctional(c.default || c));
 const LandingPage = () => __webpack_require__.e(/* import() | components/landing-page */ 18).then(__webpack_require__.bind(null, 135)).then(c => wrapFunctional(c.default || c));
-const LoadingAnimation = () => __webpack_require__.e(/* import() | components/loading-animation */ 19).then(__webpack_require__.bind(null, 52)).then(c => wrapFunctional(c.default || c));
+const LoadingAnimation = () => __webpack_require__.e(/* import() | components/loading-animation */ 19).then(__webpack_require__.bind(null, 50)).then(c => wrapFunctional(c.default || c));
 const OrderDisplay = () => __webpack_require__.e(/* import() | components/order-display */ 20).then(__webpack_require__.bind(null, 76)).then(c => wrapFunctional(c.default || c));
 const OtpInput = () => __webpack_require__.e(/* import() | components/otp-input */ 21).then(__webpack_require__.bind(null, 109)).then(c => wrapFunctional(c.default || c));
 
@@ -2785,8 +2834,8 @@ var external_vue_lazyload_default = /*#__PURE__*/__webpack_require__.n(external_
 
 external_vue_default.a.use(external_vue_lazyload_default.a, {
   preLoad: 1.3,
-  error: '/imgs/farmfresh.png',
-  loading: '/imgs/farmfresh.png',
+  error: '/imgs/loading.jpg',
+  loading: '/imgs/loading.jpg',
   attempt: 1
 });
 // CONCATENATED MODULE: ./.nuxt/index.js

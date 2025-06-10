@@ -573,51 +573,124 @@ shopperRoute.post(
 
 shopperRoute.post('/shopper/cart', authMiddleware, async (req, res, next) => {
   try {
-    console.log(req.userId)
-    console.log(req.body)
-    const { items, totalItems } = req.body
+    const userId = req.userId
+    const items = req.body.items || {}
+    const totalItems = req.body.totalItems || []
 
-    const foundUserCart = await UserCart.findOne({ userId: req.userId })
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ message: 'Authentication required: User ID not found.' })
+    }
+
     let user_cart
+    let total = 0
+
+    const foundUserCart = await UserCart.findOne({ userId })
 
     if (foundUserCart) {
-      console.log(foundUserCart, 'foundUserCart')
+      const mergedTotalItems = Array.from(new Set([...totalItems]))
 
-      user_cart = foundUserCart
+      const existingItems = { ...(foundUserCart.items || {}) }
 
-      const subTotal = user_cart.calculateTotal()
+      for (const productId in items) {
+        if (items.hasOwnProperty(productId)) {
+          existingItems[productId] = items[productId]
+        }
+      }
 
-      res.status(200).json({
-        synced: true,
-        user_cart
-      })
+      for (const existingProductId in existingItems) {
+        if (!items.hasOwnProperty(existingProductId)) {
+          delete existingItems[existingProductId]
+        }
+      }
 
-      /*const updatedUserCart = await UserCart.findOneAndUpdate({
-        userId: req.userId
-      });*/
+      const updatedUserCart = await UserCart.findOneAndUpdate(
+        { userId },
+        {
+          $set: {
+            totalItems: mergedTotalItems,
+            items: existingItems
+          }
+        },
+        { new: true, runValidators: true }
+      )
+
+      if (!updatedUserCart) {
+        return res.status(404).json({
+          synced: false,
+          user_cart: {}
+        })
+      }
+
+      user_cart = updatedUserCart
+
+      total = await user_cart.calculateTotal()
     } else {
       const newUserCart = new UserCart({
-        userId: req.userId,
+        userId,
         items,
         totalItems
       })
 
       await newUserCart.save()
 
-      console.log(newUserCart, 'newUserCart')
+      user_cart = await UserCart.findOne({ userId })
 
-      user_cart = await UserCart.findOne({ userId: req.userId })
-
-      res.status(200).json({
-        synced: true,
-        user_cart
-      })
+      total = await user_cart.calculateTotal()
     }
-    //CartClass
+
+    return res.status(200).json({
+      synced: true,
+      user_cart,
+      total
+    })
   } catch (error) {
     next(error)
   }
 })
+
+shopperRoute.post(
+  '/shopper/initialize',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const userId = req.userId
+
+      if (!userId) {
+        return res
+          .status(401)
+          .json({ message: 'Authentication required: User ID not found.' })
+      }
+
+      const foundUserCart = await UserCart.findOne({ userId })
+
+      if (foundUserCart) {
+        const total = await foundUserCart.calculateTotal()
+
+        return res.status(200).json({
+          initialized: true,
+          user_cart: {
+            items: foundUserCart.items || {},
+            totalItems: foundUserCart.totalItems || []
+          },
+          total
+        })
+      } else {
+        return res.status(200).json({
+          initialized: true,
+          user_cart: {
+            items: {},
+            totalItems: []
+          },
+          total: 0
+        })
+      }
+    } catch (error) {
+      next(error)
+    }
+  }
+)
 
 export default shopperRoute
 

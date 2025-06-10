@@ -55,7 +55,6 @@ export default {
     mounted() {
         //we call sync cart here
         console.log('calling sync cart')
-        this.$store.dispatch("cart/syncCartToServer");
     },
     methods: {
         continueShopping() {

@@ -11,23 +11,37 @@ const UserCartSchema = new mongoose.Schema({
   },
   totalItems: [],
   userId: mongoose.Schema.Types.ObjectId
-})
+});
 
-UserCartSchema.methods.calculateTotal = function () {
+UserCartSchema.methods.calculateTotal = async function () {
   let total = 0
-
-  this.totalItems.map(async item_id => {
+  const variantPromises = this.totalItems.map(async item_id => {
     const productId = new ObjectId(item_id)
-
     const variantsCollection =
       payoorDBConnection.db.collection('productvariants')
-
     const variant = await variantsCollection.findOne({ _id: productId })
-    const itemTotal = this.items[item_id] * variant.price;
 
-    console.log(variant.price)
+    if (!variant) {
+      console.warn(`Variant not found for ID: ${item_id}`)
+      return 0
+    }
+
+    //const value = myMap.get(idToFind)
+
+    const itemTotal = this.items.get(item_id) * variant.price
+    console.log(
+      typeof variant.price,
+      variant.price,
+      this.items.get(item_id),
+      typeof this.items.get(item_id),
+      item_id,
+      typeof item_id 
+    )
+    return itemTotal
   })
 
+  const itemTotals = await Promise.all(variantPromises)
+  total = itemTotals.reduce((sum, current) => sum + current, 0)
   return total
 }
 

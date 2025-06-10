@@ -88,7 +88,7 @@ export default {
         if (token) {
             this.getValidUser(token);
         } else {
-            this.redirectHome(); 
+            this.redirectHome();
         }
 
         //this.$store.dispatch('cart/resetCart');
@@ -132,7 +132,7 @@ export default {
             }
         },
         toggleSideMenu() {
-            this.menuopen = !this.menuopen; 
+            this.menuopen = !this.menuopen;
         },
         goBack() {
             this.$router.push({ path: this.backRoute, query: { ...this.$route.query } });

@@ -8,32 +8,31 @@ export const state = () => ({
 
 export const mutations = {
   ADD_ITEM (state, { id, quantity, price }) {
+    const prevQuantity = state.items[id] || 0
+    const delta = quantity - prevQuantity
+
     state.items[id] = quantity
-
-    const total = state.total
-
-    const updatedTotal = total + price
-
-    state.total = updatedTotal
+    state.total = state.total + price * delta
 
     const totalItems = [...state.totalItems, id]
-
-    const uniqueArray = [...new Set(totalItems)]
-
-    state.totalItems = uniqueArray
+    state.totalItems = [...new Set(totalItems)]
   },
 
   REMOVE_ITEM (state, { id, quantity, price }) {
+    const prevQuantity = state.items[id] || 0
+
     if (quantity === 0) {
       state.totalItems = state.totalItems.filter(itemId => itemId !== id)
 
       const { [id]: removed, ...updatedItems } = state.items
       state.items = updatedItems
-    } else {
-      state.items[id] = quantity
-    }
 
-    state.total = Math.max(0, state.total - price)
+      state.total = Math.max(0, state.total - price * prevQuantity)
+    } else {
+      const delta = (state.items[id] || 0) - quantity
+      state.items[id] = quantity
+      state.total = Math.max(0, state.total - price * delta)
+    }
 
     console.log('state.total', state.total, state.items)
   },
@@ -55,8 +54,6 @@ export const actions = {
   addItem ({ commit }, payload) {
     const { id, quantity, price } = payload
 
-    console.log(id, quantity, price)
-
     commit('ADD_ITEM', { id, quantity, price })
   },
 
@@ -68,14 +65,60 @@ export const actions = {
 
   initializeCart ({ commit }) {
     try {
-      const items = JSON.parse(localStorage.getItem('cartItems') || '{}')
-      const total = JSON.parse(localStorage.getItem('cartTotal') || '0')
-      const totalItems = Object.keys(items)
+      const storedItems = localStorage.getItem('cartItems')
+      const storedTotal = localStorage.getItem('cartTotal')
 
-      commit('SET_CART_STATE', { items, total, totalItems })
-    } catch (error) {
-      console.error('Failed to initialize cart from localStorage:', error)
+      const hasAnyLocalCartData = storedItems !== null && storedTotal !== null
+
+      if (hasAnyLocalCartData) {
+        const localItems = JSON.parse(storedItems || '{}')
+        const localTotal = JSON.parse(storedTotal || '0')
+
+        const localTotalItems = Object.keys(localItems)
+
+        commit('SET_CART_STATE', {
+          items: localItems,
+          total: localTotal,
+          totalItems: localTotalItems
+        })
+        return
+      }
+    } catch (e) {
+      console.warn(
+        'Failed to load cart from localStorage due to parsing error, falling back to server:',
+        e
+      )
     }
+
+    const token = localStorage.getItem('jwt')
+
+    fetch(`${serverurl}/shopper/initialize`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        return response.json()
+      })
+      .then(data => {
+        const { user_cart, total } = data
+        const items = user_cart.items || {}
+        const totalItems = user_cart.totalItems || []
+
+        commit('SET_CART_STATE', { items, total, totalItems })
+
+        localStorage.setItem('cartItems', JSON.stringify(items))
+        localStorage.setItem('cartTotal', JSON.stringify(total))
+      })
+      .catch(error => {
+        console.error('Failed to initialize cart from backend:', error)
+        commit('SET_CART_STATE', { items: {}, total: 0, totalItems: [] })
+      })
   },
 
   resetCart ({ commit }) {
@@ -92,6 +135,13 @@ export const actions = {
 
   async syncCartToServer ({ state, commit }) {
     try {
+      const hasItemsToSync = Object.keys(state.items || {}).length > 0
+
+      if (!hasItemsToSync) {
+        console.log('No items to sync — skipping server call.')
+        return
+      }
+
       const token = localStorage.getItem('jwt')
 
       const response = await fetch(`${serverurl}/shopper/cart`, {
@@ -116,13 +166,12 @@ export const actions = {
       }
 
       const data = await response.json()
-
-      const { user_cart } = data
+      const { user_cart, total } = data
       const { items, totalItems } = user_cart
 
-      //commit('SET_CART_STATE', { items, total, totalItems })
+      commit('SET_CART_STATE', { items, total, totalItems })
 
-      console.log(data)
+      console.log('Cart synced successfully:', data)
     } catch (error) {
       console.error('Failed to sync cart from localStorage to server:', error)
     }

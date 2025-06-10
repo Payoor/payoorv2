@@ -47,14 +47,18 @@
                             <span>Continue Shopping</span>
                         </button>
 
-                        <button class="button-primary spacebetween disabled-btn" v-if="cartTotal === 0">
+                        <button class="button-primary spacebetween disabled-btn" v-if="cartTotal === 0"
+                            :disabled="checkoutLoading">
                             <span>Proceed to Checkout</span>
-                            <CartButton :showicon="false" />
+                            <span v-if="checkoutLoading" class="loader ml-1"></span>
+                            <CartButton :showicon="false" v-else />
                         </button>
 
-                        <button class="button-primary spacebetween" @click="goToCheckout" v-if="cartTotal > 0">
+                        <button class="button-primary spacebetween" @click="goToCheckout" v-if="cartTotal > 0"
+                            :disabled="checkoutLoading">
                             <span>Proceed to Checkout</span>
-                            <CartButton :showicon="false" />
+                            <span v-if="checkoutLoading" class="loader ml-1"></span>
+                            <CartButton :showicon="false" v-else />
                         </button>
                     </div>
                 </div>
@@ -68,14 +72,24 @@
 import { mapState } from "vuex";
 import { serverurl } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
+import LoadingAnimation from "@/components/LoadingAnimation.vue"; // Assuming you have this component
+import CartButton from "@/components/CartButton.vue"; // Assuming you have this component
+import ChatOption from "@/components/ChatOption.vue"; // Assuming you have this component
+
 
 export default {
     props: ['toggleViewOptions', 'mongooseid', 'productname', 'productimg', 'productDescription'],
     mixins: [jwt_mixin],
+    components: {
+        LoadingAnimation, // Register the component
+        CartButton,
+        ChatOption
+    },
     data() {
         return {
             variants: [],
-            loading: false
+            loading: false,
+            checkoutLoading: false // New data property to manage checkout button loading state
         }
     },
     mounted() {
@@ -127,18 +141,22 @@ export default {
                 }
             });
         },
-        goToCheckout() {
-            const { cartItems, cartTotal } = this;
-
-            localStorage.setItem('cartItems', JSON.stringify(cartItems));
-            localStorage.setItem('cartTotal', JSON.stringify(cartTotal));
-
-            this.$router.push({
-                path: '/checkout',
-                query: {
-                    ...this.$route.query,
-                }
-            });
+        async goToCheckout() {
+            this.checkoutLoading = true; // Start loading
+            try {
+                await this.$store.dispatch("cart/syncCartToServer");
+                this.$router.push({
+                    path: '/checkout',
+                    query: {
+                        ...this.$route.query,
+                    }
+                });
+            } catch (error) {
+                console.error("Error syncing cart to server:", error);
+                // Optionally handle the error, e.g., show a toast message
+            } finally {
+                this.checkoutLoading = false; // Stop loading regardless of success or failure
+            }
         }
     }
 }
@@ -244,6 +262,44 @@ export default {
 
     &__bottom {
         @include fixed-bottom-button-container;
+
+        .button-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center; // Center content for a better look with loader
+            gap: 0.5rem; // Add some space between text and loader/icon
+        }
     }
+}
+
+.loader {
+    border: .4rem solid #f3f3f3;
+    /* Light grey */
+    border-top: .4rem solid $white;
+    /* White */
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    animation: spin 1s linear infinite;
+}
+
+.ml-1 {
+    margin-left: 0.5rem; // Basic margin for the loader
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+// Style for disabled button when checkoutLoading is true
+.button-primary[disabled] {
+    opacity: 0.7; // Visually indicate disabled state
+    cursor: not-allowed; // Change cursor
 }
 </style>

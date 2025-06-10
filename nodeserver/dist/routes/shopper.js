@@ -20,6 +20,10 @@ var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _ElasticSearchClass = _interopRequireDefault(require("../controllers/ElasticSearchClass"));
 var _GoogleApiController = _interopRequireDefault(require("../controllers/GoogleApiController"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -797,72 +801,176 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
 }());
 shopperRoute.post('/shopper/cart', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref1 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee1(req, res, next) {
-    var _req$body, items, totalItems, foundUserCart, user_cart, subTotal, newUserCart;
+    var userId, items, totalItems, user_cart, total, foundUserCart, mergedTotalItems, existingItems, productId, existingProductId, updatedUserCart, newUserCart;
     return _regeneratorRuntime().wrap(function _callee1$(_context10) {
       while (1) switch (_context10.prev = _context10.next) {
         case 0:
           _context10.prev = 0;
-          console.log(req.userId);
-          console.log(req.body);
-          _req$body = req.body, items = _req$body.items, totalItems = _req$body.totalItems;
-          _context10.next = 6;
-          return _UserCart["default"].findOne({
-            userId: req.userId
-          });
-        case 6:
-          foundUserCart = _context10.sent;
-          if (!foundUserCart) {
-            _context10.next = 14;
+          userId = req.userId;
+          items = req.body.items || {};
+          totalItems = req.body.totalItems || [];
+          if (userId) {
+            _context10.next = 6;
             break;
           }
-          console.log(foundUserCart, 'foundUserCart');
-          user_cart = foundUserCart;
-          subTotal = user_cart.calculateTotal();
-          res.status(200).json({
-            synced: true,
-            user_cart: user_cart
+          return _context10.abrupt("return", res.status(401).json({
+            message: 'Authentication required: User ID not found.'
+          }));
+        case 6:
+          total = 0;
+          _context10.next = 9;
+          return _UserCart["default"].findOne({
+            userId: userId
           });
-
-          /*const updatedUserCart = await UserCart.findOneAndUpdate({
-            userId: req.userId
-          });*/
-          _context10.next = 22;
+        case 9:
+          foundUserCart = _context10.sent;
+          if (!foundUserCart) {
+            _context10.next = 26;
+            break;
+          }
+          mergedTotalItems = Array.from(new Set(_toConsumableArray(totalItems)));
+          existingItems = _objectSpread({}, foundUserCart.items || {});
+          for (productId in items) {
+            if (items.hasOwnProperty(productId)) {
+              existingItems[productId] = items[productId];
+            }
+          }
+          for (existingProductId in existingItems) {
+            if (!items.hasOwnProperty(existingProductId)) {
+              delete existingItems[existingProductId];
+            }
+          }
+          _context10.next = 17;
+          return _UserCart["default"].findOneAndUpdate({
+            userId: userId
+          }, {
+            $set: {
+              totalItems: mergedTotalItems,
+              items: existingItems
+            }
+          }, {
+            "new": true,
+            runValidators: true
+          });
+        case 17:
+          updatedUserCart = _context10.sent;
+          if (updatedUserCart) {
+            _context10.next = 20;
+            break;
+          }
+          return _context10.abrupt("return", res.status(404).json({
+            synced: false,
+            user_cart: {}
+          }));
+        case 20:
+          user_cart = updatedUserCart;
+          _context10.next = 23;
+          return user_cart.calculateTotal();
+        case 23:
+          total = _context10.sent;
+          _context10.next = 35;
           break;
-        case 14:
+        case 26:
           newUserCart = new _UserCart["default"]({
-            userId: req.userId,
+            userId: userId,
             items: items,
             totalItems: totalItems
           });
-          _context10.next = 17;
+          _context10.next = 29;
           return newUserCart.save();
-        case 17:
-          console.log(newUserCart, 'newUserCart');
-          _context10.next = 20;
+        case 29:
+          _context10.next = 31;
           return _UserCart["default"].findOne({
-            userId: req.userId
+            userId: userId
           });
-        case 20:
+        case 31:
           user_cart = _context10.sent;
-          res.status(200).json({
+          _context10.next = 34;
+          return user_cart.calculateTotal();
+        case 34:
+          total = _context10.sent;
+        case 35:
+          return _context10.abrupt("return", res.status(200).json({
             synced: true,
-            user_cart: user_cart
-          });
-        case 22:
-          _context10.next = 27;
-          break;
-        case 24:
-          _context10.prev = 24;
+            user_cart: user_cart,
+            total: total
+          }));
+        case 38:
+          _context10.prev = 38;
           _context10.t0 = _context10["catch"](0);
           next(_context10.t0);
-        case 27:
+        case 41:
         case "end":
           return _context10.stop();
       }
-    }, _callee1, null, [[0, 24]]);
+    }, _callee1, null, [[0, 38]]);
   }));
   return function (_x29, _x30, _x31) {
     return _ref1.apply(this, arguments);
+  };
+}());
+shopperRoute.post('/shopper/initialize', _authMiddleware["default"], /*#__PURE__*/function () {
+  var _ref10 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res, next) {
+    var userId, foundUserCart, total;
+    return _regeneratorRuntime().wrap(function _callee10$(_context11) {
+      while (1) switch (_context11.prev = _context11.next) {
+        case 0:
+          _context11.prev = 0;
+          userId = req.userId;
+          if (userId) {
+            _context11.next = 4;
+            break;
+          }
+          return _context11.abrupt("return", res.status(401).json({
+            message: 'Authentication required: User ID not found.'
+          }));
+        case 4:
+          _context11.next = 6;
+          return _UserCart["default"].findOne({
+            userId: userId
+          });
+        case 6:
+          foundUserCart = _context11.sent;
+          if (!foundUserCart) {
+            _context11.next = 14;
+            break;
+          }
+          _context11.next = 10;
+          return foundUserCart.calculateTotal();
+        case 10:
+          total = _context11.sent;
+          return _context11.abrupt("return", res.status(200).json({
+            initialized: true,
+            user_cart: {
+              items: foundUserCart.items || {},
+              totalItems: foundUserCart.totalItems || []
+            },
+            total: total
+          }));
+        case 14:
+          return _context11.abrupt("return", res.status(200).json({
+            initialized: true,
+            user_cart: {
+              items: {},
+              totalItems: []
+            },
+            total: 0
+          }));
+        case 15:
+          _context11.next = 20;
+          break;
+        case 17:
+          _context11.prev = 17;
+          _context11.t0 = _context11["catch"](0);
+          next(_context11.t0);
+        case 20:
+        case "end":
+          return _context11.stop();
+      }
+    }, _callee10, null, [[0, 17]]);
+  }));
+  return function (_x32, _x33, _x34) {
+    return _ref10.apply(this, arguments);
   };
 }());
 var _default = exports["default"] = shopperRoute; //https://chatgpt.com/c/6819039c-9ad4-8005-8400-d2567db4dc3c
