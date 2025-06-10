@@ -120,6 +120,80 @@ export class TelegramBotClass {
           }*/
         }
 
+        if (command === '/setdeliveryfee') {
+          if (!arg1 || isNaN(parseFloat(arg1))) {
+            return this.bot.sendMessage(
+              telegramid,
+              '⚠️ Usage: /setdeliveryfee <amount> (e.g., /setdeliveryfee 1500)'
+            )
+          }
+          const amount = parseFloat(arg1)
+          await this.redisClient.hset(
+            'admindirective',
+            'deliveryfee',
+            amount.toString()
+          )
+          return this.bot.sendMessage(
+            telegramid,
+            `✅ Delivery fee set to: ${amount}`
+          )
+        }
+
+        if (command === '/setservicecharge') {
+          if (!arg1 || isNaN(parseFloat(arg1))) {
+            return this.bot.sendMessage(
+              telegramid,
+              '⚠️ Usage: /setservicecharge <percent> (e.g., /setservicecharge 10)'
+            )
+          }
+          const percent = parseFloat(arg1)
+          await this.redisClient.hset(
+            'admindirective',
+            'servicecharge',
+            percent.toString()
+          )
+          return this.bot.sendMessage(
+            telegramid,
+            `✅ Service charge set to: ${percent}%`
+          )
+        }
+
+        if (command === '/getdeliveryfee') {
+          const deliveryFee = await this.redisClient.hget(
+            'admindirective',
+            'deliveryfee'
+          )
+          if (deliveryFee) {
+            return this.bot.sendMessage(
+              telegramid,
+              `🚚 Current delivery fee: ${deliveryFee}`
+            )
+          } else {
+            return this.bot.sendMessage(
+              telegramid,
+              'ℹ️ Delivery fee is not set. Use /setdeliveryfee to set it.'
+            )
+          }
+        }  
+
+        if (command === '/getservicecharge') {
+          const serviceCharge = await this.redisClient.hget(
+            'admindirective',
+            'servicecharge'
+          )
+          if (serviceCharge) {
+            return this.bot.sendMessage(
+              telegramid,
+              `📊 Current service charge: ${serviceCharge}%`
+            )
+          } else {
+            return this.bot.sendMessage(
+              telegramid,
+              'ℹ️ Service charge is not set. Use /setservicecharge to set it.'
+            )
+          }
+        }
+
         if (command === '/listadmins') {
           if (!isSuperAdmin) {
             return this.bot.sendMessage(
@@ -171,8 +245,8 @@ export class TelegramBotClass {
                 phone_number,
                 cart_items
               }) => {
-                const email = user_id ? user_id.email : 'N/A';
-                const userPhoneNumber = user_id ? user_id.phoneNumber : 'N/A';
+                const email = user_id ? user_id.email : 'N/A'
+                const userPhoneNumber = user_id ? user_id.phoneNumber : 'N/A'
 
                 return `
                     User Email:
