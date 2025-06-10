@@ -2,7 +2,7 @@
     <div class="orders">
         <div class="orders__header">
             <div class="chatcart__header">
-                <ChatHeader :name="'Your Orders'" :logovisible="false" :jwt="true" :backRoute="'/'" />
+                <ChatHeader :name="'Your Orders'" :logovisible="false" :jwt="true" :backRoute="$route.query.prevpage" />
             </div>
         </div>
 

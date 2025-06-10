@@ -16,6 +16,8 @@ authRoute.post('/shopper/auth/mail', _AuthClass["default"].sendEmailOtp);
 authRoute.post('/shopper/auth/verifyotp', _AuthClass["default"].verifyOtp);
 authRoute.post('/shopper/auth/google', _AuthClass["default"].googleAuth);
 authRoute.get('/shopper/auth/validuser', _AuthClass["default"].getValidUser);
+authRoute.post('/shopper/auth/updatedetails/phonenumber', _authMiddleware["default"], _AuthClass["default"].updatePhoneNumber);
+authRoute.post('/shopper/auth/updatedetails/name', _authMiddleware["default"], _AuthClass["default"].updateName);
 authRoute.post('/shopper/auth/updatedetails', _authMiddleware["default"], _AuthClass["default"].updateDetails);
 authRoute.post('/shopper/auth/signout', _AuthClass["default"].signOut);
 var _default = exports["default"] = authRoute;

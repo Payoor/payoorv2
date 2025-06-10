@@ -72,22 +72,14 @@
 import { mapState } from "vuex";
 import { serverurl } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
-import LoadingAnimation from "@/components/LoadingAnimation.vue"; // Assuming you have this component
-import CartButton from "@/components/CartButton.vue"; // Assuming you have this component
-import ChatOption from "@/components/ChatOption.vue"; // Assuming you have this component
-
 
 export default {
     props: ['toggleViewOptions', 'mongooseid', 'productname', 'productimg', 'productDescription'],
     mixins: [jwt_mixin],
-    components: {
-        LoadingAnimation, // Register the component
-        CartButton,
-        ChatOption
-    },
     data() {
         return {
             variants: [],
+            backRoute: '/',
             loading: false,
             checkoutLoading: false // New data property to manage checkout button loading state
         }
@@ -142,20 +134,21 @@ export default {
             });
         },
         async goToCheckout() {
-            this.checkoutLoading = true; // Start loading
+            this.checkoutLoading = true;
+
             try {
                 await this.$store.dispatch("cart/syncCartToServer");
                 this.$router.push({
                     path: '/checkout',
                     query: {
                         ...this.$route.query,
+                        prevpage: this.$route.path
                     }
                 });
             } catch (error) {
                 console.error("Error syncing cart to server:", error);
-                // Optionally handle the error, e.g., show a toast message
             } finally {
-                this.checkoutLoading = false; // Stop loading regardless of success or failure
+                this.checkoutLoading = false;
             }
         }
     }

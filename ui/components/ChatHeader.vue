@@ -1,5 +1,6 @@
 <template>
     <div class="chat-header">
+        <!--{{ currentRoute, previousRoute }}-->
         <div class="chat-header__left">
             <div class="chat-header__name" v-if="name" @click="goBack">
                 <span class="svg">
@@ -73,14 +74,22 @@ export default {
     props: ['logovisible', 'name', 'backRoute', 'green'],
     emits: ['update:authValue'],
     data() {
-        return { menuopen: false };
+        return {
+            menuopen: false
+        };
     },
     computed: {
         ...mapState("user", {
             currentUser: (state) => state.currentUser,
             isLoading: (state) => state.loading,
-            jwtToken: (state) => state.jwtToken
+            jwtToken: (state) => state.jwtToken,
+            currentRoute: (state) => state.currentRoute,
+            previousRoute: (state) => state.previousRoute
         }),
+        currentRoute() {
+
+            return this.$route.name;
+        }
     },
     async mounted() {
         const token = await this.getValidToken();
@@ -91,10 +100,16 @@ export default {
             this.redirectHome();
         }
 
+        console.log(this.currentRoute, 'this is a test')
+
         //this.$store.dispatch('cart/resetCart');
 
+        this.$store.dispatch('user/trackRouteChange', this.currentRoute)
+
         this.$store.dispatch('cart/initializeCart');
+
         this.menuopen = window.innerWidth > 900 && this.jwtToken;
+
         window.addEventListener('resize', this.handleResize);
     },
     beforeDestroy() {
@@ -108,7 +123,7 @@ export default {
             }
         },
         goToUserOrders() {
-            this.$router.push({ path: '/orders', query: { ...this.$route.query } });
+            this.$router.push({ path: '/orders', query: { ...this.$route.query, prevpage: this.$route.path } });
         },
         async getValidUser(token) {
             try {

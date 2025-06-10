@@ -145,8 +145,8 @@ class AuthClass {
       const hashedKey = `otp:code:${hashOtp(submittedOtp)}`
       //console.log('[verifyOtp] Hashed OTP key:', hashedKey)
 
-      let identifier;
-      
+      let identifier
+
       try {
         console.time('[verifyOtp] Redis GET')
         identifier = await redisClient.get(hashedKey)
@@ -188,7 +188,7 @@ class AuthClass {
         }
       }
 
-      let token;
+      let token
 
       try {
         console.time('[verifyOtp] Generate Token')
@@ -312,7 +312,7 @@ class AuthClass {
   static async getValidUser (req, res, next) {
     try {
       //console.log('hello get bvalid user')
-      const { jwttoken } = req.query;
+      const { jwttoken } = req.query
 
       //console.log(jwttoken)
 
@@ -348,7 +348,7 @@ class AuthClass {
         const user = await User.findByToken(jwttoken)
 
         if (user) {
-          await user.removeToken(jwttoken);
+          await user.removeToken(jwttoken)
         }
 
         return res.status(404).json({
@@ -392,6 +392,84 @@ class AuthClass {
         user: {
           name: updatedUser.name,
           phoneNumber: updatedUser.phoneNumber
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async updatePhoneNumber (req, res, next) {
+    try {
+      const { phoneNumber } = req.body
+      const userId = req.userId
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: 'Unauthorized: user ID not found in request'
+        })
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { phoneNumber },
+        { new: true }
+      )
+
+      if (!updatedUser) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        })
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'User details updated successfully',
+        user: {
+          name: updatedUser.name,
+          phoneNumber: updatedUser.phoneNumber,
+          email: updatedUser.email
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async updateName (req, res, next) {
+    try {
+      const { name } = req.body
+      const userId = req.userId
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: 'Unauthorized: user ID not found in request'
+        })
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { name },
+        { new: true }
+      )
+
+      if (!updatedUser) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        })
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'User details updated successfully',
+        user: {
+          name: updatedUser.name,
+          phoneNumber: updatedUser.phoneNumber,
+          email: updatedUser.email
         }
       })
     } catch (error) {

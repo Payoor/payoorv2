@@ -1,7 +1,7 @@
 <template>
     <div class="chatcart">
         <div class="chatcart__header">
-            <ChatHeader :name="'Your Cart'" :logovisible="false" :jwt="true" :backRoute="'/'" />
+            <ChatHeader :name="'Your Cart'" :logovisible="false" :jwt="true" :backRoute="backRoute" />
         </div>
 
         <div class="chatcart__content">
@@ -42,6 +42,7 @@ import { mapState } from "vuex";
 export default {
     data() {
         return {
+            backRoute: '/',
             variants: []
         }
     },
@@ -68,6 +69,8 @@ export default {
         goToCheckout() {
             const { cartItems, cartTotal } = this;
 
+            this.backRoute = this.$route.path
+
             localStorage.setItem('cartItems', JSON.stringify(cartItems));
             localStorage.setItem('cartTotal', JSON.stringify(cartTotal));
 
@@ -75,6 +78,7 @@ export default {
                 path: '/checkout',
                 query: {
                     ...this.$route.query,
+                    prevpage: this.$route.path
                 }
             });
         }

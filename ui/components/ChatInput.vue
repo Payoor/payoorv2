@@ -1,12 +1,16 @@
 <template>
     <div>
+        <div v-if="errorMessage" class="error-message">
+            {{ errorMessage }}
+        </div>
         <div class="chatinput">
+
             <div v-if="!currentUser.otpMode">
                 <textarea v-model="userinput" class="chatinput__field" :placeholder="placeholder" @input="autoResize"
                     @keydown.enter="handleEnter" ref="textarea"
                     v-if="currentUser.name && currentUser.phoneNumber && currentUser.detailsAdded"
                     :disabled="isLoading || currentUser.otpMode">
-</textarea>
+                </textarea>
 
                 <input v-model="userinput" class="chatinput__field" type="email" :placeholder="placeholder"
                     v-if="isEmailMode" :disabled="isLoading || currentUser.otpMode" />
@@ -35,7 +39,6 @@
     </div>
 </template>
 
-
 <script>
 import { mapState } from "vuex";
 import { serverurl } from '@/api';
@@ -48,6 +51,7 @@ export default {
     data() {
         return {
             userinput: "",
+            errorMessage: "",
         };
     },
     watch: {
@@ -55,7 +59,10 @@ export default {
             console.log(newVal)
         },
         userinput(newValue) {
-            const wordArray = newValue.trim().split(/\s+/); // split by spaces
+            if (this.errorMessage && newValue.length > 0) {
+                this.errorMessage = "";
+            }
+            const wordArray = newValue.trim().split(/\s+/);
             const wordCount = wordArray.length;
             if (wordCount >= 1) {
                 if (wordCount >= 5 || wordArray[0].length >= 5) {
@@ -94,6 +101,8 @@ export default {
     mounted() {
         const message = this.$route.query.message;
 
+        /*const token = localStorage.getItem('jwt')
+
         if (this.$route.name === 'authp') {
             const { email, phoneNumber, name } = this.$route.query;
 
@@ -108,7 +117,7 @@ export default {
             if (email) {
                 this.$store.dispatch('user/setUserEmail', email);
             }
-        }
+        }*/
 
         if (message) {
             this.postMessageFromQuery(message);
@@ -118,76 +127,90 @@ export default {
         autoResize() {
             this.$nextTick(() => {
                 const textarea = this.$refs.textarea;
-                textarea.style.height = "auto";
-                textarea.style.height = `${textarea.scrollHeight}px`;
+                if (textarea) {
+                    textarea.style.height = "auto";
+                    textarea.style.height = `${textarea.scrollHeight}px`;
+                }
             });
         },
-
         async sendMessage() {
-            const { userinput } = this;
+            this.errorMessage = "";
 
-            if (userinput.trim()) {
-                if (this.isEmailMode) {
+            try {
+                const { userinput } = this;
 
-                    if (this.getOtp) {
-                        await this.getOtp(userinput);
+                if (userinput.trim()) {
+                    if (this.isEmailMode) {
+                        if (this.getOtp) {
+                            await this.getOtp(userinput);
+                        }
+
+                        this.$store.dispatch('user/setUserEmail', userinput);
+                        this.$store.dispatch('user/setOtpMode', true);
+
+                        this.userinput = "";
+
+                        this.$router.push({
+                            query: {
+                                ...this.$route.query,
+                                email: this.currentUser.email,
+                            }
+                        });
+                    } else if (this.isPhoneMode) {
+                        await this.$store.dispatch('user/updateUserPhoneNumber', userinput);
+
+                        this.userinput = "";
+
+                        this.$router.push({
+                            query: {
+                                ...this.$route.query,
+                                email: this.currentUser.email,
+                                phoneNumber: this.currentUser.phoneNumber,
+                            }
+                        });
+                    } else if (this.isNameMode) {
+                        await this.$store.dispatch('user/setUserName', userinput);
+
+                        this.userinput = "";
+
+                        this.$router.push({
+                            path: '/',
+                            query: {
+                                ...this.$route.query,
+                                email: this.currentUser.email,
+                                phoneNumber: this.currentUser.phoneNumber,
+                                name: this.currentUser.name,
+                            }
+                        });
+                    } else {
+                        this.$emit("update:products", []);
+
+                        this.$router.push({
+                            query: {
+                                message: userinput.trim(),
+                                email: this.currentUser.email,
+                                phoneNumber: this.currentUser.phoneNumber,
+                                name: this.currentUser.name,
+                            }
+                        });
+
+                        await this.postMessageToServer();
+
+                        this.$emit("update:replyuser");
                     }
+                }
+            } catch (error) {
+                this.userinput = "";
+                console.error('An error occurred in sendMessage:', error);
 
-                    this.$store.dispatch('user/setUserEmail', userinput);
-                    this.$store.dispatch('user/setOtpMode', true);
-                    this.userinput = "";
-
-                    this.$router.push({
-                        query: {
-                            ...this.$route.query,
-                            email: this.currentUser.email,
-                        }
-                    });
-                } else if (this.isPhoneMode) {
-                    this.$store.dispatch('user/setUserPhoneNumber', userinput);
-                    this.userinput = "";
-
-                    this.$router.push({
-                        query: {
-                            ...this.$route.query,
-                            email: this.currentUser.email,
-                            phoneNumber: this.currentUser.phoneNumber,
-                        }
-                    });
-                } else if (this.isNameMode) {
-                    this.$store.dispatch('user/setUserName', userinput);
-                    this.userinput = "";
-
-                    this.$router.push({
-                        path: '/',
-                        query: {
-                            ...this.$route.query,
-                            email: this.currentUser.email,
-                            phoneNumber: this.currentUser.phoneNumber,
-                            name: this.currentUser.name,
-                        }
-                    });
-                } else {
-                    this.$emit("update:products", []);
-
-                    this.$router.push({
-                        query: {
-                            message: userinput.trim(),
-                            email: this.currentUser.email,
-                            phoneNumber: this.currentUser.phoneNumber,
-                            name: this.currentUser.name,
-                        }
-                    });
-
-
-                    await this.postMessageToServer();
-                    this.$emit("update:replyuser");
+                // Set the error message based on the type of error
+                if (error.status === 409) {
+                    this.errorMessage = error.message;
                 }
             }
         },
         handleEnter(e) {
             const width = window.innerWidth;
-
             if (width > 900) {
                 e.preventDefault();
                 this.sendMessage();
@@ -195,7 +218,7 @@ export default {
         },
         async postMessageToServer() {
             const token = await this.getValidToken();
-            if (this.setLoading) this.setLoading(true); // start loading
+            if (this.setLoading) this.setLoading(true);
 
             try {
                 const response = await fetch(`${serverurl}/shopper/message`, {
@@ -211,7 +234,11 @@ export default {
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    const errorData = await response.json(); // Try to get error details
+                    const error = new Error(`HTTP error! status: ${response.status}: ${errorData.message || 'Unknown error'}`);
+                    error.status = response.status;
+                    error.data = errorData;
+                    throw error;
                 }
 
                 if (response.status === 200 || response.status === 201) {
@@ -232,9 +259,11 @@ export default {
                     this.$nextTick(() => this.autoResize());
                 }
             } catch (error) {
-                console.log(error);
+                console.error(error);
+                // Propagate error to sendMessage's catch block if this component doesn't handle it fully
+                throw error;
             } finally {
-                if (this.setLoading) this.setLoading(false); // end loading
+                if (this.setLoading) this.setLoading(false);
             }
         },
         async postMessageFromQuery(message) {
@@ -255,7 +284,11 @@ export default {
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    const errorData = await response.json(); // Try to get error details
+                    const error = new Error(`HTTP error! status: ${response.status}: ${errorData.message || 'Unknown error'}`);
+                    error.status = response.status;
+                    error.data = errorData;
+                    throw error;
                 }
 
                 if (response.status === 200 || response.status === 201) {
@@ -265,7 +298,9 @@ export default {
                     this.$emit("update:products", [...this.products, ...products]);
                 }
             } catch (error) {
-                console.log(error);
+                console.error(error);
+                // Propagate error to sendMessage's catch block if this component doesn't handle it fully
+                throw error;
             } finally {
                 if (this.setLoading) this.setLoading(false);
             }
@@ -274,36 +309,41 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
 .chatinput {
     position: relative;
-
     margin: 0 auto;
     border: 0.3rem solid transparent;
     background: #333333;
     overflow: hidden;
     padding: 2rem;
     min-height: 6rem;
-
     border-radius: 3rem;
 
     @include respond(tab-port) {
         border-radius: 3rem 3rem 0rem 0rem;
     }
 
+    .error-message {
+        color: #ff4d4d;
+        /* Red color for error messages */
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        font-weight: bold;
+    }
+
     &__field {
         border: none;
         outline: none;
         width: 100%;
-        min-height: 2rem; // More substantial default height
+        min-height: 2rem;
         max-height: 15rem;
         resize: none;
         overflow-y: auto;
         color: $white;
         background: transparent;
         line-height: 1.5;
-
         font-size: 2.1rem;
     }
 
@@ -318,7 +358,6 @@ export default {
         border-radius: 100%;
         overflow: hidden;
         background: $primary-color;
-
         display: none;
 
         &.visible {

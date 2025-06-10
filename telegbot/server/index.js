@@ -11,7 +11,7 @@ const { redisClient, connectRedis } = require('./redisconf')
 
 require('./db')
 
-const port = process.env.PORT
+const port = process.env.PORT;
 
 app.use(express.json())
 app.use(express.text({ type: 'text/plain' }))

@@ -45,6 +45,14 @@ export default {
             loading: false // Introduce a loading state
         }
     },
+    mounted() {
+        const previousPage = this.$route.query.prevpage;
+        const currentProduct = this.$route.query.currentproduct;
+
+        if (previousPage === '/' && currentProduct === this.product._mongooseid) {
+            this.view_options = true;
+        }
+    },
     computed: {
         name() {
             return this.product.name || '';
@@ -66,17 +74,39 @@ export default {
     },
     methods: {
         async toggleViewOptions() {
-            this.loading = true; // Set loading to true when the async operation starts
+            if (this.view_options) {
+                const newQuery = { ...this.$route.query };
+                delete newQuery.currentproduct;
+
+                this.$router.push({
+                    path: '/',
+                    query: newQuery
+                });
+
+                this.view_options = false;
+
+                return;
+            }
+
+            this.loading = true;
+
             try {
                 await this.$store.dispatch("cart/syncCartToServer");
             } catch (error) {
                 console.error("Error syncing cart to server:", error);
-                // Optionally handle the error, e.g., show a toast notification
             } finally {
-                this.loading = false; // Set loading to false when the async operation completes (success or failure)
+                this.loading = false;
             }
 
-            this.view_options = !this.view_options;
+            this.view_options = true;
+
+            this.$router.push({
+                path: '/',
+                query: {
+                    ...this.$route.query,
+                    currentproduct: this.product._mongooseid
+                }
+            });
         },
         formatTag(tag) {
             if (tag.length > 6) {

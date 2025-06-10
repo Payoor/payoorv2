@@ -543,58 +543,180 @@ var AuthClass = /*#__PURE__*/function () {
       return updateDetails;
     }()
   }, {
-    key: "signOut",
+    key: "updatePhoneNumber",
     value: function () {
-      var _signOut = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res, next) {
-        var _req$headers$authoriz, token, user;
+      var _updatePhoneNumber = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res, next) {
+        var phoneNumber, userId, updatedUser;
         return _regeneratorRuntime().wrap(function _callee8$(_context8) {
           while (1) switch (_context8.prev = _context8.next) {
             case 0:
               _context8.prev = 0;
-              token = (_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.split(' ')[1];
-              if (token) {
-                _context8.next = 4;
+              phoneNumber = req.body.phoneNumber;
+              userId = req.userId;
+              if (userId) {
+                _context8.next = 5;
                 break;
               }
-              return _context8.abrupt("return", res.status(400).json({
+              return _context8.abrupt("return", res.status(401).json({
                 success: false,
-                message: 'Token is required'
+                message: 'Unauthorized: user ID not found in request'
               }));
-            case 4:
-              _context8.next = 6;
-              return _User["default"].findByToken(token);
-            case 6:
-              user = _context8.sent;
-              if (user) {
-                _context8.next = 9;
+            case 5:
+              _context8.next = 7;
+              return _User["default"].findByIdAndUpdate(userId, {
+                phoneNumber: phoneNumber
+              }, {
+                "new": true
+              });
+            case 7:
+              updatedUser = _context8.sent;
+              if (updatedUser) {
+                _context8.next = 10;
                 break;
               }
               return _context8.abrupt("return", res.status(404).json({
                 success: false,
+                message: 'User not found'
+              }));
+            case 10:
+              return _context8.abrupt("return", res.status(200).json({
+                success: true,
+                message: 'User details updated successfully',
+                user: {
+                  name: updatedUser.name,
+                  phoneNumber: updatedUser.phoneNumber,
+                  email: updatedUser.email
+                }
+              }));
+            case 13:
+              _context8.prev = 13;
+              _context8.t0 = _context8["catch"](0);
+              next(_context8.t0);
+            case 16:
+            case "end":
+              return _context8.stop();
+          }
+        }, _callee8, null, [[0, 13]]);
+      }));
+      function updatePhoneNumber(_x18, _x19, _x20) {
+        return _updatePhoneNumber.apply(this, arguments);
+      }
+      return updatePhoneNumber;
+    }()
+  }, {
+    key: "updateName",
+    value: function () {
+      var _updateName = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res, next) {
+        var name, userId, updatedUser;
+        return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+          while (1) switch (_context9.prev = _context9.next) {
+            case 0:
+              _context9.prev = 0;
+              name = req.body.name;
+              userId = req.userId;
+              if (userId) {
+                _context9.next = 5;
+                break;
+              }
+              return _context9.abrupt("return", res.status(401).json({
+                success: false,
+                message: 'Unauthorized: user ID not found in request'
+              }));
+            case 5:
+              _context9.next = 7;
+              return _User["default"].findByIdAndUpdate(userId, {
+                name: name
+              }, {
+                "new": true
+              });
+            case 7:
+              updatedUser = _context9.sent;
+              if (updatedUser) {
+                _context9.next = 10;
+                break;
+              }
+              return _context9.abrupt("return", res.status(404).json({
+                success: false,
+                message: 'User not found'
+              }));
+            case 10:
+              return _context9.abrupt("return", res.status(200).json({
+                success: true,
+                message: 'User details updated successfully',
+                user: {
+                  name: updatedUser.name,
+                  phoneNumber: updatedUser.phoneNumber,
+                  email: updatedUser.email
+                }
+              }));
+            case 13:
+              _context9.prev = 13;
+              _context9.t0 = _context9["catch"](0);
+              next(_context9.t0);
+            case 16:
+            case "end":
+              return _context9.stop();
+          }
+        }, _callee9, null, [[0, 13]]);
+      }));
+      function updateName(_x21, _x22, _x23) {
+        return _updateName.apply(this, arguments);
+      }
+      return updateName;
+    }()
+  }, {
+    key: "signOut",
+    value: function () {
+      var _signOut = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res, next) {
+        var _req$headers$authoriz, token, user;
+        return _regeneratorRuntime().wrap(function _callee0$(_context0) {
+          while (1) switch (_context0.prev = _context0.next) {
+            case 0:
+              _context0.prev = 0;
+              token = (_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.split(' ')[1];
+              if (token) {
+                _context0.next = 4;
+                break;
+              }
+              return _context0.abrupt("return", res.status(400).json({
+                success: false,
+                message: 'Token is required'
+              }));
+            case 4:
+              _context0.next = 6;
+              return _User["default"].findByToken(token);
+            case 6:
+              user = _context0.sent;
+              if (user) {
+                _context0.next = 9;
+                break;
+              }
+              return _context0.abrupt("return", res.status(404).json({
+                success: false,
                 message: 'Invalid token or user not found'
               }));
             case 9:
-              _context8.next = 11;
+              _context0.next = 11;
               return user.removeToken(token);
             case 11:
-              _context8.next = 13;
+              _context0.next = 13;
               return _redisconf.redisClient.del("auth:session:".concat(token));
             case 13:
-              return _context8.abrupt("return", res.status(200).json({
+              return _context0.abrupt("return", res.status(200).json({
                 success: true,
                 message: 'Signed out successfully'
               }));
             case 16:
-              _context8.prev = 16;
-              _context8.t0 = _context8["catch"](0);
-              next(_context8.t0);
+              _context0.prev = 16;
+              _context0.t0 = _context0["catch"](0);
+              next(_context0.t0);
             case 19:
             case "end":
-              return _context8.stop();
+              return _context0.stop();
           }
-        }, _callee8, null, [[0, 16]]);
+        }, _callee0, null, [[0, 16]]);
       }));
-      function signOut(_x18, _x19, _x20) {
+      function signOut(_x24, _x25, _x26) {
         return _signOut.apply(this, arguments);
       }
       return signOut;

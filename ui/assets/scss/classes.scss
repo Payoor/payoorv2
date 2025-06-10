@@ -52,5 +52,20 @@
 }
 
 .blur-effect {
-    filter: blur(3px)
+    filter: blur(3px);
+}
+
+.error-message {
+    color: red;
+    font-size: 1.3rem;
+    padding: 1rem 3rem;
+    font-weight: 500;
+    line-height: 2.1rem;
+    position: absolute;
+    top: 0;
+    background: $white;
+    margin: 2rem 16px;
+    border-radius: 1rem;
+
+    animation: slideFadeInUp 0.5s ease-out forwards;
 }

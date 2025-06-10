@@ -8,7 +8,9 @@ export const state = () => ({
     //email: ''
   },
   loading: false,
-  jwtToken: null
+  jwtToken: null,
+  currentRoute: null,
+  previousRoute: null
 })
 
 export const mutations = {
@@ -67,6 +69,14 @@ export const mutations = {
 
   REMOVE_JWT_TOKEN (state) {
     state.jwtToken = null
+  },
+
+  SET_CURRENT_ROUTE (state, route) {
+    state.currentRoute = route
+  },
+
+  SET_PREVIOUS_ROUTE (state, route) {
+    state.previousRoute = route
   }
 }
 
@@ -91,6 +101,130 @@ export const actions = {
 
   setUserPhoneNumber ({ commit }, phoneNumber) {
     commit('SET_USER_PHONE_NUMBER', phoneNumber)
+  },
+
+  async updateUserPhoneNumber ({ commit }, phoneNumber) {
+    commit('SET_LOADING', true)
+
+    try {
+      const token = localStorage.getItem('jwt')
+
+      const response = await fetch(
+        `${serverurl}/shopper/auth/updatedetails/phonenumber`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Origin: window.location.origin,
+            'Access-Control-Request-Method': 'POST',
+            'Access-Control-Request-Headers': 'Content-Type'
+          },
+          body: JSON.stringify({
+            phoneNumber
+          })
+        }
+      )
+
+      commit('SET_LOADING', false)
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Error response:', errorData)
+
+        const error = new Error(
+          `Request failed with status ${response.status}: ${
+            errorData.userMessage || 'Unknown error'
+          }`
+        )
+
+        error.status = response.status
+        error.message = errorData.userMessage
+        throw error
+      }
+
+      const data = await response.json()
+      const { user } = data
+
+      if (user.phoneNumber) {
+        commit('SET_USER_PHONE_NUMBER', user.phoneNumber)
+      }
+
+      if (user.email) {
+        commit('SET_USER_EMAIL', user.email)
+      }
+
+      return data
+    } catch (error) {
+      commit('SET_LOADING', false)
+      console.error('Error during phone number update:', error)
+      throw error
+    }
+  },
+
+  async updateUserName ({ commit }, name) {
+    commit('SET_LOADING', true)
+
+    try {
+      const token = localStorage.getItem('jwt')
+
+      const response = await fetch(
+        `${serverurl}/shopper/auth/updatedetails/name`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Origin: window.location.origin,
+            'Access-Control-Request-Method': 'POST',
+            'Access-Control-Request-Headers': 'Content-Type'
+          },
+          body: JSON.stringify({
+            name
+          })
+        }
+      )
+
+      commit('SET_LOADING', false)
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Error response:', errorData)
+
+        const error = new Error(
+          `Request failed with status ${response.status}: ${
+            errorData.userMessage || 'Unknown error'
+          }`
+        )
+
+        error.status = response.status
+        error.message = errorData.userMessage
+        throw error
+      }
+
+      const data = await response.json()
+      const { user } = data
+
+      if (user.name) {
+        commit('SET_USER_NAME', user.name)
+      }
+
+      if (user.phoneNumber) {
+        commit('SET_USER_PHONE_NUMBER', user.phoneNumber)
+      }
+
+      if (user.email) {
+        commit('SET_USER_EMAIL', user.email)
+      }
+
+      commit('SET_USER_DETAILS_ADDED', true)
+
+      return data
+    } catch (error) {
+      commit('SET_LOADING', false)
+      console.error('Error during phone number update:', error)
+      throw error
+    }
   },
 
   setOtpMode ({ commit }, otpMode) {
@@ -151,7 +285,7 @@ export const actions = {
       }
 
       if (user.email) {
-        commit('SET_USER_EMAIL', user.email) // Commit email to the store
+        commit('SET_USER_EMAIL', user.email)
       }
 
       commit('SET_USER_DETAILS_ADDED', true)
@@ -162,6 +296,13 @@ export const actions = {
       throw error
     } finally {
       commit('SET_LOADING', false)
+    }
+  },
+
+  trackRouteChange ({ state, commit }, newRoute) {
+    if (state.currentRoute !== newRoute) {
+      commit('SET_PREVIOUS_ROUTE', state.currentRoute)
+      commit('SET_CURRENT_ROUTE', newRoute)
     }
   }
 }

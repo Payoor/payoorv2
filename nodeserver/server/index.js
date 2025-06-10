@@ -16,7 +16,7 @@ import shopperRoute from './routes/shopper'
 import authRoute from './routes/auth'
 import adminRoute from './routes/admin'
 
-//import TelegramBotClass from './TelegramBotClass'
+import handleError from './handleError'
 
 const port = process.env.PORT
 
@@ -25,7 +25,7 @@ app.use(express.json())
 const errorLogPath = path.join(__dirname, 'error.log')
 const telegbotUrl = 'http://telegbot:3001/errorlog'
 
-console.log(errorLogPath)
+//console.log(errorLogPath)
 
 app.get('/health', async (req, res, next) => {
   try {
@@ -39,7 +39,7 @@ app.get('/health', async (req, res, next) => {
 })
 
 app.use(shopperRoute)
-app.use(authRoute);
+app.use(authRoute)
 app.use(adminRoute)
 
 app.use(async (err, req, res, next) => {
@@ -80,16 +80,20 @@ app.use(async (err, req, res, next) => {
       })
     }
 
-    const statusCode = 500
+    const errorDetails = handleError(errorMessage)
+
+    console.log(errorDetails)
+    const { userMessage, statusCode } = errorDetails
 
     res.status(statusCode).json({
-      stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack
+      stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,
+      userMessage
     })
   } catch (error) {
     //we'll only save to a file if this fails here
     res.status(500).json({ message: 'Internal server error' })
   }
-});
+})
 
 async function startServer () {
   try {

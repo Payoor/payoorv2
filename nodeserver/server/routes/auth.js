@@ -19,6 +19,18 @@ authRoute.post('/shopper/auth/google', AuthClass.googleAuth)
 authRoute.get('/shopper/auth/validuser', AuthClass.getValidUser)
 
 authRoute.post(
+  '/shopper/auth/updatedetails/phonenumber',
+  authMiddleware,
+  AuthClass.updatePhoneNumber
+);
+
+authRoute.post(
+  '/shopper/auth/updatedetails/name',
+  authMiddleware,
+  AuthClass.updateName
+)
+
+authRoute.post(
   '/shopper/auth/updatedetails',
   authMiddleware,
   AuthClass.updateDetails
