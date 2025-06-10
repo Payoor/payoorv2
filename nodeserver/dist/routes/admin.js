@@ -92,10 +92,22 @@ function verifyAdminToken(req, res, next) {
     });
   }
 }
-adminRoute.use(function (req, res, next) {
-  if (['/admin/login', '/admin/register', '/admin/orders/reference', '/admin/checkout', '/admin/getoption'].includes(req.path)) return next();
-  return verifyAdminToken(req, res, next);
-});
+
+/*adminRoute.use((req, res, next) => {
+  if (
+    [
+      '/admin/login',
+      '/admin/register',
+      '/admin/orders/reference',
+      '/admin/checkout',
+      '/admin/getoption',
+      '/admin/paystack/payment-response'
+    ].includes(req.path)
+  )
+    return next()
+  return verifyAdminToken(req, res, next)
+})*/
+
 var s3Client = new S3Client({
   region: process.env.AWSS3REGION,
   credentials: {

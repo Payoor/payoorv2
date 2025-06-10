@@ -73,19 +73,20 @@ function verifyAdminToken (req, res, next) {
   }
 }
 
-adminRoute.use((req, res, next) => {
+/*adminRoute.use((req, res, next) => {
   if (
     [
       '/admin/login',
       '/admin/register',
       '/admin/orders/reference',
       '/admin/checkout',
-      '/admin/getoption'
+      '/admin/getoption',
+      '/admin/paystack/payment-response'
     ].includes(req.path)
   )
     return next()
   return verifyAdminToken(req, res, next)
-})
+})*/
 
 const s3Client = new S3Client({
   region: process.env.AWSS3REGION,
