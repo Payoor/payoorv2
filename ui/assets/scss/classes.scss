@@ -57,17 +57,18 @@
 
 .error-message {
     color: red;
-    font-size: 1.3rem;
-    padding: 1rem 3rem;
+    font-size: 1.48rem;
+    padding: 2rem 2rem;
     font-weight: 500;
     line-height: 2.1rem;
     position: fixed;
-    top: 3rem;
+    bottom: 15rem;
     background: $white;
     margin: 2rem 16px;
     border-radius: 1rem;
     z-index: 30;
-
+    left: 0;
+    right: 0;
     animation: slideFadeInUp 0.5s ease-out forwards;
 }
 
