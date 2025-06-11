@@ -103,10 +103,14 @@ export default {
         const queryRouteStack = this.$route.query.routeStack;
 
         const MAX_ROUTE_STACK_SIZE = 4;
+        const AUTH_ROUTE_PREFIX = '/auth';
 
         if (queryRouteStack === undefined || queryRouteStack === null) {
-            const initialStack = [...new Set(['/', this.$route.path])];
-            this.routeStack = initialStack.slice(-MAX_ROUTE_STACK_SIZE);
+            const initialCandidates = ['/', this.$route.path];
+            const filteredInitialCandidates = initialCandidates.filter(
+                item => !item.startsWith(AUTH_ROUTE_PREFIX)
+            );
+            this.routeStack = [...new Set(filteredInitialCandidates)].slice(-MAX_ROUTE_STACK_SIZE);
         } else {
             const existingPaths = queryRouteStack.split(',')
                 .map(item => item.trim())
@@ -114,9 +118,11 @@ export default {
 
             const combinedPaths = [...existingPaths, this.$route.path];
 
-            const uniquePaths = [...new Set(combinedPaths)];
+            const filteredCombinedPaths = combinedPaths.filter(
+                item => !item.startsWith(AUTH_ROUTE_PREFIX)
+            );
 
-            this.routeStack = uniquePaths.slice(-MAX_ROUTE_STACK_SIZE);
+            this.routeStack = [...new Set(filteredCombinedPaths)].slice(-MAX_ROUTE_STACK_SIZE);
         }
 
         this.$router.push({
@@ -135,7 +141,15 @@ export default {
             }
         });
 
-       // console.log(routeStack, 'routestack')
+        this.$router.push({
+            path: this.$route.path,
+            query: {
+                ...this.$route.query,
+                routeStack: this.routeStack.join(',')
+            }
+        });
+
+        // console.log(routeStack, 'routestack')
 
         this.menuopen = window.innerWidth > 900 && this.jwtToken;
 
