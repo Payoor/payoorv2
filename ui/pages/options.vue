@@ -246,7 +246,7 @@ export default {
 
     &__header {
         @include fixed-header;
-        z-index: 3;
+        z-index: 6;
         background: $white;
     }
 
