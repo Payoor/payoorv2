@@ -38,11 +38,7 @@ export default {
                     },
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error generating Paystack link:', errorData);
-                    return;
-                }
+                await handleFetchError(response)
 
                 const data = await response.json();
                 const paystackdata = data.data;

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { serverurl } from '@/api'
+import { serverurl, handleFetchError } from '@/api'
 
 export default {
     name: 'AdminLogin',
@@ -63,7 +63,9 @@ export default {
                         email: this.email,
                         password: this.password
                     })
-                })
+                });
+
+                await handleFetchError(response);
 
                 const data = await response.json()
 

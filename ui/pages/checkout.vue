@@ -195,7 +195,7 @@
 </template>
 
 <script>
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 import { mapState } from "vuex";
 
@@ -293,9 +293,7 @@ export default {
 
                 const data = await response.json();
 
-                if (!response.ok || !data.success) {
-                    throw new Error(data?.message || 'Reverse geocode failed');
-                }
+                await handleFetchError(response);
 
                 const { address, filteredResults } = data.data;
 
@@ -350,11 +348,7 @@ export default {
                     }
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error performing autocomplete:', errorData);
-                    return;
-                }
+                await handleFetchError(response);
 
                 const data = await response.json();
 
@@ -423,11 +417,7 @@ export default {
                     body: JSON.stringify({ checkout })
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error performing autocomplete:', errorData);
-                    return;
-                }
+                await handleFetchError(response)
 
                 const data = await response.json();
 
@@ -490,6 +480,8 @@ export default {
                     },
                     body: JSON.stringify({ coupon_code: code })
                 });
+
+                await handleFetchError(response);
 
                 const data = await response.json();
 

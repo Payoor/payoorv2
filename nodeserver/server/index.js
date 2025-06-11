@@ -52,7 +52,9 @@ app.use(async (err, req, res, next) => {
     `Request URL: ${req.originalUrl}\n` +
     `Error Message: ${err.message}\n` +
     `Stack Trace:\n${err.stack}\n\n` +
-    `--- End of Error ---\n\n`
+    `--- End of Error ---\n\n`;
+
+  console.log(errorMessage, 'errorMessage')
 
   try {
     const response = await axios.post(telegbotUrl, errorMessage, {

@@ -72,7 +72,7 @@ var AuthClass = /*#__PURE__*/function () {
                 break;
               }
               return _context2.abrupt("return", res.status(400).json({
-                error: 'Identifier is required'
+                userMessage: 'Identifier is required'
               }));
             case 5:
               _context2.next = 7;
@@ -157,17 +157,17 @@ var AuthClass = /*#__PURE__*/function () {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
               _context4.prev = 0;
-              submittedOtp = req.body.submittedOtp; //console.log('[verifyOtp] Received OTP:', submittedOtp)
+              submittedOtp = req.body.submittedOtp;
               if (submittedOtp) {
                 _context4.next = 4;
                 break;
               }
               return _context4.abrupt("return", res.status(400).json({
                 success: false,
-                message: 'OTP is required'
+                userMessage: 'OTP is required'
               }));
             case 4:
-              hashedKey = "otp:code:".concat(hashOtp(submittedOtp)); //console.log('[verifyOtp] Hashed OTP key:', hashedKey)
+              hashedKey = "otp:code:".concat(hashOtp(submittedOtp));
               _context4.prev = 5;
               console.time('[verifyOtp] Redis GET');
               _context4.next = 9;
@@ -181,7 +181,7 @@ var AuthClass = /*#__PURE__*/function () {
               _context4.prev = 13;
               _context4.t0 = _context4["catch"](5);
               console.error('[verifyOtp] Redis GET failed:', _context4.t0);
-              next(_context4.t0);
+              return _context4.abrupt("return", next(_context4.t0));
             case 17:
               if (identifier) {
                 _context4.next = 19;
@@ -189,7 +189,7 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context4.abrupt("return", res.status(401).json({
                 success: false,
-                message: 'OTP expired or invalid'
+                userMessage: 'OTP expired or invalid'
               }));
             case 19:
               _context4.prev = 19;
@@ -205,80 +205,89 @@ var AuthClass = /*#__PURE__*/function () {
               _context4.prev = 27;
               _context4.t1 = _context4["catch"](19);
               console.error('[verifyOtp] MongoDB query failed:', _context4.t1);
-              next(_context4.t1);
+              return _context4.abrupt("return", next(_context4.t1));
             case 31:
               if (user) {
-                _context4.next = 47;
+                _context4.next = 54;
                 break;
               }
               type = identifierType(identifier);
               console.log('[verifyOtp] Creating new user of type:', type);
+              _context4.prev = 34;
               if (!(type === 'email')) {
-                _context4.next = 40;
+                _context4.next = 41;
                 break;
               }
-              _context4.next = 37;
+              _context4.next = 38;
               return _User["default"].create({
                 email: identifier
               });
-            case 37:
+            case 38:
               user = _context4.sent;
-              _context4.next = 47;
+              _context4.next = 48;
               break;
-            case 40:
+            case 41:
               if (!(type === 'phone')) {
-                _context4.next = 46;
+                _context4.next = 47;
                 break;
               }
-              _context4.next = 43;
+              _context4.next = 44;
               return _User["default"].create({
                 phoneNumber: identifier
               });
-            case 43:
+            case 44:
               user = _context4.sent;
-              _context4.next = 47;
+              _context4.next = 48;
               break;
-            case 46:
+            case 47:
               return _context4.abrupt("return", res.status(400).json({
                 success: false,
-                message: 'Identifier is neither email nor phone number'
+                userMessage: 'Identifier is neither email nor phone number'
               }));
-            case 47:
-              _context4.prev = 47;
+            case 48:
+              _context4.next = 54;
+              break;
+            case 50:
+              _context4.prev = 50;
+              _context4.t2 = _context4["catch"](34);
+              console.error('[verifyOtp] User creation failed:', _context4.t2);
+              return _context4.abrupt("return", next(_context4.t2));
+            case 54:
+              _context4.prev = 54;
               console.time('[verifyOtp] Generate Token');
-              _context4.next = 51;
+              _context4.next = 58;
               return user.generateAuthToken();
-            case 51:
+            case 58:
               token = _context4.sent;
               console.timeEnd('[verifyOtp] Generate Token');
-              _context4.next = 58;
+              _context4.next = 65;
               break;
-            case 55:
-              _context4.prev = 55;
-              _context4.t2 = _context4["catch"](47);
-              next(_context4.t2);
-            case 58:
-              _context4.prev = 58;
+            case 62:
+              _context4.prev = 62;
+              _context4.t3 = _context4["catch"](54);
+              return _context4.abrupt("return", next(_context4.t3));
+            case 65:
+              _context4.prev = 65;
               console.time('[verifyOtp] Redis SETEX');
-              _context4.next = 62;
+              _context4.next = 69;
               return _redisconf.redisClient.set("auth:session:".concat(token), user._id.toString(), 'EX', 2592000 // 30 days in seconds
               );
-            case 62:
+            case 69:
               console.timeEnd('[verifyOtp] Redis SETEX');
               console.log('[verifyOtp] Cleaning up OTP key');
-              _context4.next = 66;
+              _context4.next = 73;
               return _redisconf.redisClient.del(hashedKey);
-            case 66:
-              _context4.next = 71;
+            case 73:
+              _context4.next = 78;
               break;
-            case 68:
-              _context4.prev = 68;
-              _context4.t3 = _context4["catch"](58);
-              next(_context4.t3);
-            case 71:
+            case 75:
+              _context4.prev = 75;
+              _context4.t4 = _context4["catch"](65);
+              return _context4.abrupt("return", next(_context4.t4));
+            case 78:
               return _context4.abrupt("return", res.status(200).json({
                 success: true,
-                message: 'OTP verified',
+                userMessage: 'OTP verified',
                 user: {
                   id: user._id,
                   email: user.email,
@@ -287,15 +296,15 @@ var AuthClass = /*#__PURE__*/function () {
                   token: token
                 }
               }));
-            case 74:
-              _context4.prev = 74;
-              _context4.t4 = _context4["catch"](0);
-              next(_context4.t4);
-            case 77:
+            case 81:
+              _context4.prev = 81;
+              _context4.t5 = _context4["catch"](0);
+              return _context4.abrupt("return", next(_context4.t5));
+            case 84:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[0, 74], [5, 13], [19, 27], [47, 55], [58, 68]]);
+        }, _callee4, null, [[0, 81], [5, 13], [19, 27], [34, 50], [54, 62], [65, 75]]);
       }));
       function verifyOtp(_x8, _x9, _x0) {
         return _verifyOtp.apply(this, arguments);
@@ -320,7 +329,7 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context5.abrupt("return", res.status(400).json({
                 success: false,
-                message: 'Email and Google ID are required'
+                userMessage: 'Email and Google ID are required'
               }));
             case 6:
               _context5.next = 8;
@@ -381,7 +390,7 @@ var AuthClass = /*#__PURE__*/function () {
               });
               return _context5.abrupt("return", res.status(200).json({
                 success: true,
-                message: 'Google authentication successful',
+                userMessage: 'Google authentication successful',
                 user: {
                   id: user._id,
                   email: user.email,
@@ -438,7 +447,7 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context6.abrupt("return", res.status(200).json({
                 success: true,
-                message: 'User found here now',
+                userMessage: 'User found here now',
                 user: {
                   name: name,
                   email: email,
@@ -461,7 +470,7 @@ var AuthClass = /*#__PURE__*/function () {
             case 22:
               return _context6.abrupt("return", res.status(404).json({
                 success: false,
-                message: 'User not found'
+                userMessage: 'User not found'
               }));
             case 23:
               _context6.next = 28;
@@ -498,7 +507,7 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context7.abrupt("return", res.status(401).json({
                 success: false,
-                message: 'Unauthorized: user ID not found in request'
+                userMessage: 'Unauthorized: user ID not found in request'
               }));
             case 5:
               _context7.next = 7;
@@ -516,12 +525,12 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context7.abrupt("return", res.status(404).json({
                 success: false,
-                message: 'User not found'
+                userMessage: 'User not found'
               }));
             case 10:
               return _context7.abrupt("return", res.status(200).json({
                 success: true,
-                message: 'User details updated successfully',
+                userMessage: 'User details updated successfully',
                 user: {
                   name: updatedUser.name,
                   phoneNumber: updatedUser.phoneNumber
@@ -559,7 +568,7 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context8.abrupt("return", res.status(401).json({
                 success: false,
-                message: 'Unauthorized: user ID not found in request'
+                userMessage: 'Unauthorized: user ID not found in request'
               }));
             case 5:
               _context8.next = 7;
@@ -576,12 +585,12 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context8.abrupt("return", res.status(404).json({
                 success: false,
-                message: 'User not found'
+                userMessage: 'User not found'
               }));
             case 10:
               return _context8.abrupt("return", res.status(200).json({
                 success: true,
-                message: 'User details updated successfully',
+                userMessage: 'User details updated successfully',
                 user: {
                   name: updatedUser.name,
                   phoneNumber: updatedUser.phoneNumber,
@@ -620,7 +629,7 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context9.abrupt("return", res.status(401).json({
                 success: false,
-                message: 'Unauthorized: user ID not found in request'
+                userMessage: 'Unauthorized: user ID not found in request'
               }));
             case 5:
               _context9.next = 7;
@@ -637,12 +646,12 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context9.abrupt("return", res.status(404).json({
                 success: false,
-                message: 'User not found'
+                userMessage: 'User not found'
               }));
             case 10:
               return _context9.abrupt("return", res.status(200).json({
                 success: true,
-                message: 'User details updated successfully',
+                userMessage: 'User details updated successfully',
                 user: {
                   name: updatedUser.name,
                   phoneNumber: updatedUser.phoneNumber,
@@ -680,7 +689,7 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context0.abrupt("return", res.status(400).json({
                 success: false,
-                message: 'Token is required'
+                userMessage: 'Token is required'
               }));
             case 4:
               _context0.next = 6;
@@ -693,7 +702,7 @@ var AuthClass = /*#__PURE__*/function () {
               }
               return _context0.abrupt("return", res.status(404).json({
                 success: false,
-                message: 'Invalid token or user not found'
+                userMessage: 'Invalid token or user not found'
               }));
             case 9:
               _context0.next = 11;
@@ -704,7 +713,7 @@ var AuthClass = /*#__PURE__*/function () {
             case 13:
               return _context0.abrupt("return", res.status(200).json({
                 success: true,
-                message: 'Signed out successfully'
+                userMessage: 'Signed out successfully'
               }));
             case 16:
               _context0.prev = 16;

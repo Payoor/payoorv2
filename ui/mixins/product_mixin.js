@@ -1,4 +1,4 @@
-import { serverurl } from '@/api'
+import { serverurl, handleFetchError } from '@/api'
 
 export default {
   props: {
@@ -29,9 +29,7 @@ export default {
           body: JSON.stringify({ message })
         })
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
+        await handleFetchError(response);
 
         if (response.status === 200 || response.status === 201) {
           const data = await response.json()

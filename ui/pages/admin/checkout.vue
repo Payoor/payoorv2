@@ -31,7 +31,7 @@
 <script>
 import { mapState } from "vuex";
 
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 
 export default {
     data() {
@@ -79,14 +79,10 @@ export default {
                     },
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json()
-                    console.error('Error response:', errorData)
-                    throw new Error(`Request failed with status ${response.status}`)
-                }
+                await handleFetchError(response);
 
                 const data = await response.json()
-                console.log(data);
+                //console.log(data);
 
                 const { checkout } = data;
 

@@ -42,7 +42,7 @@
 <script>
 import ChatHeader from '@/components/ChatHeader.vue';
 import OrderDisplay from '@/components/OrderDisplay.vue';
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 
 export default {
     name: 'UserOrders',
@@ -78,13 +78,7 @@ export default {
                     },
                 });
 
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        localStorage.removeItem('jwt');
-                        this.$router.push({ path: '/', query: this.$route.query });
-                    }
-                    throw new Error('Unauthorized');
-                }
+                await handleFetchError(response)
 
                 const data = await response.json();
                 this.orders = data.orders;

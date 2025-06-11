@@ -70,7 +70,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {
@@ -111,11 +111,7 @@ export default {
                     }
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error performing autocomplete:', errorData);
-                    return;
-                }
+                await handleFetchError(response)
 
                 const data = await response.json();
                 this.variants = data.variants;

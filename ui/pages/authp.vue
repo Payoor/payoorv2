@@ -15,7 +15,8 @@
                         </h1>
 
                         <h1 class="auth-page__h1" v-if="currentUser.email && currentUser.otpMode">
-                            <span>We just sent you an otp. </span>
+                            <span>We just sent <span class="auth-page__h1--email">{{ $route.query.email }} </span>an
+                                otp. </span>
                             <span>kindly provide it to confirm email</span>
                             <span>(Please check spam if it doesn’t</span>
                             <span>appear in your inbox).</span>
@@ -73,7 +74,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 
 export default {
     data() {
@@ -111,7 +112,7 @@ export default {
         }
     },
     methods: {
-        async loginWithGoogle() { 
+        async loginWithGoogle() {
             const domain = 'https://us-east-1umg3xqcyz.auth.us-east-1.amazoncognito.com'; // Your Cognito domain
             const clientId = '1tvnri1ecaqanirjd5t7u5kc17';
             const redirectUri = 'https://shop.payoor.store/';
@@ -144,11 +145,7 @@ export default {
                     })
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Authentication error:', errorData);
-                    return;
-                }
+                await handleFetchError(response);
 
 
                 const status = response.status;
@@ -182,11 +179,7 @@ export default {
                     })
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Authentication error:', errorData);
-                    return;
-                }
+                await handleFetchError(response)
 
                 const status = response.status;
 
@@ -289,6 +282,12 @@ export default {
         font-size: 2.8rem;
         font-weight: 300;
         animation: fadeInUp 1s ease-out forwards;
+
+        &--email {
+            color: $primary-color;
+            font-weight: 500;
+            font-size: 2.5rem;
+        }
 
         @keyframes fadeInUp {
             0% {

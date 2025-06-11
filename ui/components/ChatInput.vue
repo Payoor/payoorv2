@@ -41,7 +41,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 import product_mixin from "@/mixins/product_mixin";
 
@@ -205,7 +205,7 @@ export default {
 
                 // Set the error message based on the type of error
                 if (error.status === 409) {
-                    this.errorMessage = error.message;
+                    //this.errorMessage = error.message;
                 }
             }
         },
@@ -233,13 +233,7 @@ export default {
                     body: JSON.stringify({ message: this.userinput })
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json(); // Try to get error details
-                    const error = new Error(`HTTP error! status: ${response.status}: ${errorData.message || 'Unknown error'}`);
-                    error.status = response.status;
-                    error.data = errorData;
-                    throw error;
-                }
+                await handleFetchError(response)
 
                 if (response.status === 200 || response.status === 201) {
                     const data = await response.json();
@@ -283,13 +277,7 @@ export default {
                     body: JSON.stringify({ message })
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json(); // Try to get error details
-                    const error = new Error(`HTTP error! status: ${response.status}: ${errorData.message || 'Unknown error'}`);
-                    error.status = response.status;
-                    error.data = errorData;
-                    throw error;
-                }
+                await handleFetchError(response)
 
                 if (response.status === 200 || response.status === 201) {
                     const data = await response.json();

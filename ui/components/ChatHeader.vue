@@ -66,7 +66,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 import jwt_mixin from '@/mixins/jwt_mixin';
 
 export default {
@@ -135,10 +135,12 @@ export default {
                     return this.redirectHome()
                 };
 
+                await handleFetchError(response)
+
                 const data = await response.json();
                 const { user, message } = data;
 
-                console.log(user, 'curent user here', message, 'messahge left');
+                //console.log(user, 'curent user here', message, 'messahge left');
 
                 this.$store.dispatch('user/setJwtToken', token);
                 this.$store.dispatch('user/addCurrentUser', user);
@@ -174,7 +176,7 @@ export default {
                     headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 });
 
-                if (!response.ok) throw new Error('Failed to sign out');
+                await handleFetchError(response)
 
                 await response.json();
                 this.$store.dispatch('user/removeJwtToken');

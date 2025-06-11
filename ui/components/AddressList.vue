@@ -20,7 +20,7 @@
 
 
 <script>
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 import debounce from 'lodash/debounce';
 
 export default {
@@ -38,7 +38,6 @@ export default {
         }
     },
     created() {
-        // Create a debounced version of the fetch method
         this.debouncedQueryAddressList = debounce(this.queryAddressList, 500);
     },
     methods: {
@@ -65,11 +64,7 @@ export default {
                     }
                 );
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error performing autocomplete:', errorData);
-                    return;
-                }
+                await handleFetchError(response);
 
                 const data = await response.json();
                 this.addressesList = data.data.placesResponse || [];

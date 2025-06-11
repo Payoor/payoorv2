@@ -30,7 +30,7 @@ class AuthClass {
       console.log(identifier)
 
       if (!identifier) {
-        return res.status(400).json({ error: 'Identifier is required' })
+        return res.status(400).json({ userMessage: 'Identifier is required' })
       }
 
       const otp = await AuthClass.genOtp(identifier)
@@ -134,32 +134,28 @@ class AuthClass {
     try {
       const { submittedOtp } = req.body
 
-      //console.log('[verifyOtp] Received OTP:', submittedOtp)
-
       if (!submittedOtp) {
         return res
           .status(400)
-          .json({ success: false, message: 'OTP is required' })
+          .json({ success: false, userMessage: 'OTP is required' })
       }
 
       const hashedKey = `otp:code:${hashOtp(submittedOtp)}`
-      //console.log('[verifyOtp] Hashed OTP key:', hashedKey)
 
       let identifier
-
       try {
         console.time('[verifyOtp] Redis GET')
         identifier = await redisClient.get(hashedKey)
         console.timeEnd('[verifyOtp] Redis GET')
       } catch (redisErr) {
         console.error('[verifyOtp] Redis GET failed:', redisErr)
-        next(redisErr)
+        return next(redisErr) // ✅ MUST return to stop flow
       }
 
       if (!identifier) {
         return res
           .status(401)
-          .json({ success: false, message: 'OTP expired or invalid' })
+          .json({ success: false, userMessage: 'OTP expired or invalid' })
       }
 
       let user
@@ -169,33 +165,37 @@ class AuthClass {
         console.timeEnd('[verifyOtp] Mongo FIND')
       } catch (mongoErr) {
         console.error('[verifyOtp] MongoDB query failed:', mongoErr)
-        next(mongoErr)
+        return next(mongoErr) // ✅ MUST return to stop flow
       }
 
       if (!user) {
         const type = identifierType(identifier)
         console.log('[verifyOtp] Creating new user of type:', type)
 
-        if (type === 'email') {
-          user = await User.create({ email: identifier })
-        } else if (type === 'phone') {
-          user = await User.create({ phoneNumber: identifier })
-        } else {
-          return res.status(400).json({
-            success: false,
-            message: 'Identifier is neither email nor phone number'
-          })
+        try {
+          if (type === 'email') {
+            user = await User.create({ email: identifier })
+          } else if (type === 'phone') {
+            user = await User.create({ phoneNumber: identifier })
+          } else {
+            return res.status(400).json({
+              success: false,
+              userMessage: 'Identifier is neither email nor phone number'
+            })
+          }
+        } catch (createErr) {
+          console.error('[verifyOtp] User creation failed:', createErr)
+          return next(createErr) // ✅ Added to handle DB creation errors
         }
       }
 
       let token
-
       try {
         console.time('[verifyOtp] Generate Token')
         token = await user.generateAuthToken()
         console.timeEnd('[verifyOtp] Generate Token')
       } catch (tokenErr) {
-        next(tokenErr)
+        return next(tokenErr) // ✅ MUST return
       }
 
       try {
@@ -206,18 +206,17 @@ class AuthClass {
           'EX',
           2592000 // 30 days in seconds
         )
-
         console.timeEnd('[verifyOtp] Redis SETEX')
 
         console.log('[verifyOtp] Cleaning up OTP key')
         await redisClient.del(hashedKey)
       } catch (redisWriteErr) {
-        next(redisWriteErr)
+        return next(redisWriteErr) // ✅ MUST return
       }
 
       return res.status(200).json({
         success: true,
-        message: 'OTP verified',
+        userMessage: 'OTP verified',
         user: {
           id: user._id,
           email: user.email,
@@ -227,7 +226,7 @@ class AuthClass {
         }
       })
     } catch (error) {
-      next(error)
+      return next(error) // ✅ Safe fallback for uncaught errors
     }
   }
 
@@ -241,7 +240,7 @@ class AuthClass {
       if (!email || !googleId) {
         return res.status(400).json({
           success: false,
-          message: 'Email and Google ID are required'
+          userMessage: 'Email and Google ID are required'
         })
       }
 
@@ -296,7 +295,7 @@ class AuthClass {
 
       return res.status(200).json({
         success: true,
-        message: 'Google authentication successful',
+        userMessage: 'Google authentication successful',
         user: {
           id: user._id,
           email: user.email,
@@ -335,7 +334,7 @@ class AuthClass {
 
         return res.status(200).json({
           success: true,
-          message: 'User found here now',
+          userMessage: 'User found here now',
           user: {
             name,
             email,
@@ -353,7 +352,7 @@ class AuthClass {
 
         return res.status(404).json({
           success: false,
-          message: 'User not found'
+          userMessage: 'User not found'
         })
       }
     } catch (error) {
@@ -369,7 +368,7 @@ class AuthClass {
       if (!userId) {
         return res.status(401).json({
           success: false,
-          message: 'Unauthorized: user ID not found in request'
+          userMessage: 'Unauthorized: user ID not found in request'
         })
       }
 
@@ -382,13 +381,13 @@ class AuthClass {
       if (!updatedUser) {
         return res.status(404).json({
           success: false,
-          message: 'User not found'
+          userMessage: 'User not found'
         })
       }
 
       return res.status(200).json({
         success: true,
-        message: 'User details updated successfully',
+        userMessage: 'User details updated successfully',
         user: {
           name: updatedUser.name,
           phoneNumber: updatedUser.phoneNumber
@@ -407,7 +406,7 @@ class AuthClass {
       if (!userId) {
         return res.status(401).json({
           success: false,
-          message: 'Unauthorized: user ID not found in request'
+          userMessage: 'Unauthorized: user ID not found in request'
         })
       }
 
@@ -420,13 +419,13 @@ class AuthClass {
       if (!updatedUser) {
         return res.status(404).json({
           success: false,
-          message: 'User not found'
+          userMessage: 'User not found'
         })
       }
 
       return res.status(200).json({
         success: true,
-        message: 'User details updated successfully',
+        userMessage: 'User details updated successfully',
         user: {
           name: updatedUser.name,
           phoneNumber: updatedUser.phoneNumber,
@@ -446,7 +445,7 @@ class AuthClass {
       if (!userId) {
         return res.status(401).json({
           success: false,
-          message: 'Unauthorized: user ID not found in request'
+          userMessage: 'Unauthorized: user ID not found in request'
         })
       }
 
@@ -459,13 +458,13 @@ class AuthClass {
       if (!updatedUser) {
         return res.status(404).json({
           success: false,
-          message: 'User not found'
+          userMessage: 'User not found'
         })
       }
 
       return res.status(200).json({
         success: true,
-        message: 'User details updated successfully',
+        userMessage: 'User details updated successfully',
         user: {
           name: updatedUser.name,
           phoneNumber: updatedUser.phoneNumber,
@@ -484,7 +483,7 @@ class AuthClass {
       if (!token) {
         return res
           .status(400)
-          .json({ success: false, message: 'Token is required' })
+          .json({ success: false, userMessage: 'Token is required' })
       }
 
       const user = await User.findByToken(token)
@@ -492,7 +491,7 @@ class AuthClass {
       if (!user) {
         return res
           .status(404)
-          .json({ success: false, message: 'Invalid token or user not found' })
+          .json({ success: false, userMessage: 'Invalid token or user not found' })
       }
 
       await user.removeToken(token)
@@ -500,7 +499,7 @@ class AuthClass {
 
       return res
         .status(200)
-        .json({ success: true, message: 'Signed out successfully' })
+        .json({ success: true, userMessage: 'Signed out successfully' })
     } catch (error) {
       next(error)
     }

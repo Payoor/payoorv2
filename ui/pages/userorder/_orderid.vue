@@ -21,7 +21,7 @@
 <script>
 import ChatHeader from '@/components/ChatHeader.vue';
 import OrderDisplay from '@/components/OrderDisplay.vue';
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 
 export default {
     name: 'UserOrders',
@@ -61,9 +61,7 @@ export default {
                     }
                 );
 
-                if (!response.ok) {
-                    throw new Error('Order not found');
-                }
+                await handleFetchError(response);
 
                 const data = await response.json();
                 this.singleOrder = data.order;

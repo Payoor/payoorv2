@@ -135,17 +135,61 @@ module.exports = require("ufo");
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return serverurl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return serverurl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return handleFetchError; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return showErrorMessage; });
 const serverurl = (() => {
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
     if (hostname.includes('payoor')) {
-      return 'https://api.payoor.store'; // production
+      return 'https://api.payoor.store';
     }
   }
   return 'http://localhost';
 })();
-console.log(serverurl);
+async function handleFetchError(response) {
+  if (!response.ok) {
+    let errorData;
+    try {
+      errorData = await response.json();
+    } catch (e) {
+      errorData = {
+        userMessage: 'Unknown error',
+        raw: await response.text()
+      };
+    }
+
+    //console.error('Error response:', errorData)
+
+    const errorMessage = errorData.userMessage || 'Unknown error';
+    showErrorMessage(errorMessage);
+    const error = new Error(`Request failed with status ${response.status}: ${errorMessage}`);
+    error.status = response.status;
+    error.message = errorMessage;
+    error.details = errorData;
+    throw error;
+  }
+  return response;
+}
+function showErrorMessage(message) {
+  const existing = document.querySelector('.error-message');
+  if (existing) {
+    existing.remove();
+  }
+  const div = document.createElement('div');
+  div.className = 'error-message';
+  div.textContent = message;
+  const bar = document.createElement('div');
+  bar.className = 'error-message-timeout-bar';
+  div.appendChild(bar);
+  document.body.prepend(div);
+  requestAnimationFrame(() => {
+    bar.style.width = '0%';
+  });
+  setTimeout(() => {
+    div.remove();
+  }, 3000);
+}
 
 /***/ }),
 /* 3 */
@@ -645,7 +689,7 @@ __webpack_require__(7).default("1adb391c", content, true)
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(6);
 var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.i, "@keyframes slideFadeInUp{0%{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes slide-in-left{0%{opacity:0;transform:translateX(-100%)}to{opacity:1;transform:translateX(0)}}@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-10px)}to{transform:translateY(0)}}@keyframes spin{to{transform:rotate(1turn)}}.slide-in-left{animation:slide-in-left .5s ease-out forwards}.button-primary{background:#249b48;border:none;border-radius:1rem;color:#fff;font-weight:500;outline:none;padding:1rem}.transparent-button{background:transparent;border:1px solid #249b48;color:#249b48}.disabled-btn{opacity:.4}.floating-element{animation:float 3s ease-in-out infinite;animation-delay:0s;transition:transform .2s ease}.no-scroll{height:100vh!important;overflow:hidden!important}.spinner{animation:spin 1s linear infinite;border:4px solid rgba(36,155,72,.3);border-radius:50%;border-top-color:#249b48;height:3rem;width:3rem}.spinner.path{stroke:#249b48;stroke-linecap:round}.blur-effect{filter:blur(3px)}.error-message{animation:slideFadeInUp .5s ease-out forwards;background:#fff;border-radius:1rem;color:red;font-size:1.3rem;font-weight:500;line-height:2.1rem;margin:2rem 16px;padding:1rem 3rem;position:absolute;top:0}.landing{overflow-x:hidden}.landing__top{background:#b6edf2;display:grid;grid-template-columns:repeat(2,1fr);height:100vh;left:0;position:fixed;top:0;width:100%}@media only screen and (max-width:56.25em){.landing__top{display:flex}}.landing__topleft{display:flex;justify-content:center}@media only screen and (max-width:56.25em){.landing__topleft{display:block;width:100%}}.landing__topleft--auth{padding:0 10rem;width:100rem}@media only screen and (max-width:56.25em){.landing__topleft--auth{padding:0;width:auto}}.landing__topright,.landing__topright--img{align-items:center;display:flex;justify-content:center}.landing__topright--img{transform:scale(1.1);width:100rem}.landing__topright--img img{height:100%;-o-object-fit:contain;object-fit:contain;width:100%}@media only screen and (max-width:56.25em){.landing__topright{display:none}}.landing__content{background:#249b48;margin-top:90rem;position:relative}.landing__seemore{bottom:10rem;display:flex;justify-content:center;left:0;position:absolute;width:100%}.landing__seemore button{background:transparent;border:1px solid #fff;border-radius:3rem;color:#fff;cursor:pointer;font-size:1.4rem;font-weight:600;padding:1rem 4rem}.landing__cloud{bottom:0;height:34rem;position:absolute;transform:scale(1.1);width:100vw;z-index:3}.landing__cloud img{height:100%;-o-object-fit:cover;object-fit:cover;width:100%}*,:after,:before{box-sizing:inherit;margin:0;padding:0}html{background:#249b48;font-size:62.5%}@media only screen and (max-width:75em){html{font-size:56.25%}}@media only screen and (max-width:56.25em){html{font-size:55%}}@media only screen and (max-width:37.5em){html{font-size:50%}}@media only screen and (min-width:112.5em){html{font-size:65%}}body{background:#249b48;box-sizing:border-box;display:none;font-family:\"Poppins\",sans-serif}@media only screen and (max-width:56.25em){body{padding:0}}::-moz-selection{background-color:#249b48;color:#fff}::selection{background-color:#249b48;color:#fff}::-webkit-scrollbar{height:8px;width:8px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background-color:#249b48;border:none;border-radius:10px}::-webkit-scrollbar-thumb:hover{background-color:#1a7235}*{scrollbar-color:#249b48 transparent;scrollbar-width:thin}", ""]);
+___CSS_LOADER_EXPORT___.push([module.i, "@keyframes slideFadeInUp{0%{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes slide-in-left{0%{opacity:0;transform:translateX(-100%)}to{opacity:1;transform:translateX(0)}}@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-10px)}to{transform:translateY(0)}}@keyframes spin{to{transform:rotate(1turn)}}.slide-in-left{animation:slide-in-left .5s ease-out forwards}.button-primary{background:#249b48;border:none;border-radius:1rem;color:#fff;font-weight:500;outline:none;padding:1rem}.transparent-button{background:transparent;border:1px solid #249b48;color:#249b48}.disabled-btn{opacity:.4}.floating-element{animation:float 3s ease-in-out infinite;animation-delay:0s;transition:transform .2s ease}.no-scroll{height:100vh!important;overflow:hidden!important}.spinner{animation:spin 1s linear infinite;border:4px solid rgba(36,155,72,.3);border-radius:50%;border-top-color:#249b48;height:3rem;width:3rem}.spinner.path{stroke:#249b48;stroke-linecap:round}.blur-effect{filter:blur(3px)}.error-message{animation:slideFadeInUp .5s ease-out forwards;background:#fff;border-radius:1rem;color:red;font-size:1.3rem;font-weight:500;line-height:2.1rem;margin:2rem 16px;padding:1rem 3rem;position:fixed;top:3rem;z-index:30}.error-message-timeout-bar{background-color:#249b48;bottom:0;height:4px;left:0;position:absolute;transition:width 4s linear;width:100%}.landing{overflow-x:hidden}.landing__top{background:#b6edf2;display:grid;grid-template-columns:repeat(2,1fr);height:100vh;left:0;position:fixed;top:0;width:100%}@media only screen and (max-width:56.25em){.landing__top{display:flex}}.landing__topleft{display:flex;justify-content:center}@media only screen and (max-width:56.25em){.landing__topleft{display:block;width:100%}}.landing__topleft--auth{padding:0 10rem;width:100rem}@media only screen and (max-width:56.25em){.landing__topleft--auth{padding:0;width:auto}}.landing__topright,.landing__topright--img{align-items:center;display:flex;justify-content:center}.landing__topright--img{transform:scale(1.1);width:100rem}.landing__topright--img img{height:100%;-o-object-fit:contain;object-fit:contain;width:100%}@media only screen and (max-width:56.25em){.landing__topright{display:none}}.landing__content{background:#249b48;margin-top:90rem;position:relative}.landing__seemore{bottom:10rem;display:flex;justify-content:center;left:0;position:absolute;width:100%}.landing__seemore button{background:transparent;border:1px solid #fff;border-radius:3rem;color:#fff;cursor:pointer;font-size:1.4rem;font-weight:600;padding:1rem 4rem}.landing__cloud{bottom:0;height:34rem;position:absolute;transform:scale(1.1);width:100vw;z-index:3}.landing__cloud img{height:100%;-o-object-fit:cover;object-fit:cover;width:100%}*,:after,:before{box-sizing:inherit;margin:0;padding:0}html{background:#249b48;font-size:62.5%}@media only screen and (max-width:75em){html{font-size:56.25%}}@media only screen and (max-width:56.25em){html{font-size:55%}}@media only screen and (max-width:37.5em){html{font-size:50%}}@media only screen and (min-width:112.5em){html{font-size:65%}}body{background:#249b48;box-sizing:border-box;display:none;font-family:\"Poppins\",sans-serif}@media only screen and (max-width:56.25em){body{padding:0}}::-moz-selection{background-color:#249b48;color:#fff}::selection{background-color:#249b48;color:#fff}::-webkit-scrollbar{height:8px;width:8px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background-color:#249b48;border:none;border-radius:10px}::-webkit-scrollbar-thumb:hover{background-color:#1a7235}*{scrollbar-color:#249b48 transparent;scrollbar-width:thin}", ""]);
 // Exports
 ___CSS_LOADER_EXPORT___.locals = {};
 module.exports = ___CSS_LOADER_EXPORT___;
@@ -793,7 +837,7 @@ const actions = {
       price
     });
   },
-  initializeCart({
+  async initializeCart({
     commit
   }) {
     try {
@@ -814,19 +858,17 @@ const actions = {
     } catch (e) {
       console.warn('Failed to load cart from localStorage due to parsing error, falling back to server:', e);
     }
-    const token = localStorage.getItem('jwt');
-    fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "a"]}/shopper/initialize`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    }).then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    }).then(data => {
+    try {
+      const token = localStorage.getItem('jwt');
+      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "b"]}/shopper/initialize`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetchError */ "a"])(response);
+      const data = await response.json();
       const {
         user_cart,
         total
@@ -840,14 +882,14 @@ const actions = {
       });
       localStorage.setItem('cartItems', JSON.stringify(items));
       localStorage.setItem('cartTotal', JSON.stringify(total));
-    }).catch(error => {
+    } catch (error) {
       console.error('Failed to initialize cart from backend:', error);
       commit('SET_CART_STATE', {
         items: {},
         total: 0,
         totalItems: []
       });
-    });
+    }
   },
   resetCart({
     commit
@@ -872,7 +914,7 @@ const actions = {
         return;
       }
       const token = localStorage.getItem('jwt');
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "a"]}/shopper/cart`, {
+      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "b"]}/shopper/cart`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -886,11 +928,7 @@ const actions = {
           totalItems: state.totalItems
         })
       });
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error response:', errorData);
-        throw new Error(`Request failed with status ${response.status}`);
-      }
+      await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetchError */ "a"])(response);
       const data = await response.json();
       const {
         user_cart,
@@ -1116,7 +1154,7 @@ const actions = {
   setLoading({
     commit
   }, status) {
-    commit('SET_LOADING', status); // Commit the loading state change
+    commit('SET_LOADING', status);
   },
   setUserPhoneNumber({
     commit
@@ -1129,7 +1167,7 @@ const actions = {
     commit('SET_LOADING', true);
     try {
       const token = localStorage.getItem('jwt');
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "a"]}/shopper/auth/updatedetails/phonenumber`, {
+      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/shopper/auth/updatedetails/phonenumber`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1143,14 +1181,7 @@ const actions = {
         })
       });
       commit('SET_LOADING', false);
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error response:', errorData);
-        const error = new Error(`Request failed with status ${response.status}: ${errorData.userMessage || 'Unknown error'}`);
-        error.status = response.status;
-        error.message = errorData.userMessage;
-        throw error;
-      }
+      await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(response);
       const data = await response.json();
       const {
         user
@@ -1174,7 +1205,7 @@ const actions = {
     commit('SET_LOADING', true);
     try {
       const token = localStorage.getItem('jwt');
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "a"]}/shopper/auth/updatedetails/name`, {
+      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/shopper/auth/updatedetails/name`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1188,14 +1219,7 @@ const actions = {
         })
       });
       commit('SET_LOADING', false);
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error response:', errorData);
-        const error = new Error(`Request failed with status ${response.status}: ${errorData.userMessage || 'Unknown error'}`);
-        error.status = response.status;
-        error.message = errorData.userMessage;
-        throw error;
-      }
+      await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(response);
       const data = await response.json();
       const {
         user
@@ -1246,7 +1270,7 @@ const actions = {
     try {
       commit('SET_LOADING', true);
       const token = localStorage.getItem('jwt');
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "a"]}/shopper/auth/updatedetails`, {
+      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/shopper/auth/updatedetails`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1261,11 +1285,7 @@ const actions = {
           email: state.currentUser.email
         })
       });
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error response:', errorData);
-        throw new Error(`Request failed with status ${response.status}`);
-      }
+      await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(response);
       const data = await response.json();
       const {
         user

@@ -62,15 +62,16 @@ app.use(/*#__PURE__*/function () {
         case 0:
           timestamp = new Date().toISOString();
           errorMessage = "Error Details:\n" + "Timestamp: ".concat(timestamp, "\n") + "Request Method: ".concat(req.method, "\n") + "Request URL: ".concat(req.originalUrl, "\n") + "Error Message: ".concat(err.message, "\n") + "Stack Trace:\n".concat(err.stack, "\n\n") + "--- End of Error ---\n\n";
-          _context2.prev = 2;
-          _context2.next = 5;
+          console.log(errorMessage, 'errorMessage');
+          _context2.prev = 3;
+          _context2.next = 6;
           return axios.post(telegbotUrl, errorMessage, {
             headers: {
               'Content-Type': 'text/plain',
               'X-Error-Timestamp': timestamp
             }
           });
-        case 5:
+        case 6:
           response = _context2.sent;
           if (response.status >= 200 && response.status < 300) {
             console.log('Error message sent to telegbot successfully!');
@@ -91,20 +92,20 @@ app.use(/*#__PURE__*/function () {
             stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,
             userMessage: userMessage
           });
-          _context2.next = 16;
+          _context2.next = 17;
           break;
-        case 13:
-          _context2.prev = 13;
-          _context2.t0 = _context2["catch"](2);
+        case 14:
+          _context2.prev = 14;
+          _context2.t0 = _context2["catch"](3);
           //we'll only save to a file if this fails here
           res.status(500).json({
             message: 'Internal server error'
           });
-        case 16:
+        case 17:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[2, 13]]);
+    }, _callee2, null, [[3, 14]]);
   }));
   return function (_x4, _x5, _x6, _x7) {
     return _ref2.apply(this, arguments);

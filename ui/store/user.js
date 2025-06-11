@@ -1,4 +1,4 @@
-import { serverurl } from '@/api'
+import { serverurl, handleFetchError } from '@/api'
 
 export const state = () => ({
   currentUser: {
@@ -96,7 +96,7 @@ export const actions = {
   },
 
   setLoading ({ commit }, status) {
-    commit('SET_LOADING', status) // Commit the loading state change
+    commit('SET_LOADING', status)
   },
 
   setUserPhoneNumber ({ commit }, phoneNumber) {
@@ -128,20 +128,7 @@ export const actions = {
 
       commit('SET_LOADING', false)
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error('Error response:', errorData)
-
-        const error = new Error(
-          `Request failed with status ${response.status}: ${
-            errorData.userMessage || 'Unknown error'
-          }`
-        )
-
-        error.status = response.status
-        error.message = errorData.userMessage
-        throw error
-      }
+      await handleFetchError(response)
 
       const data = await response.json()
       const { user } = data
@@ -187,20 +174,7 @@ export const actions = {
 
       commit('SET_LOADING', false)
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error('Error response:', errorData)
-
-        const error = new Error(
-          `Request failed with status ${response.status}: ${
-            errorData.userMessage || 'Unknown error'
-          }`
-        )
-
-        error.status = response.status
-        error.message = errorData.userMessage
-        throw error
-      }
+      await handleFetchError(response)
 
       const data = await response.json()
       const { user } = data
@@ -267,11 +241,7 @@ export const actions = {
         })
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        console.error('Error response:', errorData)
-        throw new Error(`Request failed with status ${response.status}`)
-      }
+      await handleFetchError(response);
 
       const data = await response.json()
       const { user } = data

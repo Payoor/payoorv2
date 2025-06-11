@@ -14,7 +14,6 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl } from "@/api";
 
 export default {
     mounted() {

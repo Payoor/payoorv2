@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 
 export default {
     data() {
@@ -33,11 +33,7 @@ export default {
                     }
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Error performing autocomplete:', errorData);
-                    return;
-                }
+                await handleFetchError(response)
 
                 const data = await response.json();
 

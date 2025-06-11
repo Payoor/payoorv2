@@ -37,7 +37,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl } from "@/api";
+import { serverurl, handleFetchError } from "@/api";
 
 export default {
     data() {
@@ -159,8 +159,7 @@ export default {
                     }
                 );
 
-                if (!response.ok)
-                    throw new Error(`Error loading more: ${response.status}`);
+                await handleFetchError(response);
 
                 const data = await response.json();
                 const moreProducts = data.products;

@@ -158,7 +158,7 @@
 
 
 <script>
-import { serverurl } from '@/api'
+import { serverurl, handleFetchError, showErrorMessage } from '@/api'
 
 export default {
     name: 'AdminDashboard',
@@ -213,35 +213,38 @@ export default {
         onSearchInput() {
             console.log('Search:', this.searchQuery);
         },
-        handleImageUpload(event) {
-            const file = event.target.files[0]
-            if (!file) return
+        async handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-            const formData = new FormData()
-            formData.append('image', file)
-            this.imageUploading = true
+            const formData = new FormData();
+            formData.append('image', file);
+            this.imageUploading = true;
 
-            fetch(`${serverurl}/admin/upload-image`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                },
-                body: formData
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.url) {
-                        this.newProduct.image = data.url
-                    } else {
-                        alert('Failed to upload image')
-                    }
-                    this.imageUploading = false
-                })
-                .catch(err => {
-                    console.error('Image upload error:', err)
-                    alert('Image upload failed')
-                    this.imageUploading = false
-                })
+            try {
+                const response = await fetch(`${serverurl}/admin/upload-image`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                    },
+                    body: formData
+                });
+
+                await handleFetchError(response);
+
+                const data = await response.json();
+
+                if (data.url) {
+                    this.newProduct.image = data.url;
+                } else {
+                    showErrorMessage('Failed to upload image');
+                }
+            } catch (err) {
+                console.error('Image upload error:', err);
+                showErrorMessage(err.message || 'Image upload failed');
+            } finally {
+                this.imageUploading = false;
+            }
         },
         async submitNewProduct() {
             const { name, generatedDescription, generatedCategoriesString, image } = this.newProduct
@@ -259,7 +262,9 @@ export default {
                     method: 'POST',
                     headers: this.getAuthHeaders(),
                     body: JSON.stringify({ name, generatedDescription, generatedCategories, image })
-                })
+                });
+
+                await handleFetchError(res)
 
                 const data = await res.json()
                 if (data.error) return alert(data.error)
@@ -296,6 +301,9 @@ export default {
                 const res = await fetch(`${serverurl}/admin/products-with-variants?${query}`, {
                     headers: this.getAuthHeaders()
                 })
+
+                await handleFetchError(res);
+
                 const data = await res.json()
 
                 this.products = (data.products || []).map(p => ({
@@ -326,6 +334,9 @@ export default {
                     method: 'DELETE',
                     headers: this.getAuthHeaders()
                 });
+
+                await handleFetchError(res)
+
                 if (res.ok) this.products = this.products.filter(p => p._id !== productId);
                 else alert('Failed to delete product');
             } catch (error) {
@@ -340,6 +351,9 @@ export default {
                     method: 'DELETE',
                     headers: this.getAuthHeaders()
                 });
+
+                await handleFetchError(res)
+
                 if (res.ok) {
                     product.variants = product.variants.filter(v => v._id !== variant._id);
                     product.variantCount--;
@@ -364,10 +378,7 @@ export default {
                     body: JSON.stringify(updated)
                 })
 
-                if (!res.ok) {
-                    const err = await res.json()
-                    alert(err.error || 'Failed to update product')
-                }
+                await handleFetchError(res)
             } catch (error) {
                 console.error('Update error:', error)
             }
@@ -387,15 +398,12 @@ export default {
                     body: JSON.stringify(updated)
                 })
 
-                if (!res.ok) {
-                    const err = await res.json()
-                    alert(err.error || 'Failed to update variant')
-                }
+                await handleFetchError(res)
             } catch (error) {
                 console.error('Variant update error:', error)
             }
         },
-        handleVariantImageUpload(product, event) {
+        async handleVariantImageUpload(product, event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -403,27 +411,30 @@ export default {
             formData.append('image', file);
             this.$set(this.variantImageUploading, product._id, true);
 
-            fetch(`${serverurl}/admin/upload-image`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                },
-                body: formData
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.url) {
-                        product.newVariant.image = data.url;
-                    } else {
-                        alert('Failed to upload variant image');
-                    }
-                    this.$set(this.variantImageUploading, product._id, false);
-                })
-                .catch(err => {
-                    console.error('Variant image upload error:', err);
-                    alert('Variant image upload failed');
-                    this.$set(this.variantImageUploading, product._id, false);
+            try {
+                const response = await fetch(`${serverurl}/admin/upload-image`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                    },
+                    body: formData
                 });
+
+                await handleFetchError(response)
+
+                const data = await response.json();
+
+                if (data.url) {
+                    product.newVariant.image = data.url;
+                } else {
+                    alert('Failed to upload variant image');
+                }
+            } catch (err) {
+                console.error('Variant image upload error:', err);
+                alert('Variant image upload failed');
+            } finally {
+                this.$set(this.variantImageUploading, product._id, false);
+            }
         },
         async submitNewVariant(product) {
             const { unit, price, availability, image } = product.newVariant;
@@ -439,9 +450,11 @@ export default {
                     body: JSON.stringify({ unit, price, availability, image })
                 });
 
+                await handleFetchError(res);
+
                 const data = await res.json();
 
-                if (data.error) return alert(data.error);
+                //if (data.error) return alert(data.error);
 
                 alert('variant added');
 
