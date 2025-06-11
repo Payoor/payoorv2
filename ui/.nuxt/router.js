@@ -9,6 +9,7 @@ const _dd64b54c = () => interopDefault(import('../pages/admin/index.vue' /* webp
 const _57c1bc10 = () => interopDefault(import('../pages/authp.vue' /* webpackChunkName: "pages/authp" */))
 const _b50a5bf0 = () => interopDefault(import('../pages/cart.vue' /* webpackChunkName: "pages/cart" */))
 const _0973792e = () => interopDefault(import('../pages/checkout.vue' /* webpackChunkName: "pages/checkout" */))
+const _6d3c63e6 = () => interopDefault(import('../pages/options.vue' /* webpackChunkName: "pages/options" */))
 const _29fc7b4d = () => interopDefault(import('../pages/orders.vue' /* webpackChunkName: "pages/orders" */))
 const _25be1b4e = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
 const _612343ee = () => interopDefault(import('../pages/admin/checkout.vue' /* webpackChunkName: "pages/admin/checkout" */))
@@ -49,6 +50,10 @@ export const routerOptions = {
     path: "/checkout",
     component: _0973792e,
     name: "checkout"
+  }, {
+    path: "/options",
+    component: _6d3c63e6,
+    name: "options"
   }, {
     path: "/orders",
     component: _29fc7b4d,

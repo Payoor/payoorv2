@@ -92,6 +92,8 @@ export const actions = {
     try {
       const token = localStorage.getItem('jwt')
 
+      if (!token) return;
+
       const response = await fetch(`${serverurl}/shopper/initialize`, {
         method: 'POST',
         headers: {
@@ -100,7 +102,7 @@ export const actions = {
         }
       })
 
-      await handleFetchError(response);
+      await handleFetchError(response)
 
       const data = await response.json()
       const { user_cart, total } = data

@@ -35,6 +35,13 @@
     "_name": "_0973792e"
   },
   {
+    "name": "options",
+    "path": "/options",
+    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/options.vue",
+    "chunkName": "pages/options",
+    "_name": "_6d3c63e6"
+  },
+  {
     "name": "orders",
     "path": "/orders",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/orders.vue",

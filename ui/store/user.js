@@ -8,9 +8,7 @@ export const state = () => ({
     //email: ''
   },
   loading: false,
-  jwtToken: null,
-  currentRoute: null,
-  previousRoute: null
+  jwtToken: null
 })
 
 export const mutations = {
@@ -69,14 +67,6 @@ export const mutations = {
 
   REMOVE_JWT_TOKEN (state) {
     state.jwtToken = null
-  },
-
-  SET_CURRENT_ROUTE (state, route) {
-    state.currentRoute = route
-  },
-
-  SET_PREVIOUS_ROUTE (state, route) {
-    state.previousRoute = route
   }
 }
 
@@ -241,7 +231,7 @@ export const actions = {
         })
       })
 
-      await handleFetchError(response);
+      await handleFetchError(response)
 
       const data = await response.json()
       const { user } = data
@@ -266,13 +256,6 @@ export const actions = {
       throw error
     } finally {
       commit('SET_LOADING', false)
-    }
-  },
-
-  trackRouteChange ({ state, commit }, newRoute) {
-    if (state.currentRoute !== newRoute) {
-      commit('SET_PREVIOUS_ROUTE', state.currentRoute)
-      commit('SET_CURRENT_ROUTE', newRoute)
     }
   }
 }

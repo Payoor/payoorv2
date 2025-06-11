@@ -9,7 +9,7 @@
                 <p>{{ name }}</p>
             </div>
 
-            <div class="chatcard__viewmore" @click.stop="toggleViewOptions">
+            <div class="chatcard__viewmore" @click.stop="viewOptions">
                 <button :disabled="loading">
                     <div class="chatcard__viewmore--flex">
                         <span>View {{ options }} options</span>
@@ -21,11 +21,6 @@
             <div class="chatcard__tags">
                 <span v-for="(tag, index) in tags" :key="index">{{ formatTag(tag) }}</span>
             </div>
-        </div>
-
-        <div v-if="view_options">
-            <ChatOptions :options="options" :toggleViewOptions="toggleViewOptions" :productname="name"
-                :productimg="imageUrl" :mongooseid="product._mongooseid" :productDescription="productDescription" />
         </div>
     </div>
 </template>
@@ -41,17 +36,12 @@ export default {
     },
     data() {
         return {
-            view_options: false,
             loading: false // Introduce a loading state
         }
     },
     mounted() {
         const previousPage = this.$route.query.prevpage;
         const currentProduct = this.$route.query.currentproduct;
-
-        if (previousPage === '/' && currentProduct === this.product._mongooseid) {
-            this.view_options = true;
-        }
     },
     computed: {
         name() {
@@ -73,21 +63,7 @@ export default {
         }
     },
     methods: {
-        async toggleViewOptions() {
-            if (this.view_options) {
-                const newQuery = { ...this.$route.query };
-                delete newQuery.currentproduct;
-
-                this.$router.push({
-                    path: '/',
-                    query: newQuery
-                });
-
-                this.view_options = false;
-
-                return;
-            }
-
+        async viewOptions() {
             this.loading = true;
 
             try {
@@ -98,13 +74,12 @@ export default {
                 this.loading = false;
             }
 
-            this.view_options = true;
-
             this.$router.push({
-                path: '/',
+                path: '/options',
                 query: {
                     ...this.$route.query,
-                    currentproduct: this.product._mongooseid
+                    currentproduct: this.product._mongooseid,
+                    productname: this.name
                 }
             });
         },

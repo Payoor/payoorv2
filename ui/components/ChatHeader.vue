@@ -1,6 +1,5 @@
 <template>
     <div class="chat-header">
-        <!--{{ currentRoute, previousRoute }}-->
         <div class="chat-header__left">
             <div class="chat-header__name" v-if="name" @click="goBack">
                 <span class="svg">
@@ -75,7 +74,8 @@ export default {
     emits: ['update:authValue'],
     data() {
         return {
-            menuopen: false
+            menuopen: false,
+            routeStack: ['/']
         };
     },
     computed: {
@@ -83,13 +83,7 @@ export default {
             currentUser: (state) => state.currentUser,
             isLoading: (state) => state.loading,
             jwtToken: (state) => state.jwtToken,
-            currentRoute: (state) => state.currentRoute,
-            previousRoute: (state) => state.previousRoute
         }),
-        currentRoute() {
-
-            return this.$route.name;
-        }
     },
     async mounted() {
         const token = await this.getValidToken();
@@ -100,13 +94,48 @@ export default {
             this.redirectHome();
         }
 
-        console.log(this.currentRoute, 'this is a test')
-
         //this.$store.dispatch('cart/resetCart');
 
-        this.$store.dispatch('user/trackRouteChange', this.currentRoute)
-
         this.$store.dispatch('cart/initializeCart');
+
+        const routeStack = this.getRouteStack();
+
+        const queryRouteStack = this.$route.query.routeStack;
+
+        const MAX_ROUTE_STACK_SIZE = 4;
+
+        if (queryRouteStack === undefined || queryRouteStack === null) {
+            const initialStack = [...new Set(['/', this.$route.path])];
+            this.routeStack = initialStack.slice(-MAX_ROUTE_STACK_SIZE);
+        } else {
+            const existingPaths = queryRouteStack.split(',')
+                .map(item => item.trim())
+                .filter(item => item !== '' && item !== ',');
+
+            const combinedPaths = [...existingPaths, this.$route.path];
+
+            const uniquePaths = [...new Set(combinedPaths)];
+
+            this.routeStack = uniquePaths.slice(-MAX_ROUTE_STACK_SIZE);
+        }
+
+        this.$router.push({
+            path: this.$route.path,
+            query: {
+                ...this.$route.query,
+                routeStack: this.routeStack.join(',')
+            }
+        });
+
+        this.$router.push({
+            path: this.$route.path,
+            query: {
+                ...this.$route.query,
+                routeStack: this.routeStack.join(',')
+            }
+        });
+
+       // console.log(routeStack, 'routestack')
 
         this.menuopen = window.innerWidth > 900 && this.jwtToken;
 
@@ -116,6 +145,9 @@ export default {
         window.removeEventListener('resize', this.handleResize);
     },
     methods: {
+        getRouteStack() {
+            return this.$route.query.routestack;
+        },
         redirectHome() {
             if (!this.excludedPaths.includes(this.$route.path)) {
                 this.$emit('update:authValue', null);
@@ -152,7 +184,30 @@ export default {
             this.menuopen = !this.menuopen;
         },
         goBack() {
-            this.$router.push({ path: this.backRoute, query: { ...this.$route.query } });
+            const currentRouteStackQuery = this.$route.query.routeStack;
+
+            let routeStackArray = [];
+            if (currentRouteStackQuery) {
+                routeStackArray = currentRouteStackQuery.split(',').map(item => item.trim()).filter(item => item !== '');
+            }
+
+            let targetPath = '/';
+
+            if (routeStackArray.length >= 2) {
+                targetPath = routeStackArray[routeStackArray.length - 2];
+            } else if (routeStackArray.length === 1) {
+                targetPath = routeStackArray[0];
+            }
+
+            const newRouteStack = routeStackArray.slice(0, -1);
+
+            this.$router.push({
+                path: targetPath,
+                query: {
+                    ...this.$route.query,
+                    routeStack: newRouteStack.join(',')
+                }
+            });
         },
         handleResize() {
             this.menuopen = window.innerWidth > 900;

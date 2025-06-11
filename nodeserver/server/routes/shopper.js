@@ -6,6 +6,7 @@ import Checkout from '../models/Checkout'
 import User from '../models/User'
 import Order from '../models/Order'
 import UserCart from '../models/UserCart'
+import Product from '../models/Product'
 import ProductVariant from '../models/ProductVariant'
 
 import authMiddleware from '../middleware/authMiddleware'
@@ -112,6 +113,45 @@ shopperRoute.get(
         variants
       })
     } catch (error) {
+      next(error)
+    }
+  }
+)
+
+shopperRoute.get(
+  '/shopper/getproduct',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { mongooseid } = req.query
+
+      if (!mongooseid || !ObjectId.isValid(mongooseid)) {
+        return res
+          .status(400)
+          .json({ message: 'Invalid or missing product ID.' })
+      }
+
+      const productId = new ObjectId(mongooseid)
+
+      const product = await Product.findOne({ _id: productId })
+
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found.' })
+      }
+
+      res.status(200).json({
+        message: 'Product found successfully.',
+        product: {
+          productname: product.name,
+          productimg: product.image,
+          productMongooseId: product._id,
+          productDescription: product.generatedDescription,
+          variantCount: product.variantCount,
+          metadata: product.metadata
+        }
+      })
+    } catch (error) {
+      // Pass the error to the next error-handling middleware
       next(error)
     }
   }

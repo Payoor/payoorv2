@@ -12,6 +12,7 @@ var _Checkout = _interopRequireDefault(require("../models/Checkout"));
 var _User = _interopRequireDefault(require("../models/User"));
 var _Order = _interopRequireDefault(require("../models/Order"));
 var _UserCart = _interopRequireDefault(require("../models/UserCart"));
+var _Product = _interopRequireDefault(require("../models/Product"));
 var _ProductVariant = _interopRequireDefault(require("../models/ProductVariant"));
 var _authMiddleware = _interopRequireDefault(require("../middleware/authMiddleware"));
 var _CouponClass = _interopRequireDefault(require("../CouponClass"));
@@ -166,16 +167,75 @@ shopperRoute.get('/shopper/getoptions', _authMiddleware["default"], /*#__PURE__*
     return _ref3.apply(this, arguments);
   };
 }());
-shopperRoute.get('/shopper/getoption', _authMiddleware["default"], /*#__PURE__*/function () {
+shopperRoute.get('/shopper/getproduct', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res, next) {
-    var mongooseid, objectId, variant;
+    var mongooseid, productId, product;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           _context4.prev = 0;
           mongooseid = req.query.mongooseid;
+          if (!(!mongooseid || !ObjectId.isValid(mongooseid))) {
+            _context4.next = 4;
+            break;
+          }
+          return _context4.abrupt("return", res.status(400).json({
+            message: 'Invalid or missing product ID.'
+          }));
+        case 4:
+          productId = new ObjectId(mongooseid);
+          _context4.next = 7;
+          return _Product["default"].findOne({
+            _id: productId
+          });
+        case 7:
+          product = _context4.sent;
+          if (product) {
+            _context4.next = 10;
+            break;
+          }
+          return _context4.abrupt("return", res.status(404).json({
+            message: 'Product not found.'
+          }));
+        case 10:
+          res.status(200).json({
+            message: 'Product found successfully.',
+            product: {
+              productname: product.name,
+              productimg: product.image,
+              productMongooseId: product._id,
+              productDescription: product.generatedDescription,
+              variantCount: product.variantCount,
+              metadata: product.metadata
+            }
+          });
+          _context4.next = 16;
+          break;
+        case 13:
+          _context4.prev = 13;
+          _context4.t0 = _context4["catch"](0);
+          // Pass the error to the next error-handling middleware
+          next(_context4.t0);
+        case 16:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4, null, [[0, 13]]);
+  }));
+  return function (_x0, _x1, _x10) {
+    return _ref4.apply(this, arguments);
+  };
+}());
+shopperRoute.get('/shopper/getoption', _authMiddleware["default"], /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res, next) {
+    var mongooseid, objectId, variant;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.prev = 0;
+          mongooseid = req.query.mongooseid;
           objectId = new ObjectId(mongooseid);
-          _context4.next = 5;
+          _context5.next = 5;
           return _ProductVariant["default"].findOne({
             _id: objectId
           }).populate({
@@ -183,13 +243,13 @@ shopperRoute.get('/shopper/getoption', _authMiddleware["default"], /*#__PURE__*/
             select: 'name'
           });
         case 5:
-          variant = _context4.sent;
+          variant = _context5.sent;
           console.log(variant);
           if (variant) {
-            _context4.next = 9;
+            _context5.next = 9;
             break;
           }
-          return _context4.abrupt("return", res.status(404).json({
+          return _context5.abrupt("return", res.status(404).json({
             message: 'Variant not found'
           }));
         case 9:
@@ -197,39 +257,39 @@ shopperRoute.get('/shopper/getoption', _authMiddleware["default"], /*#__PURE__*/
             message: 'Variant found',
             variant: variant
           });
-          _context4.next = 15;
+          _context5.next = 15;
           break;
         case 12:
-          _context4.prev = 12;
-          _context4.t0 = _context4["catch"](0);
-          next(_context4.t0);
+          _context5.prev = 12;
+          _context5.t0 = _context5["catch"](0);
+          next(_context5.t0);
         case 15:
         case "end":
-          return _context4.stop();
+          return _context5.stop();
       }
-    }, _callee4, null, [[0, 12]]);
+    }, _callee5, null, [[0, 12]]);
   }));
-  return function (_x0, _x1, _x10) {
-    return _ref4.apply(this, arguments);
+  return function (_x11, _x12, _x13) {
+    return _ref5.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/init/checkout', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res, next) {
+  var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res, next) {
     var jwt, userId, _yield$Promise$all, _yield$Promise$all2, fee, servicecharge, latestCheckout, phone_number, delivery_address;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
         case 0:
-          _context5.prev = 0;
+          _context6.prev = 0;
           jwt = req.query.jwt;
           userId = req.userId;
-          _context5.next = 5;
+          _context6.next = 5;
           return Promise.all([_redisconf.redisClient.hget('admindirective', 'deliveryfee'), _redisconf.redisClient.hget('admindirective', 'servicecharge'), _Checkout["default"].findOne({
             user_id: userId
           }).sort({
             created_at: -1
           }).lean()]);
         case 5:
-          _yield$Promise$all = _context5.sent;
+          _yield$Promise$all = _context6.sent;
           _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 3);
           fee = _yield$Promise$all2[0];
           servicecharge = _yield$Promise$all2[1];
@@ -244,67 +304,67 @@ shopperRoute.get('/shopper/init/checkout', _authMiddleware["default"], /*#__PURE
             phone_number: phone_number,
             delivery_address: delivery_address
           });
-          _context5.next = 18;
+          _context6.next = 18;
           break;
         case 15:
-          _context5.prev = 15;
-          _context5.t0 = _context5["catch"](0);
-          next(_context5.t0);
+          _context6.prev = 15;
+          _context6.t0 = _context6["catch"](0);
+          next(_context6.t0);
         case 18:
         case "end":
-          return _context5.stop();
+          return _context6.stop();
       }
-    }, _callee5, null, [[0, 15]]);
+    }, _callee6, null, [[0, 15]]);
   }));
-  return function (_x11, _x12, _x13) {
-    return _ref5.apply(this, arguments);
+  return function (_x14, _x15, _x16) {
+    return _ref6.apply(this, arguments);
   };
 }());
 shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res, next) {
+  var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res, next) {
     var jwt, checkout, validUser, coupon, newCheckout;
-    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-      while (1) switch (_context6.prev = _context6.next) {
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) switch (_context7.prev = _context7.next) {
         case 0:
-          _context6.prev = 0;
+          _context7.prev = 0;
           jwt = req.query.jwt;
           checkout = req.body.checkout;
-          _context6.next = 5;
+          _context7.next = 5;
           return _User["default"].findByToken(jwt);
         case 5:
-          validUser = _context6.sent;
+          validUser = _context7.sent;
           if (validUser) {
-            _context6.next = 8;
+            _context7.next = 8;
             break;
           }
-          return _context6.abrupt("return", res.status(404).json({
+          return _context7.abrupt("return", res.status(404).json({
             message: 'invalid user'
           }));
         case 8:
           if (!(checkout.promo_code && typeof checkout.promo_code === 'string')) {
-            _context6.next = 17;
+            _context7.next = 17;
             break;
           }
-          _context6.next = 11;
+          _context7.next = 11;
           return _CouponClass["default"].getCoupon(checkout.promo_code);
         case 11:
-          coupon = _context6.sent;
+          coupon = _context7.sent;
           if (!(coupon && coupon.type)) {
-            _context6.next = 16;
+            _context7.next = 16;
             break;
           }
           checkout.promo_code_type = coupon.type;
-          _context6.next = 17;
+          _context7.next = 17;
           break;
         case 16:
-          return _context6.abrupt("return", res.status(400).json({
+          return _context7.abrupt("return", res.status(400).json({
             message: 'Invalid or expired coupon code'
           }));
         case 17:
           newCheckout = new _Checkout["default"](_objectSpread(_objectSpread({}, checkout), {}, {
             user_id: validUser._id
           }));
-          _context6.next = 20;
+          _context7.next = 20;
           return newCheckout.save();
         case 20:
           //console.log(newCheckout)
@@ -313,39 +373,39 @@ shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__P
             message: 'Checkout data',
             newcheckout: newCheckout
           });
-          _context6.next = 26;
+          _context7.next = 26;
           break;
         case 23:
-          _context6.prev = 23;
-          _context6.t0 = _context6["catch"](0);
-          next(_context6.t0);
+          _context7.prev = 23;
+          _context7.t0 = _context7["catch"](0);
+          next(_context7.t0);
         case 26:
         case "end":
-          return _context6.stop();
+          return _context7.stop();
       }
-    }, _callee6, null, [[0, 23]]);
+    }, _callee7, null, [[0, 23]]);
   }));
-  return function (_x14, _x15, _x16) {
-    return _ref6.apply(this, arguments);
+  return function (_x17, _x18, _x19) {
+    return _ref7.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res, next) {
+  var _ref8 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res, next) {
     var checkout_id, _yield$Checkout$aggre, _yield$Checkout$aggre2, checkoutWithUser, email, user_id, total, params, options, paystackRes;
-    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-      while (1) switch (_context7.prev = _context7.next) {
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
         case 0:
           checkout_id = req.query.checkout_id;
           if (checkout_id) {
-            _context7.next = 3;
+            _context8.next = 3;
             break;
           }
-          return _context7.abrupt("return", res.status(400).json({
+          return _context8.abrupt("return", res.status(400).json({
             error: 'Checkout ID is required'
           }));
         case 3:
-          _context7.prev = 3;
-          _context7.next = 6;
+          _context8.prev = 3;
+          _context8.next = 6;
           return _Checkout["default"].aggregate([{
             $match: {
               _id: new _mongoose["default"].Types.ObjectId(checkout_id)
@@ -368,14 +428,14 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
             }
           }]);
         case 6:
-          _yield$Checkout$aggre = _context7.sent;
+          _yield$Checkout$aggre = _context8.sent;
           _yield$Checkout$aggre2 = _slicedToArray(_yield$Checkout$aggre, 1);
           checkoutWithUser = _yield$Checkout$aggre2[0];
           if (checkoutWithUser) {
-            _context7.next = 11;
+            _context8.next = 11;
             break;
           }
-          return _context7.abrupt("return", res.status(400).json({
+          return _context8.abrupt("return", res.status(400).json({
             error: 'Invalid Checkout ID'
           }));
         case 11:
@@ -399,7 +459,7 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
               'Content-Type': 'application/json'
             }
           };
-          _context7.next = 16;
+          _context8.next = 16;
           return new Promise(function (resolve, reject) {
             var req = _https["default"].request(options, function (res) {
               var data = '';
@@ -419,12 +479,12 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
             req.end();
           });
         case 16:
-          paystackRes = _context7.sent;
+          paystackRes = _context8.sent;
           if (paystackRes.status) {
-            _context7.next = 19;
+            _context8.next = 19;
             break;
           }
-          return _context7.abrupt("return", res.status(400).json({
+          return _context8.abrupt("return", res.status(400).json({
             error: paystackRes.message
           }));
         case 19:
@@ -436,71 +496,71 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
               accessCode: paystackRes.data.access_code
             }
           });
-          _context7.next = 25;
+          _context8.next = 25;
           break;
         case 22:
-          _context7.prev = 22;
-          _context7.t0 = _context7["catch"](3);
-          next(_context7.t0);
+          _context8.prev = 22;
+          _context8.t0 = _context8["catch"](3);
+          next(_context8.t0);
         case 25:
         case "end":
-          return _context7.stop();
+          return _context8.stop();
       }
-    }, _callee7, null, [[3, 22]]);
+    }, _callee8, null, [[3, 22]]);
   }));
-  return function (_x17, _x18, _x19) {
-    return _ref7.apply(this, arguments);
+  return function (_x20, _x21, _x22) {
+    return _ref8.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/user/getorders', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref8 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res, next) {
+  var _ref9 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res, next) {
     var userId, userOrders, variantsCollection, productCollection, enrichedOrders, _iterator, _step, _loop;
-    return _regeneratorRuntime().wrap(function _callee8$(_context9) {
-      while (1) switch (_context9.prev = _context9.next) {
+    return _regeneratorRuntime().wrap(function _callee9$(_context0) {
+      while (1) switch (_context0.prev = _context0.next) {
         case 0:
-          _context9.prev = 0;
+          _context0.prev = 0;
           userId = req.userId;
-          _context9.next = 4;
+          _context0.next = 4;
           return _Order["default"].find({
             user_id: userId
           }).populate('checkout_id');
         case 4:
-          userOrders = _context9.sent;
+          userOrders = _context0.sent;
           variantsCollection = _payoordb["default"].db.collection('productvariants');
           productCollection = _payoordb["default"].db.collection('newproducts');
           enrichedOrders = [];
           _iterator = _createForOfIteratorHelper(userOrders);
-          _context9.prev = 9;
+          _context0.prev = 9;
           _loop = /*#__PURE__*/_regeneratorRuntime().mark(function _loop() {
             var _order$checkout_id$ca, _order$checkout_id$ca2;
             var order, cartItems, variantIds, variants, productIds, products, productMap, _iterator2, _step2, product, enrichedCart;
-            return _regeneratorRuntime().wrap(function _loop$(_context8) {
-              while (1) switch (_context8.prev = _context8.next) {
+            return _regeneratorRuntime().wrap(function _loop$(_context9) {
+              while (1) switch (_context9.prev = _context9.next) {
                 case 0:
                   order = _step.value;
                   cartItems = order.checkout_id.cart_items instanceof Map ? Object.fromEntries(order.checkout_id.cart_items) : ((_order$checkout_id$ca = (_order$checkout_id$ca2 = order.checkout_id.cart_items).toObject) === null || _order$checkout_id$ca === void 0 ? void 0 : _order$checkout_id$ca.call(_order$checkout_id$ca2)) || order.checkout_id.cart_items;
                   variantIds = Object.keys(cartItems || {}).map(function (id) {
                     return new ObjectId(id);
                   });
-                  _context8.next = 5;
+                  _context9.next = 5;
                   return variantsCollection.find({
                     _id: {
                       $in: variantIds
                     }
                   }).toArray();
                 case 5:
-                  variants = _context8.sent;
+                  variants = _context9.sent;
                   productIds = variants.map(function (v) {
                     return v.productId;
                   });
-                  _context8.next = 9;
+                  _context9.next = 9;
                   return productCollection.find({
                     _id: {
                       $in: productIds
                     }
                   }).toArray();
                 case 9:
-                  products = _context8.sent;
+                  products = _context9.sent;
                   productMap = {};
                   _iterator2 = _createForOfIteratorHelper(products);
                   try {
@@ -524,81 +584,81 @@ shopperRoute.get('/shopper/user/getorders', _authMiddleware["default"], /*#__PUR
                   }));
                 case 15:
                 case "end":
-                  return _context8.stop();
+                  return _context9.stop();
               }
             }, _loop);
           });
           _iterator.s();
         case 12:
           if ((_step = _iterator.n()).done) {
-            _context9.next = 16;
+            _context0.next = 16;
             break;
           }
-          return _context9.delegateYield(_loop(), "t0", 14);
+          return _context0.delegateYield(_loop(), "t0", 14);
         case 14:
-          _context9.next = 12;
+          _context0.next = 12;
           break;
         case 16:
-          _context9.next = 21;
+          _context0.next = 21;
           break;
         case 18:
-          _context9.prev = 18;
-          _context9.t1 = _context9["catch"](9);
-          _iterator.e(_context9.t1);
+          _context0.prev = 18;
+          _context0.t1 = _context0["catch"](9);
+          _iterator.e(_context0.t1);
         case 21:
-          _context9.prev = 21;
+          _context0.prev = 21;
           _iterator.f();
-          return _context9.finish(21);
+          return _context0.finish(21);
         case 24:
           console.log(enrichedOrders);
-          return _context9.abrupt("return", res.status(200).json({
+          return _context0.abrupt("return", res.status(200).json({
             success: true,
             orders: enrichedOrders
           }));
         case 28:
-          _context9.prev = 28;
-          _context9.t2 = _context9["catch"](0);
-          next(_context9.t2);
+          _context0.prev = 28;
+          _context0.t2 = _context0["catch"](0);
+          next(_context0.t2);
         case 31:
         case "end":
-          return _context9.stop();
+          return _context0.stop();
       }
-    }, _callee8, null, [[0, 28], [9, 18, 21, 24]]);
+    }, _callee9, null, [[0, 28], [9, 18, 21, 24]]);
   }));
-  return function (_x20, _x21, _x22) {
-    return _ref8.apply(this, arguments);
+  return function (_x23, _x24, _x25) {
+    return _ref9.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/user/getorder/', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref9 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res, next) {
+  var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res, next) {
     var _order$checkout_id$ca3, _order$checkout_id$ca4, userId, orderId, order, cartItems, variantIds, variantsCollection, productCollection, variants, productIds, products, productMap, _iterator3, _step3, product, enrichedCart;
-    return _regeneratorRuntime().wrap(function _callee9$(_context0) {
-      while (1) switch (_context0.prev = _context0.next) {
+    return _regeneratorRuntime().wrap(function _callee0$(_context1) {
+      while (1) switch (_context1.prev = _context1.next) {
         case 0:
-          _context0.prev = 0;
+          _context1.prev = 0;
           userId = req.userId;
           orderId = req.query.orderId;
           if (ObjectId.isValid(orderId)) {
-            _context0.next = 5;
+            _context1.next = 5;
             break;
           }
-          return _context0.abrupt("return", res.status(400).json({
+          return _context1.abrupt("return", res.status(400).json({
             success: false,
             message: 'Invalid order ID'
           }));
         case 5:
-          _context0.next = 7;
+          _context1.next = 7;
           return _Order["default"].findOne({
             _id: new ObjectId(orderId),
             user_id: new ObjectId(userId)
           }).populate('checkout_id');
         case 7:
-          order = _context0.sent;
+          order = _context1.sent;
           if (order) {
-            _context0.next = 10;
+            _context1.next = 10;
             break;
           }
-          return _context0.abrupt("return", res.status(404).json({
+          return _context1.abrupt("return", res.status(404).json({
             success: false,
             message: 'Order not found'
           }));
@@ -609,25 +669,25 @@ shopperRoute.get('/shopper/user/getorder/', _authMiddleware["default"], /*#__PUR
           });
           variantsCollection = _payoordb["default"].db.collection('productvariants');
           productCollection = _payoordb["default"].db.collection('newproducts');
-          _context0.next = 16;
+          _context1.next = 16;
           return variantsCollection.find({
             _id: {
               $in: variantIds
             }
           }).toArray();
         case 16:
-          variants = _context0.sent;
+          variants = _context1.sent;
           productIds = variants.map(function (v) {
             return v.productId;
           });
-          _context0.next = 20;
+          _context1.next = 20;
           return productCollection.find({
             _id: {
               $in: productIds
             }
           }).toArray();
         case 20:
-          products = _context0.sent;
+          products = _context1.sent;
           productMap = {};
           _iterator3 = _createForOfIteratorHelper(products);
           try {
@@ -646,56 +706,56 @@ shopperRoute.get('/shopper/user/getorder/', _authMiddleware["default"], /*#__PUR
               quantity: cartItems[variant._id.toString()]
             });
           });
-          return _context0.abrupt("return", res.status(200).json({
+          return _context1.abrupt("return", res.status(200).json({
             success: true,
             order: order.toObject(),
             cart: enrichedCart
           }));
         case 28:
-          _context0.prev = 28;
-          _context0.t0 = _context0["catch"](0);
-          next(_context0.t0);
+          _context1.prev = 28;
+          _context1.t0 = _context1["catch"](0);
+          next(_context1.t0);
         case 31:
         case "end":
-          return _context0.stop();
+          return _context1.stop();
       }
-    }, _callee9, null, [[0, 28]]);
+    }, _callee0, null, [[0, 28]]);
   }));
-  return function (_x23, _x24, _x25) {
-    return _ref9.apply(this, arguments);
+  return function (_x26, _x27, _x28) {
+    return _ref0.apply(this, arguments);
   };
 }());
 shopperRoute.get('/shopper/google/search-places', _authMiddleware["default"], _GoogleApiController["default"].searchPlaces);
 shopperRoute.get('/shopper/google/use-current-location', _authMiddleware["default"], _GoogleApiController["default"].reverseGeocode);
 shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res, next) {
+  var _ref1 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee1(req, res, next) {
     var coupon_code, userId, key, raw, couponConfig, type, redeemed, typeKey, typeRaw, couponTypeConfig, ttl, createdAt, discount, now, isExpired, usedCodeCheckout, usedCoupon, usedOrder, usedTypeCheckout, _usedOrder;
-    return _regeneratorRuntime().wrap(function _callee0$(_context1) {
-      while (1) switch (_context1.prev = _context1.next) {
+    return _regeneratorRuntime().wrap(function _callee1$(_context10) {
+      while (1) switch (_context10.prev = _context10.next) {
         case 0:
-          _context1.prev = 0;
+          _context10.prev = 0;
           coupon_code = req.body.coupon_code;
           userId = req.userId;
           if (!(!coupon_code || typeof coupon_code !== 'string')) {
-            _context1.next = 5;
+            _context10.next = 5;
             break;
           }
-          return _context1.abrupt("return", res.status(401).json({
+          return _context10.abrupt("return", res.status(401).json({
             success: false,
             message: 'Coupon code is required and must be a string'
           }));
         case 5:
           // Get the coupon from Redis
           key = "coupon:code:".concat(coupon_code);
-          _context1.next = 8;
+          _context10.next = 8;
           return _redisconf.redisClient.get(key);
         case 8:
-          raw = _context1.sent;
+          raw = _context10.sent;
           if (raw) {
-            _context1.next = 11;
+            _context10.next = 11;
             break;
           }
-          return _context1.abrupt("return", res.status(404).json({
+          return _context10.abrupt("return", res.status(404).json({
             success: false,
             message: 'Coupon code not found or expired'
           }));
@@ -703,15 +763,15 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
           couponConfig = JSON.parse(raw);
           type = couponConfig.type, redeemed = couponConfig.redeemed;
           typeKey = "coupon:type:".concat(type);
-          _context1.next = 16;
+          _context10.next = 16;
           return _redisconf.redisClient.get(typeKey);
         case 16:
-          typeRaw = _context1.sent;
+          typeRaw = _context10.sent;
           if (typeRaw) {
-            _context1.next = 19;
+            _context10.next = 19;
             break;
           }
-          return _context1.abrupt("return", res.status(404).json({
+          return _context10.abrupt("return", res.status(404).json({
             success: false,
             message: 'Coupon type not found or expired'
           }));
@@ -721,63 +781,63 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
           now = Date.now();
           isExpired = now > createdAt + ttl * 1000;
           if (!isExpired) {
-            _context1.next = 25;
+            _context10.next = 25;
             break;
           }
-          return _context1.abrupt("return", res.status(410).json({
+          return _context10.abrupt("return", res.status(410).json({
             success: false,
             message: 'Coupon code has expired'
           }));
         case 25:
-          _context1.next = 27;
+          _context10.next = 27;
           return _Checkout["default"].findOne({
             user_id: userId,
             promo_code: coupon_code
           }).select('_id');
         case 27:
-          usedCodeCheckout = _context1.sent;
+          usedCodeCheckout = _context10.sent;
           usedCoupon = false;
           if (!usedCodeCheckout) {
-            _context1.next = 34;
+            _context10.next = 34;
             break;
           }
-          _context1.next = 32;
+          _context10.next = 32;
           return _Order["default"].findOne({
             checkout_id: usedCodeCheckout._id
           });
         case 32:
-          usedOrder = _context1.sent;
+          usedOrder = _context10.sent;
           if (usedOrder) usedCoupon = true;
         case 34:
-          _context1.next = 36;
+          _context10.next = 36;
           return _Checkout["default"].findOne({
             user_id: userId,
             promo_code_type: type
           }).select('_id');
         case 36:
-          usedTypeCheckout = _context1.sent;
+          usedTypeCheckout = _context10.sent;
           if (!usedTypeCheckout) {
-            _context1.next = 42;
+            _context10.next = 42;
             break;
           }
-          _context1.next = 40;
+          _context10.next = 40;
           return _Order["default"].findOne({
             checkout_id: usedTypeCheckout._id
           });
         case 40:
-          _usedOrder = _context1.sent;
+          _usedOrder = _context10.sent;
           if (_usedOrder) usedCoupon = true;
         case 42:
           if (!usedCoupon) {
-            _context1.next = 44;
+            _context10.next = 44;
             break;
           }
-          return _context1.abrupt("return", res.status(409).json({
+          return _context10.abrupt("return", res.status(409).json({
             success: false,
             message: 'You have already used this coupon code or a coupon of this type'
           }));
         case 44:
-          return _context1.abrupt("return", res.status(200).json({
+          return _context10.abrupt("return", res.status(200).json({
             success: true,
             message: 'Coupon code applied successfully',
             discount: discount || {},
@@ -786,46 +846,46 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
             expires_in: Math.floor((createdAt + ttl * 1000 - now) / 1000)
           }));
         case 47:
-          _context1.prev = 47;
-          _context1.t0 = _context1["catch"](0);
-          next(_context1.t0);
+          _context10.prev = 47;
+          _context10.t0 = _context10["catch"](0);
+          next(_context10.t0);
         case 50:
         case "end":
-          return _context1.stop();
+          return _context10.stop();
       }
-    }, _callee0, null, [[0, 47]]);
+    }, _callee1, null, [[0, 47]]);
   }));
-  return function (_x26, _x27, _x28) {
-    return _ref0.apply(this, arguments);
+  return function (_x29, _x30, _x31) {
+    return _ref1.apply(this, arguments);
   };
 }());
 shopperRoute.post('/shopper/cart', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref1 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee1(req, res, next) {
+  var _ref10 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res, next) {
     var userId, items, totalItems, user_cart, total, foundUserCart, mergedTotalItems, existingItems, productId, existingProductId, updatedUserCart, newUserCart;
-    return _regeneratorRuntime().wrap(function _callee1$(_context10) {
-      while (1) switch (_context10.prev = _context10.next) {
+    return _regeneratorRuntime().wrap(function _callee10$(_context11) {
+      while (1) switch (_context11.prev = _context11.next) {
         case 0:
-          _context10.prev = 0;
+          _context11.prev = 0;
           userId = req.userId;
           items = req.body.items || {};
           totalItems = req.body.totalItems || [];
           if (userId) {
-            _context10.next = 6;
+            _context11.next = 6;
             break;
           }
-          return _context10.abrupt("return", res.status(401).json({
+          return _context11.abrupt("return", res.status(401).json({
             message: 'Authentication required: User ID not found.'
           }));
         case 6:
           total = 0;
-          _context10.next = 9;
+          _context11.next = 9;
           return _UserCart["default"].findOne({
             userId: userId
           });
         case 9:
-          foundUserCart = _context10.sent;
+          foundUserCart = _context11.sent;
           if (!foundUserCart) {
-            _context10.next = 26;
+            _context11.next = 26;
             break;
           }
           mergedTotalItems = Array.from(new Set(_toConsumableArray(totalItems)));
@@ -840,7 +900,7 @@ shopperRoute.post('/shopper/cart', _authMiddleware["default"], /*#__PURE__*/func
               delete existingItems[existingProductId];
             }
           }
-          _context10.next = 17;
+          _context11.next = 17;
           return _UserCart["default"].findOneAndUpdate({
             userId: userId
           }, {
@@ -853,22 +913,22 @@ shopperRoute.post('/shopper/cart', _authMiddleware["default"], /*#__PURE__*/func
             runValidators: true
           });
         case 17:
-          updatedUserCart = _context10.sent;
+          updatedUserCart = _context11.sent;
           if (updatedUserCart) {
-            _context10.next = 20;
+            _context11.next = 20;
             break;
           }
-          return _context10.abrupt("return", res.status(404).json({
+          return _context11.abrupt("return", res.status(404).json({
             synced: false,
             user_cart: {}
           }));
         case 20:
           user_cart = updatedUserCart;
-          _context10.next = 23;
+          _context11.next = 23;
           return user_cart.calculateTotal();
         case 23:
-          total = _context10.sent;
-          _context10.next = 35;
+          total = _context11.sent;
+          _context11.next = 35;
           break;
         case 26:
           newUserCart = new _UserCart["default"]({
@@ -876,70 +936,70 @@ shopperRoute.post('/shopper/cart', _authMiddleware["default"], /*#__PURE__*/func
             items: items,
             totalItems: totalItems
           });
-          _context10.next = 29;
+          _context11.next = 29;
           return newUserCart.save();
         case 29:
-          _context10.next = 31;
+          _context11.next = 31;
           return _UserCart["default"].findOne({
             userId: userId
           });
         case 31:
-          user_cart = _context10.sent;
-          _context10.next = 34;
+          user_cart = _context11.sent;
+          _context11.next = 34;
           return user_cart.calculateTotal();
         case 34:
-          total = _context10.sent;
+          total = _context11.sent;
         case 35:
-          return _context10.abrupt("return", res.status(200).json({
+          return _context11.abrupt("return", res.status(200).json({
             synced: true,
             user_cart: user_cart,
             total: total
           }));
         case 38:
-          _context10.prev = 38;
-          _context10.t0 = _context10["catch"](0);
-          next(_context10.t0);
+          _context11.prev = 38;
+          _context11.t0 = _context11["catch"](0);
+          next(_context11.t0);
         case 41:
         case "end":
-          return _context10.stop();
+          return _context11.stop();
       }
-    }, _callee1, null, [[0, 38]]);
+    }, _callee10, null, [[0, 38]]);
   }));
-  return function (_x29, _x30, _x31) {
-    return _ref1.apply(this, arguments);
+  return function (_x32, _x33, _x34) {
+    return _ref10.apply(this, arguments);
   };
 }());
 shopperRoute.post('/shopper/initialize', _authMiddleware["default"], /*#__PURE__*/function () {
-  var _ref10 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res, next) {
+  var _ref11 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res, next) {
     var userId, foundUserCart, total;
-    return _regeneratorRuntime().wrap(function _callee10$(_context11) {
-      while (1) switch (_context11.prev = _context11.next) {
+    return _regeneratorRuntime().wrap(function _callee11$(_context12) {
+      while (1) switch (_context12.prev = _context12.next) {
         case 0:
-          _context11.prev = 0;
+          _context12.prev = 0;
           userId = req.userId;
           if (userId) {
-            _context11.next = 4;
+            _context12.next = 4;
             break;
           }
-          return _context11.abrupt("return", res.status(401).json({
+          return _context12.abrupt("return", res.status(401).json({
             message: 'Authentication required: User ID not found.'
           }));
         case 4:
-          _context11.next = 6;
+          _context12.next = 6;
           return _UserCart["default"].findOne({
             userId: userId
           });
         case 6:
-          foundUserCart = _context11.sent;
+          foundUserCart = _context12.sent;
           if (!foundUserCart) {
-            _context11.next = 14;
+            _context12.next = 14;
             break;
           }
-          _context11.next = 10;
+          _context12.next = 10;
           return foundUserCart.calculateTotal();
         case 10:
-          total = _context11.sent;
-          return _context11.abrupt("return", res.status(200).json({
+          total = _context12.sent;
+          return _context12.abrupt("return", res.status(200).json({
             initialized: true,
             user_cart: {
               items: foundUserCart.items || {},
@@ -948,7 +1008,7 @@ shopperRoute.post('/shopper/initialize', _authMiddleware["default"], /*#__PURE__
             total: total
           }));
         case 14:
-          return _context11.abrupt("return", res.status(200).json({
+          return _context12.abrupt("return", res.status(200).json({
             initialized: true,
             user_cart: {
               items: {},
@@ -957,20 +1017,20 @@ shopperRoute.post('/shopper/initialize', _authMiddleware["default"], /*#__PURE__
             total: 0
           }));
         case 15:
-          _context11.next = 20;
+          _context12.next = 20;
           break;
         case 17:
-          _context11.prev = 17;
-          _context11.t0 = _context11["catch"](0);
-          next(_context11.t0);
+          _context12.prev = 17;
+          _context12.t0 = _context12["catch"](0);
+          next(_context12.t0);
         case 20:
         case "end":
-          return _context11.stop();
+          return _context12.stop();
       }
-    }, _callee10, null, [[0, 17]]);
+    }, _callee11, null, [[0, 17]]);
   }));
-  return function (_x32, _x33, _x34) {
-    return _ref10.apply(this, arguments);
+  return function (_x35, _x36, _x37) {
+    return _ref11.apply(this, arguments);
   };
 }());
 var _default = exports["default"] = shopperRoute; //https://chatgpt.com/c/6819039c-9ad4-8005-8400-d2567db4dc3c
