@@ -14,9 +14,9 @@ const { redisClient, connectRedis } = require('./redisconf')
 
 import shopperRoute from './routes/shopper'
 import authRoute from './routes/auth'
-import adminRoute from './routes/admin'
+import adminRoute from './routes/admin';
 
-import handleError from './handleError'
+import handleError from './handleError'; 
 
 const port = process.env.PORT
 

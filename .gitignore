@@ -4,3 +4,4 @@ Dockerfile
 .env
 langg/
 scrappr/
+runmatomo.sh
