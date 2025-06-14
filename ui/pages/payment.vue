@@ -11,7 +11,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl } from '@/api';
+import { serverurl, handleFetchError } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {

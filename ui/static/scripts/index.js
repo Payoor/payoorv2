@@ -31,4 +31,20 @@ _paq.push(['setSiteId', '1'])
   s.parentNode.insertBefore(g, s)
 })()
 
+/*<script>
+  var _paq = window._paq = window._paq || [];
+
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//clientanalytics.payoor.store/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>*/
+
+//https://clientanalytics.payoor.store/index.php?module=CoreHome&action=index&idSite=1&period=day&date=2025-06-13
+
 

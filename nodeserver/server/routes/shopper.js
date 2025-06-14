@@ -348,6 +348,8 @@ shopperRoute.get(
         return res.status(400).json({ error: paystackRes.message })
       }
 
+      console.log(paystackRes)
+
       res.status(200).json({
         success: true,
         data: {
@@ -357,7 +359,8 @@ shopperRoute.get(
         }
       })
     } catch (error) {
-      next(error)
+      console.log(error, 'from paystack')
+      next(error);
     }
   }
 )

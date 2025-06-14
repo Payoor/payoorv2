@@ -488,6 +488,7 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
             error: paystackRes.message
           }));
         case 19:
+          console.log(paystackRes);
           res.status(200).json({
             success: true,
             data: {
@@ -496,17 +497,18 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
               accessCode: paystackRes.data.access_code
             }
           });
-          _context8.next = 25;
+          _context8.next = 27;
           break;
-        case 22:
-          _context8.prev = 22;
+        case 23:
+          _context8.prev = 23;
           _context8.t0 = _context8["catch"](3);
+          console.log(_context8.t0, 'from paystack');
           next(_context8.t0);
-        case 25:
+        case 27:
         case "end":
           return _context8.stop();
       }
-    }, _callee8, null, [[3, 22]]);
+    }, _callee8, null, [[3, 23]]);
   }));
   return function (_x20, _x21, _x22) {
     return _ref8.apply(this, arguments);
