@@ -94,7 +94,8 @@ export default {
         ...mapState("cart", {
             cartTotal: (state) => state.total,
             cartItems: (state) => state.items,
-            cartTotalItems: (state) => state.totalItems
+            cartTotalItems: (state) => state.totalItems,
+            checkoutData: (state) => state.checkout
         }),
         productTags() {
             return this.convertMetadataStringToArray(this.product.metadata);
@@ -173,10 +174,14 @@ export default {
 
             try {
                 await this.$store.dispatch("cart/syncCartToServer");
+
+                await this.$store.dispatch('cart/createCheckout');
+
                 this.$router.push({
                     path: '/checkout',
                     query: {
                         ...this.$route.query,
+                        checkout_id: this.checkoutData._id,
                         prevpage: this.$route.path
                     }
                 });

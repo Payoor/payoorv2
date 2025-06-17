@@ -1,14 +1,14 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const DeliveryDateSchema = new mongoose.Schema(
   {
     day: String,
     date: Number,
     month: String,
-    id: Number
+    dateid: Number
   },
   { _id: false }
-)
+);
 
 const CheckoutSchema = new mongoose.Schema({
   user_id: {
@@ -65,6 +65,6 @@ const CheckoutSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-});
+})
 
-module.exports = mongoose.model('Checkout', CheckoutSchema);
+module.exports = mongoose.model('Checkout', CheckoutSchema)

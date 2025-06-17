@@ -19,12 +19,17 @@
                             <span>Continue Shopping</span>
                         </button>
 
-                        <button class="button-primary spacebetween disabled-btn" v-if="cartTotal === 0">
-                            <span>Proceed to Checkout</span>
+                        <button class="button-primary spacebetween disabled-btn" v-if="cartTotal === 0 || isLoading"
+                            disabled>
+                            <span>
+                                <span v-if="isLoading">Processing...</span>
+                                <span v-else>Proceed to Checkout</span>
+                            </span>
                             <CartButton :showicon="false" />
                         </button>
 
-                        <button class="button-primary spacebetween" @click="goToCheckout" v-if="cartTotal > 0">
+                        <button class="button-primary spacebetween" @click="goToCheckout"
+                            v-if="cartTotal > 0 && !isLoading" :disabled="isLoading">
                             <span>Proceed to Checkout</span>
                             <CartButton :showicon="false" />
                         </button>
@@ -43,18 +48,19 @@ export default {
     data() {
         return {
             backRoute: '/',
-            variants: []
+            variants: [],
+            isLoading: false // <--- New data property for loading state
         }
     },
     computed: {
         ...mapState("cart", {
             cartTotal: (state) => state.total,
             cartItems: (state) => state.items,
-            cartTotalItems: (state) => state.totalItems
+            cartTotalItems: (state) => state.totalItems,
+            checkoutData: (state) => state.checkout
         }),
     },
     mounted() {
-        //we call sync cart here
         console.log('calling sync cart')
     },
     methods: {
@@ -63,10 +69,13 @@ export default {
                 path: '/',
                 query: {
                     ...this.$route.query,
+                    prevpage: this.$route.path
                 }
             });
         },
-        goToCheckout() {
+        async goToCheckout() {
+            this.isLoading = true; // <--- Set loading to true when starting checkout
+
             const { cartItems, cartTotal } = this;
 
             this.backRoute = this.$route.path
@@ -74,13 +83,23 @@ export default {
             localStorage.setItem('cartItems', JSON.stringify(cartItems));
             localStorage.setItem('cartTotal', JSON.stringify(cartTotal));
 
-            this.$router.push({
-                path: '/checkout',
-                query: {
-                    ...this.$route.query,
-                    prevpage: this.$route.path
-                }
-            });
+            try {
+                await this.$store.dispatch('cart/createCheckout');
+
+                this.$router.push({
+                    path: '/checkout',
+                    query: {
+                        ...this.$route.query,
+                        checkout_id: this.checkoutData._id,
+                        prevpage: this.$route.path
+                    }
+                });
+            } catch (error) {
+                console.error('Error during checkout:', error);
+                // Optionally, show a user-friendly error message here
+            } finally {
+                this.isLoading = false; // <--- Set loading to false regardless of success or failure
+            }
         }
     }
 }
@@ -125,5 +144,34 @@ export default {
     &__bottom {
         @include fixed-bottom-button-container;
     }
+}
+
+/* Add some basic loading indicator styles (you'll want to refine these) */
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    /* Space between spinner and text */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.button-primary[disabled] {
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 </style>

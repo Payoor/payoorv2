@@ -42,7 +42,7 @@ exports.modules = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: {

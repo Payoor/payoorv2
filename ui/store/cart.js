@@ -3,7 +3,8 @@ import { serverurl, handleFetchError } from '@/api'
 export const state = () => ({
   items: {},
   total: 0,
-  totalItems: []
+  totalItems: [],
+  checkout: null
 })
 
 export const mutations = {
@@ -47,6 +48,14 @@ export const mutations = {
     state.items = {}
     state.total = 0
     state.totalItems = []
+  },
+
+  SET_CHECKOUT (state, checkout) {
+    state.checkout = checkout
+  },
+
+  RESET_CHECKOUT (state) {
+    state.checkout = null
   }
 }
 
@@ -92,7 +101,7 @@ export const actions = {
     try {
       const token = localStorage.getItem('jwt')
 
-      if (!token) return;
+      if (!token) return
 
       const response = await fetch(`${serverurl}/shopper/initialize`, {
         method: 'POST',
@@ -169,6 +178,68 @@ export const actions = {
       console.log('Cart synced successfully:', data)
     } catch (error) {
       console.error('Failed to sync cart from localStorage to server:', error)
+    }
+  },
+
+  async createCheckout ({ commit, state }) {
+    try {
+      const token = localStorage.getItem('jwt')
+
+      const response = await fetch(`${serverurl}/shopper/checkout/create`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Origin: window.location.origin,
+          'Access-Control-Request-Method': 'POST',
+          'Access-Control-Request-Headers': 'Content-Type'
+        },
+        body: JSON.stringify({
+          items: state.items
+        })
+      })
+
+      await handleFetchError(response)
+
+      const data = await response.json()
+
+      const { checkout } = data
+
+      console.log(checkout)
+      commit('SET_CHECKOUT', checkout)
+    } catch (error) {
+      console.error('Failed to sync cart from localStorage to server:', error)
+    }
+  },
+
+  async getCheckOutData ({ commit, state }, checkout_id) {
+    try {
+      const token = localStorage.getItem('jwt');
+
+      const response = await fetch(
+        `${serverurl}/shopper/checkout/get?checkout_id=${checkout_id}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Origin: window.location.origin,
+            'Access-Control-Request-Method': 'POST',
+            'Access-Control-Request-Headers': 'Content-Type'
+          }
+        }
+      )
+
+      await handleFetchError(response)
+
+      const data = await response.json()
+
+      const { checkout } = data
+
+      console.log(checkout, 'getCheckOutData')
+      commit('SET_CHECKOUT', checkout)
+    } catch (error) {
+      console.log(error)
     }
   }
 }

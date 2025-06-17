@@ -85,7 +85,7 @@ app.use(async (err, req, res, next) => {
     const errorDetails = handleError(errorMessage)
 
     console.log(errorDetails)
-    const { userMessage, statusCode } = errorDetails
+    const { userMessage, statusCode } = errorDetails;
 
     res.status(statusCode).json({
       stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,

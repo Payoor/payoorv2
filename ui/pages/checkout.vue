@@ -55,9 +55,9 @@
 
 
                         <div class="checkout__deliverydates">
-                            <div class="checkout__datecard" v-for="(date_card, index) in getNext7Days" :key="index"
-                                :class="{ 'current-deliverydate': delivery_date && delivery_date.id === index }"
-                                @click="setDeliveryDate({ ...date_card, id: index })">
+                            <div class="checkout__datecard" v-for="(date_card, index) in deliveryDates" :key="index"
+                                :class="{ 'current-deliverydate': delivery_date && delivery_date.dateid === index }"
+                                @click="setDeliveryDate({ ...date_card })">
                                 <span>{{ date_card.day }}</span>
                                 <span class="number">{{ date_card.date }}</span>
                                 <span>{{ date_card.month }}</span>
@@ -85,7 +85,7 @@
 
                     <div class="checkout__section">
                         <div class="checkout__section--header">
-                            <h2>Promo code</h2>
+                            <h2>Promo code or Coupon</h2>
 
                             <span class="required"></span>
                         </div>
@@ -114,8 +114,8 @@
                             <h2 class="checkout__inputcontent--h2">{{ input_label }}</h2>
 
                             <div v-if="input_label === 'Delivery address'">
-                                <AddressList :query="checkout_inputs[checkout_input]"
-                                    :selectAddressFromList="selectAddressFromList" :checkout_input="checkout_input" />
+                                <AddressList :query="delivery_address" :selectAddressFromList="selectAddressFromList"
+                                    :checkout_input="checkout_input" />
                             </div>
 
                             <div v-if="input_label === 'Delivery address'">
@@ -136,9 +136,17 @@
                                 <input v-if="checkout_input === 'phone_number'" class="checkout__field" type="tel"
                                     inputmode="numeric" pattern="[0-9]*" v-model="checkout_inputs[checkout_input]"
                                     :placeholder="place_holder" @click.stop="" />
-                                <textarea v-else class="checkout__field" v-model="checkout_inputs[checkout_input]"
+
+                                <textarea v-if="checkout_input === 'delivery_address'" class="checkout__field"
+                                    v-model="checkout_inputs[checkout_input]" :placeholder="place_holder"
+                                    @input="callAddressSearch" @click.stop="" ref="textarea"></textarea>
+
+                                <textarea
+                                    v-if="checkout_input !== 'phone_number' && checkout_input !== 'delivery_address'"
+                                    class="checkout__field" v-model="checkout_inputs[checkout_input]"
                                     :placeholder="place_holder" @input="autoResize" @click.stop=""
                                     ref="textarea"></textarea>
+
                             </div>
 
 
@@ -183,6 +191,10 @@
                             :class="{ 'disabled-btn': loading }">
                             {{ loading ? 'Creating your order...' : `Confirm Order` }}
                         </button>
+                        <!--<button class="button-primary" v-if="allowOrderCreation" @click="toggleProcessorChoice"
+                            :class="{ 'disabled-btn': loading }">
+                            {{ loading ? 'Creating your order...' : `Confirm Order` }}
+                        </button>-->
                         <button class="button-primary disabled-btn" v-else>
                             Add required details to confirm
                         </button>
@@ -195,7 +207,7 @@
 </template>
 
 <script>
-import { serverurl, handleFetchError } from '@/api';
+import { serverurl, handleFetchError, showErrorMessage } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 import { mapState } from "vuex";
 
@@ -208,7 +220,7 @@ export default {
             delivery_instruction: "",
             promo_code: "",
             coupon_code_length: 10,
-            coupon_discount: 0,
+            coupon_discount: {},
             subtotal: 0,
             delivery_fee: 0,
             service_charge: 0,
@@ -220,12 +232,15 @@ export default {
             checkout_input: null,
             locationLoading: false,
             coupon_error_message: '',
+            showProcessorChoice: false,
+            deliveryDates: []
         }
     },
     computed: {
         ...mapState("cart", {
             cartItems: (state) => state.items,
-            cartTotalItems: (state) => state.totalItems
+            cartTotalItems: (state) => state.totalItems,
+            checkoutData: (state) => state.checkout
         }),
         ...mapState("user", {
             currentUser: (state) => state.currentUser
@@ -273,12 +288,22 @@ export default {
             if (newVal.length === this.coupon_code_length) {
                 this.applyPromoCode(newVal.trim());
             } else {
-                this.coupon_discount = 0;
+                this.coupon_discount = {};
+                //showErrorMessage('invalid coupon code')
                 //this.recalculateTotal();
             }
         }
     },
     methods: {
+        async callAddressSearch(event) {
+            console.log(event.target.value)
+            const value = event.target.value;
+            this.checkout_inputs['delivery_address'] = value;
+
+            this.delivery_address = value;
+
+            this.autoResize()
+        },
         async reverseGeocode({ latitude, longitude }) {
             try {
                 const token = localStorage.getItem('jwt');
@@ -327,52 +352,46 @@ export default {
             );
         },
         async initCheckout() {
-            const cartItems = JSON.parse(localStorage.getItem('cartItems') || '{}');
-            const cartTotal = JSON.parse(localStorage.getItem('cartTotal') || '0');
 
-            if (!cartItems) {
-                return;
+            if (!this.checkoutData) {
+                if (this.$route.query.checkout_id) {
+                    await this.$store.dispatch('cart/getCheckOutData', this.$route.query.checkout_id);
+                }
             }
 
-            const validToken = await this.getValidToken();
+            console.log(this.checkoutData, 'const { } = this.checkoutData;')
 
-            if (validToken) {
-                const response = await fetch(`${serverurl}/shopper/init/checkout?jwt=${this.validToken}`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${validToken}`,
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    }
-                });
+            const {
+                cart_items,
+                created_at,
+                delivery_address,
+                delivery_date,
+                delivery_fee,
+                delivery_instruction,
+                phone_number,
+                promo_code,
+                promo_code_type,
+                service_charge,
+                subtotal,
+                total,
+                deliveryDates,
+                user_id,
+                _id
+            } = this.checkoutData || {};
 
-                await handleFetchError(response);
+            console.log(this.checkoutData, 'this.checkoutData')
 
-                const data = await response.json();
+            this.phone_number = phone_number || this.currentUser.phoneNumber;
+            this.delivery_address = delivery_address;
+            this.subtotal = subtotal;
+            this.delivery_fee = delivery_fee;
+            this.service_charge = service_charge;
+            this.total = total;
+            this.deliveryDates = deliveryDates
 
-                const {
-                    fee,
-                    servicecharge,
-                    phone_number = '',
-                    delivery_address = ''
-                } = data;
-
-                this.phone_number = phone_number || this.currentUser.phoneNumber;
-                this.delivery_address = delivery_address;
-
-                this.subtotal = cartTotal
-
-                this.delivery_fee = fee;
-
-                const service_charge = (servicecharge / 100) * cartTotal;
-                this.service_charge = service_charge;
-
-                this.total = this.service_charge + this.delivery_fee + this.subtotal
-
-                // console.log(data)
-            }
+            this.setDeliveryDate({
+                ...delivery_date,
+            });
         },
         selectAddressFromList(formatted_address, checkout_input) {
             this.checkout_inputs[checkout_input] = formatted_address;
@@ -385,27 +404,26 @@ export default {
             console.log(this.delivery_date)
         },
         async createOrder() {
-            const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-
-            const checkout = {
-                delivery_address: this.delivery_address.trim(),
-                delivery_date: this.delivery_date,
-                delivery_instruction: this.delivery_instruction.trim(),
-                promo_code: this.promo_code.trim(),
-                cart_items: cartItems,
-                phone_number: this.phone_number.trim(),
-                subtotal: this.subtotal,
-                delivery_fee: this.delivery_fee,
-                service_charge: this.service_charge,
-                total: this.total
-            };
-
             try {
+                const checkoutId = this.$route.query.checkout_id;
+
+                const finalCheckout = {
+                    delivery_address: this.delivery_address.trim(),
+                    delivery_date: this.delivery_date,
+                    delivery_instruction: this.delivery_instruction.trim(),
+                    promo_code: this.promo_code.trim(),
+                    phone_number: this.phone_number.trim(),
+                    //subtotal: this.subtotal,
+                    //delivery_fee: this.delivery_fee,
+                    //service_charge: this.service_charge,
+                    //total: this.total
+                };
+
                 this.loading = true;
 
                 const validToken = await this.getValidToken();
 
-                const response = await fetch(`${serverurl}/shopper/create/checkout?jwt=${this.validToken}`, {
+                const response = await fetch(`${serverurl}/shopper/update/checkout?jwt=${this.validToken}&checkoutId=${checkoutId}`, {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${validToken}`,
@@ -414,23 +432,23 @@ export default {
                         'Access-Control-Request-Method': 'POST',
                         'Access-Control-Request-Headers': 'Content-Type'
                     },
-                    body: JSON.stringify({ checkout })
+                    body: JSON.stringify({ checkout: finalCheckout })
                 });
 
                 await handleFetchError(response)
 
                 const data = await response.json();
 
-                const { newcheckout } = data;
-
-                // console.log(newcheckout)
+                const { updatedCheckout } = data;
 
                 this.loading = false;
 
                 this.$router.push({
                     path: '/payment',
                     query: {
-                        checkout_id: newcheckout._id
+                        checkout_id: updatedCheckout._id,
+                        ...this.$route.query,
+                        prevpage: this.$route.path
                     }
                 });
             } catch (error) {
@@ -445,7 +463,7 @@ export default {
         autoResize() {
             const textarea = this.$refs.textarea;
             textarea.style.height = "auto"; // reset
-            textarea.style.height = `${textarea.scrollHeight}px`; // set to content height
+            textarea.style.height = `${textarea.scrollHeight}px`;
         },
         setPlaceholder(place_holder, input_label, checkout_input) {
             this.input_label = input_label;
@@ -453,22 +471,25 @@ export default {
             this.checkout_input = checkout_input;
 
             if (checkout_input === 'delivery_address') {
-                this.delivery_address = this.checkout_inputs[checkout_input] ? this.checkout_inputs[checkout_input] : '';
+                this.delivery_address = this.checkout_inputs[checkout_input] ? this.checkout_inputs[checkout_input] : (this.delivery_address, this.checkout_inputs[checkout_input] = this.delivery_address);
             }
 
             if (checkout_input === 'phone_number') {
-                this.phone_number = this.checkout_inputs[checkout_input] || '';
+                this.phone_number = this.checkout_inputs[checkout_input] ? this.checkout_inputs[checkout_input] : (this.phone_number, this.checkout_inputs[checkout_input] = this.phone_number);
             }
 
             if (checkout_input === 'delivery_instruction') {
-                this.delivery_instruction = this.checkout_inputs[checkout_input] ? this.checkout_inputs[checkout_input] : '';
+                this.delivery_instruction = this.checkout_inputs[checkout_input] ? this.checkout_inputs[checkout_input] : (this.delivery_instruction, this.checkout_inputs[checkout_input] = this.delivery_instruction);
             }
 
             if (checkout_input === 'promo_code') {
-                this.promo_code = this.checkout_inputs[checkout_input] ? this.checkout_inputs[checkout_input] : '';
+                this.promo_code = this.checkout_inputs[checkout_input] ? this.checkout_inputs[checkout_input] : (this.promo_code, this.checkout_inputs[checkout_input] = this.promo_code);
+
+                //console.log(this.promo_code);
             }
         },
         async applyPromoCode(code) {
+            console.log('applying', code)
             try {
                 const token = localStorage.getItem('jwt');
 
@@ -486,7 +507,18 @@ export default {
                 const data = await response.json();
 
                 if (response.ok && data.success) {
-                    const discount = data.discount || {};
+                    const { discount } = data;
+
+                    this.coupon_discount = discount;
+
+                    let total = this.subtotal;
+
+                    console.log(this.coupon_discount, 'check this.disount')
+
+                    if (this.coupon_discount.flat) {
+                        total -= discount.flat;
+                    }
+                    /*const discount = data.discount || {};
                     let total = this.subtotal;
                     let delivery_fee = this.delivery_fee;
                     let service_charge = this.service_charge;
@@ -509,19 +541,19 @@ export default {
                     this.total = Math.round(total + delivery_fee + service_charge);
                     this.promo_code = code;
                     this.coupon_discount = discount;
-                    this.coupon_error_message = ''; // clear previous error
-                } else {
+                    this.coupon_error_message = '';*/ // clear previous error
+                } /*else {
                     this.coupon_discount = 0;
                     this.promo_code = '';
                     this.total = this.subtotal + this.delivery_fee + this.service_charge;
-                    this.coupon_error_message = data.message || 'Failed to apply coupon.';
-                }
+                    //this.coupon_error_message = data.message || 'Failed to apply coupon.';
+                }*/
             } catch (error) {
                 console.error('Coupon apply error:', error);
-                this.coupon_discount = 0;
+                this.coupon_discount = {};
                 this.promo_code = '';
                 this.total = this.subtotal + this.delivery_fee + this.service_charge;
-                this.coupon_error_message = 'Network or server error while applying coupon.';
+                //this.coupon_error_message = 'Network or server error while applying coupon.';
             }
         },
     }

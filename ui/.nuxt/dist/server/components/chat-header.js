@@ -74,7 +74,7 @@ module.exports.__inject__ = function (context) {
 
 /***/ }),
 
-/***/ 48:
+/***/ 47:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -291,7 +291,7 @@ var esnext_set_union_js_ = __webpack_require__(30);
 var external_vuex_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./api.js
-var api = __webpack_require__(2);
+var api = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./mixins/jwt_mixin.js
 var jwt_mixin = __webpack_require__(44);
@@ -541,7 +541,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* harmony default export */ var ChatHeader = __webpack_exports__["default"] = (component.exports);
 
 /* nuxt-component-imports */
-installComponents(component, {CartButton: __webpack_require__(48).default})
+installComponents(component, {CartButton: __webpack_require__(47).default})
 
 
 /***/ }),

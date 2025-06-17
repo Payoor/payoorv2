@@ -21,6 +21,13 @@
     "_name": "_57c1bc10"
   },
   {
+    "name": "banipay",
+    "path": "/banipay",
+    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/banipay.vue",
+    "chunkName": "pages/banipay",
+    "_name": "_32c2dd76"
+  },
+  {
     "name": "cart",
     "path": "/cart",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/cart.vue",
@@ -54,6 +61,13 @@
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/payment.vue",
     "chunkName": "pages/payment",
     "_name": "_25be1b4e"
+  },
+  {
+    "name": "paystack",
+    "path": "/paystack",
+    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/paystack.vue",
+    "chunkName": "pages/paystack",
+    "_name": "_585909c8"
   },
   {
     "name": "admin-checkout",

@@ -5,7 +5,7 @@ var DeliveryDateSchema = new mongoose.Schema({
   day: String,
   date: Number,
   month: String,
-  id: Number
+  dateid: Number
 }, {
   _id: false
 });

@@ -213,10 +213,11 @@ export class TelegramBotClass {
             return this.bot.sendMessage(
               telegramid,
               '⚠️ Usage: /generatecoupon <type>'
-            )
+            );
           }
 
-          const { code, expiresIn } = await CouponClass.createCoupon(arg1)
+          const { code, expiresIn } = await CouponClass.createCoupon(arg1);
+
           return this.bot.sendMessage(
             telegramid,
             `✅ Coupon Code: ${code}\n⏳ Expires in ${expiresIn} seconds`

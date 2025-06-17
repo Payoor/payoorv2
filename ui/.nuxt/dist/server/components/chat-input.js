@@ -42,7 +42,7 @@ exports.modules = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: {
@@ -160,7 +160,7 @@ var staticRenderFns = [];
 var external_vuex_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./api.js
-var api = __webpack_require__(2);
+var api = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./mixins/jwt_mixin.js
 var jwt_mixin = __webpack_require__(44);

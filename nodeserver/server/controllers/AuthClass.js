@@ -3,18 +3,18 @@ import { Resend } from 'resend'
 import speakeasy from 'speakeasy'
 import crypto from 'crypto'
 
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-const resend = new Resend(`${process.env.RESEND_API_KEY}`)
+const resend = new Resend(`${process.env.RESEND_API_KEY}`);
 
-import { redisClient } from '../redisconf'
+import { redisClient } from '../redisconf';
 
 import User from '../models/User'
 
 class AuthClass {
   static async genOtp (identifier) {
     if (!identifier || typeof identifier !== 'string') {
-      throw new Error('Identifier is required and must be a string')
+      throw new Error('Identifier is required and must be a string');
     }
 
     const secret = speakeasy.generateSecret()

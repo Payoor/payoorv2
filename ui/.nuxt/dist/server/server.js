@@ -43,7 +43,7 @@ module.exports =
 /******/
 /******/ 		// "0" is the signal for "already loaded"
 /******/ 		if(installedChunks[chunkId] !== 0) {
-/******/ 			var chunk = require("./" + ({"1":"components/address-list","2":"components/authenticator","3":"components/cart-button","4":"components/chat-body","5":"components/chat-card","6":"components/chat-categories","7":"components/chat-header","8":"components/chat-input","9":"components/chat-option","10":"components/chat-options","11":"components/google-btn","12":"components/home","13":"components/landing","14":"components/landing-categories","15":"components/landing-copy","16":"components/landing-faq","17":"components/landing-footer","18":"components/landing-page","19":"components/loading-animation","20":"components/order-display","21":"components/otp-input","22":"pages/aboutus","23":"pages/admin/checkout","24":"pages/admin/dashboard","25":"pages/admin/index","26":"pages/admin/order/index","27":"pages/auth/googlecallback","28":"pages/authp","29":"pages/cart","30":"pages/checkout","31":"pages/index","32":"pages/options","33":"pages/orders","34":"pages/payment","35":"pages/userorder/_orderid"}[chunkId]||chunkId) + ".js");
+/******/ 			var chunk = require("./" + ({"1":"components/address-list","2":"components/authenticator","3":"components/cart-button","4":"components/chat-body","5":"components/chat-card","6":"components/chat-categories","7":"components/chat-header","8":"components/chat-input","9":"components/chat-option","10":"components/chat-options","11":"components/choose-payment-processor","12":"components/google-btn","13":"components/home","14":"components/landing","15":"components/landing-categories","16":"components/landing-copy","17":"components/landing-faq","18":"components/landing-footer","19":"components/landing-page","20":"components/loading-animation","21":"components/order-display","22":"components/otp-input","23":"pages/aboutus","24":"pages/admin/checkout","25":"pages/admin/dashboard","26":"pages/admin/index","27":"pages/admin/order/index","28":"pages/auth/googlecallback","29":"pages/authp","30":"pages/banipay","31":"pages/cart","32":"pages/checkout","33":"pages/index","34":"pages/options","35":"pages/orders","36":"pages/payment","37":"pages/paystack","38":"pages/userorder/_orderid"}[chunkId]||chunkId) + ".js");
 /******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids;
 /******/ 			for(var moduleId in moreModules) {
 /******/ 				modules[moduleId] = moreModules[moduleId];
@@ -126,12 +126,6 @@ module.exports = require("vue");
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
-
-module.exports = require("ufo");
-
-/***/ }),
-/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -190,6 +184,12 @@ function showErrorMessage(message) {
     div.remove();
   }, 3000);
 }
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("ufo");
 
 /***/ }),
 /* 3 */
@@ -832,7 +832,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_esnext_set_symmetric_difference_js__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_esnext_set_symmetric_difference_js__WEBPACK_IMPORTED_MODULE_14__);
 /* harmony import */ var core_js_modules_esnext_set_union_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(30);
 /* harmony import */ var core_js_modules_esnext_set_union_js__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_esnext_set_union_js__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(2);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(1);
 
 
 
@@ -853,7 +853,8 @@ __webpack_require__.r(__webpack_exports__);
 const state = () => ({
   items: {},
   total: 0,
-  totalItems: []
+  totalItems: [],
+  checkout: null
 });
 const mutations = {
   ADD_ITEM(state, {
@@ -902,6 +903,12 @@ const mutations = {
     state.items = {};
     state.total = 0;
     state.totalItems = [];
+  },
+  SET_CHECKOUT(state, checkout) {
+    state.checkout = checkout;
+  },
+  RESET_CHECKOUT(state) {
+    state.checkout = null;
   }
 };
 const actions = {
@@ -1044,6 +1051,63 @@ const actions = {
     } catch (error) {
       console.error('Failed to sync cart from localStorage to server:', error);
     }
+  },
+  async createCheckout({
+    commit,
+    state
+  }) {
+    try {
+      const token = localStorage.getItem('jwt');
+      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "b"]}/shopper/checkout/create`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Origin: window.location.origin,
+          'Access-Control-Request-Method': 'POST',
+          'Access-Control-Request-Headers': 'Content-Type'
+        },
+        body: JSON.stringify({
+          items: state.items
+        })
+      });
+      await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetchError */ "a"])(response);
+      const data = await response.json();
+      const {
+        checkout
+      } = data;
+      console.log(checkout);
+      commit('SET_CHECKOUT', checkout);
+    } catch (error) {
+      console.error('Failed to sync cart from localStorage to server:', error);
+    }
+  },
+  async getCheckOutData({
+    commit,
+    state
+  }, checkout_id) {
+    try {
+      const token = localStorage.getItem('jwt');
+      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "b"]}/shopper/checkout/get?checkout_id=${checkout_id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Origin: window.location.origin,
+          'Access-Control-Request-Method': 'POST',
+          'Access-Control-Request-Headers': 'Content-Type'
+        }
+      });
+      await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetchError */ "a"])(response);
+      const data = await response.json();
+      const {
+        checkout
+      } = data;
+      console.log(checkout, 'getCheckOutData');
+      commit('SET_CHECKOUT', checkout);
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
@@ -1060,7 +1124,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "state", function() { return state; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mutations", function() { return mutations; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "actions", function() { return actions; });
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 const state = () => ({
   currentUser: {
@@ -1318,6 +1382,7 @@ __webpack_require__.d(components_namespaceObject, "ChatHeader", function() { ret
 __webpack_require__.d(components_namespaceObject, "ChatInput", function() { return ChatInput; });
 __webpack_require__.d(components_namespaceObject, "ChatOption", function() { return ChatOption; });
 __webpack_require__.d(components_namespaceObject, "ChatOptions", function() { return ChatOptions; });
+__webpack_require__.d(components_namespaceObject, "ChoosePaymentProcessor", function() { return ChoosePaymentProcessor; });
 __webpack_require__.d(components_namespaceObject, "GoogleBtn", function() { return GoogleBtn; });
 __webpack_require__.d(components_namespaceObject, "Home", function() { return Home; });
 __webpack_require__.d(components_namespaceObject, "Landing", function() { return Landing; });
@@ -1335,7 +1400,7 @@ var external_vue_ = __webpack_require__(0);
 var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
 
 // EXTERNAL MODULE: external "ufo"
-var external_ufo_ = __webpack_require__(1);
+var external_ufo_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: external "node-fetch-native"
 var external_node_fetch_native_ = __webpack_require__(12);
@@ -2059,20 +2124,22 @@ function shouldScrollToTop(route) {
 
 
 
-const _0b411c9a = () => interopDefault(__webpack_require__.e(/* import() | pages/aboutus */ 22).then(__webpack_require__.bind(null, 183)));
-const _dd64b54c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/index */ 25).then(__webpack_require__.bind(null, 167)));
-const _57c1bc10 = () => interopDefault(__webpack_require__.e(/* import() | pages/authp */ 28).then(__webpack_require__.bind(null, 168)));
-const _b50a5bf0 = () => interopDefault(__webpack_require__.e(/* import() | pages/cart */ 29).then(__webpack_require__.bind(null, 169)));
-const _0973792e = () => interopDefault(__webpack_require__.e(/* import() | pages/checkout */ 30).then(__webpack_require__.bind(null, 170)));
-const _6d3c63e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/options */ 32).then(__webpack_require__.bind(null, 171)));
-const _29fc7b4d = () => interopDefault(__webpack_require__.e(/* import() | pages/orders */ 33).then(__webpack_require__.bind(null, 172)));
-const _25be1b4e = () => interopDefault(__webpack_require__.e(/* import() | pages/payment */ 34).then(__webpack_require__.bind(null, 173)));
-const _612343ee = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/checkout */ 23).then(__webpack_require__.bind(null, 174)));
-const _0ce7be1c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/dashboard */ 24).then(__webpack_require__.bind(null, 182)));
-const _4c8a984e = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/order/index */ 26).then(__webpack_require__.bind(null, 175)));
-const _d51f82e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/auth/googlecallback */ 27).then(__webpack_require__.bind(null, 176)));
-const _60a90fcc = () => interopDefault(__webpack_require__.e(/* import() | pages/index */ 31).then(__webpack_require__.bind(null, 177)));
-const _8e720484 = () => interopDefault(__webpack_require__.e(/* import() | pages/userorder/_orderid */ 35).then(__webpack_require__.bind(null, 178)));
+const _0b411c9a = () => interopDefault(__webpack_require__.e(/* import() | pages/aboutus */ 23).then(__webpack_require__.bind(null, 196)));
+const _dd64b54c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/index */ 26).then(__webpack_require__.bind(null, 178)));
+const _57c1bc10 = () => interopDefault(__webpack_require__.e(/* import() | pages/authp */ 29).then(__webpack_require__.bind(null, 179)));
+const _32c2dd76 = () => interopDefault(__webpack_require__.e(/* import() | pages/banipay */ 30).then(__webpack_require__.bind(null, 194)));
+const _b50a5bf0 = () => interopDefault(__webpack_require__.e(/* import() | pages/cart */ 31).then(__webpack_require__.bind(null, 180)));
+const _0973792e = () => interopDefault(__webpack_require__.e(/* import() | pages/checkout */ 32).then(__webpack_require__.bind(null, 181)));
+const _6d3c63e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/options */ 34).then(__webpack_require__.bind(null, 182)));
+const _29fc7b4d = () => interopDefault(__webpack_require__.e(/* import() | pages/orders */ 35).then(__webpack_require__.bind(null, 183)));
+const _25be1b4e = () => interopDefault(__webpack_require__.e(/* import() | pages/payment */ 36).then(__webpack_require__.bind(null, 184)));
+const _585909c8 = () => interopDefault(__webpack_require__.e(/* import() | pages/paystack */ 37).then(__webpack_require__.bind(null, 185)));
+const _612343ee = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/checkout */ 24).then(__webpack_require__.bind(null, 186)));
+const _0ce7be1c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/dashboard */ 25).then(__webpack_require__.bind(null, 195)));
+const _4c8a984e = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/order/index */ 27).then(__webpack_require__.bind(null, 187)));
+const _d51f82e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/auth/googlecallback */ 28).then(__webpack_require__.bind(null, 188)));
+const _60a90fcc = () => interopDefault(__webpack_require__.e(/* import() | pages/index */ 33).then(__webpack_require__.bind(null, 189)));
+const _8e720484 = () => interopDefault(__webpack_require__.e(/* import() | pages/userorder/_orderid */ 38).then(__webpack_require__.bind(null, 190)));
 const emptyFn = () => {};
 external_vue_default.a.use(external_vue_router_default.a);
 const routerOptions = {
@@ -2094,6 +2161,10 @@ const routerOptions = {
     component: _57c1bc10,
     name: "authp"
   }, {
+    path: "/banipay",
+    component: _32c2dd76,
+    name: "banipay"
+  }, {
     path: "/cart",
     component: _b50a5bf0,
     name: "cart"
@@ -2113,6 +2184,10 @@ const routerOptions = {
     path: "/payment",
     component: _25be1b4e,
     name: "payment"
+  }, {
+    path: "/paystack",
+    component: _585909c8,
+    name: "paystack"
   }, {
     path: "/admin/checkout",
     component: _612343ee,
@@ -2883,27 +2958,28 @@ function mergeProperty(storeModule, moduleData, property) {
   }
 }
 // CONCATENATED MODULE: ./.nuxt/components/index.js
-const AddressList = () => __webpack_require__.e(/* import() | components/address-list */ 1).then(__webpack_require__.bind(null, 131)).then(c => wrapFunctional(c.default || c));
-const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 2).then(__webpack_require__.bind(null, 179)).then(c => wrapFunctional(c.default || c));
-const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 3).then(__webpack_require__.bind(null, 48)).then(c => wrapFunctional(c.default || c));
-const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 4).then(__webpack_require__.bind(null, 105)).then(c => wrapFunctional(c.default || c));
+const AddressList = () => __webpack_require__.e(/* import() | components/address-list */ 1).then(__webpack_require__.bind(null, 137)).then(c => wrapFunctional(c.default || c));
+const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 2).then(__webpack_require__.bind(null, 191)).then(c => wrapFunctional(c.default || c));
+const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 3).then(__webpack_require__.bind(null, 47)).then(c => wrapFunctional(c.default || c));
+const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 4).then(__webpack_require__.bind(null, 106)).then(c => wrapFunctional(c.default || c));
 const ChatCard = () => __webpack_require__.e(/* import() | components/chat-card */ 5).then(__webpack_require__.bind(null, 93)).then(c => wrapFunctional(c.default || c));
 const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 6).then(__webpack_require__.bind(null, 89)).then(c => wrapFunctional(c.default || c));
 const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 7).then(__webpack_require__.bind(null, 51)).then(c => wrapFunctional(c.default || c));
 const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 8).then(__webpack_require__.bind(null, 90)).then(c => wrapFunctional(c.default || c));
 const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 9).then(__webpack_require__.bind(null, 71)).then(c => wrapFunctional(c.default || c));
-const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 10).then(__webpack_require__.bind(null, 180)).then(c => wrapFunctional(c.default || c));
-const GoogleBtn = () => __webpack_require__.e(/* import() | components/google-btn */ 11).then(__webpack_require__.bind(null, 134)).then(c => wrapFunctional(c.default || c));
-const Home = () => __webpack_require__.e(/* import() | components/home */ 12).then(__webpack_require__.bind(null, 133)).then(c => wrapFunctional(c.default || c));
-const Landing = () => __webpack_require__.e(/* import() | components/landing */ 13).then(__webpack_require__.bind(null, 181)).then(c => wrapFunctional(c.default || c));
-const LandingCategories = () => __webpack_require__.e(/* import() | components/landing-categories */ 14).then(__webpack_require__.bind(null, 94)).then(c => wrapFunctional(c.default || c));
-const LandingCopy = () => __webpack_require__.e(/* import() | components/landing-copy */ 15).then(__webpack_require__.bind(null, 95)).then(c => wrapFunctional(c.default || c));
-const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 16).then(__webpack_require__.bind(null, 91)).then(c => wrapFunctional(c.default || c));
-const LandingFooter = () => __webpack_require__.e(/* import() | components/landing-footer */ 17).then(__webpack_require__.bind(null, 92)).then(c => wrapFunctional(c.default || c));
-const LandingPage = () => __webpack_require__.e(/* import() | components/landing-page */ 18).then(__webpack_require__.bind(null, 132)).then(c => wrapFunctional(c.default || c));
-const LoadingAnimation = () => __webpack_require__.e(/* import() | components/loading-animation */ 19).then(__webpack_require__.bind(null, 54)).then(c => wrapFunctional(c.default || c));
-const OrderDisplay = () => __webpack_require__.e(/* import() | components/order-display */ 20).then(__webpack_require__.bind(null, 72)).then(c => wrapFunctional(c.default || c));
-const OtpInput = () => __webpack_require__.e(/* import() | components/otp-input */ 21).then(__webpack_require__.bind(null, 104)).then(c => wrapFunctional(c.default || c));
+const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 10).then(__webpack_require__.bind(null, 192)).then(c => wrapFunctional(c.default || c));
+const ChoosePaymentProcessor = () => __webpack_require__.e(/* import() | components/choose-payment-processor */ 11).then(__webpack_require__.bind(null, 138)).then(c => wrapFunctional(c.default || c));
+const GoogleBtn = () => __webpack_require__.e(/* import() | components/google-btn */ 12).then(__webpack_require__.bind(null, 141)).then(c => wrapFunctional(c.default || c));
+const Home = () => __webpack_require__.e(/* import() | components/home */ 13).then(__webpack_require__.bind(null, 140)).then(c => wrapFunctional(c.default || c));
+const Landing = () => __webpack_require__.e(/* import() | components/landing */ 14).then(__webpack_require__.bind(null, 193)).then(c => wrapFunctional(c.default || c));
+const LandingCategories = () => __webpack_require__.e(/* import() | components/landing-categories */ 15).then(__webpack_require__.bind(null, 94)).then(c => wrapFunctional(c.default || c));
+const LandingCopy = () => __webpack_require__.e(/* import() | components/landing-copy */ 16).then(__webpack_require__.bind(null, 95)).then(c => wrapFunctional(c.default || c));
+const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 17).then(__webpack_require__.bind(null, 91)).then(c => wrapFunctional(c.default || c));
+const LandingFooter = () => __webpack_require__.e(/* import() | components/landing-footer */ 18).then(__webpack_require__.bind(null, 92)).then(c => wrapFunctional(c.default || c));
+const LandingPage = () => __webpack_require__.e(/* import() | components/landing-page */ 19).then(__webpack_require__.bind(null, 139)).then(c => wrapFunctional(c.default || c));
+const LoadingAnimation = () => __webpack_require__.e(/* import() | components/loading-animation */ 20).then(__webpack_require__.bind(null, 54)).then(c => wrapFunctional(c.default || c));
+const OrderDisplay = () => __webpack_require__.e(/* import() | components/order-display */ 21).then(__webpack_require__.bind(null, 72)).then(c => wrapFunctional(c.default || c));
+const OtpInput = () => __webpack_require__.e(/* import() | components/otp-input */ 22).then(__webpack_require__.bind(null, 105)).then(c => wrapFunctional(c.default || c));
 
 // nuxt/nuxt.js#8607
 function wrapFunctional(options) {
@@ -3568,13 +3644,13 @@ const createNext = ssrContext => opts => {
 /* 42 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/debounce");
+module.exports = require("url");
 
 /***/ }),
 /* 43 */
 /***/ (function(module, exports) {
 
-module.exports = require("url");
+module.exports = require("lodash/debounce");
 
 /***/ })
 /******/ ]);

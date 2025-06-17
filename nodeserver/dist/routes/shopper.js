@@ -25,12 +25,12 @@ function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArra
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
 function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
-function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -180,7 +180,7 @@ shopperRoute.get('/shopper/getproduct', _authMiddleware["default"], /*#__PURE__*
             break;
           }
           return _context4.abrupt("return", res.status(400).json({
-            message: 'Invalid or missing product ID.'
+            userMessage: 'Invalid or missing product ID.'
           }));
         case 4:
           productId = new ObjectId(mongooseid);
@@ -195,7 +195,7 @@ shopperRoute.get('/shopper/getproduct', _authMiddleware["default"], /*#__PURE__*
             break;
           }
           return _context4.abrupt("return", res.status(404).json({
-            message: 'Product not found.'
+            userMessage: 'Product not found.'
           }));
         case 10:
           res.status(200).json({
@@ -250,7 +250,7 @@ shopperRoute.get('/shopper/getoption', _authMiddleware["default"], /*#__PURE__*/
             break;
           }
           return _context5.abrupt("return", res.status(404).json({
-            message: 'Variant not found'
+            userMessage: 'Variant not found'
           }));
         case 9:
           res.status(200).json({
@@ -320,14 +320,14 @@ shopperRoute.get('/shopper/init/checkout', _authMiddleware["default"], /*#__PURE
     return _ref6.apply(this, arguments);
   };
 }());
-shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__PURE__*/function () {
+shopperRoute.post('/shopper/update/checkout', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res, next) {
-    var jwt, checkout, validUser, coupon, newCheckout;
+    var _req$query, jwt, checkoutId, checkout, validUser, allowedUpdateFields, updateData, _i, _allowedUpdateFields, key, coupon, updatedCheckout;
     return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) switch (_context7.prev = _context7.next) {
         case 0:
           _context7.prev = 0;
-          jwt = req.query.jwt;
+          _req$query = req.query, jwt = _req$query.jwt, checkoutId = _req$query.checkoutId;
           checkout = req.body.checkout;
           _context7.next = 5;
           return _User["default"].findByToken(jwt);
@@ -338,52 +338,81 @@ shopperRoute.post('/shopper/create/checkout', _authMiddleware["default"], /*#__P
             break;
           }
           return _context7.abrupt("return", res.status(404).json({
-            message: 'invalid user'
+            userMessage: 'invalid user'
           }));
         case 8:
-          if (!(checkout.promo_code && typeof checkout.promo_code === 'string')) {
-            _context7.next = 17;
+          allowedUpdateFields = ['delivery_address', 'delivery_date', 'delivery_instruction', 'promo_code', 'phone_number'];
+          updateData = {};
+          for (_i = 0, _allowedUpdateFields = allowedUpdateFields; _i < _allowedUpdateFields.length; _i++) {
+            key = _allowedUpdateFields[_i];
+            if (checkout.hasOwnProperty(key)) {
+              updateData[key] = checkout[key];
+            }
+          }
+
+          // Handle promo code logic if it's being updated
+          if (!(updateData.promo_code && typeof updateData.promo_code === 'string')) {
+            _context7.next = 22;
             break;
           }
-          _context7.next = 11;
-          return _CouponClass["default"].getCoupon(checkout.promo_code);
-        case 11:
+          _context7.next = 14;
+          return _CouponClass["default"].getCoupon(updateData.promo_code);
+        case 14:
           coupon = _context7.sent;
           if (!(coupon && coupon.type)) {
-            _context7.next = 16;
+            _context7.next = 19;
             break;
           }
-          checkout.promo_code_type = coupon.type;
-          _context7.next = 17;
-          break;
-        case 16:
-          return _context7.abrupt("return", res.status(400).json({
-            message: 'Invalid or expired coupon code'
-          }));
-        case 17:
-          newCheckout = new _Checkout["default"](_objectSpread(_objectSpread({}, checkout), {}, {
-            user_id: validUser._id
-          }));
+          updateData.promo_code_type = coupon.type;
           _context7.next = 20;
-          return newCheckout.save();
-        case 20:
-          //console.log(newCheckout)
-
-          res.status(200).json({
-            message: 'Checkout data',
-            newcheckout: newCheckout
-          });
-          _context7.next = 26;
           break;
+        case 19:
+          return _context7.abrupt("return", res.status(400).json({
+            userMessage: 'Invalid or expired coupon code'
+          }));
+        case 20:
+          _context7.next = 23;
+          break;
+        case 22:
+          if (updateData.promo_code === "") {
+            updateData.promo_code_type = "";
+          }
         case 23:
-          _context7.prev = 23;
+          _context7.next = 25;
+          return _Checkout["default"].findOneAndUpdate({
+            _id: new ObjectId(checkoutId),
+            user_id: new ObjectId(validUser._id)
+          }, {
+            $set: updateData
+          }, {
+            "new": true,
+            runValidators: true
+          });
+        case 25:
+          updatedCheckout = _context7.sent;
+          if (updatedCheckout) {
+            _context7.next = 28;
+            break;
+          }
+          return _context7.abrupt("return", res.status(404).json({
+            userMessage: 'Checkout not found or you do not have permission to update it.'
+          }));
+        case 28:
+          res.status(200).json({
+            message: 'Checkout data updated successfully',
+            updatedCheckout: updatedCheckout
+          });
+          _context7.next = 34;
+          break;
+        case 31:
+          _context7.prev = 31;
           _context7.t0 = _context7["catch"](0);
           next(_context7.t0);
-        case 26:
+        case 34:
         case "end":
           return _context7.stop();
       }
-    }, _callee7, null, [[0, 23]]);
+    }, _callee7, null, [[0, 31]]);
   }));
   return function (_x17, _x18, _x19) {
     return _ref7.apply(this, arguments);
@@ -485,7 +514,8 @@ shopperRoute.get('/shopper/paystack/generate-paystack-link', _authMiddleware["de
             break;
           }
           return _context8.abrupt("return", res.status(400).json({
-            error: paystackRes.message
+            error: paystackRes.message,
+            userMessage: 'Error while generating paystack link. Please try again in a minute'
           }));
         case 19:
           console.log(paystackRes);
@@ -612,20 +642,19 @@ shopperRoute.get('/shopper/user/getorders', _authMiddleware["default"], /*#__PUR
           _iterator.f();
           return _context0.finish(21);
         case 24:
-          console.log(enrichedOrders);
           return _context0.abrupt("return", res.status(200).json({
             success: true,
             orders: enrichedOrders
           }));
-        case 28:
-          _context0.prev = 28;
+        case 27:
+          _context0.prev = 27;
           _context0.t2 = _context0["catch"](0);
           next(_context0.t2);
-        case 31:
+        case 30:
         case "end":
           return _context0.stop();
       }
-    }, _callee9, null, [[0, 28], [9, 18, 21, 24]]);
+    }, _callee9, null, [[0, 27], [9, 18, 21, 24]]);
   }));
   return function (_x23, _x24, _x25) {
     return _ref9.apply(this, arguments);
@@ -646,7 +675,7 @@ shopperRoute.get('/shopper/user/getorder/', _authMiddleware["default"], /*#__PUR
           }
           return _context1.abrupt("return", res.status(400).json({
             success: false,
-            message: 'Invalid order ID'
+            userMessage: 'Invalid order ID'
           }));
         case 5:
           _context1.next = 7;
@@ -662,7 +691,7 @@ shopperRoute.get('/shopper/user/getorder/', _authMiddleware["default"], /*#__PUR
           }
           return _context1.abrupt("return", res.status(404).json({
             success: false,
-            message: 'Order not found'
+            userMessage: 'Order not found'
           }));
         case 10:
           cartItems = order.checkout_id.cart_items instanceof Map ? Object.fromEntries(order.checkout_id.cart_items) : ((_order$checkout_id$ca3 = (_order$checkout_id$ca4 = order.checkout_id.cart_items).toObject) === null || _order$checkout_id$ca3 === void 0 ? void 0 : _order$checkout_id$ca3.call(_order$checkout_id$ca4)) || order.checkout_id.cart_items;
@@ -731,7 +760,7 @@ shopperRoute.get('/shopper/google/search-places', _authMiddleware["default"], _G
 shopperRoute.get('/shopper/google/use-current-location', _authMiddleware["default"], _GoogleApiController["default"].reverseGeocode);
 shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref1 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee1(req, res, next) {
-    var coupon_code, userId, key, raw, couponConfig, type, redeemed, typeKey, typeRaw, couponTypeConfig, ttl, createdAt, discount, now, isExpired, usedCodeCheckout, usedCoupon, usedOrder, usedTypeCheckout, _usedOrder;
+    var coupon_code, userId, key, raw, couponConfig, type, redeemed, typeKey, typeRaw, couponTypeConfig, ttl, createdAt, discount, now, isExpired, usedCodeCheckout, usedCoupon, usedOrder, usedTypeCheckout, _usedOrder, discountKey;
     return _regeneratorRuntime().wrap(function _callee1$(_context10) {
       while (1) switch (_context10.prev = _context10.next) {
         case 0:
@@ -744,101 +773,105 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
           }
           return _context10.abrupt("return", res.status(401).json({
             success: false,
-            message: 'Coupon code is required and must be a string'
+            userMessage: 'Coupon code is required and must be a string'
           }));
         case 5:
+          console.log(coupon_code, 'coupon_code');
+
           // Get the coupon from Redis
           key = "coupon:code:".concat(coupon_code);
-          _context10.next = 8;
+          _context10.next = 9;
           return _redisconf.redisClient.get(key);
-        case 8:
+        case 9:
           raw = _context10.sent;
+          console.log(raw, 'raw here');
           if (raw) {
-            _context10.next = 11;
+            _context10.next = 13;
             break;
           }
           return _context10.abrupt("return", res.status(404).json({
             success: false,
-            message: 'Coupon code not found or expired'
+            userMessage: 'Coupon code not found or expired'
           }));
-        case 11:
+        case 13:
           couponConfig = JSON.parse(raw);
           type = couponConfig.type, redeemed = couponConfig.redeemed;
           typeKey = "coupon:type:".concat(type);
-          _context10.next = 16;
+          _context10.next = 18;
           return _redisconf.redisClient.get(typeKey);
-        case 16:
+        case 18:
           typeRaw = _context10.sent;
           if (typeRaw) {
-            _context10.next = 19;
+            _context10.next = 21;
             break;
           }
           return _context10.abrupt("return", res.status(404).json({
             success: false,
-            message: 'Coupon type not found or expired'
+            userMessage: 'Coupon type not found or expired'
           }));
-        case 19:
+        case 21:
           couponTypeConfig = JSON.parse(typeRaw);
           ttl = couponTypeConfig.ttl, createdAt = couponTypeConfig.createdAt, discount = couponTypeConfig.discount;
           now = Date.now();
           isExpired = now > createdAt + ttl * 1000;
           if (!isExpired) {
-            _context10.next = 25;
+            _context10.next = 27;
             break;
           }
           return _context10.abrupt("return", res.status(410).json({
             success: false,
-            message: 'Coupon code has expired'
+            userMessage: 'Coupon code has expired'
           }));
-        case 25:
-          _context10.next = 27;
+        case 27:
+          _context10.next = 29;
           return _Checkout["default"].findOne({
             user_id: userId,
             promo_code: coupon_code
           }).select('_id');
-        case 27:
+        case 29:
           usedCodeCheckout = _context10.sent;
           usedCoupon = false;
           if (!usedCodeCheckout) {
-            _context10.next = 34;
+            _context10.next = 36;
             break;
           }
-          _context10.next = 32;
+          _context10.next = 34;
           return _Order["default"].findOne({
             checkout_id: usedCodeCheckout._id
           });
-        case 32:
+        case 34:
           usedOrder = _context10.sent;
           if (usedOrder) usedCoupon = true;
-        case 34:
-          _context10.next = 36;
+        case 36:
+          _context10.next = 38;
           return _Checkout["default"].findOne({
             user_id: userId,
             promo_code_type: type
           }).select('_id');
-        case 36:
+        case 38:
           usedTypeCheckout = _context10.sent;
           if (!usedTypeCheckout) {
-            _context10.next = 42;
+            _context10.next = 44;
             break;
           }
-          _context10.next = 40;
+          _context10.next = 42;
           return _Order["default"].findOne({
             checkout_id: usedTypeCheckout._id
           });
-        case 40:
+        case 42:
           _usedOrder = _context10.sent;
           if (_usedOrder) usedCoupon = true;
-        case 42:
+        case 44:
           if (!usedCoupon) {
-            _context10.next = 44;
+            _context10.next = 46;
             break;
           }
           return _context10.abrupt("return", res.status(409).json({
             success: false,
-            message: 'You have already used this coupon code or a coupon of this type'
+            userMessage: 'You have already used this coupon code or a coupon of this type'
           }));
-        case 44:
+        case 46:
+          discountKey = "";
           return _context10.abrupt("return", res.status(200).json({
             success: true,
             message: 'Coupon code applied successfully',
@@ -847,15 +880,16 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
             type: type,
             expires_in: Math.floor((createdAt + ttl * 1000 - now) / 1000)
           }));
-        case 47:
-          _context10.prev = 47;
-          _context10.t0 = _context10["catch"](0);
-          next(_context10.t0);
         case 50:
+          _context10.prev = 50;
+          _context10.t0 = _context10["catch"](0);
+          console.log(_context10.t0);
+          next(_context10.t0);
+        case 54:
         case "end":
           return _context10.stop();
       }
-    }, _callee1, null, [[0, 47]]);
+    }, _callee1, null, [[0, 50]]);
   }));
   return function (_x29, _x30, _x31) {
     return _ref1.apply(this, arguments);
@@ -876,7 +910,7 @@ shopperRoute.post('/shopper/cart', _authMiddleware["default"], /*#__PURE__*/func
             break;
           }
           return _context11.abrupt("return", res.status(401).json({
-            message: 'Authentication required: User ID not found.'
+            userMessage: 'Authentication required: User ID not found.'
           }));
         case 6:
           total = 0;
@@ -984,7 +1018,7 @@ shopperRoute.post('/shopper/initialize', _authMiddleware["default"], /*#__PURE__
             break;
           }
           return _context12.abrupt("return", res.status(401).json({
-            message: 'Authentication required: User ID not found.'
+            userMessage: 'Authentication required: User ID not found.'
           }));
         case 4:
           _context12.next = 6;
@@ -1035,4 +1069,327 @@ shopperRoute.post('/shopper/initialize', _authMiddleware["default"], /*#__PURE__
     return _ref11.apply(this, arguments);
   };
 }());
+shopperRoute.get('/shopper/bani/getuserdetails', _authMiddleware["default"], /*#__PURE__*/function () {
+  var _ref12 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res, next) {
+    var userId, checkout_id, _yield$Checkout$aggre3, _yield$Checkout$aggre4, checkoutWithUser, name, email, phoneNumber, user_id, total, delivery_address;
+    return _regeneratorRuntime().wrap(function _callee12$(_context13) {
+      while (1) switch (_context13.prev = _context13.next) {
+        case 0:
+          _context13.prev = 0;
+          userId = req.userId;
+          checkout_id = req.query.checkout_id;
+          if (checkout_id) {
+            _context13.next = 5;
+            break;
+          }
+          return _context13.abrupt("return", res.status(400).json({
+            error: 'Checkout ID is required'
+          }));
+        case 5:
+          if (userId) {
+            _context13.next = 7;
+            break;
+          }
+          return _context13.abrupt("return", res.status(401).json({
+            userMessage: 'Authentication required: User ID not found.'
+          }));
+        case 7:
+          _context13.next = 9;
+          return _Checkout["default"].aggregate([{
+            $match: {
+              _id: new _mongoose["default"].Types.ObjectId(checkout_id)
+            }
+          }, {
+            $lookup: {
+              from: 'users',
+              localField: 'user_id',
+              foreignField: '_id',
+              as: 'user'
+            }
+          }, {
+            $unwind: '$user'
+          }, {
+            $project: {
+              delivery_address: 1,
+              total: 1,
+              user_id: 1,
+              name: '$user.name',
+              email: '$user.email',
+              phoneNumber: '$user.phoneNumber'
+            }
+          }]);
+        case 9:
+          _yield$Checkout$aggre3 = _context13.sent;
+          _yield$Checkout$aggre4 = _slicedToArray(_yield$Checkout$aggre3, 1);
+          checkoutWithUser = _yield$Checkout$aggre4[0];
+          if (checkoutWithUser) {
+            _context13.next = 14;
+            break;
+          }
+          return _context13.abrupt("return", res.status(400).json({
+            error: 'Invalid Checkout ID'
+          }));
+        case 14:
+          name = checkoutWithUser.name, email = checkoutWithUser.email, phoneNumber = checkoutWithUser.phoneNumber, user_id = checkoutWithUser.user_id, total = checkoutWithUser.total, delivery_address = checkoutWithUser.delivery_address;
+          res.status(200).json({
+            name: name,
+            email: email,
+            phoneNumber: phoneNumber,
+            userId: user_id,
+            total: total,
+            deliveryAddress: delivery_address
+          });
+          _context13.next = 21;
+          break;
+        case 18:
+          _context13.prev = 18;
+          _context13.t0 = _context13["catch"](0);
+          next(_context13.t0);
+        case 21:
+        case "end":
+          return _context13.stop();
+      }
+    }, _callee12, null, [[0, 18]]);
+  }));
+  return function (_x38, _x39, _x40) {
+    return _ref12.apply(this, arguments);
+  };
+}());
+shopperRoute.post('/shopper/checkout/create', _authMiddleware["default"], /*#__PURE__*/function () {
+  var _ref13 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee13(req, res, next) {
+    var userId, items, productIds, objectIdProductIds, productVariants, subTotal, productPriceMap, _i2, _productIds, productId, quantity, price, _yield$Promise$all3, _yield$Promise$all4, validUser, rawDeliveryFee, rawServiceCharge, latestCheckout, email, phoneNumber, delivery_fee, service_charge, finalTotal, phone_number, delivery_address, deliveryDates, delivery_date, newCheckoutDocument, checkout;
+    return _regeneratorRuntime().wrap(function _callee13$(_context14) {
+      while (1) switch (_context14.prev = _context14.next) {
+        case 0:
+          _context14.prev = 0;
+          userId = req.userId;
+          if (userId) {
+            _context14.next = 4;
+            break;
+          }
+          return _context14.abrupt("return", res.status(401).json({
+            userMessage: 'Authentication required: User ID not found.'
+          }));
+        case 4:
+          items = req.body.items;
+          if (!(!items || Object.keys(items).length === 0)) {
+            _context14.next = 7;
+            break;
+          }
+          return _context14.abrupt("return", res.status(400).json({
+            userMessage: 'No items provided in the request body.'
+          }));
+        case 7:
+          productIds = Object.keys(items);
+          objectIdProductIds = productIds.map(function (id) {
+            return new _mongoose["default"].Types.ObjectId(id);
+          });
+          _context14.next = 11;
+          return _ProductVariant["default"].find({
+            _id: {
+              $in: objectIdProductIds
+            }
+          }).select('price');
+        case 11:
+          productVariants = _context14.sent;
+          subTotal = 0;
+          productPriceMap = new Map();
+          productVariants.forEach(function (variant) {
+            productPriceMap.set(variant._id.toString(), variant.price);
+          });
+          _i2 = 0, _productIds = productIds;
+        case 16:
+          if (!(_i2 < _productIds.length)) {
+            _context14.next = 30;
+            break;
+          }
+          productId = _productIds[_i2];
+          quantity = Number(items[productId]);
+          if (!(isNaN(quantity) || quantity <= 0)) {
+            _context14.next = 21;
+            break;
+          }
+          return _context14.abrupt("return", res.status(400).json({
+            userMessage: "Invalid quantity for product ID ".concat(productId, ". Quantity must be a positive number.")
+          }));
+        case 21:
+          price = productPriceMap.get(productId);
+          if (!(price !== undefined)) {
+            _context14.next = 26;
+            break;
+          }
+          subTotal += Number(price) * quantity;
+          _context14.next = 27;
+          break;
+        case 26:
+          return _context14.abrupt("return", res.status(404).json({
+            userMessage: "Product with ID ".concat(productId, " not found or invalid.")
+          }));
+        case 27:
+          _i2++;
+          _context14.next = 16;
+          break;
+        case 30:
+          subTotal = Number(subTotal);
+          _context14.next = 33;
+          return Promise.all([_User["default"].findOne({
+            _id: new _mongoose["default"].Types.ObjectId(userId)
+          }).lean(), _redisconf.redisClient.hget('admindirective', 'deliveryfee'), _redisconf.redisClient.hget('admindirective', 'servicecharge'), _Checkout["default"].findOne({
+            user_id: userId
+          }).sort({
+            created_at: -1
+          }).lean()]);
+        case 33:
+          _yield$Promise$all3 = _context14.sent;
+          _yield$Promise$all4 = _slicedToArray(_yield$Promise$all3, 4);
+          validUser = _yield$Promise$all4[0];
+          rawDeliveryFee = _yield$Promise$all4[1];
+          rawServiceCharge = _yield$Promise$all4[2];
+          latestCheckout = _yield$Promise$all4[3];
+          if (validUser) {
+            _context14.next = 41;
+            break;
+          }
+          return _context14.abrupt("return", res.status(404).json({
+            userMessage: 'User not found.'
+          }));
+        case 41:
+          email = validUser.email, phoneNumber = validUser.phoneNumber;
+          delivery_fee = parseFloat(rawDeliveryFee) || 0;
+          service_charge = parseFloat(rawServiceCharge) || 0;
+          finalTotal = delivery_fee + service_charge + subTotal;
+          phone_number = (latestCheckout === null || latestCheckout === void 0 ? void 0 : latestCheckout.phone_number) || phoneNumber || '';
+          delivery_address = (latestCheckout === null || latestCheckout === void 0 ? void 0 : latestCheckout.delivery_address) || '';
+          deliveryDates = getNext7Days(); // Generate delivery dates
+          delivery_date = deliveryDates[2]; // Select the 3rd day (index 2)
+          newCheckoutDocument = new _Checkout["default"]({
+            // Renamed for clarity
+            user_id: new _mongoose["default"].Types.ObjectId(userId),
+            delivery_address: delivery_address,
+            delivery_fee: delivery_fee,
+            service_charge: service_charge,
+            phone_number: phone_number,
+            subtotal: subTotal,
+            delivery_date: delivery_date,
+            total: finalTotal,
+            cart_items: items
+          });
+          _context14.next = 52;
+          return newCheckoutDocument.save();
+        case 52:
+          // Convert Mongoose document to a plain JavaScript object
+          checkout = newCheckoutDocument.toObject();
+          console.log('Checkout successfully created:');
+          console.log('Subtotal:', subTotal);
+          console.log('Delivery Fee:', delivery_fee);
+          console.log('Service Charge:', service_charge);
+          console.log('Final Total:', finalTotal);
+          console.log('New Checkout Document (Mongoose):', newCheckoutDocument); // Mongoose object
+          console.log('Checkout Object (Plain JS):', checkout); // Plain JS object
+
+          res.status(201).json({
+            message: 'Checkout successfully created.',
+            checkout: _objectSpread(_objectSpread({}, checkout), {}, {
+              deliveryDates: deliveryDates
+            }) // Spread checkout object and add deliveryDates
+          });
+          _context14.next = 67;
+          break;
+        case 63:
+          _context14.prev = 63;
+          _context14.t0 = _context14["catch"](0);
+          console.error('Error during checkout creation:', _context14.t0);
+          next(_context14.t0);
+        case 67:
+        case "end":
+          return _context14.stop();
+      }
+    }, _callee13, null, [[0, 63]]);
+  }));
+  return function (_x41, _x42, _x43) {
+    return _ref13.apply(this, arguments);
+  };
+}());
+shopperRoute.get('/shopper/checkout/get', _authMiddleware["default"], /*#__PURE__*/function () {
+  var _ref14 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee14(req, res, next) {
+    var checkout_id, checkOutData, deliveryDates, checkout;
+    return _regeneratorRuntime().wrap(function _callee14$(_context15) {
+      while (1) switch (_context15.prev = _context15.next) {
+        case 0:
+          _context15.prev = 0;
+          checkout_id = req.query.checkout_id;
+          if (checkout_id) {
+            _context15.next = 4;
+            break;
+          }
+          return _context15.abrupt("return", res.status(400).json({
+            userMessage: 'Checkout ID is required.'
+          }));
+        case 4:
+          if (_mongoose["default"].Types.ObjectId.isValid(checkout_id)) {
+            _context15.next = 6;
+            break;
+          }
+          return _context15.abrupt("return", res.status(400).json({
+            userMessage: 'Invalid Checkout ID format.'
+          }));
+        case 6:
+          _context15.next = 8;
+          return _Checkout["default"].findOne({
+            _id: new _mongoose["default"].Types.ObjectId(checkout_id)
+          }).lean();
+        case 8:
+          checkOutData = _context15.sent;
+          if (checkOutData) {
+            _context15.next = 11;
+            break;
+          }
+          return _context15.abrupt("return", res.status(404).json({
+            userMessage: 'Checkout not found.'
+          }));
+        case 11:
+          console.log('Retrieved Checkout Data (Plain JS):', checkOutData);
+          deliveryDates = getNext7Days();
+          checkout = checkOutData;
+          res.status(200).json({
+            message: 'Checkout data retrieved successfully.',
+            checkout: _objectSpread(_objectSpread({}, checkout), {}, {
+              deliveryDates: deliveryDates
+            })
+          });
+          _context15.next = 21;
+          break;
+        case 17:
+          _context15.prev = 17;
+          _context15.t0 = _context15["catch"](0);
+          console.error('Error retrieving checkout data:', _context15.t0);
+          next(_context15.t0);
+        case 21:
+        case "end":
+          return _context15.stop();
+      }
+    }, _callee14, null, [[0, 17]]);
+  }));
+  return function (_x44, _x45, _x46) {
+    return _ref14.apply(this, arguments);
+  };
+}());
+function getNext7Days() {
+  var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var result = [];
+  var now = new Date();
+  var startOffset = now.getHours() >= 17 ? 1 : 0;
+  for (var i = 0; i < 7; i++) {
+    var currentDate = new Date();
+    currentDate.setDate(now.getDate() + startOffset + i);
+    result.push({
+      dateid: i,
+      day: daysOfWeek[currentDate.getDay()],
+      date: currentDate.getDate(),
+      month: monthsOfYear[currentDate.getMonth()]
+    });
+  }
+  return result;
+}
 var _default = exports["default"] = shopperRoute; //https://chatgpt.com/c/6819039c-9ad4-8005-8400-d2567db4dc3c

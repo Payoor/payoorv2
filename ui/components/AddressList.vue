@@ -17,8 +17,6 @@
 </template>
 
 
-
-
 <script>
 import { serverurl, handleFetchError } from '@/api';
 import debounce from 'lodash/debounce';
@@ -34,6 +32,7 @@ export default {
     },
     watch: {
         query(newQuery) {
+            console.log(newQuery)
             this.debouncedQueryAddressList(newQuery);
         }
     },
@@ -74,7 +73,6 @@ export default {
                 this.loading = false;
             }
         }
-
     }
 };
 </script>
@@ -92,6 +90,8 @@ export default {
         overflow-y: scroll;
         display: flex;
         flex-direction: column;
+
+        padding-top: 5rem;
     }
 
     &__loading {

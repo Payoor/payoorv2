@@ -212,7 +212,7 @@ adminRoute.post('/admin/paystack/payment-response', async (req, res, next) => {
       await orderconfirmEmail(
         userId,
         `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`
-      )
+      );
 
       /*telegramBot.callBot(
         `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
@@ -229,6 +229,73 @@ adminRoute.post('/admin/paystack/payment-response', async (req, res, next) => {
 
     return res.sendStatus(200)
   } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.post('/bani/webhook/payment-response', async (req, res, next) => {
+  try {
+    const merchant_private_key = process.env.MERCHANT_PRIVATE_KEY_BANI
+    const headers = req.headers
+    const body = req.rawBody
+
+    if (!body) {
+      return res
+        .status(400)
+        .json({ status: false, message: 'No body provided' })
+    }
+    if (!headers['bani-hook-signature']) {
+      return res
+        .status(400)
+        .json({ status: false, message: 'No signature provided' })
+    }
+
+    const sig = Buffer.from(headers['bani-hook-signature'], 'utf8')
+    const hmac = crypto.createHmac('sha256', merchant_private_key)
+    const digest = Buffer.from(hmac.update(body).digest('hex'), 'utf8')
+
+    if (sig.length !== digest.length || !crypto.timingSafeEqual(digest, sig)) {
+      return res
+        .status(401)
+        .json({ status: false, message: 'Invalid signature' })
+    }
+
+    const webhookData = JSON.parse(body)
+
+    const { checkoutId, userId } = webhookData.data.custom_data
+    const paymentStatus = webhookData.data.pay_status
+
+    if (paymentStatus === 'paid') {
+      const newOrder = new Order({
+        user_id: userId,
+        checkout_id: checkoutId
+      })
+
+      await newOrder.save();
+
+      await orderconfirmEmail(
+        userId,
+        `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`
+      );
+
+      const telegbotUrl = 'http://telegbot:3001/neworder'
+
+      await axios.post(telegbotUrl, {
+        orderId: newOrder._id
+      })
+
+      return res.sendStatus(200);
+    } else {
+      console.log(
+        `Webhook received for order_ref: ${order_ref} with status: ${paymentStatus}`
+      )
+      return res.status(200).json({
+        status: true,
+        message: `Webhook received for status: ${paymentStatus}`
+      })
+    }
+  } catch (error) {
+    console.error('Webhook processing error:', error)
     next(error)
   }
 })

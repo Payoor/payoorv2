@@ -16,6 +16,7 @@ You can directly use them in pages and other components without the need to impo
 - `<ChatInput>` | `<chat-input>` (components/ChatInput.vue)
 - `<ChatOption>` | `<chat-option>` (components/ChatOption.vue)
 - `<ChatOptions>` | `<chat-options>` (components/ChatOptions.vue)
+- `<ChoosePaymentProcessor>` | `<choose-payment-processor>` (components/ChoosePaymentProcessor.vue)
 - `<GoogleBtn>` | `<google-btn>` (components/GoogleBtn.vue)
 - `<Home>` | `<home>` (components/Home.vue)
 - `<Landing>` | `<landing>` (components/Landing.vue)

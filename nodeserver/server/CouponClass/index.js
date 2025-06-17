@@ -12,7 +12,7 @@ class CouponClass {
       typeof ttlInSeconds !== 'number' ||
       ttlInSeconds <= 0
     ) {
-      throw new Error('TTL must be a positive number in seconds')
+      throw new Error('TTL must be a positive number in seconds');
     }
 
     if (
@@ -81,8 +81,8 @@ class CouponClass {
       throw new Error('Coupon type is required and must be a string')
     }
 
-    const typeKey = `coupon:type:${type}`
-    const typeData = await redisClient.get(typeKey)
+    const typeKey = `coupon:type:${type}`;
+    const typeData = await redisClient.get(typeKey);
 
     if (!typeData) {
       throw new Error('Coupon type does not exist')
@@ -98,7 +98,8 @@ class CouponClass {
       redeemed: false
     }
 
-    await redisClient.set(couponKey, JSON.stringify(metadata), 'EX', ttl)
+    await redisClient.set(couponKey, JSON.stringify(metadata), 'EX', ttl);
+    
     await redisClient.sadd(`coupon:type:${type}:codes`, code)
 
     return { code, type, expiresIn: ttl }

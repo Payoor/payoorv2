@@ -8,6 +8,7 @@ export const ChatHeader = () => import('../../components/ChatHeader.vue' /* webp
 export const ChatInput = () => import('../../components/ChatInput.vue' /* webpackChunkName: "components/chat-input" */).then(c => wrapFunctional(c.default || c))
 export const ChatOption = () => import('../../components/ChatOption.vue' /* webpackChunkName: "components/chat-option" */).then(c => wrapFunctional(c.default || c))
 export const ChatOptions = () => import('../../components/ChatOptions.vue' /* webpackChunkName: "components/chat-options" */).then(c => wrapFunctional(c.default || c))
+export const ChoosePaymentProcessor = () => import('../../components/ChoosePaymentProcessor.vue' /* webpackChunkName: "components/choose-payment-processor" */).then(c => wrapFunctional(c.default || c))
 export const GoogleBtn = () => import('../../components/GoogleBtn.vue' /* webpackChunkName: "components/google-btn" */).then(c => wrapFunctional(c.default || c))
 export const Home = () => import('../../components/Home.vue' /* webpackChunkName: "components/home" */).then(c => wrapFunctional(c.default || c))
 export const Landing = () => import('../../components/Landing.vue' /* webpackChunkName: "components/landing" */).then(c => wrapFunctional(c.default || c))

@@ -25,7 +25,7 @@ export async function handleFetchError (response) {
 
     //console.error('Error response:', errorData)
 
-    const errorMessage = errorData.userMessage || 'Unknown error'
+    const errorMessage = errorData.userMessage || 'Unknown error';
 
     showErrorMessage(errorMessage)
 

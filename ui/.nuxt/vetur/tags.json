@@ -29,6 +29,9 @@
   "ChatOptions": {
     "description": "Auto imported from components/ChatOptions.vue"
   },
+  "ChoosePaymentProcessor": {
+    "description": "Auto imported from components/ChoosePaymentProcessor.vue"
+  },
   "GoogleBtn": {
     "description": "Auto imported from components/GoogleBtn.vue"
   },

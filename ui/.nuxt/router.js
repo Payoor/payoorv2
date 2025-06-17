@@ -7,11 +7,13 @@ import scrollBehavior from './router.scrollBehavior.js'
 const _0b411c9a = () => interopDefault(import('../pages/aboutus.vue' /* webpackChunkName: "pages/aboutus" */))
 const _dd64b54c = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
 const _57c1bc10 = () => interopDefault(import('../pages/authp.vue' /* webpackChunkName: "pages/authp" */))
+const _32c2dd76 = () => interopDefault(import('../pages/banipay.vue' /* webpackChunkName: "pages/banipay" */))
 const _b50a5bf0 = () => interopDefault(import('../pages/cart.vue' /* webpackChunkName: "pages/cart" */))
 const _0973792e = () => interopDefault(import('../pages/checkout.vue' /* webpackChunkName: "pages/checkout" */))
 const _6d3c63e6 = () => interopDefault(import('../pages/options.vue' /* webpackChunkName: "pages/options" */))
 const _29fc7b4d = () => interopDefault(import('../pages/orders.vue' /* webpackChunkName: "pages/orders" */))
 const _25be1b4e = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
+const _585909c8 = () => interopDefault(import('../pages/paystack.vue' /* webpackChunkName: "pages/paystack" */))
 const _612343ee = () => interopDefault(import('../pages/admin/checkout.vue' /* webpackChunkName: "pages/admin/checkout" */))
 const _0ce7be1c = () => interopDefault(import('../pages/admin/dashboard.vue' /* webpackChunkName: "pages/admin/dashboard" */))
 const _4c8a984e = () => interopDefault(import('../pages/admin/order/index.vue' /* webpackChunkName: "pages/admin/order/index" */))
@@ -43,6 +45,10 @@ export const routerOptions = {
     component: _57c1bc10,
     name: "authp"
   }, {
+    path: "/banipay",
+    component: _32c2dd76,
+    name: "banipay"
+  }, {
     path: "/cart",
     component: _b50a5bf0,
     name: "cart"
@@ -62,6 +68,10 @@ export const routerOptions = {
     path: "/payment",
     component: _25be1b4e,
     name: "payment"
+  }, {
+    path: "/paystack",
+    component: _585909c8,
+    name: "paystack"
   }, {
     path: "/admin/checkout",
     component: _612343ee,

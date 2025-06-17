@@ -128,7 +128,7 @@ shopperRoute.get(
       if (!mongooseid || !ObjectId.isValid(mongooseid)) {
         return res
           .status(400)
-          .json({ message: 'Invalid or missing product ID.' })
+          .json({ userMessage: 'Invalid or missing product ID.' })
       }
 
       const productId = new ObjectId(mongooseid)
@@ -136,7 +136,7 @@ shopperRoute.get(
       const product = await Product.findOne({ _id: productId })
 
       if (!product) {
-        return res.status(404).json({ message: 'Product not found.' })
+        return res.status(404).json({ userMessage: 'Product not found.' })
       }
 
       res.status(200).json({
@@ -175,7 +175,7 @@ shopperRoute.get(
 
       if (!variant) {
         return res.status(404).json({
-          message: 'Variant not found'
+          userMessage: 'Variant not found'
         })
       }
 
@@ -221,49 +221,70 @@ shopperRoute.get(
 )
 
 shopperRoute.post(
-  '/shopper/create/checkout',
+  '/shopper/update/checkout',
   authMiddleware,
   async (req, res, next) => {
     try {
-      const { jwt } = req.query
-      const { checkout } = req.body
+      const { jwt, checkoutId } = req.query;
+      const { checkout } = req.body;
 
-      const validUser = await User.findByToken(jwt)
+      const validUser = await User.findByToken(jwt);
 
       if (!validUser) {
-        return res.status(404).json({ message: 'invalid user' })
+        return res.status(404).json({ userMessage: 'invalid user' });
       }
 
-      if (checkout.promo_code && typeof checkout.promo_code === 'string') {
-        const coupon = await CouponClass.getCoupon(checkout.promo_code)
+      const allowedUpdateFields = [
+        'delivery_address',
+        'delivery_date',
+        'delivery_instruction',
+        'promo_code',
+        'phone_number'
+      ];
 
-        if (coupon && coupon.type) {
-          checkout.promo_code_type = coupon.type
-        } else {
-          return res.status(400).json({
-            message: 'Invalid or expired coupon code'
-          })
+      const updateData = {};
+      
+      for (const key of allowedUpdateFields) {
+        if (checkout.hasOwnProperty(key)) {
+          updateData[key] = checkout[key];
         }
       }
 
-      const newCheckout = new Checkout({
-        ...checkout,
-        user_id: validUser._id
-      })
+      // Handle promo code logic if it's being updated
+      if (updateData.promo_code && typeof updateData.promo_code === 'string') {
+        const coupon = await CouponClass.getCoupon(updateData.promo_code);
 
-      await newCheckout.save()
+        if (coupon && coupon.type) {
+          updateData.promo_code_type = coupon.type;
+        } else {
+          return res.status(400).json({
+            userMessage: 'Invalid or expired coupon code'
+          });
+        }
+      } else if (updateData.promo_code === "") { 
+        updateData.promo_code_type = "";
+      }
 
-      //console.log(newCheckout)
+      const updatedCheckout = await Checkout.findOneAndUpdate(
+        { _id: new ObjectId(checkoutId), user_id: new ObjectId(validUser._id)}, 
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedCheckout) {
+        return res.status(404).json({ userMessage: 'Checkout not found or you do not have permission to update it.' });
+      }
 
       res.status(200).json({
-        message: 'Checkout data',
-        newcheckout: newCheckout
-      })
+        message: 'Checkout data updated successfully',
+        updatedCheckout: updatedCheckout
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
-)
+);
+
 
 shopperRoute.get(
   '/shopper/paystack/generate-paystack-link',
@@ -345,7 +366,11 @@ shopperRoute.get(
       })
 
       if (!paystackRes.status) {
-        return res.status(400).json({ error: paystackRes.message })
+        return res.status(400).json({
+          error: paystackRes.message,
+          userMessage:
+            'Error while generating paystack link. Please try again in a minute'
+        })
       }
 
       console.log(paystackRes)
@@ -360,7 +385,7 @@ shopperRoute.get(
       })
     } catch (error) {
       console.log(error, 'from paystack')
-      next(error);
+      next(error)
     }
   }
 )
@@ -419,7 +444,7 @@ shopperRoute.get(
         })
       }
 
-      console.log(enrichedOrders)
+      //console.log(enrichedOrders)
 
       return res.status(200).json({
         success: true,
@@ -442,7 +467,7 @@ shopperRoute.get(
       if (!ObjectId.isValid(orderId)) {
         return res
           .status(400)
-          .json({ success: false, message: 'Invalid order ID' })
+          .json({ success: false, userMessage: 'Invalid order ID' })
       }
 
       const order = await Order.findOne({
@@ -453,7 +478,7 @@ shopperRoute.get(
       if (!order) {
         return res
           .status(404)
-          .json({ success: false, message: 'Order not found' })
+          .json({ success: false, userMessage: 'Order not found' })
       }
 
       const cartItems =
@@ -524,18 +549,22 @@ shopperRoute.post(
       if (!coupon_code || typeof coupon_code !== 'string') {
         return res.status(401).json({
           success: false,
-          message: 'Coupon code is required and must be a string'
+          userMessage: 'Coupon code is required and must be a string'
         })
       }
+
+      console.log(coupon_code, 'coupon_code')
 
       // Get the coupon from Redis
       const key = `coupon:code:${coupon_code}`
       const raw = await redisClient.get(key)
 
+      console.log(raw, 'raw here')
+
       if (!raw) {
         return res.status(404).json({
           success: false,
-          message: 'Coupon code not found or expired'
+          userMessage: 'Coupon code not found or expired'
         })
       }
 
@@ -548,7 +577,7 @@ shopperRoute.post(
       if (!typeRaw) {
         return res.status(404).json({
           success: false,
-          message: 'Coupon type not found or expired'
+          userMessage: 'Coupon type not found or expired'
         })
       }
 
@@ -561,7 +590,7 @@ shopperRoute.post(
       if (isExpired) {
         return res.status(410).json({
           success: false,
-          message: 'Coupon code has expired'
+          userMessage: 'Coupon code has expired'
         })
       }
 
@@ -596,10 +625,12 @@ shopperRoute.post(
       if (usedCoupon) {
         return res.status(409).json({
           success: false,
-          message:
+          userMessage:
             'You have already used this coupon code or a coupon of this type'
         })
       }
+
+      const discountKey = ``
 
       return res.status(200).json({
         success: true,
@@ -609,6 +640,7 @@ shopperRoute.post(
         expires_in: Math.floor((createdAt + ttl * 1000 - now) / 1000)
       })
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }
@@ -623,7 +655,7 @@ shopperRoute.post('/shopper/cart', authMiddleware, async (req, res, next) => {
     if (!userId) {
       return res
         .status(401)
-        .json({ message: 'Authentication required: User ID not found.' })
+        .json({ userMessage: 'Authentication required: User ID not found.' })
     }
 
     let user_cart
@@ -703,7 +735,7 @@ shopperRoute.post(
       if (!userId) {
         return res
           .status(401)
-          .json({ message: 'Authentication required: User ID not found.' })
+          .json({ userMessage: 'Authentication required: User ID not found.' })
       }
 
       const foundUserCart = await UserCart.findOne({ userId })
@@ -734,6 +766,277 @@ shopperRoute.post(
     }
   }
 )
+
+shopperRoute.get(
+  '/shopper/bani/getuserdetails',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const userId = req.userId
+
+      const { checkout_id } = req.query
+
+      if (!checkout_id) {
+        return res.status(400).json({ error: 'Checkout ID is required' })
+      }
+
+      if (!userId) {
+        return res
+          .status(401)
+          .json({ userMessage: 'Authentication required: User ID not found.' })
+      }
+
+      const [checkoutWithUser] = await Checkout.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(checkout_id) } },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user'
+          }
+        },
+        { $unwind: '$user' },
+        {
+          $project: {
+            delivery_address: 1,
+            total: 1,
+            user_id: 1,
+            name: '$user.name',
+            email: '$user.email',
+            phoneNumber: '$user.phoneNumber'
+          }
+        }
+      ])
+
+      if (!checkoutWithUser) {
+        return res.status(400).json({ error: 'Invalid Checkout ID' })
+      }
+
+      const { name, email, phoneNumber, user_id, total, delivery_address } =
+        checkoutWithUser
+
+      res.status(200).json({
+        name,
+        email,
+        phoneNumber,
+        userId: user_id,
+        total,
+        deliveryAddress: delivery_address
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+shopperRoute.post(
+  '/shopper/checkout/create',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const userId = req.userId
+
+      if (!userId) {
+        return res
+          .status(401)
+          .json({ userMessage: 'Authentication required: User ID not found.' })
+      }
+
+      const { items } = req.body
+
+      if (!items || Object.keys(items).length === 0) {
+        return res
+          .status(400)
+          .json({ userMessage: 'No items provided in the request body.' })
+      }
+
+      const productIds = Object.keys(items)
+      const objectIdProductIds = productIds.map(
+        id => new mongoose.Types.ObjectId(id)
+      )
+
+      const productVariants = await ProductVariant.find({
+        _id: { $in: objectIdProductIds }
+      }).select('price')
+
+      let subTotal = 0
+      const productPriceMap = new Map()
+
+      productVariants.forEach(variant => {
+        productPriceMap.set(variant._id.toString(), variant.price)
+      })
+
+      for (const productId of productIds) {
+        const quantity = Number(items[productId])
+
+        if (isNaN(quantity) || quantity <= 0) {
+          return res.status(400).json({
+            userMessage: `Invalid quantity for product ID ${productId}. Quantity must be a positive number.`
+          })
+        }
+
+        const price = productPriceMap.get(productId)
+
+        if (price !== undefined) {
+          subTotal += Number(price) * quantity
+        } else {
+          return res.status(404).json({
+            userMessage: `Product with ID ${productId} not found or invalid.`
+          })
+        }
+      }
+
+      subTotal = Number(subTotal)
+
+      const [validUser, rawDeliveryFee, rawServiceCharge, latestCheckout] =
+        await Promise.all([
+          User.findOne({ _id: new mongoose.Types.ObjectId(userId) }).lean(),
+          redisClient.hget('admindirective', 'deliveryfee'),
+          redisClient.hget('admindirective', 'servicecharge'),
+          Checkout.findOne({ user_id: userId }).sort({ created_at: -1 }).lean()
+        ])
+
+      if (!validUser) {
+        return res.status(404).json({ userMessage: 'User not found.' })
+      }
+
+      const { email, phoneNumber } = validUser
+
+      const delivery_fee = parseFloat(rawDeliveryFee) || 0
+      const service_charge = parseFloat(rawServiceCharge) || 0
+
+      const finalTotal = delivery_fee + service_charge + subTotal
+
+      const phone_number = latestCheckout?.phone_number || phoneNumber || ''
+      const delivery_address = latestCheckout?.delivery_address || ''
+
+      const deliveryDates = getNext7Days() // Generate delivery dates
+
+      const delivery_date = deliveryDates[2] // Select the 3rd day (index 2)
+
+      const newCheckoutDocument = new Checkout({
+        // Renamed for clarity
+        user_id: new mongoose.Types.ObjectId(userId),
+        delivery_address,
+        delivery_fee,
+        service_charge,
+        phone_number,
+        subtotal: subTotal,
+        delivery_date,
+        total: finalTotal,
+        cart_items: items
+      })
+
+      await newCheckoutDocument.save()
+
+      // Convert Mongoose document to a plain JavaScript object
+      const checkout = newCheckoutDocument.toObject()
+
+      console.log('Checkout successfully created:')
+      console.log('Subtotal:', subTotal)
+      console.log('Delivery Fee:', delivery_fee)
+      console.log('Service Charge:', service_charge)
+      console.log('Final Total:', finalTotal)
+      console.log('New Checkout Document (Mongoose):', newCheckoutDocument) // Mongoose object
+      console.log('Checkout Object (Plain JS):', checkout) // Plain JS object
+
+      res.status(201).json({
+        message: 'Checkout successfully created.',
+        checkout: { ...checkout, deliveryDates } // Spread checkout object and add deliveryDates
+      })
+    } catch (error) {
+      console.error('Error during checkout creation:', error)
+      next(error)
+    }
+  }
+)
+
+shopperRoute.get(
+  '/shopper/checkout/get',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { checkout_id } = req.query
+
+      if (!checkout_id) {
+        return res.status(400).json({ userMessage: 'Checkout ID is required.' })
+      }
+
+      if (!mongoose.Types.ObjectId.isValid(checkout_id)) {
+        return res
+          .status(400)
+          .json({ userMessage: 'Invalid Checkout ID format.' })
+      }
+
+      const checkOutData = await Checkout.findOne({
+        _id: new mongoose.Types.ObjectId(checkout_id)
+      }).lean()
+
+      if (!checkOutData) {
+        return res.status(404).json({ userMessage: 'Checkout not found.' })
+      }
+
+      console.log('Retrieved Checkout Data (Plain JS):', checkOutData)
+
+      const deliveryDates = getNext7Days()
+      const checkout = checkOutData;
+
+      res.status(200).json({
+        message: 'Checkout data retrieved successfully.',
+        checkout: { ...checkout, deliveryDates }
+      })
+    } catch (error) {
+      console.error('Error retrieving checkout data:', error)
+      next(error)
+    }
+  }
+)
+
+function getNext7Days () {
+  const daysOfWeek = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ]
+  const monthsOfYear = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ]
+
+  const result = []
+  const now = new Date()
+
+  const startOffset = now.getHours() >= 17 ? 1 : 0
+
+  for (let i = 0; i < 7; i++) {
+    const currentDate = new Date()
+    currentDate.setDate(now.getDate() + startOffset + i)
+
+    result.push({
+      dateid: i,
+      day: daysOfWeek[currentDate.getDay()],
+      date: currentDate.getDate(),
+      month: monthsOfYear[currentDate.getMonth()]
+    })
+  }
+
+  return result
+}
 
 export default shopperRoute
 
