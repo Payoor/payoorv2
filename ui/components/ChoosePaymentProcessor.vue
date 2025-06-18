@@ -5,7 +5,12 @@
                 <h1 class="choosepaymentprocessor__h1">Pick a payment option</h1>
 
                 <div class="choosepaymentprocessor__body">
-                    <div class="choosepaymentprocessor__buttons">
+                    <div v-if="loading" class="loading-indicator-wrapper">
+                        <div class="spinner"></div>
+                        <p>Loading payment methods...</p>
+                    </div>
+
+                    <div v-else class="choosepaymentprocessor__buttons">
                         <button @click="createOrderWithBaniPay" :disabled="paymentMethods.banipay === 'disabled'"
                             :class="{ 'disabled-button': paymentMethods.banipay === 'disabled' }">
                             <span class="logos">
@@ -52,10 +57,11 @@ import { serverurl, handleFetchError } from '@/api';
 export default {
     data() {
         return {
-            paymentMethods: { // Initialize with default enabled state
+            paymentMethods: { 
                 banipay: 'enabled',
                 paystack: 'enabled',
-            }
+            },
+            loading: true,
         };
     },
     mounted() {
@@ -63,6 +69,8 @@ export default {
     },
     methods: {
         async getPaymentMethods() {
+            this.loading = true; 
+
             try {
                 const token = localStorage.getItem('jwt');
 
@@ -84,19 +92,19 @@ export default {
 
                 const data = await response.json();
 
-                // Update the paymentMethods data property
                 this.paymentMethods = { ...this.paymentMethods, ...data };
-                console.log('Payment Methods Status:', this.paymentMethods);
+               // console.log('Payment Methods Status:', this.paymentMethods);
 
             } catch (error) {
                 console.error('Error fetching payment methods:', error);
-                // On error, keep the default enabled state or handle as needed
+            } finally {
+                this.loading = false; 
             }
         },
         createOrderWithPayStack() {
             if (this.paymentMethods.paystack === 'disabled') {
-                console.log('Paystack is currently disabled.');
-                return; // Prevent navigation if disabled
+               // console.log('Paystack is currently disabled.');
+                return; 
             }
             this.$router.push({
                 path: '/paystack',
@@ -108,8 +116,8 @@ export default {
         },
         createOrderWithBaniPay() {
             if (this.paymentMethods.banipay === 'disabled') {
-                console.log('Banipay is currently disabled.');
-                return; // Prevent navigation if disabled
+                //console.log('Banipay is currently disabled.');
+                return; 
             }
             this.$router.push({
                 path: '/banipay',
@@ -144,32 +152,31 @@ export default {
     width: 100vw;
     background: rgba($white, .9);
     z-index: 3;
+    //display: flex; 
+    align-items: center;
+    justify-content: center;
 
     &__main {
         background: $white;
         margin: 0 auto;
-        margin: 17rem 100rem;
-
-
         border-radius: 1rem;
-        margin-bottom: 0;
-
         padding: 3rem;
-
         border: .2px solid rgba($primary-color, .9);
-
         animation: moveInUp 0.5s ease-out forwards;
-
+        position: relative;
 
         @include respond(tab-port) {
             margin: 17rem 2rem;
-            padding: 3rem
+            padding: 3rem;
         }
     }
 
     &__body {
         display: flex;
-        align-items: center;
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center;
+        min-height: 150px; 
     }
 
     &__h1 {
@@ -182,7 +189,6 @@ export default {
 
     &__buttons {
         padding: 3rem;
-
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -192,15 +198,13 @@ export default {
             border: none;
             outline: none;
             border-radius: 1rem;
-
             border: .2px rgba($black, .9) solid;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             padding: 1rem;
-            transition: opacity 0.3s ease; // Add transition for smooth opacity change
-
+            transition: opacity 0.3s ease;
 
             &:nth-child(2) {
                 margin-top: 2rem;
@@ -238,12 +242,38 @@ export default {
                 }
             }
 
-            // New style for disabled buttons
             &.disabled-button {
-                opacity: 0.5; // Reduce opacity
-                cursor: not-allowed; // Change cursor
+                opacity: 0.5;
+                cursor: not-allowed;
             }
         }
+    }
+
+    .loading-indicator-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        color: $primary-color;
+        font-size: 1.5rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left-color: $primary-color;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 }
 </style>
