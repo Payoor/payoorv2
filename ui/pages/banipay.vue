@@ -55,7 +55,7 @@ export default {
         initializeBani() {
             if (typeof window === "undefined") return;
 
-            const formattedPhone = "+234" + this.phoneNumber.replace(/^0+/, "");
+            const formattedPhone = "+234" + this.phoneNumber.replace(/^0+/, "").trim();
 
             if (typeof BaniPopUp === "undefined") {
                 console.error("BaniPopUp not loaded");

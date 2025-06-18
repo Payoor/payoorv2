@@ -823,7 +823,7 @@ shopperRoute.get(
       res.status(200).json({
         name,
         email,
-        phoneNumber,
+        phoneNumber: `${phoneNumber}`.trim(),
         userId: user_id,
         total,
         deliveryAddress: delivery_address
@@ -912,7 +912,7 @@ shopperRoute.post(
 
       const finalTotal = delivery_fee + service_charge + subTotal
 
-      const phone_number = phoneNumber
+      const phone_number = `${phoneNumber}`.trim();
       const delivery_address =
         latestCheckout?.delivery_address || 'add a valid address'
 

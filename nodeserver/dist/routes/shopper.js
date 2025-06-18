@@ -1134,7 +1134,7 @@ shopperRoute.get('/shopper/bani/getuserdetails', _authMiddleware["default"], /*#
           res.status(200).json({
             name: name,
             email: email,
-            phoneNumber: phoneNumber,
+            phoneNumber: "".concat(phoneNumber).trim(),
             userId: user_id,
             total: total,
             deliveryAddress: delivery_address
@@ -1258,7 +1258,7 @@ shopperRoute.post('/shopper/checkout/create', _authMiddleware["default"], /*#__P
           delivery_fee = parseFloat(rawDeliveryFee) || 0;
           service_charge = parseFloat(rawServiceCharge) || 0;
           finalTotal = delivery_fee + service_charge + subTotal;
-          phone_number = phoneNumber;
+          phone_number = "".concat(phoneNumber).trim();
           delivery_address = (latestCheckout === null || latestCheckout === void 0 ? void 0 : latestCheckout.delivery_address) || 'add a valid address';
           deliveryDates = getNext7Days(); // Generate delivery dates
           delivery_date = deliveryDates[2]; // Select the 3rd day (index 2)

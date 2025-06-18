@@ -3,96 +3,112 @@
     "name": "aboutus",
     "path": "/aboutus",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/aboutus.vue",
-    "chunkName": "pages/aboutus"
+    "chunkName": "pages/aboutus",
+    "_name": "_0b411c9a"
   },
   {
     "name": "admin",
     "path": "/admin",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/index.vue",
-    "chunkName": "pages/admin/index"
+    "chunkName": "pages/admin/index",
+    "_name": "_dd64b54c"
   },
   {
     "name": "authp",
     "path": "/authp",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/authp.vue",
-    "chunkName": "pages/authp"
+    "chunkName": "pages/authp",
+    "_name": "_57c1bc10"
   },
   {
     "name": "banipay",
     "path": "/banipay",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/banipay.vue",
-    "chunkName": "pages/banipay"
+    "chunkName": "pages/banipay",
+    "_name": "_32c2dd76"
   },
   {
     "name": "cart",
     "path": "/cart",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/cart.vue",
-    "chunkName": "pages/cart"
+    "chunkName": "pages/cart",
+    "_name": "_b50a5bf0"
   },
   {
     "name": "checkout",
     "path": "/checkout",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/checkout.vue",
-    "chunkName": "pages/checkout"
+    "chunkName": "pages/checkout",
+    "_name": "_0973792e"
   },
   {
     "name": "options",
     "path": "/options",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/options.vue",
-    "chunkName": "pages/options"
+    "chunkName": "pages/options",
+    "_name": "_6d3c63e6"
   },
   {
     "name": "orders",
     "path": "/orders",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/orders.vue",
-    "chunkName": "pages/orders"
+    "chunkName": "pages/orders",
+    "_name": "_29fc7b4d"
   },
   {
     "name": "payment",
     "path": "/payment",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/payment.vue",
-    "chunkName": "pages/payment"
+    "chunkName": "pages/payment",
+    "_name": "_25be1b4e"
   },
   {
     "name": "paystack",
     "path": "/paystack",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/paystack.vue",
-    "chunkName": "pages/paystack"
+    "chunkName": "pages/paystack",
+    "_name": "_585909c8"
   },
   {
     "name": "admin-checkout",
     "path": "/admin/checkout",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/checkout.vue",
-    "chunkName": "pages/admin/checkout"
+    "chunkName": "pages/admin/checkout",
+    "_name": "_612343ee"
   },
   {
     "name": "admin-dashboard",
     "path": "/admin/dashboard",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/dashboard.vue",
-    "chunkName": "pages/admin/dashboard"
+    "chunkName": "pages/admin/dashboard",
+    "_name": "_0ce7be1c"
   },
   {
     "name": "admin-order",
     "path": "/admin/order",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/order/index.vue",
-    "chunkName": "pages/admin/order/index"
+    "chunkName": "pages/admin/order/index",
+    "_name": "_4c8a984e"
   },
   {
     "name": "auth-googlecallback",
     "path": "/auth/googlecallback",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/auth/googlecallback.vue",
-    "chunkName": "pages/auth/googlecallback"
+    "chunkName": "pages/auth/googlecallback",
+    "_name": "_d51f82e6"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_60a90fcc"
   },
   {
     "name": "userorder-orderid",
     "path": "/userorder/:orderid?",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/userorder/_orderid.vue",
-    "chunkName": "pages/userorder/_orderid"
+    "chunkName": "pages/userorder/_orderid",
+    "_name": "_8e720484"
   }
 ]
