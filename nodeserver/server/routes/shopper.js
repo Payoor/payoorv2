@@ -225,13 +225,13 @@ shopperRoute.post(
   authMiddleware,
   async (req, res, next) => {
     try {
-      const { jwt, checkoutId } = req.query;
-      const { checkout } = req.body;
+      const { jwt, checkoutId } = req.query
+      const { checkout } = req.body
 
-      const validUser = await User.findByToken(jwt);
+      const validUser = await User.findByToken(jwt)
 
       if (!validUser) {
-        return res.status(404).json({ userMessage: 'invalid user' });
+        return res.status(404).json({ userMessage: 'invalid user' })
       }
 
       const allowedUpdateFields = [
@@ -240,51 +240,55 @@ shopperRoute.post(
         'delivery_instruction',
         'promo_code',
         'phone_number'
-      ];
+      ]
 
-      const updateData = {};
-      
+      const updateData = {}
+
       for (const key of allowedUpdateFields) {
         if (checkout.hasOwnProperty(key)) {
-          updateData[key] = checkout[key];
+          updateData[key] = checkout[key]
         }
       }
 
       // Handle promo code logic if it's being updated
       if (updateData.promo_code && typeof updateData.promo_code === 'string') {
-        const coupon = await CouponClass.getCoupon(updateData.promo_code);
+        const coupon = await CouponClass.getCoupon(updateData.promo_code)
 
         if (coupon && coupon.type) {
-          updateData.promo_code_type = coupon.type;
+          updateData.promo_code_type = coupon.type
         } else {
           return res.status(400).json({
             userMessage: 'Invalid or expired coupon code'
-          });
+          })
         }
-      } else if (updateData.promo_code === "") { 
-        updateData.promo_code_type = "";
+      } else if (updateData.promo_code === '') {
+        updateData.promo_code_type = ''
       }
 
       const updatedCheckout = await Checkout.findOneAndUpdate(
-        { _id: new ObjectId(checkoutId), user_id: new ObjectId(validUser._id)}, 
+        { _id: new ObjectId(checkoutId), user_id: new ObjectId(validUser._id) },
         { $set: updateData },
         { new: true, runValidators: true }
-      );
+      )
 
       if (!updatedCheckout) {
-        return res.status(404).json({ userMessage: 'Checkout not found or you do not have permission to update it.' });
+        return res
+          .status(404)
+          .json({
+            userMessage:
+              'Checkout not found or you do not have permission to update it.'
+          })
       }
 
       res.status(200).json({
         message: 'Checkout data updated successfully',
         updatedCheckout: updatedCheckout
-      });
+      })
     } catch (error) {
-      next(error);
+      next(error)
     }
   }
-);
-
+)
 
 shopperRoute.get(
   '/shopper/paystack/generate-paystack-link',
@@ -908,8 +912,9 @@ shopperRoute.post(
 
       const finalTotal = delivery_fee + service_charge + subTotal
 
-      const phone_number = latestCheckout?.phone_number || phoneNumber || ''
-      const delivery_address = latestCheckout?.delivery_address || ''
+      const phone_number = phoneNumber
+      const delivery_address =
+        latestCheckout?.delivery_address || 'add a valid address'
 
       const deliveryDates = getNext7Days() // Generate delivery dates
 
@@ -980,7 +985,7 @@ shopperRoute.get(
       console.log('Retrieved Checkout Data (Plain JS):', checkOutData)
 
       const deliveryDates = getNext7Days()
-      const checkout = checkOutData;
+      const checkout = checkOutData
 
       res.status(200).json({
         message: 'Checkout data retrieved successfully.',

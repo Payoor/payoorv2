@@ -374,8 +374,8 @@ shopperRoute.post('/shopper/update/checkout', _authMiddleware["default"], /*#__P
           _context7.next = 23;
           break;
         case 22:
-          if (updateData.promo_code === "") {
-            updateData.promo_code_type = "";
+          if (updateData.promo_code === '') {
+            updateData.promo_code_type = '';
           }
         case 23:
           _context7.next = 25;
@@ -1258,8 +1258,8 @@ shopperRoute.post('/shopper/checkout/create', _authMiddleware["default"], /*#__P
           delivery_fee = parseFloat(rawDeliveryFee) || 0;
           service_charge = parseFloat(rawServiceCharge) || 0;
           finalTotal = delivery_fee + service_charge + subTotal;
-          phone_number = (latestCheckout === null || latestCheckout === void 0 ? void 0 : latestCheckout.phone_number) || phoneNumber || '';
-          delivery_address = (latestCheckout === null || latestCheckout === void 0 ? void 0 : latestCheckout.delivery_address) || '';
+          phone_number = phoneNumber;
+          delivery_address = (latestCheckout === null || latestCheckout === void 0 ? void 0 : latestCheckout.delivery_address) || 'add a valid address';
           deliveryDates = getNext7Days(); // Generate delivery dates
           delivery_date = deliveryDates[2]; // Select the 3rd day (index 2)
           newCheckoutDocument = new _Checkout["default"]({

@@ -248,6 +248,7 @@ export default {
         allowOrderCreation() {
             const ready =
                 this.delivery_address.trim().length > 0 &&
+                this.delivery_address.trim() !== 'add a valid address' &&
                 this.delivery_date !== null &&
                 this.subtotal > 0 &&
                 this.phone_number.trim().length > 0;
