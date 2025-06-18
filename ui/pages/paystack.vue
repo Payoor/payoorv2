@@ -5,13 +5,18 @@
         </div>
 
         <div class="payment__content">
-            <div v-if="authorizationUrl" class="payment__iframe-box">
+            <div v-if="loading" class="loading-indicator">
+                Loading payment view...
+            </div>
+            <div v-else-if="authorizationUrl" class="payment__iframe-box">
                 <iframe :src="authorizationUrl" class="payment__iframe" frameborder="0" allowpaymentrequest></iframe>
+            </div>
+            <div v-else class="error-message">
+                Failed to load payment. Please try again.
             </div>
         </div>
     </div>
 </template>
-
 
 <script>
 import { mapState } from "vuex";
@@ -21,7 +26,8 @@ import jwt_mixin from "@/mixins/jwt_mixin";
 export default {
     data() {
         return {
-            authorizationUrl: null
+            authorizationUrl: null,
+            loading: true
         };
     },
     mixins: [jwt_mixin],
@@ -52,12 +58,13 @@ export default {
                 this.authorizationUrl = authorizationUrl;
 
                 console.log('Paystack link generated:', authorizationUrl, reference, accessCode);
-                // maybe redirect or show the link?
             } catch (error) {
                 console.error('Network or server error:', error);
+                this.authorizationUrl = null;
+            } finally {
+                this.loading = false;
             }
         }
-
     }
 }
 </script>
@@ -68,7 +75,6 @@ export default {
     justify-content: center;
     min-height: 100vh;
     background-color: #f9f9f9;
-
     flex-direction: column;
 
     &__content {
@@ -77,6 +83,8 @@ export default {
         width: 100%;
         max-width: 500px;
         min-height: 100vh;
+        align-items: center;
+        text-align: center;
     }
 
     &__iframe-box {
@@ -93,5 +101,16 @@ export default {
         height: 100%;
         border: none;
     }
+}
+
+.loading-indicator,
+.error-message {
+    padding: 20px;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.error-message {
+    color: #d9534f;
 }
 </style>

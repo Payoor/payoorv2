@@ -1916,7 +1916,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(114);
+var content = __webpack_require__(113);
 if(content.__esModule) content = content.default;
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
@@ -1933,7 +1933,7 @@ module.exports.__inject__ = function (context) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(116);
+var content = __webpack_require__(115);
 if(content.__esModule) content = content.default;
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
@@ -2111,8 +2111,7 @@ installComponents(component, {LoadingAnimation: __webpack_require__(54).default,
 /* 109 */,
 /* 110 */,
 /* 111 */,
-/* 112 */,
-/* 113 */
+/* 112 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2123,7 +2122,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -2137,7 +2136,7 @@ module.exports = ___CSS_LOADER_EXPORT___;
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2148,7 +2147,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -2162,6 +2161,7 @@ module.exports = ___CSS_LOADER_EXPORT___;
 
 
 /***/ }),
+/* 116 */,
 /* 117 */,
 /* 118 */,
 /* 119 */,
@@ -2183,8 +2183,7 @@ module.exports = ___CSS_LOADER_EXPORT___;
 /* 135 */,
 /* 136 */,
 /* 137 */,
-/* 138 */,
-/* 139 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2258,7 +2257,7 @@ var componentNormalizer = __webpack_require__(3);
 
 function injectStyles (context) {
   
-  var style0 = __webpack_require__(113)
+  var style0 = __webpack_require__(112)
 if (style0.__inject__) style0.__inject__(context)
 
 }
@@ -2283,7 +2282,7 @@ installComponents(component, {ChatHeader: __webpack_require__(51).default,Landin
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2508,7 +2507,7 @@ var componentNormalizer = __webpack_require__(3);
 
 function injectStyles (context) {
   
-  var style0 = __webpack_require__(115)
+  var style0 = __webpack_require__(114)
 if (style0.__inject__) style0.__inject__(context)
 
 }
@@ -2533,6 +2532,7 @@ installComponents(component, {ChatHeader: __webpack_require__(51).default,ChatBo
 
 
 /***/ }),
+/* 140 */,
 /* 141 */,
 /* 142 */,
 /* 143 */,
@@ -2653,7 +2653,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* harmony default export */ var pages = __webpack_exports__["default"] = (component.exports);
 
 /* nuxt-component-imports */
-installComponents(component, {LandingPage: __webpack_require__(139).default,Home: __webpack_require__(140).default})
+installComponents(component, {LandingPage: __webpack_require__(138).default,Home: __webpack_require__(139).default})
 
 
 /***/ })

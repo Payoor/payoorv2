@@ -1,18 +1,86 @@
 exports.ids = [30,3,7];
 exports.modules = {
 
-/***/ 107:
+/***/ 121:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(148);
+if(content.__esModule) content = content.default;
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add CSS to SSR context
+var add = __webpack_require__(7).default
+module.exports.__inject__ = function (context) {
+  add("8773b56c", content, true, context)
+};
+
+/***/ }),
+
+/***/ 147:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(URLSearchParams) {/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuex__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-/* harmony import */ var _mixins_jwt_mixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(44);
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_ref_7_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_7_oneOf_1_3_node_modules_sass_resources_loader_lib_loader_js_ref_7_oneOf_1_4_node_modules_nuxt_components_dist_loader_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_banipay_vue_vue_type_style_index_0_id_b48b8fd0_prod_lang_scss_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(121);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_ref_7_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_7_oneOf_1_3_node_modules_sass_resources_loader_lib_loader_js_ref_7_oneOf_1_4_node_modules_nuxt_components_dist_loader_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_banipay_vue_vue_type_style_index_0_id_b48b8fd0_prod_lang_scss_scoped_true__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_ref_7_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_7_oneOf_1_3_node_modules_sass_resources_loader_lib_loader_js_ref_7_oneOf_1_4_node_modules_nuxt_components_dist_loader_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_banipay_vue_vue_type_style_index_0_id_b48b8fd0_prod_lang_scss_scoped_true__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_ref_7_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_7_oneOf_1_3_node_modules_sass_resources_loader_lib_loader_js_ref_7_oneOf_1_4_node_modules_nuxt_components_dist_loader_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_banipay_vue_vue_type_style_index_0_id_b48b8fd0_prod_lang_scss_scoped_true__WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_ref_7_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_7_oneOf_1_3_node_modules_sass_resources_loader_lib_loader_js_ref_7_oneOf_1_4_node_modules_nuxt_components_dist_loader_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_banipay_vue_vue_type_style_index_0_id_b48b8fd0_prod_lang_scss_scoped_true__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
 
+/***/ }),
 
-/* harmony default export */ __webpack_exports__["a"] = ({
+/***/ 148:
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(6);
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.i, "*[data-v-b48b8fd0],[data-v-b48b8fd0]:after,[data-v-b48b8fd0]:before{box-sizing:inherit;margin:0;padding:0}html[data-v-b48b8fd0]{background:#249b48;font-size:62.5%}@media only screen and (max-width:75em){html[data-v-b48b8fd0]{font-size:56.25%}}@media only screen and (max-width:56.25em){html[data-v-b48b8fd0]{font-size:55%}}@media only screen and (max-width:37.5em){html[data-v-b48b8fd0]{font-size:50%}}@media only screen and (min-width:112.5em){html[data-v-b48b8fd0]{font-size:65%}}body[data-v-b48b8fd0]{background:#249b48;box-sizing:border-box;display:none;font-family:\"Poppins\",sans-serif}@media only screen and (max-width:56.25em){body[data-v-b48b8fd0]{padding:0}}[data-v-b48b8fd0]::-moz-selection{background-color:#249b48;color:#fff}[data-v-b48b8fd0]::selection{background-color:#249b48;color:#fff}[data-v-b48b8fd0]::-webkit-scrollbar{height:8px;width:8px}[data-v-b48b8fd0]::-webkit-scrollbar-track{background:transparent}[data-v-b48b8fd0]::-webkit-scrollbar-thumb{background-color:#249b48;border:none;border-radius:10px}[data-v-b48b8fd0]::-webkit-scrollbar-thumb:hover{background-color:#1a7235}*[data-v-b48b8fd0]{scrollbar-color:#249b48 transparent;scrollbar-width:thin}@keyframes slideFadeInUp-b48b8fd0{0%{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes slide-in-left-b48b8fd0{0%{opacity:0;transform:translateX(-100%)}to{opacity:1;transform:translateX(0)}}@keyframes float-b48b8fd0{0%{transform:translateY(0)}50%{transform:translateY(-10px)}to{transform:translateY(0)}}@keyframes spin-b48b8fd0{to{transform:rotate(1turn)}}.slide-in-left[data-v-b48b8fd0]{animation:slide-in-left-b48b8fd0 .5s ease-out forwards}.button-primary[data-v-b48b8fd0]{background:#249b48;border:none;border-radius:1rem;color:#fff;font-weight:500;outline:none;padding:1rem}.transparent-button[data-v-b48b8fd0]{background:transparent;border:1px solid #249b48;color:#249b48}.disabled-btn[data-v-b48b8fd0]{opacity:.4}.floating-element[data-v-b48b8fd0]{animation:float-b48b8fd0 3s ease-in-out infinite;animation-delay:0s;transition:transform .2s ease}.no-scroll[data-v-b48b8fd0]{height:100vh!important;overflow:hidden!important}.spinner[data-v-b48b8fd0]{animation:spin-b48b8fd0 1s linear infinite;border:4px solid rgba(36,155,72,.3);border-radius:50%;border-top-color:#249b48;height:3rem;width:3rem}.spinner.path[data-v-b48b8fd0]{stroke:#249b48;stroke-linecap:round}.blur-effect[data-v-b48b8fd0]{filter:blur(3px)}.error-message[data-v-b48b8fd0]{animation:slideFadeInUp-b48b8fd0 .5s ease-out forwards;background:#fff;border-radius:1rem;bottom:15rem;color:red;font-size:1.48rem;font-weight:500;left:0;line-height:2.1rem;margin:2rem 16px;padding:2rem;position:fixed;right:0;z-index:30}.error-message-timeout-bar[data-v-b48b8fd0]{background-color:#249b48;bottom:0;height:4px;left:0;position:absolute;transition:width 4s linear;width:100%}.landing[data-v-b48b8fd0]{overflow-x:hidden}.landing__top[data-v-b48b8fd0]{background:#b6edf2;display:grid;grid-template-columns:repeat(2,1fr);height:100vh;left:0;position:fixed;top:0;width:100%}@media only screen and (max-width:56.25em){.landing__top[data-v-b48b8fd0]{display:flex}}.landing__topleft[data-v-b48b8fd0]{display:flex;justify-content:center}@media only screen and (max-width:56.25em){.landing__topleft[data-v-b48b8fd0]{display:block;width:100%}}.landing__topleft--auth[data-v-b48b8fd0]{padding:0 10rem;width:100rem}@media only screen and (max-width:56.25em){.landing__topleft--auth[data-v-b48b8fd0]{padding:0;width:auto}}.landing__topright[data-v-b48b8fd0],.landing__topright--img[data-v-b48b8fd0]{align-items:center;display:flex;justify-content:center}.landing__topright--img[data-v-b48b8fd0]{transform:scale(1.1);width:100rem}.landing__topright--img img[data-v-b48b8fd0]{height:100%;-o-object-fit:contain;object-fit:contain;width:100%}@media only screen and (max-width:56.25em){.landing__topright[data-v-b48b8fd0]{display:none}}.landing__content[data-v-b48b8fd0]{background:#249b48;margin-top:90rem;position:relative}.landing__seemore[data-v-b48b8fd0]{bottom:10rem;display:flex;justify-content:center;left:0;position:absolute;width:100%}.landing__seemore button[data-v-b48b8fd0]{background:transparent;border:1px solid #fff;border-radius:3rem;color:#fff;cursor:pointer;font-size:1.4rem;font-weight:600;padding:1rem 4rem}.landing__cloud[data-v-b48b8fd0]{bottom:0;height:34rem;position:absolute;transform:scale(1.1);width:100vw;z-index:3}.landing__cloud img[data-v-b48b8fd0]{height:100%;-o-object-fit:cover;object-fit:cover;width:100%}.payment[data-v-b48b8fd0]{background-color:#f9f9f9;flex-direction:column}.payment[data-v-b48b8fd0],.payment__content[data-v-b48b8fd0]{display:flex;justify-content:center;min-height:100vh}.payment__content[data-v-b48b8fd0]{max-width:500px;width:100%}.payment__iframe-box[data-v-b48b8fd0]{background-color:#fff;border-radius:1rem;box-shadow:0 4px 20px rgba(0,0,0,.1);height:650px;overflow:hidden;width:100%}.payment__iframe[data-v-b48b8fd0]{border:none;height:100%;width:100%}.form-group[data-v-b48b8fd0]{display:none}", ""]);
+// Exports
+___CSS_LOADER_EXPORT___.locals = {};
+module.exports = ___CSS_LOADER_EXPORT___;
+
+
+/***/ }),
+
+/***/ 179:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--2-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/@nuxt/components/dist/loader.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./pages/banipay.vue?vue&type=template&id=b48b8fd0&scoped=true
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c('div', {
+    staticClass: "payment"
+  }, [_vm._ssrNode("<div class=\"payment__header\" data-v-b48b8fd0>", "</div>", [_c('ChatHeader', {
+    attrs: {
+      "name": 'Pay with Banipay',
+      "logovisible": false,
+      "jwt": true
+    }
+  })], 1), _vm._ssrNode(" <div class=\"payment__content\" data-v-b48b8fd0><form id=\"paymentForm\" data-v-b48b8fd0>" + (!_vm.baniWidgetLoaded ? "<div data-v-b48b8fd0>Loading payment view...</div>" : "<!---->") + " <div class=\"form-group\" data-v-b48b8fd0><input type=\"tel\" id=\"phone-number\"" + _vm._ssrAttr("value", _vm.phoneNumber || '') + " data-v-b48b8fd0> <input type=\"email\" id=\"email\"" + _vm._ssrAttr("value", _vm.email || '') + " data-v-b48b8fd0> <input type=\"number\" id=\"amount\"" + _vm._ssrAttr("value", _vm.total) + " data-v-b48b8fd0> <input type=\"text\" id=\"first-name\"" + _vm._ssrAttr("value", _vm.name || '') + " data-v-b48b8fd0> <input type=\"text\" id=\"last-name\"" + _vm._ssrAttr("value", _vm.name ? _vm.name + _vm.name : '') + " data-v-b48b8fd0></div></form></div>")], 2);
+};
+var staticRenderFns = [];
+
+// CONCATENATED MODULE: ./pages/banipay.vue?vue&type=template&id=b48b8fd0&scoped=true
+
+// EXTERNAL MODULE: ./api.js
+var api = __webpack_require__(1);
+
+// EXTERNAL MODULE: ./mixins/jwt_mixin.js
+var jwt_mixin = __webpack_require__(44);
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--2-0!./node_modules/@nuxt/components/dist/loader.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./pages/banipay.vue?vue&type=script&lang=js
+
+
+/* harmony default export */ var banipayvue_type_script_lang_js = ({
   data() {
     return {
       userId: "",
@@ -20,10 +88,11 @@ exports.modules = {
       name: "",
       phoneNumber: "",
       userAddress: "",
-      total: 0
+      total: 0,
+      baniWidgetLoaded: false
     };
   },
-  mixins: [_mixins_jwt_mixin__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]],
+  mixins: [jwt_mixin["a" /* default */]],
   async mounted() {
     await this.initWidget();
     this.loadBaniScript();
@@ -33,17 +102,28 @@ exports.modules = {
       if (typeof window === "undefined") return;
       const script = document.createElement("script");
       script.src = "https://bani-assets.s3.eu-west-2.amazonaws.com/static/widget/js/window.js";
-      script.onload = this.initializeBani;
+      script.onload = () => {
+        this.initializeBani();
+        this.baniWidgetLoaded = true;
+      };
       document.head.appendChild(script);
     },
     initializeBani() {
       if (typeof window === "undefined") return;
-      const formattedPhone = "+234" + this.phoneNumber.replace(/^0+/, "").trim();
+      let finalPhoneNumber = this.phoneNumber;
+      const cleanedFetchedPhone = String(finalPhoneNumber || '').replace(/\D/g, '');
+      if (!cleanedFetchedPhone || cleanedFetchedPhone.length !== 10 && cleanedFetchedPhone.length !== 11) {
+        //console.warn("Fetched phone number is invalid or empty. Generating a random phone number for BaniPopUp.");
+        finalPhoneNumber = this.generateRandomNigerianPhoneNumber();
+      } else {
+        finalPhoneNumber = cleanedFetchedPhone;
+      }
+      const formattedPhone = "+234" + finalPhoneNumber.replace(/^0+/, "").trim();
       if (typeof BaniPopUp === "undefined") {
         console.error("BaniPopUp not loaded");
         return;
       }
-      let handler = BaniPopUp({
+      BaniPopUp({
         amount: this.total,
         phoneNumber: formattedPhone,
         email: this.email,
@@ -57,7 +137,6 @@ exports.modules = {
         },
         merchantRef: "ref-" + Math.random().toString(36).substr(2, 9),
         onClose: response => {
-          //console.log("Bani Close Event:", response);
           window.parent.postMessage({
             type: "onClose",
             data: response
@@ -69,32 +148,22 @@ exports.modules = {
             type: "onSuccess",
             data: response
           };
-          //console.log("Sending message to parent:", message);
           window.parent.postMessage(message, "*");
-          //console.log("Message sent to parent");
-
-          const urlParams = new URLSearchParams(window.location.search);
-
-          //let redirectUrl = "https://payoor.store/paymentconfirmation";
-
-          // Redirect
-          // window.location.href = redirectUrl;
         }
       });
-      handler;
     },
     async initWidget() {
       try {
         const validToken = await this.getValidToken();
         const checkout_id = this.$route.query.checkout_id;
-        const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_1__[/* serverurl */ "b"]}/shopper/bani/getuserdetails?checkout_id=${checkout_id}`, {
+        const response = await fetch(`${api["b" /* serverurl */]}/shopper/bani/getuserdetails?checkout_id=${checkout_id}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${validToken}`,
             'Content-Type': 'application/json'
           }
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_1__[/* handleFetchError */ "a"])(response);
+        await Object(api["a" /* handleFetchError */])(response);
         const data = await response.json();
         const {
           name,
@@ -104,7 +173,14 @@ exports.modules = {
           total,
           deliveryAddress
         } = data;
-        console.log(name, email, phoneNumber, userId, total, deliveryAddress);
+        console.log("Data from API:", {
+          name,
+          email,
+          phoneNumber,
+          userId,
+          total,
+          deliveryAddress
+        });
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -112,88 +188,23 @@ exports.modules = {
         this.userId = userId;
         this.total = total;
       } catch (error) {
-        console.error('Network or server error:', error);
+        console.error('Network or server error in initWidget:', error);
       }
+    },
+    generateRandomNigerianPhoneNumber() {
+      // Common Nigerian mobile network prefixes (e.g., 080, 081, 090, 070)
+      const prefixes = ['803', '806', '810', '813', '814', '816', '703', '706', '903', '906', '802', '808', '812', '708', '902', '907', '805', '807', '815', '905', '705'];
+      const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+      let suffix = '';
+      for (let i = 0; i < 7; i++) {
+        suffix += Math.floor(Math.random() * 10);
+      }
+      return randomPrefix + suffix;
     }
   }
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(42)["URLSearchParams"]))
-
-/***/ }),
-
-/***/ 122:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(149);
-if(content.__esModule) content = content.default;
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add CSS to SSR context
-var add = __webpack_require__(7).default
-module.exports.__inject__ = function (context) {
-  add("c6f0f19e", content, true, context)
-};
-
-/***/ }),
-
-/***/ 148:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_ref_7_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_7_oneOf_1_3_node_modules_sass_resources_loader_lib_loader_js_ref_7_oneOf_1_4_node_modules_nuxt_components_dist_loader_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_banipay_vue_vue_type_style_index_0_id_82b73e7e_prod_lang_scss_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(122);
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_ref_7_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_7_oneOf_1_3_node_modules_sass_resources_loader_lib_loader_js_ref_7_oneOf_1_4_node_modules_nuxt_components_dist_loader_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_banipay_vue_vue_type_style_index_0_id_82b73e7e_prod_lang_scss_scoped_true__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_ref_7_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_7_oneOf_1_3_node_modules_sass_resources_loader_lib_loader_js_ref_7_oneOf_1_4_node_modules_nuxt_components_dist_loader_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_banipay_vue_vue_type_style_index_0_id_82b73e7e_prod_lang_scss_scoped_true__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_ref_7_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_7_oneOf_1_3_node_modules_sass_resources_loader_lib_loader_js_ref_7_oneOf_1_4_node_modules_nuxt_components_dist_loader_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_banipay_vue_vue_type_style_index_0_id_82b73e7e_prod_lang_scss_scoped_true__WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_ref_7_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_7_oneOf_1_3_node_modules_sass_resources_loader_lib_loader_js_ref_7_oneOf_1_4_node_modules_nuxt_components_dist_loader_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_banipay_vue_vue_type_style_index_0_id_82b73e7e_prod_lang_scss_scoped_true__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-
-
-/***/ }),
-
-/***/ 149:
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(6);
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(function(i){return i[1]});
-// Module
-___CSS_LOADER_EXPORT___.push([module.i, "*[data-v-82b73e7e],[data-v-82b73e7e]:after,[data-v-82b73e7e]:before{box-sizing:inherit;margin:0;padding:0}html[data-v-82b73e7e]{background:#249b48;font-size:62.5%}@media only screen and (max-width:75em){html[data-v-82b73e7e]{font-size:56.25%}}@media only screen and (max-width:56.25em){html[data-v-82b73e7e]{font-size:55%}}@media only screen and (max-width:37.5em){html[data-v-82b73e7e]{font-size:50%}}@media only screen and (min-width:112.5em){html[data-v-82b73e7e]{font-size:65%}}body[data-v-82b73e7e]{background:#249b48;box-sizing:border-box;display:none;font-family:\"Poppins\",sans-serif}@media only screen and (max-width:56.25em){body[data-v-82b73e7e]{padding:0}}[data-v-82b73e7e]::-moz-selection{background-color:#249b48;color:#fff}[data-v-82b73e7e]::selection{background-color:#249b48;color:#fff}[data-v-82b73e7e]::-webkit-scrollbar{height:8px;width:8px}[data-v-82b73e7e]::-webkit-scrollbar-track{background:transparent}[data-v-82b73e7e]::-webkit-scrollbar-thumb{background-color:#249b48;border:none;border-radius:10px}[data-v-82b73e7e]::-webkit-scrollbar-thumb:hover{background-color:#1a7235}*[data-v-82b73e7e]{scrollbar-color:#249b48 transparent;scrollbar-width:thin}@keyframes slideFadeInUp-82b73e7e{0%{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes slide-in-left-82b73e7e{0%{opacity:0;transform:translateX(-100%)}to{opacity:1;transform:translateX(0)}}@keyframes float-82b73e7e{0%{transform:translateY(0)}50%{transform:translateY(-10px)}to{transform:translateY(0)}}@keyframes spin-82b73e7e{to{transform:rotate(1turn)}}.slide-in-left[data-v-82b73e7e]{animation:slide-in-left-82b73e7e .5s ease-out forwards}.button-primary[data-v-82b73e7e]{background:#249b48;border:none;border-radius:1rem;color:#fff;font-weight:500;outline:none;padding:1rem}.transparent-button[data-v-82b73e7e]{background:transparent;border:1px solid #249b48;color:#249b48}.disabled-btn[data-v-82b73e7e]{opacity:.4}.floating-element[data-v-82b73e7e]{animation:float-82b73e7e 3s ease-in-out infinite;animation-delay:0s;transition:transform .2s ease}.no-scroll[data-v-82b73e7e]{height:100vh!important;overflow:hidden!important}.spinner[data-v-82b73e7e]{animation:spin-82b73e7e 1s linear infinite;border:4px solid rgba(36,155,72,.3);border-radius:50%;border-top-color:#249b48;height:3rem;width:3rem}.spinner.path[data-v-82b73e7e]{stroke:#249b48;stroke-linecap:round}.blur-effect[data-v-82b73e7e]{filter:blur(3px)}.error-message[data-v-82b73e7e]{animation:slideFadeInUp-82b73e7e .5s ease-out forwards;background:#fff;border-radius:1rem;bottom:15rem;color:red;font-size:1.48rem;font-weight:500;left:0;line-height:2.1rem;margin:2rem 16px;padding:2rem;position:fixed;right:0;z-index:30}.error-message-timeout-bar[data-v-82b73e7e]{background-color:#249b48;bottom:0;height:4px;left:0;position:absolute;transition:width 4s linear;width:100%}.landing[data-v-82b73e7e]{overflow-x:hidden}.landing__top[data-v-82b73e7e]{background:#b6edf2;display:grid;grid-template-columns:repeat(2,1fr);height:100vh;left:0;position:fixed;top:0;width:100%}@media only screen and (max-width:56.25em){.landing__top[data-v-82b73e7e]{display:flex}}.landing__topleft[data-v-82b73e7e]{display:flex;justify-content:center}@media only screen and (max-width:56.25em){.landing__topleft[data-v-82b73e7e]{display:block;width:100%}}.landing__topleft--auth[data-v-82b73e7e]{padding:0 10rem;width:100rem}@media only screen and (max-width:56.25em){.landing__topleft--auth[data-v-82b73e7e]{padding:0;width:auto}}.landing__topright[data-v-82b73e7e],.landing__topright--img[data-v-82b73e7e]{align-items:center;display:flex;justify-content:center}.landing__topright--img[data-v-82b73e7e]{transform:scale(1.1);width:100rem}.landing__topright--img img[data-v-82b73e7e]{height:100%;-o-object-fit:contain;object-fit:contain;width:100%}@media only screen and (max-width:56.25em){.landing__topright[data-v-82b73e7e]{display:none}}.landing__content[data-v-82b73e7e]{background:#249b48;margin-top:90rem;position:relative}.landing__seemore[data-v-82b73e7e]{bottom:10rem;display:flex;justify-content:center;left:0;position:absolute;width:100%}.landing__seemore button[data-v-82b73e7e]{background:transparent;border:1px solid #fff;border-radius:3rem;color:#fff;cursor:pointer;font-size:1.4rem;font-weight:600;padding:1rem 4rem}.landing__cloud[data-v-82b73e7e]{bottom:0;height:34rem;position:absolute;transform:scale(1.1);width:100vw;z-index:3}.landing__cloud img[data-v-82b73e7e]{height:100%;-o-object-fit:cover;object-fit:cover;width:100%}.payment[data-v-82b73e7e]{background-color:#f9f9f9;flex-direction:column}.payment[data-v-82b73e7e],.payment__content[data-v-82b73e7e]{display:flex;justify-content:center;min-height:100vh}.payment__content[data-v-82b73e7e]{max-width:500px;width:100%}.payment__iframe-box[data-v-82b73e7e]{background-color:#fff;border-radius:1rem;box-shadow:0 4px 20px rgba(0,0,0,.1);height:650px;overflow:hidden;width:100%}.payment__iframe[data-v-82b73e7e]{border:none;height:100%;width:100%}.form-group[data-v-82b73e7e]{display:none}", ""]);
-// Exports
-___CSS_LOADER_EXPORT___.locals = {};
-module.exports = ___CSS_LOADER_EXPORT___;
-
-
-/***/ }),
-
-/***/ 194:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--2-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/@nuxt/components/dist/loader.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./pages/banipay.vue?vue&type=template&id=82b73e7e&scoped=true
-var render = function render() {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c('div', [_vm._ssrNode("<div class=\"payment\" data-v-82b73e7e>", "</div>", [_vm._ssrNode("<div class=\"payment__header\" data-v-82b73e7e>", "</div>", [_c('ChatHeader', {
-    attrs: {
-      "name": 'Pay with Banipay',
-      "logovisible": false,
-      "jwt": true
-    }
-  })], 1), _vm._ssrNode(" <div class=\"payment__content\" data-v-82b73e7e><form id=\"paymentForm\" data-v-82b73e7e><div data-v-82b73e7e>Loading payment view...</div> <div class=\"form-group\" data-v-82b73e7e><input type=\"tel\" id=\"phone-number\"" + _vm._ssrAttr("value", _vm.phoneNumber || '') + " data-v-82b73e7e> <input type=\"email\" id=\"email\"" + _vm._ssrAttr("value", _vm.email || '') + " data-v-82b73e7e> <input type=\"number\" id=\"amount\"" + _vm._ssrAttr("value", _vm.total) + " data-v-82b73e7e> <input type=\"text\" id=\"first-name\"" + _vm._ssrAttr("value", _vm.name || '') + " data-v-82b73e7e> <input type=\"text\" id=\"last-name\"" + _vm._ssrAttr("value", _vm.name ? _vm.name + _vm.name : '') + " data-v-82b73e7e></div></form></div>")], 2)]);
-};
-var staticRenderFns = [];
-
-// CONCATENATED MODULE: ./pages/banipay.vue?vue&type=template&id=82b73e7e&scoped=true
-
-// EXTERNAL MODULE: ./node_modules/babel-loader/lib??ref--2-0!./node_modules/@nuxt/components/dist/loader.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./pages/banipay.vue?vue&type=script&lang=js
-var banipayvue_type_script_lang_js = __webpack_require__(107);
-
 // CONCATENATED MODULE: ./pages/banipay.vue?vue&type=script&lang=js
- /* harmony default export */ var pages_banipayvue_type_script_lang_js = (banipayvue_type_script_lang_js["a" /* default */]); 
+ /* harmony default export */ var pages_banipayvue_type_script_lang_js = (banipayvue_type_script_lang_js); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(3);
 
@@ -203,7 +214,7 @@ var componentNormalizer = __webpack_require__(3);
 
 function injectStyles (context) {
   
-  var style0 = __webpack_require__(148)
+  var style0 = __webpack_require__(147)
 if (style0.__inject__) style0.__inject__(context)
 
 }
@@ -216,7 +227,7 @@ var component = Object(componentNormalizer["a" /* default */])(
   staticRenderFns,
   false,
   injectStyles,
-  "82b73e7e",
+  "b48b8fd0",
   "7e2a881d"
   
 )

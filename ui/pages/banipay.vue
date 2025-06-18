@@ -1,28 +1,25 @@
 <template>
-    <div>
-        <div class="payment">
-            <div class="payment__header">
-                <ChatHeader :name="'Pay with Banipay'" :logovisible="false" :jwt="true" />
-            </div>
+    <div class="payment">
+        <div class="payment__header">
+            <ChatHeader :name="'Pay with Banipay'" :logovisible="false" :jwt="true" />
+        </div>
 
-            <div class="payment__content">
-                <form id="paymentForm">
-                    <div>Loading payment view...</div>
-                    <div class="form-group">
-                        <input type="tel" id="phone-number" :value="phoneNumber || ''" />
-                        <input type="email" id="email" :value="email || ''" />
-                        <input type="number" id="amount" :value="total" />
-                        <input type="text" id="first-name" :value="name || ''" />
-                        <input type="text" id="last-name" :value="name ? name + name : ''" />
-                    </div>
-                </form>
-            </div>
+        <div class="payment__content">
+            <form id="paymentForm">
+                <div v-if="!baniWidgetLoaded">Loading payment view...</div>
+                <div class="form-group">
+                    <input type="tel" id="phone-number" :value="phoneNumber || ''" />
+                    <input type="email" id="email" :value="email || ''" />
+                    <input type="number" id="amount" :value="total" />
+                    <input type="text" id="first-name" :value="name || ''" />
+                    <input type="text" id="last-name" :value="name ? name + name : ''" />
+                </div>
+            </form>
         </div>
     </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
 import { serverurl, handleFetchError } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 
@@ -34,7 +31,8 @@ export default {
             name: "",
             phoneNumber: "",
             userAddress: "",
-            total: 0
+            total: 0,
+            baniWidgetLoaded: false
         }
     },
     mixins: [jwt_mixin],
@@ -49,20 +47,34 @@ export default {
             const script = document.createElement("script");
             script.src =
                 "https://bani-assets.s3.eu-west-2.amazonaws.com/static/widget/js/window.js";
-            script.onload = this.initializeBani;
+            script.onload = () => {
+                this.initializeBani();
+                this.baniWidgetLoaded = true;
+            };
             document.head.appendChild(script);
         },
         initializeBani() {
             if (typeof window === "undefined") return;
 
-            const formattedPhone = "+234" + this.phoneNumber.replace(/^0+/, "").trim();
+            let finalPhoneNumber = this.phoneNumber;
+
+            const cleanedFetchedPhone = String(finalPhoneNumber || '').replace(/\D/g, '');
+
+            if (!cleanedFetchedPhone || (cleanedFetchedPhone.length !== 10 && cleanedFetchedPhone.length !== 11)) {
+                //console.warn("Fetched phone number is invalid or empty. Generating a random phone number for BaniPopUp.");
+                finalPhoneNumber = this.generateRandomNigerianPhoneNumber();
+            } else {
+                finalPhoneNumber = cleanedFetchedPhone;
+            }
+
+            const formattedPhone = "+234" + finalPhoneNumber.replace(/^0+/, "").trim();
 
             if (typeof BaniPopUp === "undefined") {
                 console.error("BaniPopUp not loaded");
                 return;
             }
 
-            let handler = BaniPopUp({
+            BaniPopUp({
                 amount: this.total,
                 phoneNumber: formattedPhone,
                 email: this.email,
@@ -76,25 +88,14 @@ export default {
                 },
                 merchantRef: "ref-" + Math.random().toString(36).substr(2, 9),
                 onClose: (response) => {
-                    //console.log("Bani Close Event:", response);
                     window.parent.postMessage({ type: "onClose", data: response }, "*");
                 },
                 callback: (response) => {
                     console.log("Bani Success Event:", response);
                     const message = { type: "onSuccess", data: response };
-                    //console.log("Sending message to parent:", message);
                     window.parent.postMessage(message, "*");
-                    //console.log("Message sent to parent");
-
-                    const urlParams = new URLSearchParams(window.location.search);
-
-                    //let redirectUrl = "https://payoor.store/paymentconfirmation";
-
-                    // Redirect
-                   // window.location.href = redirectUrl;
                 },
             });
-            handler;
         },
         async initWidget() {
             try {
@@ -122,12 +123,14 @@ export default {
                     deliveryAddress
                 } = data;
 
-                console.log(name,
+                console.log("Data from API:", {
+                    name,
                     email,
                     phoneNumber,
                     userId,
                     total,
-                    deliveryAddress)
+                    deliveryAddress
+                });
 
                 this.name = name;
                 this.email = email;
@@ -137,9 +140,19 @@ export default {
                 this.total = total;
 
             } catch (error) {
-                console.error('Network or server error:', error);
+                console.error('Network or server error in initWidget:', error);
             }
-        }
+        },
+        generateRandomNigerianPhoneNumber() {
+            // Common Nigerian mobile network prefixes (e.g., 080, 081, 090, 070)
+            const prefixes = ['803', '806', '810', '813', '814', '816', '703', '706', '903', '906', '802', '808', '812', '708', '902', '907', '805', '807', '815', '905', '705'];
+            const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            let suffix = '';
+            for (let i = 0; i < 7; i++) {
+                suffix += Math.floor(Math.random() * 10);
+            }
+            return randomPrefix + suffix;
+        },
     }
 }
 </script>
