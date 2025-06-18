@@ -102,7 +102,11 @@ export class TelegramBotClass {
 /listadmins
 /removeadmin <chat_id>
 /exportusers
-/viewcheckouts`
+/viewcheckouts
+/disablepaymentmethod eg /disablepaymentmethod banipay or /disablepaymentmethod paystack
+/enablepaymentmethod eg /disablepaymentmethod banipay or /disablepaymentmethod paystack
+/getpaymentmethods
+`
           )
         }
 
@@ -118,6 +122,117 @@ export class TelegramBotClass {
             console.log(idAsString)
             console.log(`${PAYOOR_URL}/admin/checkout?checkout=${idAsString}`)
           }*/
+        }
+
+        if (command === '/disablepaymentmethod') {
+          if (!arg1) {
+            return this.bot.sendMessage(
+              telegramid,
+              `⚠️ Usage: /disablepaymentmethod banipay or /disablepaymentmethod paystack`
+            )
+          }
+
+          const allowedPaymentMethods = ['banipay', 'paystack']
+          const paymentMethod = arg1.toLowerCase() // Standardize to lowercase
+
+          if (!allowedPaymentMethods.includes(paymentMethod)) {
+            return this.bot.sendMessage(
+              telegramid,
+              `⚠️ Invalid payment method. Please use 'banipay' or 'paystack'.`
+            )
+          }
+
+          try {
+            await this.redisClient.hset(
+              'payment_methods_status',
+              paymentMethod,
+              'disabled'
+            )
+            return this.bot.sendMessage(
+              telegramid,
+              `✅ ${arg1} payment method has been disabled.`
+            )
+          } catch (error) {
+            console.error(`Error disabling ${paymentMethod}:`, error)
+            return this.bot.sendMessage(
+              telegramid,
+              `❌ Failed to disable ${arg1} payment method. Please try again.`
+            )
+          }
+        }
+
+        if (command === '/enablepaymentmethod') {
+          // NEW COMMAND
+          if (!arg1) {
+            return this.bot.sendMessage(
+              telegramid,
+              `⚠️ Usage: /enablepaymentmethod banipay or /enablepaymentmethod paystack`
+            )
+          }
+
+          const allowedPaymentMethods = ['banipay', 'paystack']
+          const paymentMethod = arg1.toLowerCase() // Standardize to lowercase
+
+          if (!allowedPaymentMethods.includes(paymentMethod)) {
+            return this.bot.sendMessage(
+              telegramid,
+              `⚠️ Invalid payment method. Please use 'banipay' or 'paystack'.`
+            )
+          }
+
+          try {
+            await this.redisClient.hset(
+              'payment_methods_status',
+              paymentMethod,
+              'enabled' // Set status to 'enabled'
+            )
+            return this.bot.sendMessage(
+              telegramid,
+              `✅ ${arg1} payment method has been enabled.`
+            )
+          } catch (error) {
+            console.error(`Error enabling ${paymentMethod}:`, error)
+            return this.bot.sendMessage(
+              telegramid,
+              `❌ Failed to enable ${arg1} payment method. Please try again.`
+            )
+          }
+        }
+
+        if (command === '/getpaymentmethods') {
+          try {
+            const paymentMethodsStatus = await this.redisClient.hgetall(
+              'payment_methods_status'
+            )
+
+            if (
+              !paymentMethodsStatus ||
+              Object.keys(paymentMethodsStatus).length === 0
+            ) {
+              return this.bot.sendMessage(
+                telegramid,
+                'ℹ️ No payment methods configured yet.'
+              )
+            }
+
+            let responseMessage = '💳 *Payment Method Status:*\n\n'
+            for (const method in paymentMethodsStatus) {
+              const status = paymentMethodsStatus[method]
+              responseMessage += `• ${method}: ${
+                status.charAt(0).toUpperCase() + status.slice(1)
+              }\n`
+            }
+
+            return this.bot.sendMessage(telegramid, responseMessage, {
+              parse_mode: 'Markdown'
+            })
+          } catch (error) {
+            console.error('Error fetching payment methods status:', error)
+            return this.bot.sendMessage(
+              telegramid,
+              '❌ Failed to retrieve payment methods status. Please try again.'
+            )
+          }
         }
 
         if (command === '/setdeliveryfee') {
@@ -174,7 +289,7 @@ export class TelegramBotClass {
               'ℹ️ Delivery fee is not set. Use /setdeliveryfee to set it.'
             )
           }
-        }  
+        }
 
         if (command === '/getservicecharge') {
           const serviceCharge = await this.redisClient.hget(

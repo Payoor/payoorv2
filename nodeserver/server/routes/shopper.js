@@ -272,12 +272,10 @@ shopperRoute.post(
       )
 
       if (!updatedCheckout) {
-        return res
-          .status(404)
-          .json({
-            userMessage:
-              'Checkout not found or you do not have permission to update it.'
-          })
+        return res.status(404).json({
+          userMessage:
+            'Checkout not found or you do not have permission to update it.'
+        })
       }
 
       res.status(200).json({
@@ -912,7 +910,7 @@ shopperRoute.post(
 
       const finalTotal = delivery_fee + service_charge + subTotal
 
-      const phone_number = `${phoneNumber}`.trim();
+      const phone_number = `${phoneNumber}`.trim()
       const delivery_address =
         latestCheckout?.delivery_address || 'add a valid address'
 
@@ -993,6 +991,43 @@ shopperRoute.get(
       })
     } catch (error) {
       console.error('Error retrieving checkout data:', error)
+      next(error)
+    }
+  }
+)
+
+shopperRoute.get(
+  '/shopper/checkout/getpaymentmethods',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const paymentMethodsStatus = await redisClient.hgetall(
+        'payment_methods_status'
+      )
+
+      if (
+        !paymentMethodsStatus ||
+        Object.keys(paymentMethodsStatus).length === 0
+      ) {
+        return res.status(200).json({
+          banipay: 'enabled'.toLowerCase().trim(),
+          paystack: 'enabled'.toLowerCase().trim()
+        })
+      }
+
+      const processedPaymentMethods = {}
+
+      for (const key in paymentMethodsStatus) {
+        if (Object.hasOwnProperty.call(paymentMethodsStatus, key)) {
+          processedPaymentMethods[key] = paymentMethodsStatus[key]
+            .toLowerCase()
+            .trim()
+        }
+      }
+
+      res.status(200).json(processedPaymentMethods)
+    } catch (error) {
+      console.error('Error fetching payment methods from Redis:', error)
       next(error)
     }
   }

@@ -2580,8 +2580,7 @@ installComponents(component, {ChatHeader: __webpack_require__(51).default,ChatBo
 /* 185 */,
 /* 186 */,
 /* 187 */,
-/* 188 */,
-/* 189 */
+/* 188 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

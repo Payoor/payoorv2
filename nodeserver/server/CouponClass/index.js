@@ -46,7 +46,7 @@ class CouponClass {
     const exists = await redisClient.exists(key)
 
     if (exists) {
-      throw new Error('Coupon type already exists')
+      throw new Error('Coupon type already exists');
     }
 
     const config = {

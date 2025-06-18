@@ -6,7 +6,8 @@
 
                 <div class="choosepaymentprocessor__body">
                     <div class="choosepaymentprocessor__buttons">
-                        <button @click="createOrderWithBaniPay">
+                        <button @click="createOrderWithBaniPay" :disabled="paymentMethods.banipay === 'disabled'"
+                            :class="{ 'disabled-button': paymentMethods.banipay === 'disabled' }">
                             <span class="logos">
                                 <svg width="20" height="26" viewBox="0 0 20 26" fill="none"
                                     xmlns="http://www.w3.org/2000/svg" class="w-[63.73px] h-[20px]">
@@ -31,7 +32,8 @@
                             <span class="label">Banipay</span>
                         </button>
 
-                        <button @click="createOrderWithPayStack">
+                        <button @click="createOrderWithPayStack" :disabled="paymentMethods.paystack === 'disabled'"
+                            :class="{ 'disabled-button': paymentMethods.paystack === 'disabled' }">
                             <span class="logos">
                                 <img src="/svg/paystacklogo.svg" alt="Paystack Logo">
                             </span>
@@ -45,17 +47,57 @@
 </template>
 
 <script>
+import { serverurl, handleFetchError } from '@/api';
+
 export default {
-    props: ['closeit'],
+    data() {
+        return {
+            paymentMethods: { // Initialize with default enabled state
+                banipay: 'enabled',
+                paystack: 'enabled',
+            }
+        };
+    },
+    mounted() {
+        this.getPaymentMethods();
+    },
     methods: {
-        close() {
-            // This method will be called when the close button is clicked.
-            // You'll implement the logic to hide or close the payment price component here.
-            console.log('Close button clicked!');
-            // Example: Emit an event to a parent component to close the modal
-            // this.$emit('close-payment-modal');
+        async getPaymentMethods() {
+            try {
+                const token = localStorage.getItem('jwt');
+
+                const response = await fetch(
+                    `${serverurl}/shopper/checkout/getpaymentmethods`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            Origin: window.location.origin,
+                            'Access-Control-Request-Method': 'POST',
+                            'Access-Control-Request-Headers': 'Content-Type'
+                        }
+                    }
+                );
+
+                await handleFetchError(response);
+
+                const data = await response.json();
+
+                // Update the paymentMethods data property
+                this.paymentMethods = { ...this.paymentMethods, ...data };
+                console.log('Payment Methods Status:', this.paymentMethods);
+
+            } catch (error) {
+                console.error('Error fetching payment methods:', error);
+                // On error, keep the default enabled state or handle as needed
+            }
         },
         createOrderWithPayStack() {
+            if (this.paymentMethods.paystack === 'disabled') {
+                console.log('Paystack is currently disabled.');
+                return; // Prevent navigation if disabled
+            }
             this.$router.push({
                 path: '/paystack',
                 query: {
@@ -65,6 +107,10 @@ export default {
             });
         },
         createOrderWithBaniPay() {
+            if (this.paymentMethods.banipay === 'disabled') {
+                console.log('Banipay is currently disabled.');
+                return; // Prevent navigation if disabled
+            }
             this.$router.push({
                 path: '/banipay',
                 query: {
@@ -81,12 +127,12 @@ export default {
 @keyframes moveInUp {
     0% {
         opacity: 0;
-        transform: translateY(10rem); // Starts 10rem below its final position
+        transform: translateY(10rem);
     }
 
     100% {
         opacity: 1;
-        transform: translateY(0); // Ends at its final position
+        transform: translateY(0);
     }
 }
 
@@ -112,8 +158,7 @@ export default {
 
         border: .2px solid rgba($primary-color, .9);
 
-        // Apply the animation here
-        animation: moveInUp 0.5s ease-out forwards; // 0.5s duration, ease-out timing, forwards to stay at the end state
+        animation: moveInUp 0.5s ease-out forwards;
 
 
         @include respond(tab-port) {
@@ -154,6 +199,8 @@ export default {
             justify-content: center;
             cursor: pointer;
             padding: 1rem;
+            transition: opacity 0.3s ease; // Add transition for smooth opacity change
+
 
             &:nth-child(2) {
                 margin-top: 2rem;
@@ -189,6 +236,12 @@ export default {
                     font-size: 1.6rem;
                     margin-left: 1rem;
                 }
+            }
+
+            // New style for disabled buttons
+            &.disabled-button {
+                opacity: 0.5; // Reduce opacity
+                cursor: not-allowed; // Change cursor
             }
         }
     }

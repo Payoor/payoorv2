@@ -1374,6 +1374,50 @@ shopperRoute.get('/shopper/checkout/get', _authMiddleware["default"], /*#__PURE_
     return _ref14.apply(this, arguments);
   };
 }());
+shopperRoute.get('/shopper/checkout/getpaymentmethods', _authMiddleware["default"], /*#__PURE__*/function () {
+  var _ref15 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee15(req, res, next) {
+    var paymentMethodsStatus, processedPaymentMethods, key;
+    return _regeneratorRuntime().wrap(function _callee15$(_context16) {
+      while (1) switch (_context16.prev = _context16.next) {
+        case 0:
+          _context16.prev = 0;
+          _context16.next = 3;
+          return _redisconf.redisClient.hgetall('payment_methods_status');
+        case 3:
+          paymentMethodsStatus = _context16.sent;
+          if (!(!paymentMethodsStatus || Object.keys(paymentMethodsStatus).length === 0)) {
+            _context16.next = 6;
+            break;
+          }
+          return _context16.abrupt("return", res.status(200).json({
+            banipay: 'enabled'.toLowerCase().trim(),
+            paystack: 'enabled'.toLowerCase().trim()
+          }));
+        case 6:
+          processedPaymentMethods = {};
+          for (key in paymentMethodsStatus) {
+            if (Object.hasOwnProperty.call(paymentMethodsStatus, key)) {
+              processedPaymentMethods[key] = paymentMethodsStatus[key].toLowerCase().trim();
+            }
+          }
+          res.status(200).json(processedPaymentMethods);
+          _context16.next = 15;
+          break;
+        case 11:
+          _context16.prev = 11;
+          _context16.t0 = _context16["catch"](0);
+          console.error('Error fetching payment methods from Redis:', _context16.t0);
+          next(_context16.t0);
+        case 15:
+        case "end":
+          return _context16.stop();
+      }
+    }, _callee15, null, [[0, 11]]);
+  }));
+  return function (_x47, _x48, _x49) {
+    return _ref15.apply(this, arguments);
+  };
+}());
 function getNext7Days() {
   var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   var monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
