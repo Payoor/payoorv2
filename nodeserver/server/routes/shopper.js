@@ -546,6 +546,7 @@ shopperRoute.post(
   async (req, res, next) => {
     try {
       const { coupon_code } = req.body
+      const { checkout_id } = req.query
       const userId = req.userId
 
       if (!coupon_code || typeof coupon_code !== 'string') {
@@ -555,9 +556,8 @@ shopperRoute.post(
         })
       }
 
-      console.log(coupon_code, 'coupon_code')
+      //console.log(coupon_code, 'coupon_code')
 
-      // Get the coupon from Redis
       const key = `coupon:code:${coupon_code}`
       const raw = await redisClient.get(key)
 
@@ -590,25 +590,43 @@ shopperRoute.post(
       const isExpired = now > createdAt + ttl * 1000
 
       if (isExpired) {
+        await redisClient.del(key)
+        await redisClient.del(typeKey)
         return res.status(410).json({
           success: false,
           userMessage: 'Coupon code has expired'
         })
       }
 
+      const usedCheckoutForCodeOrType = await Checkout.findOne({
+        user_id: userId,
+        _id: new ObjectId(checkout_id),
+        $or: [{ promo_code: coupon_code }, { promo_code_type: type }]
+      }).select('_id')
+
+      if (usedCheckoutForCodeOrType) {
+        return res.status(409).json({
+          success: false,
+          userMessage: 'You have already used this coupon for this checkout'
+        })
+      }
+
+      let usedCouponCodePreviously = false;
+      let usedCouponTypePreviously = false;
+
       const usedCodeCheckout = await Checkout.findOne({
         user_id: userId,
         promo_code: coupon_code
       }).select('_id')
-
-      let usedCoupon = false
 
       if (usedCodeCheckout) {
         const usedOrder = await Order.findOne({
           checkout_id: usedCodeCheckout._id
         })
 
-        if (usedOrder) usedCoupon = true
+        if (usedOrder) {
+          usedCouponCodePreviously = true
+        }
       }
 
       const usedTypeCheckout = await Checkout.findOne({
@@ -617,32 +635,114 @@ shopperRoute.post(
       }).select('_id')
 
       if (usedTypeCheckout) {
-        const usedOrder = await Order.findOne({
+        const usedTypeOrder = await Order.findOne({
           checkout_id: usedTypeCheckout._id
-        })
-
-        if (usedOrder) usedCoupon = true
+        });
+        
+        if (usedTypeOrder) {
+          usedCouponTypePreviously = true
+        }
       }
 
-      if (usedCoupon) {
+      if (usedCouponCodePreviously) {
         return res.status(409).json({
           success: false,
-          userMessage:
-            'You have already used this coupon code or a coupon of this type'
+          userMessage: 'You have already used this coupon code'
         })
       }
 
-      const discountKey = ``
+      if (usedCouponTypePreviously) {
+        return res.status(409).json({
+          success: false,
+          userMessage: 'You have already used this coupon type'
+        })
+      }
+
+      const currentCheckout = await Checkout.findOne({
+        _id: new ObjectId(checkout_id)
+      })
+
+      if (!currentCheckout) {
+        return res.status(404).json({
+          success: false,
+          userMessage: 'Checkout not found'
+        })
+      }
+
+      if (currentCheckout.user_id.toString() !== userId.toString()) {
+        return res.status(403).json({
+          success: false,
+          userMessage: 'You do not have permission to modify this checkout.'
+        })
+      }
+
+      let finalPrice = currentCheckout.total
+      let deliveryCost = currentCheckout.delivery_fee
+
+      if (discount.percentage !== null && discount.percentage > 0) {
+        finalPrice = finalPrice * (1 - discount.percentage / 100)
+        console.log(
+          `Applied ${discount.percentage}% discount. New price: ${finalPrice}`
+        )
+      }
+
+      if (discount.flat > 0) {
+        finalPrice = finalPrice - discount.flat
+        console.log(
+          `Applied flat discount of ${discount.flat}. New price: ${finalPrice}`
+        )
+      }
+
+      if (finalPrice < 0) {
+        finalPrice = 0
+        console.warn(
+          'Final price became negative after discounts, setting to 0.'
+        )
+      }
+
+      if (discount.freeDelivery === true) {
+        deliveryCost = 0
+        console.log('Free delivery applied.')
+      }
+
+      const grandTotal = finalPrice + deliveryCost
+
+      const updatedCheckout = await Checkout.findOneAndUpdate(
+        { _id: new ObjectId(checkout_id), user_id: userId },
+        {
+          total: finalPrice,
+          delivery_fee: deliveryCost,
+          grand_total: grandTotal,
+          promo_code: coupon_code,
+          promo_code_type: type,
+          discount_applied: {
+            coupon_code: coupon_code,
+            coupon_type: type,
+            percentage: discount.percentage,
+            flat: discount.flat,
+            freeDelivery: discount.freeDelivery
+          }
+        },
+        { new: true }
+      )
+
+      if (!updatedCheckout) {
+        return res.status(500).json({
+          success: false,
+          userMessage: 'Failed to update checkout after applying coupon.'
+        })
+      }
 
       return res.status(200).json({
         success: true,
-        message: 'Coupon code applied successfully',
-        discount: discount || {}, // could contain flat, percentage, or freeDelivery
+        userMessage: 'Coupon code applied successfully',
+        updatedCheckout: updatedCheckout,
+        discount: discount || {},
         type,
         expires_in: Math.floor((createdAt + ttl * 1000 - now) / 1000)
       })
     } catch (error) {
-      console.log(error)
+      console.error('Error applying coupon:', error)
       next(error)
     }
   }

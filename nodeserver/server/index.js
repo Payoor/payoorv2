@@ -73,7 +73,7 @@ app.use(async (err, req, res, next) => {
 
       fs.appendFile(errorLogPath, errorMessage, fileErr => {
         if (fileErr) {
-          console.error('Failed to write error to fallback log file:', fileErr)
+          console.error('Failed to write error to fallback log file:', fileErr);
         } else {
           console.log(
             `Error successfully logged to fallback file: ${errorLogPath}`

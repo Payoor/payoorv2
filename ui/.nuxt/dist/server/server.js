@@ -1108,6 +1108,51 @@ const actions = {
     } catch (error) {
       console.log(error);
     }
+  },
+  async applyPromoCode({
+    commit,
+    state
+  }, {
+    code,
+    checkout_id
+  }) {
+    try {
+      const token = localStorage.getItem('jwt');
+      if (!token) {
+        console.error('Authentication required to apply coupon: No token found.');
+        return;
+      }
+      if (!checkout_id) {
+        console.error('Checkout ID is missing.');
+        return;
+      }
+      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "b"]}/shopper/apply-coupon?checkout_id=${checkout_id}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Origin: window.location.origin,
+          'Access-Control-Request-Method': 'POST',
+          'Access-Control-Request-Headers': 'Content-Type'
+        },
+        body: JSON.stringify({
+          coupon_code: code
+        })
+      });
+      await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetchError */ "a"])(response);
+      const data = await response.json();
+      if (response.ok && data.success) {
+        const {
+          updatedCheckout
+        } = data;
+        console.log(updatedCheckout, 'applyPromoCode success');
+        commit('SET_CHECKOUT', updatedCheckout);
+      } else {
+        console.error('Failed to apply coupon:', data.userMessage || 'Unknown error.');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 

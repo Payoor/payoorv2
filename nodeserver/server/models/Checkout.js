@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const DeliveryDateSchema = new mongoose.Schema(
   {
@@ -8,7 +8,7 @@ const DeliveryDateSchema = new mongoose.Schema(
     dateid: Number
   },
   { _id: false }
-);
+)
 
 const CheckoutSchema = new mongoose.Schema({
   user_id: {
@@ -19,6 +19,31 @@ const CheckoutSchema = new mongoose.Schema({
   delivery_address: {
     type: String,
     required: true
+  },
+  discount_applied: {
+    type: {
+      coupon_code: {
+        type: String,
+        default: null
+      },
+      coupon_type: {
+        type: String,
+        default: null
+      },
+      percentage: {
+        type: Number,
+        default: null
+      },
+      flat: {
+        type: Number,
+        default: null
+      },
+      freeDelivery: {
+        type: Boolean,
+        default: false
+      }
+    },
+    required: false
   },
   delivery_date: {
     type: DeliveryDateSchema,

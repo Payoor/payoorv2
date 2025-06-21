@@ -760,25 +760,24 @@ shopperRoute.get('/shopper/google/search-places', _authMiddleware["default"], _G
 shopperRoute.get('/shopper/google/use-current-location', _authMiddleware["default"], _GoogleApiController["default"].reverseGeocode);
 shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref1 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee1(req, res, next) {
-    var coupon_code, userId, key, raw, couponConfig, type, redeemed, typeKey, typeRaw, couponTypeConfig, ttl, createdAt, discount, now, isExpired, usedCodeCheckout, usedCoupon, usedOrder, usedTypeCheckout, _usedOrder, discountKey;
+    var coupon_code, checkout_id, userId, key, raw, couponConfig, type, redeemed, typeKey, typeRaw, couponTypeConfig, ttl, createdAt, discount, now, isExpired, usedCheckoutForCodeOrType, usedCouponCodePreviously, usedCouponTypePreviously, usedCodeCheckout, usedOrder, usedTypeCheckout, usedTypeOrder, currentCheckout, finalPrice, deliveryCost, grandTotal, updatedCheckout;
     return _regeneratorRuntime().wrap(function _callee1$(_context10) {
       while (1) switch (_context10.prev = _context10.next) {
         case 0:
           _context10.prev = 0;
           coupon_code = req.body.coupon_code;
+          checkout_id = req.query.checkout_id;
           userId = req.userId;
           if (!(!coupon_code || typeof coupon_code !== 'string')) {
-            _context10.next = 5;
+            _context10.next = 6;
             break;
           }
           return _context10.abrupt("return", res.status(401).json({
             success: false,
             userMessage: 'Coupon code is required and must be a string'
           }));
-        case 5:
-          console.log(coupon_code, 'coupon_code');
-
-          // Get the coupon from Redis
+        case 6:
+          //console.log(coupon_code, 'coupon_code')
           key = "coupon:code:".concat(coupon_code);
           _context10.next = 9;
           return _redisconf.redisClient.get(key);
@@ -815,81 +814,195 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
           now = Date.now();
           isExpired = now > createdAt + ttl * 1000;
           if (!isExpired) {
-            _context10.next = 27;
+            _context10.next = 31;
             break;
           }
+          _context10.next = 28;
+          return _redisconf.redisClient.del(key);
+        case 28:
+          _context10.next = 30;
+          return _redisconf.redisClient.del(typeKey);
+        case 30:
           return _context10.abrupt("return", res.status(410).json({
             success: false,
             userMessage: 'Coupon code has expired'
           }));
-        case 27:
-          _context10.next = 29;
+        case 31:
+          _context10.next = 33;
           return _Checkout["default"].findOne({
             user_id: userId,
-            promo_code: coupon_code
+            _id: new ObjectId(checkout_id),
+            $or: [{
+              promo_code: coupon_code
+            }, {
+              promo_code_type: type
+            }]
           }).select('_id');
-        case 29:
-          usedCodeCheckout = _context10.sent;
-          usedCoupon = false;
-          if (!usedCodeCheckout) {
+        case 33:
+          usedCheckoutForCodeOrType = _context10.sent;
+          if (!usedCheckoutForCodeOrType) {
             _context10.next = 36;
-            break;
-          }
-          _context10.next = 34;
-          return _Order["default"].findOne({
-            checkout_id: usedCodeCheckout._id
-          });
-        case 34:
-          usedOrder = _context10.sent;
-          if (usedOrder) usedCoupon = true;
-        case 36:
-          _context10.next = 38;
-          return _Checkout["default"].findOne({
-            user_id: userId,
-            promo_code_type: type
-          }).select('_id');
-        case 38:
-          usedTypeCheckout = _context10.sent;
-          if (!usedTypeCheckout) {
-            _context10.next = 44;
-            break;
-          }
-          _context10.next = 42;
-          return _Order["default"].findOne({
-            checkout_id: usedTypeCheckout._id
-          });
-        case 42:
-          _usedOrder = _context10.sent;
-          if (_usedOrder) usedCoupon = true;
-        case 44:
-          if (!usedCoupon) {
-            _context10.next = 46;
             break;
           }
           return _context10.abrupt("return", res.status(409).json({
             success: false,
-            userMessage: 'You have already used this coupon code or a coupon of this type'
+            userMessage: 'You have already used this coupon for this checkout'
           }));
+        case 36:
+          usedCouponCodePreviously = false;
+          usedCouponTypePreviously = false;
+          _context10.next = 40;
+          return _Checkout["default"].findOne({
+            user_id: userId,
+            promo_code: coupon_code
+          }).select('_id');
+        case 40:
+          usedCodeCheckout = _context10.sent;
+          if (!usedCodeCheckout) {
+            _context10.next = 46;
+            break;
+          }
+          _context10.next = 44;
+          return _Order["default"].findOne({
+            checkout_id: usedCodeCheckout._id
+          });
+        case 44:
+          usedOrder = _context10.sent;
+          if (usedOrder) {
+            usedCouponCodePreviously = true;
+          }
         case 46:
-          discountKey = "";
+          _context10.next = 48;
+          return _Checkout["default"].findOne({
+            user_id: userId,
+            promo_code_type: type
+          }).select('_id');
+        case 48:
+          usedTypeCheckout = _context10.sent;
+          if (!usedTypeCheckout) {
+            _context10.next = 54;
+            break;
+          }
+          _context10.next = 52;
+          return _Order["default"].findOne({
+            checkout_id: usedTypeCheckout._id
+          });
+        case 52:
+          usedTypeOrder = _context10.sent;
+          if (usedTypeOrder) {
+            usedCouponTypePreviously = true;
+          }
+        case 54:
+          if (!usedCouponCodePreviously) {
+            _context10.next = 56;
+            break;
+          }
+          return _context10.abrupt("return", res.status(409).json({
+            success: false,
+            userMessage: 'You have already used this coupon code'
+          }));
+        case 56:
+          if (!usedCouponTypePreviously) {
+            _context10.next = 58;
+            break;
+          }
+          return _context10.abrupt("return", res.status(409).json({
+            success: false,
+            userMessage: 'You have already used this coupon type'
+          }));
+        case 58:
+          _context10.next = 60;
+          return _Checkout["default"].findOne({
+            _id: new ObjectId(checkout_id)
+          });
+        case 60:
+          currentCheckout = _context10.sent;
+          if (currentCheckout) {
+            _context10.next = 63;
+            break;
+          }
+          return _context10.abrupt("return", res.status(404).json({
+            success: false,
+            userMessage: 'Checkout not found'
+          }));
+        case 63:
+          if (!(currentCheckout.user_id.toString() !== userId.toString())) {
+            _context10.next = 65;
+            break;
+          }
+          return _context10.abrupt("return", res.status(403).json({
+            success: false,
+            userMessage: 'You do not have permission to modify this checkout.'
+          }));
+        case 65:
+          finalPrice = currentCheckout.total;
+          deliveryCost = currentCheckout.delivery_fee;
+          if (discount.percentage !== null && discount.percentage > 0) {
+            finalPrice = finalPrice * (1 - discount.percentage / 100);
+            console.log("Applied ".concat(discount.percentage, "% discount. New price: ").concat(finalPrice));
+          }
+          if (discount.flat > 0) {
+            finalPrice = finalPrice - discount.flat;
+            console.log("Applied flat discount of ".concat(discount.flat, ". New price: ").concat(finalPrice));
+          }
+          if (finalPrice < 0) {
+            finalPrice = 0;
+            console.warn('Final price became negative after discounts, setting to 0.');
+          }
+          if (discount.freeDelivery === true) {
+            deliveryCost = 0;
+            console.log('Free delivery applied.');
+          }
+          grandTotal = finalPrice + deliveryCost;
+          _context10.next = 74;
+          return _Checkout["default"].findOneAndUpdate({
+            _id: new ObjectId(checkout_id),
+            user_id: userId
+          }, {
+            total: finalPrice,
+            delivery_fee: deliveryCost,
+            grand_total: grandTotal,
+            promo_code: coupon_code,
+            promo_code_type: type,
+            discount_applied: {
+              coupon_code: coupon_code,
+              coupon_type: type,
+              percentage: discount.percentage,
+              flat: discount.flat,
+              freeDelivery: discount.freeDelivery
+            }
+          }, {
+            "new": true
+          });
+        case 74:
+          updatedCheckout = _context10.sent;
+          if (updatedCheckout) {
+            _context10.next = 77;
+            break;
+          }
+          return _context10.abrupt("return", res.status(500).json({
+            success: false,
+            userMessage: 'Failed to update checkout after applying coupon.'
+          }));
+        case 77:
           return _context10.abrupt("return", res.status(200).json({
             success: true,
-            message: 'Coupon code applied successfully',
+            userMessage: 'Coupon code applied successfully',
+            updatedCheckout: updatedCheckout,
             discount: discount || {},
-            // could contain flat, percentage, or freeDelivery
             type: type,
             expires_in: Math.floor((createdAt + ttl * 1000 - now) / 1000)
           }));
-        case 50:
-          _context10.prev = 50;
+        case 80:
+          _context10.prev = 80;
           _context10.t0 = _context10["catch"](0);
-          console.log(_context10.t0);
+          console.error('Error applying coupon:', _context10.t0);
           next(_context10.t0);
-        case 54:
+        case 84:
         case "end":
           return _context10.stop();
       }
-    }, _callee1, null, [[0, 50]]);
+    }, _callee1, null, [[0, 80]]);
   }));
   return function (_x29, _x30, _x31) {
     return _ref1.apply(this, arguments);

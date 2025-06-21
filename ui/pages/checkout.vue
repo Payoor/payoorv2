@@ -178,7 +178,7 @@
                     </div>
 
                     <div class="checkout__summaryitem">
-                        <span class="subject">Total</span>
+                        <span class="subject">Final Total</span>
 
                         <span class="value">&#8358;{{ total }}</span>
                     </div>
@@ -189,7 +189,7 @@
                     <div class="checkout__content--body">
                         <button class="button-primary" v-if="allowOrderCreation" @click="createOrder"
                             :class="{ 'disabled-btn': loading }">
-                            {{ loading ? 'Creating your order...' : `Confirm Order` }}
+                            {{ loading ? applyingCoupon ? 'Applying Coupon' : 'Creating your order...' : `Confirm Order` }}
                         </button>
                         <!--<button class="button-primary" v-if="allowOrderCreation" @click="toggleProcessorChoice"
                             :class="{ 'disabled-btn': loading }">
@@ -233,7 +233,8 @@ export default {
             locationLoading: false,
             coupon_error_message: '',
             showProcessorChoice: false,
-            deliveryDates: []
+            deliveryDates: [],
+            applyingCoupon: false
         }
     },
     computed: {
@@ -490,71 +491,22 @@ export default {
             }
         },
         async applyPromoCode(code) {
-            console.log('applying', code)
             try {
-                const token = localStorage.getItem('jwt');
+                this.loading = true;
 
-                const response = await fetch(`${serverurl}/shopper/apply-coupon`, {
-                    method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ coupon_code: code })
-                });
+                this.applyingCoupon = true;
 
-                await handleFetchError(response);
+                const checkout_id = this.$route.query.checkout_id;
 
-                const data = await response.json();
+                await this.$store.dispatch('cart/applyPromoCode', { code, checkout_id });
 
-                if (response.ok && data.success) {
-                    const { discount } = data;
+                await this.initCheckout();
 
-                    this.coupon_discount = discount;
+                this.loading = false;
 
-                    let total = this.subtotal;
-
-                    console.log(this.coupon_discount, 'check this.disount')
-
-                    if (this.coupon_discount.flat) {
-                        total -= discount.flat;
-                    }
-                    /*const discount = data.discount || {};
-                    let total = this.subtotal;
-                    let delivery_fee = this.delivery_fee;
-                    let service_charge = this.service_charge;
-
-                    if (discount.freeDelivery) {
-                        delivery_fee = 0;
-                    }
-
-                    if (discount.percentage) {
-                        total -= (discount.percentage / 100) * total;
-                    }
-
-                    if (discount.flat) {
-                        total -= discount.flat;
-                    }
-
-                    if (total < 0) total = 0;
-
-                    this.delivery_fee = delivery_fee;
-                    this.total = Math.round(total + delivery_fee + service_charge);
-                    this.promo_code = code;
-                    this.coupon_discount = discount;
-                    this.coupon_error_message = '';*/ // clear previous error
-                } /*else {
-                    this.coupon_discount = 0;
-                    this.promo_code = '';
-                    this.total = this.subtotal + this.delivery_fee + this.service_charge;
-                    //this.coupon_error_message = data.message || 'Failed to apply coupon.';
-                }*/
+                this.applyingCoupon = false;
             } catch (error) {
-                console.error('Coupon apply error:', error);
-                this.coupon_discount = {};
-                this.promo_code = '';
-                this.total = this.subtotal + this.delivery_fee + this.service_charge;
-                //this.coupon_error_message = 'Network or server error while applying coupon.';
+                this.loading = false
             }
         },
     }

@@ -214,7 +214,7 @@ export const actions = {
 
   async getCheckOutData ({ commit, state }, checkout_id) {
     try {
-      const token = localStorage.getItem('jwt');
+      const token = localStorage.getItem('jwt')
 
       const response = await fetch(
         `${serverurl}/shopper/checkout/get?checkout_id=${checkout_id}`,
@@ -238,6 +238,56 @@ export const actions = {
 
       console.log(checkout, 'getCheckOutData')
       commit('SET_CHECKOUT', checkout)
+    } catch (error) {
+      console.log(error)
+    }
+  },
+
+  async applyPromoCode ({ commit, state }, { code, checkout_id }) {
+    try {
+      const token = localStorage.getItem('jwt')
+
+      if (!token) {
+        console.error(
+          'Authentication required to apply coupon: No token found.'
+        )
+        return
+      }
+
+      if (!checkout_id) {
+        console.error('Checkout ID is missing.')
+        return
+      }
+
+      const response = await fetch(
+        `${serverurl}/shopper/apply-coupon?checkout_id=${checkout_id}`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Origin: window.location.origin,
+            'Access-Control-Request-Method': 'POST',
+            'Access-Control-Request-Headers': 'Content-Type'
+          },
+          body: JSON.stringify({ coupon_code: code })
+        }
+      )
+
+      await handleFetchError(response)
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        const { updatedCheckout } = data
+        console.log(updatedCheckout, 'applyPromoCode success')
+        commit('SET_CHECKOUT', updatedCheckout)
+      } else {
+        console.error(
+          'Failed to apply coupon:',
+          data.userMessage || 'Unknown error.'
+        )
+      }
     } catch (error) {
       console.log(error)
     }
