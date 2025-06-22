@@ -108,7 +108,7 @@ class AuthClass {
 
       res.status(200).json({ message: 'Authentication successful' })
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 

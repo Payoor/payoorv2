@@ -19,6 +19,31 @@ var CheckoutSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  discount_applied: {
+    type: {
+      coupon_code: {
+        type: String,
+        "default": null
+      },
+      coupon_type: {
+        type: String,
+        "default": null
+      },
+      percentage: {
+        type: Number,
+        "default": null
+      },
+      flat: {
+        type: Number,
+        "default": null
+      },
+      freeDelivery: {
+        type: Boolean,
+        "default": false
+      }
+    },
+    required: false
+  },
   delivery_date: {
     type: DeliveryDateSchema,
     required: true

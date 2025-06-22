@@ -102,7 +102,7 @@ export class TelegramBotClass {
 /listadmins
 /removeadmin <chat_id>
 /exportusers
-/viewcheckouts
+/viewcheckouts <page>
 /disablepaymentmethod eg /disablepaymentmethod banipay or /disablepaymentmethod paystack
 /enablepaymentmethod eg /disablepaymentmethod banipay or /disablepaymentmethod paystack
 /getpaymentmethods
@@ -342,49 +342,85 @@ export class TelegramBotClass {
         }
 
         if (command === '/viewcheckouts') {
-          const checkouts = await Checkout.find().populate({
-            path: 'user_id',
-            select: 'email phoneNumber'
-          })
+          let page = parseInt(arg1)
+          if (isNaN(page) || page < 1) {
+            page = 1
+          }
 
-          //console.log(checkouts)
+          const limit = 4
+          const skip = (page - 1) * limit
 
-          const checkoutDetailsList = checkouts
-            .map(
-              ({
-                delivery_address,
-                _id,
-                user_id, // This will now be the populated user object
-                delivery_date,
-                delivery_instruction,
-                phone_number,
-                cart_items
-              }) => {
-                const email = user_id ? user_id.email : 'N/A'
-                const userPhoneNumber = user_id ? user_id.phoneNumber : 'N/A'
+          try {
+            const totalCheckouts = await Checkout.countDocuments()
+            const totalPages = Math.ceil(totalCheckouts / limit)
 
-                return `
-                    User Email:
-                    ${email}
-                    User Phone Number:
-                    ${userPhoneNumber}  
-                    Delivery Address:
-                    ${delivery_address}
+            const checkouts = await Checkout.find()
+              .populate({
+                path: 'user_id',
+                select: 'email phoneNumber'
+              })
+              .sort({
+                createdAt: -1
+              })
+              .skip(skip)
+              .limit(limit)
 
-                    <a href="https://shop.payoor.store/admin/checkout?checkout=${_id.toString()}">View Order Details on Website</a> 
-                    ---------------------------------------
-                `
-              }
+            let checkoutDetailsList
+
+            if (checkouts.length === 0) {
+              checkoutDetailsList = `No checkouts found for page ${page}.`
+            } else {
+              checkoutDetailsList = checkouts
+                .map(
+                  ({
+                    delivery_address,
+                    _id,
+                    user_id,
+                    delivery_date,
+                    delivery_instruction,
+                    phone_number,
+                    cart_items
+                  }) => {
+                    const email = user_id ? user_id.email : 'N/A'
+                    const userPhoneNumber = user_id
+                      ? user_id.phoneNumber
+                      : 'N/A'
+
+                    return `
+                                  User Email:
+                                  ${email}
+                                  User Phone Number:
+                                  ${userPhoneNumber}  
+                                  Delivery Address:
+                                  ${delivery_address}
+      
+                                  <a href="https://shop.payoor.store/admin/checkout?checkout=${_id.toString()}">View Order Details on Website</a> 
+                                  ---------------------------------------
+                              `
+                  }
+                )
+                .join('')
+
+              const pagesLeft = totalPages - page
+              checkoutDetailsList += `
+                      Page ${page} of ${totalPages}
+                      Pages left: ${Math.max(0, pagesLeft)}
+                  `
+            }
+
+            console.log(checkoutDetailsList)
+
+            this.bot.sendMessage(telegramid, checkoutDetailsList, {
+              parse_mode: 'HTML',
+              disable_web_page_preview: true
+            })
+          } catch (error) {
+            console.error('Error fetching checkouts:', error)
+            this.bot.sendMessage(
+              telegramid,
+              'An error occurred while fetching checkouts. Please try again later.'
             )
-            .join('')
-
-          //Cart Items: ${JSON.stringify(cart_items, null, 2)}
-
-          console.log(checkoutDetailsList)
-
-          this.bot.sendMessage(telegramid, checkoutDetailsList, {
-            parse_mode: 'HTML'
-          })
+          }
         }
 
         if (command === '/couponusage') {

@@ -34,7 +34,7 @@
 
                     <div class="chat-header__menuitem">
                         <span class="svg"></span>
-                        <span class="label" @click="$router.push('/aboutus')">About us</span>
+                        <span class="label" @click="$router.push('/aboutus')" v-if="!jwtToken">About us</span>
                     </div>
 
                     <div class="chat-header__menuitem" v-if="!jwtToken">

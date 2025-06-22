@@ -109,7 +109,7 @@ export default {
 
             if (width > 900) {
                 e.preventDefault();
-                this.sendMessage();
+                //this.sendMessage();
             }
         },
     }

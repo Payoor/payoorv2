@@ -262,6 +262,9 @@ export default {
         },
         async postMessageFromQuery(message) {
             const token = await this.getValidToken();
+
+            if (!token) return;
+
             if (this.setLoading) this.setLoading(true);
 
             try {

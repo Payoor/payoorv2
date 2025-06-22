@@ -10,6 +10,9 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { serverurl, handleFetchError } from '@/api';
+
 export default {
     name: "OtpInputs",
     props: {
@@ -25,6 +28,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        setIsLoading: {
+            type: Function
+        },
+    },
+    computed: {
+        ...mapState("user", {
+            currentUser: (state) => state.currentUser
+        }),
     },
     mounted() {
         this.$store.dispatch('user/setOtpMode', true);
@@ -41,7 +52,9 @@ export default {
     watch: {
         otpDigits: {
             handler(val) {
-                this.$emit("update:modelValue", val.join(""));
+                if (this.otpDigits.join("").length === 6) {
+                    this.verifyOtp();
+                }
             },
             deep: true,
         },
@@ -79,6 +92,57 @@ export default {
 
             if (this.$refs[focusRef] && this.$refs[focusRef][0]) {
                 this.$refs[focusRef][0].focus();
+            }
+        },
+        async verifyOtp() {
+            try {
+                this.$store.dispatch('user/setLoading', true);
+
+                const otpDigits = this.otpDigits.join("");
+
+                const response = await fetch(`${serverurl}/shopper/auth/verifyotp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': window.location.origin,
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    },
+                    body: JSON.stringify({
+                        submittedOtp: otpDigits
+                    })
+                });
+
+                await handleFetchError(response)
+
+                const status = response.status;
+
+                if (status === 200) {
+                    this.$store.dispatch('user/setLoading', false);
+
+                    const data = await response.json();
+
+                    const { user } = data;
+
+                    const { token } = user;
+
+                    this.$store.dispatch('user/setJwtToken', token);
+
+                    this.$store.dispatch('user/addCurrentUser', user);
+
+                    console.log(user, 'user, just user')
+
+                    if (token && this.currentUser.name && this.currentUser.phoneNumber) {
+                        const { email, phoneNumber, name, ...cleanQuery } = this.$route.query;
+                        this.$router.push({ path: '/', query: cleanQuery });
+                    }
+                }
+            } catch (error) {
+                this.$store.dispatch('user/setLoading', false);
+                this.otpDigits = Array(this.otpLength).fill("");
+                this.loading = false;
+                console.error('Network or server error during authentication:', error.message);
+                throw error;
             }
         },
     },

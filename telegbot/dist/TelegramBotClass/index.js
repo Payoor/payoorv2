@@ -73,7 +73,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
       this.bot.on('message', /*#__PURE__*/function () {
         var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(msg) {
           var _parts$, _args$, _args$2;
-          var telegramid, messageText, parts, args, command, arg1, arg2, isAdmin, isSuperAdmin, allowedPaymentMethods, paymentMethod, _allowedPaymentMethods, _paymentMethod, paymentMethodsStatus, responseMessage, method, status, amount, percent, deliveryFee, serviceCharge, adminIds, list, checkouts, checkoutDetailsList, _checkouts, checkoutIds, usageCount, ttl, discount, i, _args$i$split, _args$i$split2, key, value, result, _yield$CouponClass$cr, code, expiresIn, coupon, codes, _list, types, _list2, _key, removed, _key2, users, workbook, worksheet, headers, filePath, _t, _t2, _t3, _t4, _t5, _t6, _t7;
+          var telegramid, messageText, parts, args, command, arg1, arg2, isAdmin, isSuperAdmin, allowedPaymentMethods, paymentMethod, _allowedPaymentMethods, _paymentMethod, paymentMethodsStatus, responseMessage, method, status, amount, percent, deliveryFee, serviceCharge, adminIds, list, page, limit, skip, totalCheckouts, totalPages, checkouts, checkoutDetailsList, pagesLeft, _checkouts, checkoutIds, usageCount, ttl, discount, i, _args$i$split, _args$i$split2, key, value, result, _yield$CouponClass$cr, code, expiresIn, coupon, codes, _list, types, _list2, _key, removed, _key2, users, workbook, worksheet, headers, filePath, _t, _t2, _t3, _t4, _t5, _t6, _t7, _t8;
           return _regenerator().w(function (_context) {
             while (1) switch (_context.n) {
               case 0:
@@ -110,7 +110,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                   _context.n = 6;
                   break;
                 }
-                return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83D\uDCD8 *Admin Commands*:\n/createcoupontype <type> <ttl> [flat=500] [percentage=10] [freeDelivery=true]\n/generatecoupon <type>\n/getcoupontype <code>\n/couponusage <code>\n/listcoupons <type>\n/listcoupontypes\n/deletecouponcode <code>\n/deletecoupontype <type>\n\n/setdeliveryfee <amount>\n/setservicecharge <percent>\n/getdeliveryfee\n/getservicecharge\n\n\uD83D\uDD10 *Super Admin*:\n/listadmins\n/removeadmin <chat_id>\n/exportusers\n/viewcheckouts\n/disablepaymentmethod eg /disablepaymentmethod banipay or /disablepaymentmethod paystack\n/enablepaymentmethod eg /disablepaymentmethod banipay or /disablepaymentmethod paystack\n/getpaymentmethods\n"));
+                return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83D\uDCD8 *Admin Commands*:\n/createcoupontype <type> <ttl> [flat=500] [percentage=10] [freeDelivery=true]\n/generatecoupon <type>\n/getcoupontype <code>\n/couponusage <code>\n/listcoupons <type>\n/listcoupontypes\n/deletecouponcode <code>\n/deletecoupontype <type>\n\n/setdeliveryfee <amount>\n/setservicecharge <percent>\n/getdeliveryfee\n/getservicecharge\n\n\uD83D\uDD10 *Super Admin*:\n/listadmins\n/removeadmin <chat_id>\n/exportusers\n/viewcheckouts <page>\n/disablepaymentmethod eg /disablepaymentmethod banipay or /disablepaymentmethod paystack\n/enablepaymentmethod eg /disablepaymentmethod banipay or /disablepaymentmethod paystack\n/getpaymentmethods\n"));
               case 6:
                 if (command === '/start') {
                   //console.log(command, 'this is a start')
@@ -309,239 +309,266 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                 return _context.a(2, _this.bot.sendMessage(telegramid, '❗ Failed to fetch admin list. Try again.'));
               case 38:
                 if (!(command === '/viewcheckouts')) {
-                  _context.n = 40;
-                  break;
-                }
-                _context.n = 39;
-                return _Checkout["default"].find().populate({
-                  path: 'user_id',
-                  select: 'email phoneNumber'
-                });
-              case 39:
-                checkouts = _context.v;
-                //console.log(checkouts)
-                checkoutDetailsList = checkouts.map(function (_ref2) {
-                  var delivery_address = _ref2.delivery_address,
-                    _id = _ref2._id,
-                    user_id = _ref2.user_id,
-                    delivery_date = _ref2.delivery_date,
-                    delivery_instruction = _ref2.delivery_instruction,
-                    phone_number = _ref2.phone_number,
-                    cart_items = _ref2.cart_items;
-                  var email = user_id ? user_id.email : 'N/A';
-                  var userPhoneNumber = user_id ? user_id.phoneNumber : 'N/A';
-                  return "\n                    User Email:\n                    ".concat(email, "\n                    User Phone Number:\n                    ").concat(userPhoneNumber, "  \n                    Delivery Address:\n                    ").concat(delivery_address, "\n\n                    <a href=\"https://shop.payoor.store/admin/checkout?checkout=").concat(_id.toString(), "\">View Order Details on Website</a> \n                    ---------------------------------------\n                ");
-                }).join(''); //Cart Items: ${JSON.stringify(cart_items, null, 2)}
-                console.log(checkoutDetailsList);
-                _this.bot.sendMessage(telegramid, checkoutDetailsList, {
-                  parse_mode: 'HTML'
-                });
-              case 40:
-                if (!(command === '/couponusage')) {
-                  _context.n = 45;
-                  break;
-                }
-                if (arg1) {
-                  _context.n = 41;
-                  break;
-                }
-                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /couponusage <code>'));
-              case 41:
-                _context.n = 42;
-                return _Checkout["default"].find({
-                  promo_code: "".concat(arg1).toUpperCase()
-                }).select('_id');
-              case 42:
-                _checkouts = _context.v;
-                if (_checkouts.length) {
                   _context.n = 43;
                   break;
                 }
-                return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83D\uDCED No checkouts found using code '".concat(arg1, "'.")));
+                page = parseInt(arg1);
+                if (isNaN(page) || page < 1) {
+                  page = 1;
+                }
+                limit = 4;
+                skip = (page - 1) * limit;
+                _context.p = 39;
+                _context.n = 40;
+                return _Checkout["default"].countDocuments();
+              case 40:
+                totalCheckouts = _context.v;
+                totalPages = Math.ceil(totalCheckouts / limit);
+                _context.n = 41;
+                return _Checkout["default"].find().populate({
+                  path: 'user_id',
+                  select: 'email phoneNumber'
+                }).sort({
+                  createdAt: -1
+                }).skip(skip).limit(limit);
+              case 41:
+                checkouts = _context.v;
+                if (checkouts.length === 0) {
+                  checkoutDetailsList = "No checkouts found for page ".concat(page, ".");
+                } else {
+                  checkoutDetailsList = checkouts.map(function (_ref2) {
+                    var delivery_address = _ref2.delivery_address,
+                      _id = _ref2._id,
+                      user_id = _ref2.user_id,
+                      delivery_date = _ref2.delivery_date,
+                      delivery_instruction = _ref2.delivery_instruction,
+                      phone_number = _ref2.phone_number,
+                      cart_items = _ref2.cart_items;
+                    var email = user_id ? user_id.email : 'N/A';
+                    var userPhoneNumber = user_id ? user_id.phoneNumber : 'N/A';
+                    return "\n                                  User Email:\n                                  ".concat(email, "\n                                  User Phone Number:\n                                  ").concat(userPhoneNumber, "  \n                                  Delivery Address:\n                                  ").concat(delivery_address, "\n      \n                                  <a href=\"https://shop.payoor.store/admin/checkout?checkout=").concat(_id.toString(), "\">View Order Details on Website</a> \n                                  ---------------------------------------\n                              ");
+                  }).join('');
+                  pagesLeft = totalPages - page;
+                  checkoutDetailsList += "\n                      Page ".concat(page, " of ").concat(totalPages, "\n                      Pages left: ").concat(Math.max(0, pagesLeft), "\n                  ");
+                }
+                console.log(checkoutDetailsList);
+                _this.bot.sendMessage(telegramid, checkoutDetailsList, {
+                  parse_mode: 'HTML',
+                  disable_web_page_preview: true
+                });
+                _context.n = 43;
+                break;
+              case 42:
+                _context.p = 42;
+                _t5 = _context.v;
+                console.error('Error fetching checkouts:', _t5);
+                _this.bot.sendMessage(telegramid, 'An error occurred while fetching checkouts. Please try again later.');
               case 43:
+                if (!(command === '/couponusage')) {
+                  _context.n = 48;
+                  break;
+                }
+                if (arg1) {
+                  _context.n = 44;
+                  break;
+                }
+                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /couponusage <code>'));
+              case 44:
+                _context.n = 45;
+                return _Checkout["default"].find({
+                  promo_code: "".concat(arg1).toUpperCase()
+                }).select('_id');
+              case 45:
+                _checkouts = _context.v;
+                if (_checkouts.length) {
+                  _context.n = 46;
+                  break;
+                }
+                return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83D\uDCED No checkouts found using code '".concat(arg1, "'.")));
+              case 46:
                 checkoutIds = _checkouts.map(function (c) {
                   return c._id;
                 });
-                _context.n = 44;
+                _context.n = 47;
                 return _Order["default"].countDocuments({
                   checkout_id: {
                     $in: checkoutIds
                   }
                 });
-              case 44:
+              case 47:
                 usageCount = _context.v;
                 return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83D\uDCCA Coupon Code: *".concat(arg1, "*\n\uD83E\uDDFE Used in ").concat(usageCount, " order").concat(usageCount === 1 ? '' : 's', "."), {
                   parse_mode: 'Markdown'
                 }));
-              case 45:
+              case 48:
                 if (!(command === '/createcoupontype')) {
-                  _context.n = 51;
+                  _context.n = 54;
                   break;
                 }
                 if (!(!arg1 || !arg2)) {
-                  _context.n = 46;
+                  _context.n = 49;
                   break;
                 }
                 return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /createcoupontype <type> <ttl> [flat=500] [percentage=10] [freeDelivery=true]'));
-              case 46:
+              case 49:
                 ttl = parseTtlToSeconds(arg2);
                 if (ttl) {
-                  _context.n = 47;
+                  _context.n = 50;
                   break;
                 }
                 return _context.a(2, _this.bot.sendMessage(telegramid, '❌ Invalid TTL format. Use 30s, 15m, 1h, 2d, 1w'));
-              case 47:
+              case 50:
                 discount = {};
                 for (i = 2; i < args.length; i++) {
                   _args$i$split = args[i].split('='), _args$i$split2 = _slicedToArray(_args$i$split, 2), key = _args$i$split2[0], value = _args$i$split2[1];
                   if (key === 'flat') discount.flat = parseInt(value);else if (key === 'percentage') discount.percentage = parseInt(value);else if (key === 'freedelivery') discount.freeDelivery = value === 'true';
                 }
-                _context.p = 48;
-                _context.n = 49;
+                _context.p = 51;
+                _context.n = 52;
                 return _CouponClass["default"].createCouponType(arg1, ttl, discount);
-              case 49:
+              case 52:
                 result = _context.v;
                 return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83C\uDF9F\uFE0F Created type '".concat(arg1, "' with TTL ").concat(ttl, "s and config: ").concat(JSON.stringify(result.config.discount))));
-              case 50:
-                _context.p = 50;
-                _t5 = _context.v;
-                return _context.a(2, _this.bot.sendMessage(telegramid, "\u274C Failed to create coupon type: ".concat(_t5.message)));
-              case 51:
-                if (!(command === '/generatecoupon')) {
-                  _context.n = 54;
-                  break;
-                }
-                if (arg1) {
-                  _context.n = 52;
-                  break;
-                }
-                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /generatecoupon <type>'));
-              case 52:
-                _context.n = 53;
-                return _CouponClass["default"].createCoupon(arg1);
               case 53:
-                _yield$CouponClass$cr = _context.v;
-                code = _yield$CouponClass$cr.code;
-                expiresIn = _yield$CouponClass$cr.expiresIn;
-                return _context.a(2, _this.bot.sendMessage(telegramid, "\u2705 Coupon Code: ".concat(code, "\n\u23F3 Expires in ").concat(expiresIn, " seconds")));
+                _context.p = 53;
+                _t6 = _context.v;
+                return _context.a(2, _this.bot.sendMessage(telegramid, "\u274C Failed to create coupon type: ".concat(_t6.message)));
               case 54:
-                if (!(command === '/getcoupontype')) {
-                  _context.n = 58;
+                if (!(command === '/generatecoupon')) {
+                  _context.n = 57;
                   break;
                 }
                 if (arg1) {
                   _context.n = 55;
                   break;
                 }
-                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /getcoupontype <code>'));
+                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /generatecoupon <type>'));
               case 55:
                 _context.n = 56;
-                return _CouponClass["default"].getCoupon(arg1);
+                return _CouponClass["default"].createCoupon(arg1);
               case 56:
-                coupon = _context.v;
-                if (coupon) {
-                  _context.n = 57;
-                  break;
-                }
-                return _context.a(2, _this.bot.sendMessage(telegramid, '❌ Coupon not found or expired.'));
+                _yield$CouponClass$cr = _context.v;
+                code = _yield$CouponClass$cr.code;
+                expiresIn = _yield$CouponClass$cr.expiresIn;
+                return _context.a(2, _this.bot.sendMessage(telegramid, "\u2705 Coupon Code: ".concat(code, "\n\u23F3 Expires in ").concat(expiresIn, " seconds")));
               case 57:
-                return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83C\uDFAB *Coupon Info*:\nType: ".concat(coupon.type, "\nCreated At: ").concat(new Date(coupon.createdAt).toLocaleString(), "\nRedeemed: ").concat(coupon.redeemed ? '✅ Yes' : '❌ No')));
-              case 58:
-                if (!(command === '/listcoupons')) {
-                  _context.n = 62;
-                  break;
-                }
-                if (arg1) {
-                  _context.n = 59;
-                  break;
-                }
-                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /listcoupons <type>'));
-              case 59:
-                _context.n = 60;
-                return _CouponClass["default"].listCoupons(arg1);
-              case 60:
-                codes = _context.v;
-                if (codes.length) {
+                if (!(command === '/getcoupontype')) {
                   _context.n = 61;
                   break;
                 }
-                return _context.a(2, _this.bot.sendMessage(telegramid, '📭 No coupons found under this type.'));
+                if (arg1) {
+                  _context.n = 58;
+                  break;
+                }
+                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /getcoupontype <code>'));
+              case 58:
+                _context.n = 59;
+                return _CouponClass["default"].getCoupon(arg1);
+              case 59:
+                coupon = _context.v;
+                if (coupon) {
+                  _context.n = 60;
+                  break;
+                }
+                return _context.a(2, _this.bot.sendMessage(telegramid, '❌ Coupon not found or expired.'));
+              case 60:
+                return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83C\uDFAB *Coupon Info*:\nType: ".concat(coupon.type, "\nCreated At: ").concat(new Date(coupon.createdAt).toLocaleString(), "\nRedeemed: ").concat(coupon.redeemed ? '✅ Yes' : '❌ No')));
               case 61:
+                if (!(command === '/listcoupons')) {
+                  _context.n = 65;
+                  break;
+                }
+                if (arg1) {
+                  _context.n = 62;
+                  break;
+                }
+                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /listcoupons <type>'));
+              case 62:
+                _context.n = 63;
+                return _CouponClass["default"].listCoupons(arg1);
+              case 63:
+                codes = _context.v;
+                if (codes.length) {
+                  _context.n = 64;
+                  break;
+                }
+                return _context.a(2, _this.bot.sendMessage(telegramid, '📭 No coupons found under this type.'));
+              case 64:
                 _list = codes.map(function (code, i) {
                   return "".concat(i + 1, ". ").concat(code);
                 }).join('\n');
                 return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83D\uDCCB Coupons under '".concat(arg1, "':\n").concat(_list)));
-              case 62:
+              case 65:
                 if (!(command === '/listcoupontypes')) {
-                  _context.n = 65;
+                  _context.n = 68;
                   break;
                 }
-                _context.n = 63;
+                _context.n = 66;
                 return _this.redisClient.smembers('coupon:types');
-              case 63:
+              case 66:
                 types = _context.v;
                 if (types.length) {
-                  _context.n = 64;
+                  _context.n = 67;
                   break;
                 }
                 return _context.a(2, _this.bot.sendMessage(telegramid, '📭 No coupon types found.'));
-              case 64:
+              case 67:
                 _list2 = types.map(function (t, i) {
                   return "".concat(i + 1, ". ").concat(t);
                 }).join('\n');
                 return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83C\uDF9F\uFE0F Available coupon types:\n".concat(_list2)));
-              case 65:
-                if (!(command === '/deletecouponcode')) {
-                  _context.n = 68;
-                  break;
-                }
-                if (arg1) {
-                  _context.n = 66;
-                  break;
-                }
-                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /deletecouponcode <code>'));
-              case 66:
-                _key = "coupon:code:".concat(arg1);
-                _context.n = 67;
-                return _this.redisClient.del(_key);
-              case 67:
-                removed = _context.v;
-                return _context.a(2, _this.bot.sendMessage(telegramid, removed ? "\uD83D\uDDD1\uFE0F Coupon code '".concat(arg1, "' deleted.") : "\u274C Code '".concat(arg1, "' not found.")));
               case 68:
-                if (!(command === '/deletecoupontype')) {
-                  _context.n = 72;
+                if (!(command === '/deletecouponcode')) {
+                  _context.n = 71;
                   break;
                 }
                 if (arg1) {
                   _context.n = 69;
                   break;
                 }
-                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /deletecoupontype <type>'));
+                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /deletecouponcode <code>'));
               case 69:
-                _key2 = "coupon:type:".concat(arg1);
+                _key = "coupon:code:".concat(arg1);
                 _context.n = 70;
-                return _this.redisClient.del(_key2);
+                return _this.redisClient.del(_key);
               case 70:
-                _context.n = 71;
-                return _this.redisClient.srem('coupon:types', arg1);
+                removed = _context.v;
+                return _context.a(2, _this.bot.sendMessage(telegramid, removed ? "\uD83D\uDDD1\uFE0F Coupon code '".concat(arg1, "' deleted.") : "\u274C Code '".concat(arg1, "' not found.")));
               case 71:
-                return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83D\uDDD1\uFE0F Coupon type '".concat(arg1, "' deleted.")));
-              case 72:
-                if (!(command === '/exportusers')) {
-                  _context.n = 79;
-                  break;
-                }
-                _context.p = 73;
-                _context.n = 74;
-                return _User["default"].find().lean();
-              case 74:
-                users = _context.v;
-                if (users.length) {
+                if (!(command === '/deletecoupontype')) {
                   _context.n = 75;
                   break;
                 }
-                return _context.a(2, _this.bot.sendMessage(telegramid, '📭 No users found.'));
+                if (arg1) {
+                  _context.n = 72;
+                  break;
+                }
+                return _context.a(2, _this.bot.sendMessage(telegramid, '⚠️ Usage: /deletecoupontype <type>'));
+              case 72:
+                _key2 = "coupon:type:".concat(arg1);
+                _context.n = 73;
+                return _this.redisClient.del(_key2);
+              case 73:
+                _context.n = 74;
+                return _this.redisClient.srem('coupon:types', arg1);
+              case 74:
+                return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83D\uDDD1\uFE0F Coupon type '".concat(arg1, "' deleted.")));
               case 75:
+                if (!(command === '/exportusers')) {
+                  _context.n = 82;
+                  break;
+                }
+                _context.p = 76;
+                _context.n = 77;
+                return _User["default"].find().lean();
+              case 77:
+                users = _context.v;
+                if (users.length) {
+                  _context.n = 78;
+                  break;
+                }
+                return _context.a(2, _this.bot.sendMessage(telegramid, '📭 No users found.'));
+              case 78:
                 workbook = new _exceljs["default"].Workbook();
                 worksheet = workbook.addWorksheet('Users');
                 headers = Object.keys(users[0]).filter(function (key) {
@@ -556,36 +583,36 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                   worksheet.addRow(row);
                 });
                 filePath = _path["default"].join('/tmp', "users_".concat(Date.now(), ".xlsx"));
-                _context.n = 76;
+                _context.n = 79;
                 return workbook.xlsx.writeFile(filePath);
-              case 76:
-                _context.n = 77;
+              case 79:
+                _context.n = 80;
                 return _this.bot.sendDocument(telegramid, filePath, {}, {
                   filename: 'users_export.xlsx',
                   contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 });
-              case 77:
-                _fs["default"].unlink(filePath, function () {});
-                _context.n = 79;
-                break;
-              case 78:
-                _context.p = 78;
-                _t6 = _context.v;
-                console.error('❌ Error exporting users:', _t6);
-                return _context.a(2, _this.bot.sendMessage(telegramid, '❗ Failed to export users. Try again later.'));
-              case 79:
-                _context.n = 81;
-                break;
               case 80:
-                _context.p = 80;
-                _t7 = _context.v;
-                console.error('Telegram bot error:', _t7);
-                _context.n = 81;
-                return _this.bot.sendMessage(telegramid, '❗ An error occurred. Please try again.');
+                _fs["default"].unlink(filePath, function () {});
+                _context.n = 82;
+                break;
               case 81:
+                _context.p = 81;
+                _t7 = _context.v;
+                console.error('❌ Error exporting users:', _t7);
+                return _context.a(2, _this.bot.sendMessage(telegramid, '❗ Failed to export users. Try again later.'));
+              case 82:
+                _context.n = 84;
+                break;
+              case 83:
+                _context.p = 83;
+                _t8 = _context.v;
+                console.error('Telegram bot error:', _t8);
+                _context.n = 84;
+                return _this.bot.sendMessage(telegramid, '❗ An error occurred. Please try again.');
+              case 84:
                 return _context.a(2);
             }
-          }, _callee, null, [[73, 78], [48, 50], [34, 37], [17, 20], [13, 15], [8, 10], [1, 80]]);
+          }, _callee, null, [[76, 81], [51, 53], [39, 42], [34, 37], [17, 20], [13, 15], [8, 10], [1, 83]]);
         }));
         return function (_x) {
           return _ref.apply(this, arguments);
@@ -596,7 +623,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
     key: "callBot",
     value: function () {
       var _callBot = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(message) {
-        var adminIds, _iterator, _step, id, _t8, _t9, _t0;
+        var adminIds, _iterator, _step, id, _t9, _t0, _t1;
         return _regenerator().w(function (_context2) {
           while (1) switch (_context2.n) {
             case 0:
@@ -628,8 +655,8 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
               break;
             case 7:
               _context2.p = 7;
-              _t8 = _context2.v;
-              console.error("\u274C Failed to send to ".concat(id, ":"), _t8);
+              _t9 = _context2.v;
+              console.error("\u274C Failed to send to ".concat(id, ":"), _t9);
             case 8:
               _context2.n = 4;
               break;
@@ -638,8 +665,8 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
               break;
             case 10:
               _context2.p = 10;
-              _t9 = _context2.v;
-              _iterator.e(_t9);
+              _t0 = _context2.v;
+              _iterator.e(_t0);
             case 11:
               _context2.p = 11;
               _iterator.f();
@@ -649,8 +676,8 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
               break;
             case 13:
               _context2.p = 13;
-              _t0 = _context2.v;
-              console.error('❌ Error broadcasting to admins:', _t0);
+              _t1 = _context2.v;
+              console.error('❌ Error broadcasting to admins:', _t1);
             case 14:
               return _context2.a(2);
           }

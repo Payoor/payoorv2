@@ -34,7 +34,7 @@
                         </h1>
 
                         <div class="auth-page__otp" v-if="currentUser.email && currentUser.otpMode">
-                            <OtpInput :disabled="isLoading" @update:modelValue="handleOtpChange" :otpLength="6" />
+                            <OtpInput :disabled="isLoading" :setIsLoading="setIsLoading" :otpLength="6" />
                         </div>
 
                         <div v-if="currentUser.email && currentUser.otpMode">
@@ -57,13 +57,11 @@
                     <div>
 
                         <div class="blur-effect">
-                            <ChatCategories :jwt="jwt" @update:products="handleProductsChange" :setLoading="setLoading"
-                                :prevent_click="true" />
+                            <ChatCategories :jwt="jwt" :prevent_click="true" />
                         </div>
 
                         <div :class="{ 'blur-effect': isLoading || currentUser.otpMode }">
-                            <ChatInput :jwt="jwt" @update:products="handleProductsChange" :setLoading="setLoading"
-                                :getOtp="getOtp" />
+                            <ChatInput :jwt="jwt" :getOtp="getOtp" />
                         </div>
                     </div>
                 </div>
@@ -79,7 +77,6 @@ import { serverurl, handleFetchError } from '@/api';
 export default {
     data() {
         return {
-            user_otp: "",
             user_identifier: "",
             allowResendOtpCounter: 50,
         }
@@ -112,6 +109,9 @@ export default {
         }
     },
     methods: {
+        setIsLoading() {
+            this.isLoading = !this.isLoading;
+        },
         async loginWithGoogle() {
             const domain = 'https://us-east-1umg3xqcyz.auth.us-east-1.amazoncognito.com'; // Your Cognito domain
             const clientId = '1tvnri1ecaqanirjd5t7u5kc17';
@@ -147,7 +147,6 @@ export default {
 
                 await handleFetchError(response);
 
-
                 const status = response.status;
 
                 if (status === 200) {
@@ -159,54 +158,10 @@ export default {
                     this.startResendOtpCounter();
                 }
             } catch (error) {
+                console.log('there was an error sending the email request')
                 this.$store.dispatch('user/setLoading', false);
                 console.error('Network or server error during authentication:', error.message);
-            }
-        },
-        async verifyOtp() {
-            try {
-                const { user_otp } = this;
-                const response = await fetch(`${serverurl}/shopper/auth/verifyotp`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    },
-                    body: JSON.stringify({
-                        submittedOtp: user_otp
-                    })
-                });
-
-                await handleFetchError(response)
-
-                const status = response.status;
-
-                if (status === 200) {
-                    const data = await response.json();
-                    //console.log('Success:', data);
-                    this.otp_view = true
-                    this.loading = false;
-
-                    const { user } = data;
-
-                    const { token } = user;
-
-                    this.$store.dispatch('user/setJwtToken', token);
-
-                    this.$store.dispatch('user/addCurrentUser', user);
-
-                    console.log(user, 'user, just user')
-
-                    if (token && this.currentUser.name && this.currentUser.phoneNumber) {
-                        const { email, phoneNumber, name, ...cleanQuery } = this.$route.query;
-                        this.$router.push({ path: '/', query: cleanQuery });
-                    }
-                }
-            } catch (error) {
-                this.loading = false;
-                console.error('Network or server error during authentication:', error.message);
+                throw error
             }
         },
         startResendOtpCounter() {
@@ -224,10 +179,7 @@ export default {
 
             this.getOtp(this.user_identifier);
         },
-        handleProductsChange(value) {
-
-        },
-        handleOtpChange(value) {
+        /*handleOtpChange(value) {
             this.user_otp = value;
 
             if (this.user_otp.length === 6) {
@@ -236,7 +188,7 @@ export default {
         },
         submitOtp() {
             this.verifyOtp();
-        }
+        }*/
     }
 }
 </script>
