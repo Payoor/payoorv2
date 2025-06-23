@@ -1270,7 +1270,7 @@ shopperRoute.get('/shopper/bani/getuserdetails', _authMiddleware["default"], /*#
 }());
 shopperRoute.post('/shopper/checkout/create', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref13 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee13(req, res, next) {
-    var userId, items, productIds, objectIdProductIds, productVariants, subTotal, productPriceMap, _i2, _productIds, productId, quantity, price, _yield$Promise$all3, _yield$Promise$all4, validUser, rawDeliveryFee, rawServiceCharge, latestCheckout, email, phoneNumber, delivery_fee, service_charge, finalTotal, phone_number, delivery_address, deliveryDates, delivery_date, newCheckoutDocument, checkout;
+    var userId, items, productIds, objectIdProductIds, productVariants, subTotal, productPriceMap, _i2, _productIds, productId, quantity, price, _yield$Promise$all3, _yield$Promise$all4, validUser, rawDeliveryFee, rawServiceCharge, latestCheckout, email, phoneNumber, delivery_fee, service_charge, serviceCharge, finalTotal, phone_number, delivery_address, deliveryDates, delivery_date, newCheckoutDocument, checkout;
     return _regeneratorRuntime().wrap(function _callee13$(_context14) {
       while (1) switch (_context14.prev = _context14.next) {
         case 0:
@@ -1370,26 +1370,26 @@ shopperRoute.post('/shopper/checkout/create', _authMiddleware["default"], /*#__P
           email = validUser.email, phoneNumber = validUser.phoneNumber;
           delivery_fee = parseFloat(rawDeliveryFee) || 0;
           service_charge = parseFloat(rawServiceCharge) || 0;
-          finalTotal = delivery_fee + service_charge + subTotal;
+          serviceCharge = subTotal * service_charge / 100;
+          finalTotal = delivery_fee + serviceCharge + subTotal;
           phone_number = "".concat(phoneNumber).trim();
           delivery_address = (latestCheckout === null || latestCheckout === void 0 ? void 0 : latestCheckout.delivery_address) || 'add a valid address';
           deliveryDates = getNext7Days(); // Generate delivery dates
           delivery_date = deliveryDates[2]; // Select the 3rd day (index 2)
           newCheckoutDocument = new _Checkout["default"]({
-            // Renamed for clarity
             user_id: new _mongoose["default"].Types.ObjectId(userId),
             delivery_address: delivery_address,
             delivery_fee: delivery_fee,
-            service_charge: service_charge,
+            service_charge: serviceCharge,
             phone_number: phone_number,
             subtotal: subTotal,
             delivery_date: delivery_date,
             total: finalTotal,
             cart_items: items
           });
-          _context14.next = 52;
+          _context14.next = 53;
           return newCheckoutDocument.save();
-        case 52:
+        case 53:
           // Convert Mongoose document to a plain JavaScript object
           checkout = newCheckoutDocument.toObject();
           console.log('Checkout successfully created:');
@@ -1406,18 +1406,18 @@ shopperRoute.post('/shopper/checkout/create', _authMiddleware["default"], /*#__P
               deliveryDates: deliveryDates
             }) // Spread checkout object and add deliveryDates
           });
-          _context14.next = 67;
+          _context14.next = 68;
           break;
-        case 63:
-          _context14.prev = 63;
+        case 64:
+          _context14.prev = 64;
           _context14.t0 = _context14["catch"](0);
           console.error('Error during checkout creation:', _context14.t0);
           next(_context14.t0);
-        case 67:
+        case 68:
         case "end":
           return _context14.stop();
       }
-    }, _callee13, null, [[0, 63]]);
+    }, _callee13, null, [[0, 64]]);
   }));
   return function (_x41, _x42, _x43) {
     return _ref13.apply(this, arguments);

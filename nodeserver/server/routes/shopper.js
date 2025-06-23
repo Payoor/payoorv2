@@ -676,14 +676,14 @@ shopperRoute.post(
         })
       }
 
-      let finalPrice = currentCheckout.total
-      let deliveryCost = currentCheckout.delivery_fee
+      let finalPrice = currentCheckout.total;
+      let deliveryCost = currentCheckout.delivery_fee;
 
       if (discount.percentage !== null && discount.percentage > 0) {
         finalPrice = finalPrice * (1 - discount.percentage / 100)
         console.log(
           `Applied ${discount.percentage}% discount. New price: ${finalPrice}`
-        )
+        );
       }
 
       if (discount.flat > 0) {
@@ -962,8 +962,9 @@ shopperRoute.post(
         _id: { $in: objectIdProductIds }
       }).select('price')
 
-      let subTotal = 0
-      const productPriceMap = new Map()
+      let subTotal = 0;
+
+      const productPriceMap = new Map();
 
       productVariants.forEach(variant => {
         productPriceMap.set(variant._id.toString(), variant.price)
@@ -989,7 +990,7 @@ shopperRoute.post(
         }
       }
 
-      subTotal = Number(subTotal)
+      subTotal = Number(subTotal);
 
       const [validUser, rawDeliveryFee, rawServiceCharge, latestCheckout] =
         await Promise.all([
@@ -1005,10 +1006,12 @@ shopperRoute.post(
 
       const { email, phoneNumber } = validUser
 
-      const delivery_fee = parseFloat(rawDeliveryFee) || 0
-      const service_charge = parseFloat(rawServiceCharge) || 0
+      const delivery_fee = parseFloat(rawDeliveryFee) || 0;
+      const service_charge = parseFloat(rawServiceCharge) || 0;
 
-      const finalTotal = delivery_fee + service_charge + subTotal
+      const serviceCharge = (subTotal * service_charge / 100);
+
+      const finalTotal = delivery_fee + serviceCharge + subTotal;
 
       const phone_number = `${phoneNumber}`.trim()
       const delivery_address =
@@ -1019,11 +1022,10 @@ shopperRoute.post(
       const delivery_date = deliveryDates[2] // Select the 3rd day (index 2)
 
       const newCheckoutDocument = new Checkout({
-        // Renamed for clarity
         user_id: new mongoose.Types.ObjectId(userId),
         delivery_address,
         delivery_fee,
-        service_charge,
+        service_charge: serviceCharge,
         phone_number,
         subtotal: subTotal,
         delivery_date,
@@ -1031,10 +1033,10 @@ shopperRoute.post(
         cart_items: items
       })
 
-      await newCheckoutDocument.save()
+      await newCheckoutDocument.save();
 
       // Convert Mongoose document to a plain JavaScript object
-      const checkout = newCheckoutDocument.toObject()
+      const checkout = newCheckoutDocument.toObject();
 
       console.log('Checkout successfully created:')
       console.log('Subtotal:', subTotal)
