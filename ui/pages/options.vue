@@ -112,8 +112,10 @@ export default {
             this.loading = true;
             const token = await this.getValidToken();
 
+            const productId = `${this.$route.query.currentproduct}`.trim().toLowerCase();
+
             try {
-                const response = await fetch(`${serverurl}/shopper/getproduct?mongooseid=${this.$route.query.currentproduct}`, {
+                const response = await fetch(`${serverurl}/shopper/getproduct?mongooseid=${productId}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -139,8 +141,10 @@ export default {
             this.loading = true;
             const token = await this.getValidToken();
 
+            const optionsId = `${this.$route.query.currentproduct}`.trim().toLowerCase()
+
             try {
-                const response = await fetch(`${serverurl}/shopper/getoptions?mongooseid=${this.$route.query.currentproduct}`, {
+                const response = await fetch(`${serverurl}/shopper/getoptions?mongooseid=${optionsId}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,

@@ -99,6 +99,8 @@ shopperRoute.get(
     try {
       const { mongooseid } = req.query
 
+      console.log('this is the mongoose Id', mongooseid)
+
       const productId = new ObjectId(mongooseid)
 
       const variantsCollection =
@@ -611,8 +613,8 @@ shopperRoute.post(
         })
       }
 
-      let usedCouponCodePreviously = false;
-      let usedCouponTypePreviously = false;
+      let usedCouponCodePreviously = false
+      let usedCouponTypePreviously = false
 
       const usedCodeCheckout = await Checkout.findOne({
         user_id: userId,
@@ -637,8 +639,8 @@ shopperRoute.post(
       if (usedTypeCheckout) {
         const usedTypeOrder = await Order.findOne({
           checkout_id: usedTypeCheckout._id
-        });
-        
+        })
+
         if (usedTypeOrder) {
           usedCouponTypePreviously = true
         }
@@ -676,14 +678,14 @@ shopperRoute.post(
         })
       }
 
-      let finalPrice = currentCheckout.total;
-      let deliveryCost = currentCheckout.delivery_fee;
+      let finalPrice = currentCheckout.total
+      let deliveryCost = currentCheckout.delivery_fee
 
       if (discount.percentage !== null && discount.percentage > 0) {
         finalPrice = finalPrice * (1 - discount.percentage / 100)
         console.log(
           `Applied ${discount.percentage}% discount. New price: ${finalPrice}`
-        );
+        )
       }
 
       if (discount.flat > 0) {
@@ -962,9 +964,9 @@ shopperRoute.post(
         _id: { $in: objectIdProductIds }
       }).select('price')
 
-      let subTotal = 0;
+      let subTotal = 0
 
-      const productPriceMap = new Map();
+      const productPriceMap = new Map()
 
       productVariants.forEach(variant => {
         productPriceMap.set(variant._id.toString(), variant.price)
@@ -990,7 +992,7 @@ shopperRoute.post(
         }
       }
 
-      subTotal = Number(subTotal);
+      subTotal = Number(subTotal)
 
       const [validUser, rawDeliveryFee, rawServiceCharge, latestCheckout] =
         await Promise.all([
@@ -1006,12 +1008,12 @@ shopperRoute.post(
 
       const { email, phoneNumber } = validUser
 
-      const delivery_fee = parseFloat(rawDeliveryFee) || 0;
-      const service_charge = parseFloat(rawServiceCharge) || 0;
+      const delivery_fee = parseFloat(rawDeliveryFee) || 0
+      const service_charge = parseFloat(rawServiceCharge) || 0
 
-      const serviceCharge = (subTotal * service_charge / 100);
+      const serviceCharge = (subTotal * service_charge) / 100
 
-      const finalTotal = delivery_fee + serviceCharge + subTotal;
+      const finalTotal = delivery_fee + serviceCharge + subTotal
 
       const phone_number = `${phoneNumber}`.trim()
       const delivery_address =
@@ -1033,10 +1035,10 @@ shopperRoute.post(
         cart_items: items
       })
 
-      await newCheckoutDocument.save();
+      await newCheckoutDocument.save()
 
       // Convert Mongoose document to a plain JavaScript object
-      const checkout = newCheckoutDocument.toObject();
+      const checkout = newCheckoutDocument.toObject()
 
       console.log('Checkout successfully created:')
       console.log('Subtotal:', subTotal)

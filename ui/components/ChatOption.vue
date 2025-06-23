@@ -158,11 +158,15 @@ export default {
             }
         },
         async getOption() {
+            console.log('get option loading here')
+
             this.loading = true;
             const token = await this.getValidToken();
 
+            const optionId = `${this.mongooseid}`.trim().toLowerCase();
+
             try {
-                const response = await fetch(`${serverurl}/shopper/getoption?mongooseid=${this.mongooseid}`, {
+                const response = await fetch(`${serverurl}/shopper/getoption?mongooseid=${optionId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,

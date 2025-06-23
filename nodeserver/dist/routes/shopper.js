@@ -139,29 +139,30 @@ shopperRoute.get('/shopper/getoptions', _authMiddleware["default"], /*#__PURE__*
         case 0:
           _context3.prev = 0;
           mongooseid = req.query.mongooseid;
+          console.log('this is the mongoose Id', mongooseid);
           productId = new ObjectId(mongooseid);
           variantsCollection = _payoordb["default"].db.collection('productvariants');
-          _context3.next = 6;
+          _context3.next = 7;
           return variantsCollection.find({
             productId: productId
           }).toArray();
-        case 6:
+        case 7:
           variants = _context3.sent;
           res.status(200).json({
             message: 'Variants found',
             variants: variants
           });
-          _context3.next = 13;
+          _context3.next = 14;
           break;
-        case 10:
-          _context3.prev = 10;
+        case 11:
+          _context3.prev = 11;
           _context3.t0 = _context3["catch"](0);
           next(_context3.t0);
-        case 13:
+        case 14:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[0, 10]]);
+    }, _callee3, null, [[0, 11]]);
   }));
   return function (_x7, _x8, _x9) {
     return _ref3.apply(this, arguments);
