@@ -119,8 +119,7 @@ export const actions = {
   },
 
   async resetCart ({ commit, state }) {
-    if (state.cartResetPerformed) {
-      //console.log('Cart reset already performed. Skipping action.')
+    if (localStorage.getItem('cartResetPerformed')) {
       return
     }
 

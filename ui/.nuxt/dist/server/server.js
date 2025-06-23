@@ -1085,8 +1085,7 @@ const actions = {
     commit,
     state
   }) {
-    if (state.cartResetPerformed) {
-      //console.log('Cart reset already performed. Skipping action.')
+    if (localStorage.getItem('cartResetPerformed')) {
       return;
     }
     commit('RESET_CART_STATE');
