@@ -307,7 +307,7 @@ adminRoute.post('/admin/paystack/payment-response', /*#__PURE__*/function () {
 }());
 adminRoute.post('/bani/webhook/payment-response', /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res, next) {
-    var merchant_private_key, headers, body, sig, hmac, digest, webhookData, _webhookData$data$cus, checkoutId, userId, paymentStatus, newOrder, telegbotUrl;
+    var merchant_private_key, headers, body, sig, hmac, digest, webhookData, _webhookData$data$cus, checkoutId, userId, paymentStatus, telegbotUrl, telegbotSimpleMsgUrl, debugOrderMessage, newOrder;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
@@ -348,46 +348,54 @@ adminRoute.post('/bani/webhook/payment-response', /*#__PURE__*/function () {
           webhookData = JSON.parse(body);
           _webhookData$data$cus = webhookData.data.custom_data, checkoutId = _webhookData$data$cus.checkoutId, userId = _webhookData$data$cus.userId;
           paymentStatus = webhookData.data.pay_status;
+          telegbotUrl = 'http://telegbot:3001/neworder';
+          telegbotSimpleMsgUrl = 'http://telegbot:3001/send/message/simple';
+          debugOrderMessage = "".concat(checkoutId, ", ").concat(userId, ", order confirmation");
+          console.log(debugOrderMessage);
+          _context4.next = 22;
+          return axios.post(telegbotSimpleMsgUrl, {
+            simplemessage: debugOrderMessage
+          });
+        case 22:
           if (!(paymentStatus === 'paid')) {
-            _context4.next = 28;
+            _context4.next = 33;
             break;
           }
           newOrder = new _Order["default"]({
             user_id: userId,
             checkout_id: checkoutId
           });
-          _context4.next = 20;
+          _context4.next = 26;
           return newOrder.save();
-        case 20:
-          _context4.next = 22;
+        case 26:
+          _context4.next = 28;
           return (0, _orderconfirmEmail["default"])(userId, "".concat(process.env.PAYOOR_URL, "/userorder/").concat(newOrder._id));
-        case 22:
-          telegbotUrl = 'http://telegbot:3001/neworder';
-          _context4.next = 25;
+        case 28:
+          _context4.next = 30;
           return axios.post(telegbotUrl, {
             orderId: newOrder._id
           });
-        case 25:
+        case 30:
           return _context4.abrupt("return", res.sendStatus(200));
-        case 28:
+        case 33:
           console.log("Webhook received for order_ref: ".concat(order_ref, " with status: ").concat(paymentStatus));
           return _context4.abrupt("return", res.status(200).json({
             status: true,
             message: "Webhook received for status: ".concat(paymentStatus)
           }));
-        case 30:
-          _context4.next = 36;
+        case 35:
+          _context4.next = 41;
           break;
-        case 32:
-          _context4.prev = 32;
+        case 37:
+          _context4.prev = 37;
           _context4.t0 = _context4["catch"](0);
           console.error('Webhook processing error:', _context4.t0);
           next(_context4.t0);
-        case 36:
+        case 41:
         case "end":
           return _context4.stop();
       }
-    }, _callee4, null, [[0, 32]]);
+    }, _callee4, null, [[0, 37]]);
   }));
   return function (_x0, _x1, _x10) {
     return _ref4.apply(this, arguments);

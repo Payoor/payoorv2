@@ -14,9 +14,9 @@ const { redisClient, connectRedis } = require('./redisconf')
 
 import shopperRoute from './routes/shopper'
 import authRoute from './routes/auth'
-import adminRoute from './routes/admin';
+import adminRoute from './routes/admin'
 
-import handleError from './handleError'; 
+import handleError from './handleError'
 
 const port = process.env.PORT
 
@@ -52,7 +52,9 @@ app.use(async (err, req, res, next) => {
     `Request URL: ${req.originalUrl}\n` +
     `Error Message: ${err.message}\n` +
     `Stack Trace:\n${err.stack}\n\n` +
-    `--- End of Error ---\n\n`;
+    `--- End of Error ---\n\n`
+
+  const errMessageVal = err.message
 
   console.log(errorMessage, 'errorMessage')
 
@@ -73,7 +75,7 @@ app.use(async (err, req, res, next) => {
 
       fs.appendFile(errorLogPath, errorMessage, fileErr => {
         if (fileErr) {
-          console.error('Failed to write error to fallback log file:', fileErr);
+          console.error('Failed to write error to fallback log file:', fileErr)
         } else {
           console.log(
             `Error successfully logged to fallback file: ${errorLogPath}`
@@ -82,10 +84,10 @@ app.use(async (err, req, res, next) => {
       })
     }
 
-    const errorDetails = handleError(errorMessage)
+    const errorDetails = handleError(errorMessage, errMessageVal)
 
     console.log(errorDetails)
-    const { userMessage, statusCode } = errorDetails;
+    const { userMessage, statusCode } = errorDetails
 
     res.status(statusCode).json({
       stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,

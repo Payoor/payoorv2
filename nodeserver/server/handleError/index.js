@@ -1,6 +1,6 @@
 // Assuming 'errorDetails' is the string you provided
 
-function handleError (errorDetails) {
+function handleError (errorDetails, errMessageVal) {
   if (errorDetails.includes('E11000 duplicate key error')) {
     const matchIndex = errorDetails.match(/index: (\w+)_1/)
     const matchDupKey = errorDetails.match(/dup key: \{ (\w+): "([^"]+)" \}/)
@@ -23,7 +23,7 @@ function handleError (errorDetails) {
     } else {
       userMessage = `A record with '${offendingField}' value '${offendingValue}' already exists. Please provide a unique value.`
     }
-    
+
     return {
       type: 'DuplicateKeyError',
       field: offendingField,
@@ -36,7 +36,7 @@ function handleError (errorDetails) {
   } else {
     return {
       type: 'GenericError',
-      userMessage: 'An unexpected error occurred. Please try again later.',
+      userMessage: errMessageVal,
       statusCode: 500 // Internal Server Error
     }
   }

@@ -186,12 +186,13 @@ export default {
                 const data = await response.json();
                 const { user, message } = data;
 
-                //console.log(user, 'curent user here', message, 'messahge left');
+                //console.log(user, 'curent user here', message, 'message left');
 
                 this.$store.dispatch('user/setJwtToken', token);
                 this.$store.dispatch('user/addCurrentUser', user);
             } catch (error) {
-                console.log(error);
+                console.log(error, 'this is an errro thrown');
+                //return this.redirectHome()
             }
         },
         toggleSideMenu() {

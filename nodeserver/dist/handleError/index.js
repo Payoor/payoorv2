@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 // Assuming 'errorDetails' is the string you provided
 
-function handleError(errorDetails) {
+function handleError(errorDetails, errMessageVal) {
   if (errorDetails.includes('E11000 duplicate key error')) {
     var matchIndex = errorDetails.match(/index: (\w+)_1/);
     var matchDupKey = errorDetails.match(/dup key: \{ (\w+): "([^"]+)" \}/);
@@ -39,7 +39,7 @@ function handleError(errorDetails) {
   } else {
     return {
       type: 'GenericError',
-      userMessage: 'An unexpected error occurred. Please try again later.',
+      userMessage: errMessageVal,
       statusCode: 500 // Internal Server Error
     };
   }

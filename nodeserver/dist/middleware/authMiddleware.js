@@ -10,6 +10,9 @@ var authMiddleware = function authMiddleware(req, res, next) {
   try {
     var _req$headers$authoriz;
     var token = (_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.split(' ')[1];
+
+    //console.log(token, req.headers)
+
     if (!token) {
       return res.status(400).json({
         success: false,
@@ -22,17 +25,8 @@ var authMiddleware = function authMiddleware(req, res, next) {
     req.token = token;
     next();
   } catch (err) {
+    next(err);
     console.error('JWT Auth error:', err);
-    if (err.name === 'TokenExpiredError') {
-      return res.status(401).json({
-        success: false,
-        message: 'Token expired'
-      });
-    }
-    return res.status(401).json({
-      success: false,
-      message: 'Invalid token'
-    });
   }
 };
 var _default = exports["default"] = authMiddleware;

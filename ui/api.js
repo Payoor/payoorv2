@@ -25,7 +25,23 @@ export async function handleFetchError (response) {
 
     //console.error('Error response:', errorData)
 
-    const errorMessage = errorData.userMessage || 'Unknown error';
+    const errorMessage = errorData.userMessage || 'Unknown error'
+
+    if (errorMessage.includes('jwt malformed')) {
+      console.warn(
+        'JWT malformed error detected. Redirecting to specified route with original query strings.'
+      )
+
+      const currentQueryString = window.location.search
+
+      const baseRedirectRoute = '/'
+
+      const newRedirectUrl = baseRedirectRoute + currentQueryString
+
+      window.location.replace(newRedirectUrl)
+
+      return
+    }
 
     showErrorMessage(errorMessage)
 

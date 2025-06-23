@@ -212,7 +212,7 @@ adminRoute.post('/admin/paystack/payment-response', async (req, res, next) => {
       await orderconfirmEmail(
         userId,
         `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`
-      );
+      )
 
       /*telegramBot.callBot(
         `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
@@ -244,7 +244,7 @@ adminRoute.post('/bani/webhook/payment-response', async (req, res, next) => {
         .status(400)
         .json({ status: false, message: 'No body provided' })
     }
-    
+
     if (!headers['bani-hook-signature']) {
       return res
         .status(400)
@@ -266,6 +266,18 @@ adminRoute.post('/bani/webhook/payment-response', async (req, res, next) => {
     const { checkoutId, userId } = webhookData.data.custom_data
     const paymentStatus = webhookData.data.pay_status
 
+    const telegbotUrl = 'http://telegbot:3001/neworder';
+
+    const telegbotSimpleMsgUrl = 'http://telegbot:3001/send/message/simple';
+
+    const debugOrderMessage = `${checkoutId}, ${userId}, order confirmation`;
+
+    console.log(debugOrderMessage);
+
+    await axios.post(telegbotSimpleMsgUrl, {
+      simplemessage: debugOrderMessage
+    });
+
     if (paymentStatus === 'paid') {
       const newOrder = new Order({
         user_id: userId,
@@ -279,13 +291,11 @@ adminRoute.post('/bani/webhook/payment-response', async (req, res, next) => {
         `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`
       );
 
-      const telegbotUrl = 'http://telegbot:3001/neworder'
-
       await axios.post(telegbotUrl, {
         orderId: newOrder._id
       })
 
-      return res.sendStatus(200);
+      return res.sendStatus(200)
     } else {
       console.log(
         `Webhook received for order_ref: ${order_ref} with status: ${paymentStatus}`

@@ -966,7 +966,7 @@ shopperRoute.post(
 
       let subTotal = 0
 
-      const productPriceMap = new Map()
+      const productPriceMap = new Map();
 
       productVariants.forEach(variant => {
         productPriceMap.set(variant._id.toString(), variant.price)

@@ -56,22 +56,23 @@ app.use(_auth["default"]);
 app.use(_admin["default"]);
 app.use(/*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(err, req, res, next) {
-    var timestamp, errorMessage, response, errorDetails, userMessage, statusCode;
+    var timestamp, errorMessage, errMessageVal, response, errorDetails, userMessage, statusCode;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           timestamp = new Date().toISOString();
           errorMessage = "Error Details:\n" + "Timestamp: ".concat(timestamp, "\n") + "Request Method: ".concat(req.method, "\n") + "Request URL: ".concat(req.originalUrl, "\n") + "Error Message: ".concat(err.message, "\n") + "Stack Trace:\n".concat(err.stack, "\n\n") + "--- End of Error ---\n\n";
+          errMessageVal = err.message;
           console.log(errorMessage, 'errorMessage');
-          _context2.prev = 3;
-          _context2.next = 6;
+          _context2.prev = 4;
+          _context2.next = 7;
           return axios.post(telegbotUrl, errorMessage, {
             headers: {
               'Content-Type': 'text/plain',
               'X-Error-Timestamp': timestamp
             }
           });
-        case 6:
+        case 7:
           response = _context2.sent;
           if (response.status >= 200 && response.status < 300) {
             console.log('Error message sent to telegbot successfully!');
@@ -85,27 +86,27 @@ app.use(/*#__PURE__*/function () {
               }
             });
           }
-          errorDetails = (0, _handleError["default"])(errorMessage);
+          errorDetails = (0, _handleError["default"])(errorMessage, errMessageVal);
           console.log(errorDetails);
           userMessage = errorDetails.userMessage, statusCode = errorDetails.statusCode;
           res.status(statusCode).json({
             stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,
             userMessage: userMessage
           });
-          _context2.next = 17;
+          _context2.next = 18;
           break;
-        case 14:
-          _context2.prev = 14;
-          _context2.t0 = _context2["catch"](3);
+        case 15:
+          _context2.prev = 15;
+          _context2.t0 = _context2["catch"](4);
           //we'll only save to a file if this fails here
           res.status(500).json({
             message: 'Internal server error'
           });
-        case 17:
+        case 18:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[3, 14]]);
+    }, _callee2, null, [[4, 15]]);
   }));
   return function (_x4, _x5, _x6, _x7) {
     return _ref2.apply(this, arguments);

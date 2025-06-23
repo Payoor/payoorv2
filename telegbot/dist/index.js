@@ -122,13 +122,53 @@ app.post('/neworder', /*#__PURE__*/function () {
     return _ref3.apply(this, arguments);
   };
 }());
+app.post('/send/message/simple', /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(req, res) {
+    var simplemessage, _t3;
+    return _regenerator().w(function (_context4) {
+      while (1) switch (_context4.n) {
+        case 0:
+          _context4.p = 0;
+          simplemessage = req.body.simplemessage;
+          if (simplemessage) {
+            _context4.n = 1;
+            break;
+          }
+          return _context4.a(2, res.status(400).json({
+            message: 'Missing simplemessage in request body'
+          }));
+        case 1:
+          _context4.n = 2;
+          return _TelegramBotClass["default"].callBot(simplemessage);
+        case 2:
+          res.status(200).json({
+            message: 'Notification sent to Telegram bot.'
+          });
+          _context4.n = 4;
+          break;
+        case 3:
+          _context4.p = 3;
+          _t3 = _context4.v;
+          console.error('❌ Error notifying bot:', err);
+          res.status(500).json({
+            message: 'Internal server error'
+          });
+        case 4:
+          return _context4.a(2);
+      }
+    }, _callee4, null, [[0, 3]]);
+  }));
+  return function (_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}());
 function startServer() {
   return _startServer.apply(this, arguments);
 }
 function _startServer() {
-  _startServer = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
-    return _regenerator().w(function (_context4) {
-      while (1) switch (_context4.n) {
+  _startServer = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
+    return _regenerator().w(function (_context5) {
+      while (1) switch (_context5.n) {
         case 0:
           try {
             //await connectRedis();
@@ -141,9 +181,9 @@ function _startServer() {
             process.exit(1);
           }
         case 1:
-          return _context4.a(2);
+          return _context5.a(2);
       }
-    }, _callee4);
+    }, _callee5);
   }));
   return _startServer.apply(this, arguments);
 }

@@ -1,5 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api')
-import fs from 'fs'
+const fs = require('fs').promises
 import path from 'path'
 import ExcelJS from 'exceljs'
 import { redisClient } from '../redisconf'
@@ -342,49 +342,156 @@ export class TelegramBotClass {
         }
 
         if (command === '/viewcheckouts') {
-          const checkouts = await Checkout.find().populate({
-            path: 'user_id',
-            select: 'email phoneNumber'
-          })
+          let page = parseInt(arg1)
+          if (isNaN(page) || page < 1) {
+            page = 1
+          }
 
-          //console.log(checkouts)
+          const limit = 20;
+          const skip = (page - 1) * limit
 
-          const checkoutDetailsList = checkouts
-            .map(
-              ({
-                delivery_address,
-                _id,
-                user_id, // This will now be the populated user object
-                delivery_date,
-                delivery_instruction,
-                phone_number,
-                cart_items
-              }) => {
-                const email = user_id ? user_id.email : 'N/A'
-                const userPhoneNumber = user_id ? user_id.phoneNumber : 'N/A'
+          try {
+            const checkouts = await Checkout.find()
+              .populate({
+                path: 'user_id',
+                select: 'email phoneNumber'
+              })
+              .sort({
+                createdAt: -1
+              })
+              .skip(skip)
+              .limit(limit)
+              .lean() // Use .lean() for faster data retrieval if not modifying Mongoose documents
 
-                return `
-                    User Email:
-                    ${email}
-                    User Phone Number:
-                    ${userPhoneNumber}  
-                    Delivery Address:
-                    ${delivery_address}
+            if (!checkouts.length) {
+              return this.bot.sendMessage(
+                telegramid,
+                `📭 No checkouts found for page ${page}.`
+              )
+            }
 
-                    <a href="https://shop.payoor.store/admin/checkout?checkout=${_id.toString()}">View Order Details on Website</a> 
-                    ---------------------------------------
-                `
+            const workbook = new ExcelJS.Workbook()
+            const worksheet = workbook.addWorksheet(`Page ${page} Checkouts`)
+
+            // Define columns (headers) based on your checkout structure
+            worksheet.columns = [
+              { header: 'Order ID', key: '_id', width: 25 },
+              { header: 'User Email', key: 'userEmail', width: 30 },
+              {
+                header: 'User Phone Number',
+                key: 'userPhoneNumber',
+                width: 20
+              },
+              {
+                header: 'Delivery Address',
+                key: 'delivery_address',
+                width: 40
+              },
+              {
+                header: 'Delivery Date',
+                key: 'deliveryDateFormatted',
+                width: 20
+              },
+              {
+                header: 'Delivery Instruction',
+                key: 'delivery_instruction',
+                width: 30
+              },
+              { header: 'Subtotal', key: 'subtotal', width: 15 },
+              { header: 'Delivery Fee', key: 'delivery_fee', width: 15 },
+              {
+                header: 'Service Charge (%)',
+                key: 'service_charge',
+                width: 20
+              },
+              { header: 'Total Paid', key: 'total', width: 15 },
+              { header: 'Promo Code', key: 'promo_code', width: 20 },
+              { header: 'Discount Type', key: 'discountType', width: 15 },
+              {
+                header: 'Discount Flat Amount',
+                key: 'discountFlat',
+                width: 20
+              },
+              {
+                header: 'Discount Percentage',
+                key: 'discountPercentage',
+                width: 20
+              },
+              {
+                header: 'Free Delivery',
+                key: 'freeDeliveryDiscount',
+                width: 15
+              },
+              { header: 'Cart Items (JSON)', key: 'cart_items', width: 50 }, // Stringified
+              { header: 'Created At', key: 'created_at', width: 25 }
+            ]
+
+            // Add rows with data mapping
+            checkouts.forEach(checkout => {
+              const discountApplied = checkout.discount_applied || {}
+              worksheet.addRow({
+                _id: checkout._id.toString(),
+                userEmail: checkout.user_id ? checkout.user_id.email : 'N/A',
+                userPhoneNumber: checkout.user_id
+                  ? checkout.user_id.phoneNumber
+                  : 'N/A',
+                delivery_address: checkout.delivery_address,
+                deliveryDateFormatted: checkout.delivery_date
+                  ? `${checkout.delivery_date.day}, ${checkout.delivery_date.date} ${checkout.delivery_date.month}`
+                  : 'N/A',
+                delivery_instruction: checkout.delivery_instruction || '',
+                subtotal: checkout.subtotal,
+                delivery_fee: checkout.delivery_fee,
+                service_charge: checkout.service_charge,
+                total: checkout.total,
+                promo_code: checkout.promo_code || '',
+                discountType: discountApplied.coupon_type || '',
+                discountFlat:
+                  discountApplied.flat !== null ? discountApplied.flat : '',
+                discountPercentage:
+                  discountApplied.percentage !== null
+                    ? discountApplied.percentage
+                    : '',
+                freeDeliveryDiscount: discountApplied.freeDelivery
+                  ? 'Yes'
+                  : 'No',
+                cart_items: JSON.stringify(checkout.cart_items),
+                created_at: checkout.created_at
+                  ? checkout.created_at.toISOString()
+                  : ''
+              })
+            })
+
+            const filePath = path.join(
+              '/tmp',
+              `checkouts_page_${page}_${Date.now()}.xlsx`
+            )
+            await workbook.xlsx.writeFile(filePath)
+
+            await this.bot.sendDocument(
+              telegramid,
+              filePath,
+              {
+                caption: `Here are the checkouts for page ${page}.`
+              },
+              {
+                filename: `checkouts_page_${page}.xlsx`,
+                contentType:
+                  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
               }
             )
-            .join('')
 
-          //Cart Items: ${JSON.stringify(cart_items, null, 2)}
-
-          console.log(checkoutDetailsList)
-
-          this.bot.sendMessage(telegramid, checkoutDetailsList, {
-            parse_mode: 'HTML'
-          })
+            // Delete the file after sending
+            fs.unlink(filePath).catch(err =>
+              console.error('Error deleting file:', err)
+            )
+          } catch (err) {
+            console.error('❌ Error exporting checkouts:', err)
+            return this.bot.sendMessage(
+              telegramid,
+              '❗ Failed to export checkouts. Please try again later.'
+            )
+          }
         }
 
         if (command === '/couponusage') {

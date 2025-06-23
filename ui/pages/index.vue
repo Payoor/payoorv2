@@ -1,14 +1,16 @@
 <template>
     <div>
-        <div v-if="!currentUser.email">
-            <LandingPage />
+        <div>
+            <div v-if="!currentUser.email">
+                <LandingPage />
+            </div>
+
+            <div v-if="currentUser.email && currentUser.name">
+                <Home />
+            </div>
         </div>
 
-        <div v-if="currentUser.email && currentUser.name">
-            <Home />
-        </div>
-
-
+        <!--<div class="pleasewait">Please wait...</div>-->
     </div>
 </template>
 
@@ -33,7 +35,7 @@ export default {
     },
     watch: {
         currentUser(newVal) {
-            if (newVal.email && !newVal.name  || newVal.name && !newVal.email) {
+            if (newVal.email && !newVal.name || newVal.name && !newVal.email) {
                 this.$router.push('/authp')
             }
         }
