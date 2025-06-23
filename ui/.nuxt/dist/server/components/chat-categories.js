@@ -18,6 +18,7 @@ exports.modules = {
     async getValidToken() {
       try {
         this.validToken = localStorage.getItem('jwt');
+        console.log(this.validToken, 'this.validToken');
         if (this.validToken) {
           return this.validToken;
         } else if (!this.excludedPaths.includes(this.$route.path)) {
@@ -42,7 +43,7 @@ exports.modules = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: {
@@ -56,35 +57,23 @@ exports.modules = {
   emits: ['update:products', 'update:replyuser'],
   methods: {
     async postMessageFromQuery(message) {
-      const token = localStorage.getItem('jwt');
-      if (this.setLoading) this.setLoading(true); // 👉 Start loading
-
+      if (this.setLoading) this.setLoading(true);
       try {
-        const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/shopper/message`, {
+        const data = await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetch */ "a"])({
+          apiroute: 'shopper/message',
           method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Origin: window.location.origin,
-            'Access-Control-Request-Method': 'POST',
-            'Access-Control-Request-Headers': 'Content-Type'
-          },
-          body: JSON.stringify({
+          body: {
             message
-          })
+          }
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(response);
-        if (response.status === 200 || response.status === 201) {
-          const data = await response.json();
-          const {
-            products
-          } = data;
-          this.$emit('update:products', [...this.products, ...products]);
-        }
+        const {
+          products
+        } = data;
+        this.$emit('update:products', [...this.products, ...products]);
       } catch (error) {
-        console.log(error);
+        console.error('Error posting message:', error);
       } finally {
-        if (this.setLoading) this.setLoading(false); // 👉 End loading
+        if (this.setLoading) this.setLoading(false);
       }
     }
   }

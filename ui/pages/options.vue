@@ -72,7 +72,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {
@@ -110,57 +110,39 @@ export default {
         },
         async getProduct() {
             this.loading = true;
-            const token = await this.getValidToken();
-
-            const productId = `${this.$route.query.currentproduct}`.trim().toLowerCase();
 
             try {
-                const response = await fetch(`${serverurl}/shopper/getproduct?mongooseid=${productId}`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    }
+                const productId = `${this.$route.query.currentproduct}`.trim().toLowerCase();
+
+                const data = await handleFetch({
+                    apiroute: 'shopper/getproduct',
+                    queries: { mongooseid: productId },
+                    method: 'GET'
                 });
 
-                await handleFetchError(response)
-
-                const data = await response.json();
                 const { product } = data;
                 this.product = product;
             } catch (error) {
-                console.log(error);
+                console.error('Error fetching product:', error);
             } finally {
                 this.loading = false;
             }
         },
         async getOptions() {
             this.loading = true;
-            const token = await this.getValidToken();
-
-            const optionsId = `${this.$route.query.currentproduct}`.trim().toLowerCase()
 
             try {
-                const response = await fetch(`${serverurl}/shopper/getoptions?mongooseid=${optionsId}`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    }
+                const optionsId = `${this.$route.query.currentproduct}`.trim().toLowerCase();
+
+                const data = await handleFetch({
+                    apiroute: 'shopper/getoptions',
+                    queries: { mongooseid: optionsId },
+                    method: 'GET'
                 });
 
-                await handleFetchError(response)
-
-                const data = await response.json();
                 this.variants = data.variants;
             } catch (error) {
-                console.log(error);
+                console.error('Error fetching options:', error);
             } finally {
                 this.loading = false;
             }

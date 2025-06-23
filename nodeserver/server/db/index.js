@@ -5,24 +5,24 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 mongoose
-  .connect(process.env.MONGO_URL, {
+  .connect(process.env.MONGO_URL, { 
     useNewUrlParser: true
     //useUnifiedTopology: true
   })
   .then(() => {
-    console.log(`database connection on ${process.env.MONGO_URL}`)
+    console.log(`database connection on ${process.env.MONGO_URL}`); 
     // dropIndex('filepath_1');
   })
   .catch(error => {
     console.error('Error connecting to MongoDB:', error)
-  })
+  });
 
-require('../models/Product')
-require('../models/ProductVariant')
-require('../models/Admin')
-require('../models/Checkout')
-require('../models/Order')
-require('../models/User')
-require('../models/UserCart')
+require('../models/Product');
+require('../models/ProductVariant');
+require('../models/Admin');
+require('../models/Checkout');
+require('../models/Order');
+require('../models/User');
+require('../models/UserCart');
 
-export default mongoose
+export default mongoose;

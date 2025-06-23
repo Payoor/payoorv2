@@ -323,25 +323,35 @@ shopperRoute.get('/shopper/init/checkout', _authMiddleware["default"], /*#__PURE
 }());
 shopperRoute.post('/shopper/update/checkout', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res, next) {
-    var _req$query, jwt, checkoutId, checkout, validUser, allowedUpdateFields, updateData, _i, _allowedUpdateFields, key, coupon, updatedCheckout;
+    var checkoutId, userId, checkout, validUser, allowedUpdateFields, updateData, _i, _allowedUpdateFields, key, coupon, updatedCheckout;
     return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) switch (_context7.prev = _context7.next) {
         case 0:
           _context7.prev = 0;
-          _req$query = req.query, jwt = _req$query.jwt, checkoutId = _req$query.checkoutId;
+          checkoutId = req.query.checkoutId;
+          userId = req.userId;
           checkout = req.body.checkout;
-          _context7.next = 5;
-          return _User["default"].findByToken(jwt);
-        case 5:
-          validUser = _context7.sent;
-          if (validUser) {
-            _context7.next = 8;
+          if (!(!checkoutId || !userId || !checkout)) {
+            _context7.next = 6;
             break;
           }
-          return _context7.abrupt("return", res.status(404).json({
-            userMessage: 'invalid user'
+          return _context7.abrupt("return", res.status(400).json({
+            userMessage: 'Missing required parameters: checkoutId, checkout data, or user ID.'
           }));
+        case 6:
+          _context7.next = 8;
+          return _User["default"].findById(new ObjectId(userId));
         case 8:
+          validUser = _context7.sent;
+          if (validUser) {
+            _context7.next = 11;
+            break;
+          }
+          return _context7.abrupt("return", res.status(401).json({
+            userMessage: 'Unauthorized: User not found.'
+          }));
+        case 11:
+          console.log('found a valid user');
           allowedUpdateFields = ['delivery_address', 'delivery_date', 'delivery_instruction', 'promo_code', 'phone_number'];
           updateData = {};
           for (_i = 0, _allowedUpdateFields = allowedUpdateFields; _i < _allowedUpdateFields.length; _i++) {
@@ -350,36 +360,34 @@ shopperRoute.post('/shopper/update/checkout', _authMiddleware["default"], /*#__P
               updateData[key] = checkout[key];
             }
           }
-
-          // Handle promo code logic if it's being updated
           if (!(updateData.promo_code && typeof updateData.promo_code === 'string')) {
-            _context7.next = 22;
+            _context7.next = 26;
             break;
           }
-          _context7.next = 14;
+          _context7.next = 18;
           return _CouponClass["default"].getCoupon(updateData.promo_code);
-        case 14:
+        case 18:
           coupon = _context7.sent;
           if (!(coupon && coupon.type)) {
-            _context7.next = 19;
+            _context7.next = 23;
             break;
           }
           updateData.promo_code_type = coupon.type;
-          _context7.next = 20;
+          _context7.next = 24;
           break;
-        case 19:
+        case 23:
           return _context7.abrupt("return", res.status(400).json({
             userMessage: 'Invalid or expired coupon code'
           }));
-        case 20:
-          _context7.next = 23;
+        case 24:
+          _context7.next = 27;
           break;
-        case 22:
+        case 26:
           if (updateData.promo_code === '') {
             updateData.promo_code_type = '';
           }
-        case 23:
-          _context7.next = 25;
+        case 27:
+          _context7.next = 29;
           return _Checkout["default"].findOneAndUpdate({
             _id: new ObjectId(checkoutId),
             user_id: new ObjectId(validUser._id)
@@ -389,31 +397,32 @@ shopperRoute.post('/shopper/update/checkout', _authMiddleware["default"], /*#__P
             "new": true,
             runValidators: true
           });
-        case 25:
+        case 29:
           updatedCheckout = _context7.sent;
           if (updatedCheckout) {
-            _context7.next = 28;
+            _context7.next = 32;
             break;
           }
           return _context7.abrupt("return", res.status(404).json({
             userMessage: 'Checkout not found or you do not have permission to update it.'
           }));
-        case 28:
+        case 32:
           res.status(200).json({
             message: 'Checkout data updated successfully',
             updatedCheckout: updatedCheckout
           });
-          _context7.next = 34;
+          _context7.next = 39;
           break;
-        case 31:
-          _context7.prev = 31;
+        case 35:
+          _context7.prev = 35;
           _context7.t0 = _context7["catch"](0);
+          console.error('Error in /shopper/update/checkout route:', _context7.t0);
           next(_context7.t0);
-        case 34:
+        case 39:
         case "end":
           return _context7.stop();
       }
-    }, _callee7, null, [[0, 31]]);
+    }, _callee7, null, [[0, 35]]);
   }));
   return function (_x17, _x18, _x19) {
     return _ref7.apply(this, arguments);

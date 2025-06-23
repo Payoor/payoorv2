@@ -37,7 +37,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl, handleFetchError } from "@/api";
+import { handleFetch } from "@/api";
 
 export default {
     data() {
@@ -139,7 +139,6 @@ export default {
             if (this.loading || this.noMoreProducts) return;
 
             try {
-                const token = this.jwtToken;
                 const message = this.$route.query.message;
 
                 if (!message) {
@@ -147,21 +146,13 @@ export default {
                     return;
                 }
 
-                const response = await fetch(
-                    `${serverurl}/shopper/message?page=${this.page}&size=10`,
-                    {
-                        method: "POST",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ message }),
-                    }
-                );
+                const data = await handleFetch({
+                    apiroute: 'shopper/message',
+                    method: 'POST',
+                    queries: { page: this.page, size: 10 },
+                    body: { message }
+                });
 
-                await handleFetchError(response);
-
-                const data = await response.json();
                 const moreProducts = data.products;
 
                 this.products = [...this.products, ...moreProducts];
@@ -175,7 +166,6 @@ export default {
                 console.error("Failed to load more products:", error);
             }
         },
-
         handleScroll() {
             const chatBody = this.$refs.chatBodyRef;
 

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {
@@ -99,20 +99,13 @@ export default {
         },
         async initWidget() {
             try {
-                const validToken = await this.getValidToken();
                 const checkout_id = this.$route.query.checkout_id;
 
-                const response = await fetch(`${serverurl}/shopper/bani/getuserdetails?checkout_id=${checkout_id}`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${validToken}`,
-                        'Content-Type': 'application/json'
-                    },
+                const data = await handleFetch({
+                    apiroute: 'shopper/bani/getuserdetails',
+                    queries: { checkout_id },
+                    method: 'GET'
                 });
-
-                await handleFetchError(response)
-
-                const data = await response.json();
 
                 const {
                     name,
@@ -140,7 +133,7 @@ export default {
                 this.total = total;
 
             } catch (error) {
-                console.error('Network or server error in initWidget:', error);
+                console.error('Error in initWidget:', error);
             }
         },
         generateRandomNigerianPhoneNumber() {

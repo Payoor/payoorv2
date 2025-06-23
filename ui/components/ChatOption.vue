@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { serverurl, handleFetchError } from '@/api';
+import { serverurl, handleFetchError, handleFetch } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 import { mapState } from "vuex";
 
@@ -158,32 +158,20 @@ export default {
             }
         },
         async getOption() {
-            console.log('get option loading here')
-
             this.loading = true;
-            const token = await this.getValidToken();
-
-            const optionId = `${this.mongooseid}`.trim().toLowerCase();
 
             try {
-                const response = await fetch(`${serverurl}/shopper/getoption?mongooseid=${optionId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    }
+                const optionId = `${this.mongooseid}`.trim().toLowerCase();
+
+                const data = await handleFetch({
+                    apiroute: 'shopper/getoption',
+                    queries: { mongooseid: optionId },
+                    method: 'GET'
                 });
 
-                await handleFetchError(response);
-
-                const data = await response.json();
                 const { variant } = data;
                 this.option = variant;
-
-                this.product_name = variant.productId.name
+                this.product_name = variant.productId.name;
             } catch (error) {
                 console.error(error);
             } finally {
@@ -194,24 +182,17 @@ export default {
             this.loading = true;
 
             try {
-                const response = await fetch(`${serverurl}/admin/getoption?mongooseid=${this.mongooseid}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    }
+                const data = await handleFetch({
+                    apiroute: 'admin/getoption',
+                    queries: { mongooseid: this.mongooseid },
+                    method: 'GET'
                 });
 
-                await handleFetchError(response)
-
-                const data = await response.json();
                 const { variant } = data;
                 this.option = variant;
-                this.product_name = variant.productId.name
+                this.product_name = variant.productId.name;
 
-                console.log(this.option, 'option shown here')
+                console.log(this.option, 'option shown here');
             } catch (error) {
                 console.error(error);
             } finally {

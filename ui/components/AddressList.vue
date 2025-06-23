@@ -18,7 +18,7 @@
 
 
 <script>
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api';
 import debounce from 'lodash/debounce';
 
 export default {
@@ -46,26 +46,12 @@ export default {
             this.loading = true;
 
             try {
-                const validToken = localStorage.getItem('jwt');
-                if (!validToken) return;
+                const data = await handleFetch({
+                    apiroute: 'shopper/google/search-places',
+                    queries: { query: encodeURIComponent(query) },
+                    method: 'GET'
+                });
 
-                const response = await fetch(
-                    `${serverurl}/shopper/google/search-places?query=${encodeURIComponent(query)}`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            Authorization: `Bearer ${validToken}`,
-                            'Content-Type': 'application/json',
-                            'Origin': window.location.origin,
-                            'Access-Control-Request-Method': 'POST',
-                            'Access-Control-Request-Headers': 'Content-Type'
-                        }
-                    }
-                );
-
-                await handleFetchError(response);
-
-                const data = await response.json();
                 this.addressesList = data.data.placesResponse || [];
             } catch (error) {
                 console.error('Autocomplete error:', error);

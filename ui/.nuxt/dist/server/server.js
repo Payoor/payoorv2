@@ -115,7 +115,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 31);
+/******/ 	return __webpack_require__(__webpack_require__.s = 32);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -126,12 +126,21 @@ module.exports = require("vue");
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+module.exports = require("ufo");
+
+/***/ }),
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return serverurl; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return handleFetchError; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return showErrorMessage; });
+/* WEBPACK VAR INJECTION */(function(URLSearchParams) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return serverurl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return handleFetchError; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return showErrorMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return handleFetch; });
+/* unused harmony export handleFetchDebug */
+/* unused harmony export handleErrorThrow */
 const serverurl = (() => {
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
@@ -147,14 +156,13 @@ async function handleFetchError(response) {
     try {
       errorData = await response.json();
     } catch (e) {
+      console.log(e);
+      console.log(errorData, 'error data herer');
       errorData = {
         userMessage: 'Unknown error',
         raw: await response.text()
       };
     }
-
-    //console.error('Error response:', errorData)
-
     const errorMessage = errorData.userMessage || 'Unknown error';
     if (errorMessage.includes('jwt malformed')) {
       console.warn('JWT malformed error detected. Redirecting to specified route with original query strings.');
@@ -192,12 +200,83 @@ function showErrorMessage(message) {
     div.remove();
   }, 3000);
 }
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = require("ufo");
+async function handleFetch({
+  apiroute,
+  queries = {},
+  body,
+  method = 'GET'
+}) {
+  try {
+    let url = `${serverurl}/${apiroute}`;
+    const token = localStorage.getItem('jwt');
+    const options = {
+      method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Origin: window.location.origin,
+        'Access-Control-Request-Method': method,
+        'Access-Control-Request-Headers': 'Content-Type'
+      }
+    };
+    if (queries) {
+      const queryString = new URLSearchParams(queries).toString();
+      url = `${url}?${queryString}`.trim();
+    }
+    if (body && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+      options.body = JSON.stringify(body);
+    }
+    console.log(url, options);
+    const response = await fetch(url, options);
+    await handleFetchError(response);
+    if (response.status === 200 || response.status === 201) {
+      const data = await response.json();
+      console.log(data, 'data in api now');
+      return data;
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+async function handleFetchDebug({
+  apiroute,
+  queries = {},
+  body,
+  method = 'GET'
+}) {
+  try {
+    let url = `${serverurl}/${apiroute}`;
+    const token = localStorage.getItem('jwt');
+    const options = {
+      method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Origin: window.location.origin,
+        'Access-Control-Request-Method': 'POST',
+        'Access-Control-Request-Headers': 'Content-Type'
+      }
+    };
+    if (queries) {
+      const queryString = new URLSearchParams(queries).toString();
+      url = `${url}?${queryString}`.trim();
+    }
+    if (body && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+      options.body = JSON.stringify(body);
+    }
+    console.log(url, options, body, JSON.stringify(body));
+    const response = await fetch(url, options);
+    await handleFetchError(response);
+    if (response.status === 200 || response.status === 201) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+function handleErrorThrow(error) {}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(31)["URLSearchParams"]))
 
 /***/ }),
 /* 3 */
@@ -529,7 +608,7 @@ module.exports = require("vue-router");
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(34);
+var content = __webpack_require__(35);
 if(content.__esModule) content = content.default;
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
@@ -546,7 +625,7 @@ module.exports.__inject__ = function (context) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(36);
+var content = __webpack_require__(37);
 if(content.__esModule) content = content.default;
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
@@ -672,14 +751,20 @@ module.exports = require("core-js/modules/esnext.set.union.js");
 
 /***/ }),
 /* 31 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-__webpack_require__(32);
-module.exports = __webpack_require__(41);
-
+module.exports = require("url");
 
 /***/ }),
 /* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33);
+module.exports = __webpack_require__(42);
+
+
+/***/ }),
+/* 33 */
 /***/ (function(module, exports) {
 
 global.installComponents = function (component, components) {
@@ -723,7 +808,7 @@ function provideFunctionalComponents(component, components) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -734,7 +819,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -748,7 +833,7 @@ module.exports = ___CSS_LOADER_EXPORT___;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -759,7 +844,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -773,20 +858,20 @@ module.exports = ___CSS_LOADER_EXPORT___;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(38);
+var content = __webpack_require__(39);
 if(content.__esModule) content = content.default;
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 __webpack_require__(7).default("1adb391c", content, true)
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -800,7 +885,7 @@ module.exports = ___CSS_LOADER_EXPORT___;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -840,7 +925,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_esnext_set_symmetric_difference_js__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_esnext_set_symmetric_difference_js__WEBPACK_IMPORTED_MODULE_14__);
 /* harmony import */ var core_js_modules_esnext_set_union_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(30);
 /* harmony import */ var core_js_modules_esnext_set_union_js__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_esnext_set_union_js__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(1);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(2);
 
 
 
@@ -970,17 +1055,10 @@ const actions = {
       console.warn('Failed to load cart from localStorage due to parsing error, falling back to server:', e);
     }
     try {
-      const token = localStorage.getItem('jwt');
-      if (!token) return;
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "b"]}/shopper/initialize`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+      const data = await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetch */ "a"])({
+        apiroute: 'shopper/initialize',
+        method: 'POST'
       });
-      await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetchError */ "a"])(response);
-      const data = await response.json();
       const {
         user_cart,
         total
@@ -1025,23 +1103,14 @@ const actions = {
         console.log('No items to sync — skipping server call.');
         return;
       }
-      const token = localStorage.getItem('jwt');
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "b"]}/shopper/cart`, {
+      const data = await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetch */ "a"])({
+        apiroute: 'shopper/cart',
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Origin: window.location.origin,
-          'Access-Control-Request-Method': 'POST',
-          'Access-Control-Request-Headers': 'Content-Type'
-        },
-        body: JSON.stringify({
+        body: {
           items: state.items,
           totalItems: state.totalItems
-        })
+        }
       });
-      await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetchError */ "a"])(response);
-      const data = await response.json();
       const {
         user_cart,
         total
@@ -1065,29 +1134,20 @@ const actions = {
     state
   }) {
     try {
-      const token = localStorage.getItem('jwt');
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "b"]}/shopper/checkout/create`, {
+      const data = await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetch */ "a"])({
+        apiroute: 'shopper/checkout/create',
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Origin: window.location.origin,
-          'Access-Control-Request-Method': 'POST',
-          'Access-Control-Request-Headers': 'Content-Type'
-        },
-        body: JSON.stringify({
+        body: {
           items: state.items
-        })
+        }
       });
-      await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetchError */ "a"])(response);
-      const data = await response.json();
       const {
         checkout
       } = data;
       console.log(checkout);
       commit('SET_CHECKOUT', checkout);
     } catch (error) {
-      console.error('Failed to sync cart from localStorage to server:', error);
+      console.error('Failed to create checkout:', error);
     }
   },
   async getCheckOutData({
@@ -1095,26 +1155,20 @@ const actions = {
     state
   }, checkout_id) {
     try {
-      const token = localStorage.getItem('jwt');
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "b"]}/shopper/checkout/get?checkout_id=${checkout_id}`, {
+      const data = await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetch */ "a"])({
+        apiroute: 'shopper/checkout/get',
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Origin: window.location.origin,
-          'Access-Control-Request-Method': 'POST',
-          'Access-Control-Request-Headers': 'Content-Type'
+        queries: {
+          checkout_id
         }
       });
-      await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetchError */ "a"])(response);
-      const data = await response.json();
       const {
         checkout
       } = data;
       console.log(checkout, 'getCheckOutData');
       commit('SET_CHECKOUT', checkout);
     } catch (error) {
-      console.log(error);
+      console.error('Error fetching checkout data:', error);
     }
   },
   async applyPromoCode({
@@ -1125,31 +1179,21 @@ const actions = {
     checkout_id
   }) {
     try {
-      const token = localStorage.getItem('jwt');
-      if (!token) {
-        console.error('Authentication required to apply coupon: No token found.');
-        return;
-      }
       if (!checkout_id) {
         console.error('Checkout ID is missing.');
         return;
       }
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_16__[/* serverurl */ "b"]}/shopper/apply-coupon?checkout_id=${checkout_id}`, {
+      const data = await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetch */ "a"])({
+        apiroute: 'shopper/apply-coupon',
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Origin: window.location.origin,
-          'Access-Control-Request-Method': 'POST',
-          'Access-Control-Request-Headers': 'Content-Type'
+        queries: {
+          checkout_id
         },
-        body: JSON.stringify({
+        body: {
           coupon_code: code
-        })
+        }
       });
-      await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetchError */ "a"])(response);
-      const data = await response.json();
-      if (response.ok && data.success) {
+      if (data.success) {
         const {
           updatedCheckout
         } = data;
@@ -1159,7 +1203,7 @@ const actions = {
         console.error('Failed to apply coupon:', data.userMessage || 'Unknown error.');
       }
     } catch (error) {
-      console.log(error);
+      console.error('Error applying promo code:', error);
     }
   }
 };
@@ -1169,7 +1213,7 @@ const actions = {
 //this.$store.dispatch("cart/updateTotal", cartTotal);
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1177,7 +1221,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "state", function() { return state; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mutations", function() { return mutations; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "actions", function() { return actions; });
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 
 const state = () => ({
   currentUser: {
@@ -1270,23 +1314,13 @@ const actions = {
   }, phoneNumber) {
     commit('SET_LOADING', true);
     try {
-      const token = localStorage.getItem('jwt');
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/shopper/auth/updatedetails/phonenumber`, {
+      const data = await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetch */ "a"])({
+        apiroute: 'shopper/auth/updatedetails/phonenumber',
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Origin: window.location.origin,
-          'Access-Control-Request-Method': 'POST',
-          'Access-Control-Request-Headers': 'Content-Type'
-        },
-        body: JSON.stringify({
+        body: {
           phoneNumber
-        })
+        }
       });
-      commit('SET_LOADING', false);
-      await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(response);
-      const data = await response.json();
       const {
         user
       } = data;
@@ -1298,9 +1332,10 @@ const actions = {
       }
       return data;
     } catch (error) {
-      commit('SET_LOADING', false);
       console.error('Error during phone number update:', error);
       throw error;
+    } finally {
+      commit('SET_LOADING', false);
     }
   },
   async updateUserName({
@@ -1308,23 +1343,13 @@ const actions = {
   }, name) {
     commit('SET_LOADING', true);
     try {
-      const token = localStorage.getItem('jwt');
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/shopper/auth/updatedetails/name`, {
+      const data = await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetch */ "a"])({
+        apiroute: 'shopper/auth/updatedetails/name',
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Origin: window.location.origin,
-          'Access-Control-Request-Method': 'POST',
-          'Access-Control-Request-Headers': 'Content-Type'
-        },
-        body: JSON.stringify({
+        body: {
           name
-        })
+        }
       });
-      commit('SET_LOADING', false);
-      await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(response);
-      const data = await response.json();
       const {
         user
       } = data;
@@ -1340,9 +1365,10 @@ const actions = {
       commit('SET_USER_DETAILS_ADDED', true);
       return data;
     } catch (error) {
-      commit('SET_LOADING', false);
-      console.error('Error during phone number update:', error);
+      console.error('Error during name update:', error); // Corrected console error message
       throw error;
+    } finally {
+      commit('SET_LOADING', false);
     }
   },
   setOtpMode({
@@ -1373,24 +1399,15 @@ const actions = {
   }) {
     try {
       commit('SET_LOADING', true);
-      const token = localStorage.getItem('jwt');
-      const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/shopper/auth/updatedetails`, {
+      const data = await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetch */ "a"])({
+        apiroute: 'shopper/auth/updatedetails',
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Origin: window.location.origin,
-          'Access-Control-Request-Method': 'POST',
-          'Access-Control-Request-Headers': 'Content-Type'
-        },
-        body: JSON.stringify({
+        body: {
           name: state.currentUser.name,
           phoneNumber: state.currentUser.phoneNumber,
           email: state.currentUser.email
-        })
+        }
       });
-      await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(response);
-      const data = await response.json();
       const {
         user
       } = data;
@@ -1415,7 +1432,7 @@ const actions = {
 };
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1453,7 +1470,7 @@ var external_vue_ = __webpack_require__(0);
 var external_vue_default = /*#__PURE__*/__webpack_require__.n(external_vue_);
 
 // EXTERNAL MODULE: external "ufo"
-var external_ufo_ = __webpack_require__(2);
+var external_ufo_ = __webpack_require__(1);
 
 // EXTERNAL MODULE: external "node-fetch-native"
 var external_node_fetch_native_ = __webpack_require__(12);
@@ -2421,7 +2438,7 @@ var componentNormalizer = __webpack_require__(3);
 
 function injectStyles (context) {
   
-  var style0 = __webpack_require__(33)
+  var style0 = __webpack_require__(34)
 if (style0.__inject__) style0.__inject__(context)
 
 }
@@ -2687,7 +2704,7 @@ var nuxt_loading_render, nuxt_loading_staticRenderFns
 
 function nuxt_loading_injectStyles (context) {
   
-  var style0 = __webpack_require__(35)
+  var style0 = __webpack_require__(36)
 if (style0.__inject__) style0.__inject__(context)
 
 }
@@ -2707,7 +2724,7 @@ var nuxt_loading_component = Object(componentNormalizer["a" /* default */])(
 
 /* harmony default export */ var nuxt_loading = (nuxt_loading_component.exports);
 // EXTERNAL MODULE: ./assets/scss/main.scss
-var main = __webpack_require__(37);
+var main = __webpack_require__(38);
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--2-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/@nuxt/components/dist/loader.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./.nuxt/layouts/default.vue?vue&type=template&id=0040005c
 var defaultvue_type_template_id_0040005c_render = function render() {
@@ -2908,8 +2925,8 @@ let store_store = {};
 
   // Enforce store modules
   store_store.modules = store_store.modules || {};
-  resolveStoreModules(__webpack_require__(39), 'cart.js');
-  resolveStoreModules(__webpack_require__(40), 'user.js');
+  resolveStoreModules(__webpack_require__(40), 'cart.js');
+  resolveStoreModules(__webpack_require__(41), 'user.js');
 
   // If the environment supports hot reloading...
 })();
@@ -3694,16 +3711,10 @@ const createNext = ssrContext => opts => {
 });
 
 /***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-module.exports = require("lodash/debounce");
-
-/***/ }),
 /* 43 */
 /***/ (function(module, exports) {
 
-module.exports = require("url");
+module.exports = require("lodash/debounce");
 
 /***/ })
 /******/ ]);

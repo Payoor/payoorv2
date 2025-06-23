@@ -65,7 +65,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api';
 import jwt_mixin from '@/mixins/jwt_mixin';
 
 export default {
@@ -88,13 +88,15 @@ export default {
     async mounted() {
         const token = await this.getValidToken();
 
+        //console.log(token, 'foolishness')
+
         if (token) {
-            this.getValidUser(token);
+            this.getValidUser();
         } else {
             this.redirectHome();
         }
 
-        //this.$store.dispatch('cart/resetCart');
+        this.$store.dispatch('cart/resetCart');
 
         this.$store.dispatch('cart/initializeCart');
 
@@ -171,28 +173,27 @@ export default {
         goToUserOrders() {
             this.$router.push({ path: '/orders', query: { ...this.$route.query, prevpage: this.$route.path } });
         },
-        async getValidUser(token) {
+        async getValidUser() {
             try {
-                const response = await fetch(`${serverurl}/shopper/auth/validuser?jwttoken=${token}`);
+                const token = localStorage.getItem('jwt')
 
-                if (response.status !== 200) {
-                    this.$store.dispatch('user/removeJwtToken');
+                const data = await handleFetch({
+                    apiroute: 'shopper/auth/validuser',
+                    queries: { jwttoken: token },
+                    method: 'GET'
+                });
 
-                    return this.redirectHome()
-                };
+                const { user } = data;
 
-                await handleFetchError(response)
-
-                const data = await response.json();
-                const { user, message } = data;
-
-                //console.log(user, 'curent user here', message, 'message left');
+                console.log(user)
 
                 this.$store.dispatch('user/setJwtToken', token);
                 this.$store.dispatch('user/addCurrentUser', user);
+
             } catch (error) {
-                console.log(error, 'this is an errro thrown');
-                //return this.redirectHome()
+                console.error('Error fetching valid user:', error);
+                //this.$store.dispatch('user/removeJwtToken');
+                return this.redirectHome();
             }
         },
         toggleSideMenu() {
@@ -231,24 +232,11 @@ export default {
             try {
                 this.$store.dispatch('user/setLoading', true);
 
-                const token = await this.getValidToken();
-
-                if (!token) {
-                    this.$emit('update:authValue', null);
-                    // Remove specific query params
-                    const { unwantedParam1, unwantedParam2, ...cleanQuery } = this.$route.query;
-                    this.$router.push({ path: '/', query: cleanQuery });
-                    return;
-                }
-
-                const response = await fetch(`${serverurl}/shopper/auth/signout`, {
+                await handleFetch({
+                    apiroute: 'shopper/auth/signout',
                     method: 'POST',
-                    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 });
 
-                await handleFetchError(response)
-
-                await response.json();
                 this.$store.dispatch('user/removeJwtToken');
                 this.$store.dispatch('user/removeCurrentUser');
                 this.$emit('update:authValue', null);
@@ -256,13 +244,14 @@ export default {
                 const { email, phoneNumber, name, ...cleanQuery } = this.$route.query;
                 this.$router.push({ path: '/', query: cleanQuery });
 
-                this.$store.dispatch('user/setLoading', false);
             } catch (error) {
                 console.error('Sign out failed:', error.message);
+            } finally {
+                this.$store.dispatch('user/setLoading', false);
             }
         }
     }
-};
+}
 </script>
 
 <style lang="scss" scoped>

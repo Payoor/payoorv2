@@ -21,7 +21,7 @@
 <script>
 import ChatHeader from '@/components/ChatHeader.vue';
 import OrderDisplay from '@/components/OrderDisplay.vue';
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api'
 
 export default {
     name: 'UserOrders',
@@ -47,23 +47,12 @@ export default {
     methods: {
         async fetchOrderById(orderId) {
             try {
-                const { jwt } = this;
-                if (!jwt) return;
+                const data = await handleFetch({
+                    apiroute: 'shopper/user/getorder',
+                    queries: { orderId: orderId }, // Pass orderId as a query parameter
+                    method: 'GET'
+                });
 
-                const response = await fetch(
-                    `${serverurl}/shopper/user/getorder?orderId=${orderId}`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            Authorization: `Bearer ${jwt}`,
-                            'Content-Type': 'application/json',
-                        },
-                    }
-                );
-
-                await handleFetchError(response);
-
-                const data = await response.json();
                 this.singleOrder = data.order;
                 this.singleOrder.cart = data.cart;
             } catch (error) {

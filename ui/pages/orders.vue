@@ -42,7 +42,7 @@
 <script>
 import ChatHeader from '@/components/ChatHeader.vue';
 import OrderDisplay from '@/components/OrderDisplay.vue';
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api';
 
 export default {
     name: 'UserOrders',
@@ -64,29 +64,20 @@ export default {
     },
     methods: {
         async getUserOrders() {
-            this.loading = true; // 👈 Start loading
+            this.loading = true;
 
             try {
-                const { jwt } = this;
-                if (!jwt) return;
-
-                const response = await fetch(`${serverurl}/shopper/user/getorders`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${jwt}`,
-                        'Content-Type': 'application/json',
-                    },
+                const data = await handleFetch({
+                    apiroute: 'shopper/user/getorders',
+                    method: 'GET'
                 });
 
-                await handleFetchError(response)
-
-                const data = await response.json();
                 this.orders = data.orders;
                 this.expanded = this.orders.map(() => false);
             } catch (error) {
-                console.error(error);
+                console.error('Error fetching user orders:', error);
             } finally {
-                this.loading = false; // 👈 End loading
+                this.loading = false;
             }
         },
         toggle(index) {

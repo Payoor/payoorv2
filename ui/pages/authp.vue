@@ -72,7 +72,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api';
 
 export default {
     data() {
@@ -132,36 +132,22 @@ export default {
             this.$store.dispatch('user/setLoading', true);
 
             try {
-                const response = await fetch(`${serverurl}/shopper/auth/mail`, {
+                const data = await handleFetch({
+                    apiroute: 'shopper/auth/mail',
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    },
-                    body: JSON.stringify({
+                    body: {
                         identifier: value
-                    })
+                    }
                 });
 
-                await handleFetchError(response);
+                console.log(data, 'otp sent');
+                this.startResendOtpCounter();
 
-                const status = response.status;
-
-                if (status === 200) {
-                    const data = await response.json();
-                    console.log(data, 'otp sent');
-
-                    this.$store.dispatch('user/setLoading', false);
-
-                    this.startResendOtpCounter();
-                }
             } catch (error) {
-                console.log('there was an error sending the email request')
+                console.error('Error sending OTP request:', error.message);
+                throw error;
+            } finally {
                 this.$store.dispatch('user/setLoading', false);
-                console.error('Network or server error during authentication:', error.message);
-                throw error
             }
         },
         startResendOtpCounter() {

@@ -52,12 +52,12 @@
 </template>
 
 <script>
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api';
 
 export default {
     data() {
         return {
-            paymentMethods: { 
+            paymentMethods: {
                 banipay: 'enabled',
                 paystack: 'enabled',
             },
@@ -69,42 +69,26 @@ export default {
     },
     methods: {
         async getPaymentMethods() {
-            this.loading = true; 
+            this.loading = true;
 
             try {
-                const token = localStorage.getItem('jwt');
-
-                const response = await fetch(
-                    `${serverurl}/shopper/checkout/getpaymentmethods`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'Content-Type': 'application/json',
-                            Origin: window.location.origin,
-                            'Access-Control-Request-Method': 'POST',
-                            'Access-Control-Request-Headers': 'Content-Type'
-                        }
-                    }
-                );
-
-                await handleFetchError(response);
-
-                const data = await response.json();
+                const data = await handleFetch({
+                    apiroute: 'shopper/checkout/getpaymentmethods',
+                    method: 'GET'
+                });
 
                 this.paymentMethods = { ...this.paymentMethods, ...data };
-               // console.log('Payment Methods Status:', this.paymentMethods);
 
             } catch (error) {
                 console.error('Error fetching payment methods:', error);
             } finally {
-                this.loading = false; 
+                this.loading = false;
             }
         },
         createOrderWithPayStack() {
             if (this.paymentMethods.paystack === 'disabled') {
-               // console.log('Paystack is currently disabled.');
-                return; 
+                // console.log('Paystack is currently disabled.');
+                return;
             }
             this.$router.push({
                 path: '/paystack',
@@ -117,7 +101,7 @@ export default {
         createOrderWithBaniPay() {
             if (this.paymentMethods.banipay === 'disabled') {
                 //console.log('Banipay is currently disabled.');
-                return; 
+                return;
             }
             this.$router.push({
                 path: '/banipay',
@@ -173,10 +157,10 @@ export default {
 
     &__body {
         display: flex;
-        flex-direction: column; 
-        align-items: center; 
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
-        min-height: 150px; 
+        min-height: 150px;
     }
 
     &__h1 {
@@ -272,8 +256,13 @@ export default {
     }
 
     @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
     }
 }
 </style>

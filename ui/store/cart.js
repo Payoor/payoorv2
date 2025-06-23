@@ -1,4 +1,4 @@
-import { serverurl, handleFetchError } from '@/api'
+import { serverurl, handleFetchError, handleFetch } from '@/api'
 
 export const state = () => ({
   items: {},
@@ -99,23 +99,12 @@ export const actions = {
     }
 
     try {
-      const token = localStorage.getItem('jwt')
-
-      if (!token) return
-
-      const response = await fetch(`${serverurl}/shopper/initialize`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+      const data = await handleFetch({
+        apiroute: 'shopper/initialize',
+        method: 'POST'
       })
 
-      await handleFetchError(response)
-
-      const data = await response.json()
       const { user_cart, total } = data
-
       const items = user_cart.items || {}
       const totalItems = user_cart.totalItems || []
 
@@ -150,26 +139,15 @@ export const actions = {
         return
       }
 
-      const token = localStorage.getItem('jwt')
-
-      const response = await fetch(`${serverurl}/shopper/cart`, {
+      const data = await handleFetch({
+        apiroute: 'shopper/cart',
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Origin: window.location.origin,
-          'Access-Control-Request-Method': 'POST',
-          'Access-Control-Request-Headers': 'Content-Type'
-        },
-        body: JSON.stringify({
+        body: {
           items: state.items,
           totalItems: state.totalItems
-        })
+        }
       })
 
-      await handleFetchError(response)
-
-      const data = await response.json()
       const { user_cart, total } = data
       const { items, totalItems } = user_cart
 
@@ -183,102 +161,55 @@ export const actions = {
 
   async createCheckout ({ commit, state }) {
     try {
-      const token = localStorage.getItem('jwt')
-
-      const response = await fetch(`${serverurl}/shopper/checkout/create`, {
+      const data = await handleFetch({
+        apiroute: 'shopper/checkout/create',
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Origin: window.location.origin,
-          'Access-Control-Request-Method': 'POST',
-          'Access-Control-Request-Headers': 'Content-Type'
-        },
-        body: JSON.stringify({
+        body: {
           items: state.items
-        })
+        }
       })
-
-      await handleFetchError(response)
-
-      const data = await response.json()
 
       const { checkout } = data
 
       console.log(checkout)
       commit('SET_CHECKOUT', checkout)
     } catch (error) {
-      console.error('Failed to sync cart from localStorage to server:', error)
+      console.error('Failed to create checkout:', error)
     }
   },
 
   async getCheckOutData ({ commit, state }, checkout_id) {
     try {
-      const token = localStorage.getItem('jwt')
-
-      const response = await fetch(
-        `${serverurl}/shopper/checkout/get?checkout_id=${checkout_id}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Origin: window.location.origin,
-            'Access-Control-Request-Method': 'POST',
-            'Access-Control-Request-Headers': 'Content-Type'
-          }
-        }
-      )
-
-      await handleFetchError(response)
-
-      const data = await response.json()
+      const data = await handleFetch({
+        apiroute: 'shopper/checkout/get',
+        method: 'GET',
+        queries: { checkout_id }
+      })
 
       const { checkout } = data
 
       console.log(checkout, 'getCheckOutData')
       commit('SET_CHECKOUT', checkout)
     } catch (error) {
-      console.log(error)
+      console.error('Error fetching checkout data:', error)
     }
   },
 
   async applyPromoCode ({ commit, state }, { code, checkout_id }) {
     try {
-      const token = localStorage.getItem('jwt')
-
-      if (!token) {
-        console.error(
-          'Authentication required to apply coupon: No token found.'
-        )
-        return
-      }
-
       if (!checkout_id) {
         console.error('Checkout ID is missing.')
         return
       }
 
-      const response = await fetch(
-        `${serverurl}/shopper/apply-coupon?checkout_id=${checkout_id}`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Origin: window.location.origin,
-            'Access-Control-Request-Method': 'POST',
-            'Access-Control-Request-Headers': 'Content-Type'
-          },
-          body: JSON.stringify({ coupon_code: code })
-        }
-      )
+      const data = await handleFetch({
+        apiroute: 'shopper/apply-coupon',
+        method: 'POST',
+        queries: { checkout_id },
+        body: { coupon_code: code }
+      })
 
-      await handleFetchError(response)
-
-      const data = await response.json()
-
-      if (response.ok && data.success) {
+      if (data.success) {
         const { updatedCheckout } = data
         console.log(updatedCheckout, 'applyPromoCode success')
         commit('SET_CHECKOUT', updatedCheckout)
@@ -289,7 +220,7 @@ export const actions = {
         )
       }
     } catch (error) {
-      console.log(error)
+      console.error('Error applying promo code:', error)
     }
   }
 }

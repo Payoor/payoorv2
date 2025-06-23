@@ -5,7 +5,7 @@ exports.modules = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(URLSearchParams) {/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* WEBPACK VAR INJECTION */(function(URLSearchParams) {/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   name: 'AdminDashboard',
@@ -67,23 +67,23 @@ exports.modules = {
       formData.append('image', file);
       this.imageUploading = true;
       try {
-        const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/admin/upload-image`, {
+        const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "c"]}/admin/upload-image`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
           },
           body: formData
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(response);
+        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "b"])(response);
         const data = await response.json();
         if (data.url) {
           this.newProduct.image = data.url;
         } else {
-          Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* showErrorMessage */ "c"])('Failed to upload image');
+          Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* showErrorMessage */ "d"])('Failed to upload image');
         }
       } catch (err) {
         console.error('Image upload error:', err);
-        Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* showErrorMessage */ "c"])(err.message || 'Image upload failed');
+        Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* showErrorMessage */ "d"])(err.message || 'Image upload failed');
       } finally {
         this.imageUploading = false;
       }
@@ -102,7 +102,7 @@ exports.modules = {
       }
       this.productSubmitting = true;
       try {
-        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/admin/create-product`, {
+        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "c"]}/admin/create-product`, {
           method: 'POST',
           headers: this.getAuthHeaders(),
           body: JSON.stringify({
@@ -112,7 +112,7 @@ exports.modules = {
             image
           })
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(res);
+        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "b"])(res);
         const data = await res.json();
         if (data.error) return alert(data.error);
         this.products.unshift({
@@ -151,10 +151,10 @@ exports.modules = {
           page: this.page,
           limit: this.limit
         }).toString();
-        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/admin/products-with-variants?${query}`, {
+        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "c"]}/admin/products-with-variants?${query}`, {
           headers: this.getAuthHeaders()
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(res);
+        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "b"])(res);
         const data = await res.json();
         this.products = (data.products || []).map(p => ({
           ...p,
@@ -182,11 +182,11 @@ exports.modules = {
     async deleteProduct(productId) {
       if (!confirm('Are you sure you want to delete this product and its variants?')) return;
       try {
-        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/admin/delete-product/${productId}`, {
+        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "c"]}/admin/delete-product/${productId}`, {
           method: 'DELETE',
           headers: this.getAuthHeaders()
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(res);
+        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "b"])(res);
         if (res.ok) this.products = this.products.filter(p => p._id !== productId);else alert('Failed to delete product');
       } catch (error) {
         console.error('Delete product error:', error);
@@ -195,11 +195,11 @@ exports.modules = {
     async deleteVariant(product, variant) {
       if (!confirm('Delete this variant?')) return;
       try {
-        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/admin/delete-variant/${variant._id}`, {
+        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "c"]}/admin/delete-variant/${variant._id}`, {
           method: 'DELETE',
           headers: this.getAuthHeaders()
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(res);
+        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "b"])(res);
         if (res.ok) {
           product.variants = product.variants.filter(v => v._id !== variant._id);
           product.variantCount--;
@@ -217,12 +217,12 @@ exports.modules = {
           generatedCategories: product.generatedCategoriesString.split(',').map(c => c.trim()),
           synced_to_algolia: product.synced_to_algolia
         };
-        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/admin/update-product/${product._id}`, {
+        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "c"]}/admin/update-product/${product._id}`, {
           method: 'PUT',
           headers: this.getAuthHeaders(),
           body: JSON.stringify(updated)
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(res);
+        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "b"])(res);
       } catch (error) {
         console.error('Update error:', error);
       }
@@ -235,12 +235,12 @@ exports.modules = {
           availability: variant.availability,
           image: variant.image || ''
         };
-        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/admin/update-variant/${variant._id}`, {
+        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "c"]}/admin/update-variant/${variant._id}`, {
           method: 'PUT',
           headers: this.getAuthHeaders(),
           body: JSON.stringify(updated)
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(res);
+        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "b"])(res);
       } catch (error) {
         console.error('Variant update error:', error);
       }
@@ -252,14 +252,14 @@ exports.modules = {
       formData.append('image', file);
       this.$set(this.variantImageUploading, product._id, true);
       try {
-        const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/admin/upload-image`, {
+        const response = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "c"]}/admin/upload-image`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
           },
           body: formData
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(response);
+        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "b"])(response);
         const data = await response.json();
         if (data.url) {
           product.newVariant.image = data.url;
@@ -285,7 +285,7 @@ exports.modules = {
         return;
       }
       try {
-        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "b"]}/admin/add-variant/${product._id}`, {
+        const res = await fetch(`${_api__WEBPACK_IMPORTED_MODULE_0__[/* serverurl */ "c"]}/admin/add-variant/${product._id}`, {
           method: 'POST',
           headers: this.getAuthHeaders(),
           body: JSON.stringify({
@@ -295,7 +295,7 @@ exports.modules = {
             image
           })
         });
-        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "a"])(res);
+        await Object(_api__WEBPACK_IMPORTED_MODULE_0__[/* handleFetchError */ "b"])(res);
         const data = await res.json();
 
         //if (data.error) return alert(data.error);
@@ -309,7 +309,7 @@ exports.modules = {
     }
   }
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(43)["URLSearchParams"]))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(31)["URLSearchParams"]))
 
 /***/ }),
 

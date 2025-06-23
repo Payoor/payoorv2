@@ -66,7 +66,7 @@ var staticRenderFns = [];
 // CONCATENATED MODULE: ./pages/admin/index.vue?vue&type=template&id=57315a92&scoped=true
 
 // EXTERNAL MODULE: ./api.js
-var api = __webpack_require__(1);
+var api = __webpack_require__(2);
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--2-0!./node_modules/@nuxt/components/dist/loader.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./pages/admin/index.vue?vue&type=script&lang=js
 
@@ -93,7 +93,7 @@ var api = __webpack_require__(1);
       this.error = '';
       if (!this.canSubmit) return;
       try {
-        const response = await fetch(`${api["b" /* serverurl */]}/admin/login`, {
+        const response = await fetch(`${api["c" /* serverurl */]}/admin/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -103,7 +103,7 @@ var api = __webpack_require__(1);
             password: this.password
           })
         });
-        await Object(api["a" /* handleFetchError */])(response);
+        await Object(api["b" /* handleFetchError */])(response);
         const data = await response.json();
         if (!response.ok) {
           throw new Error(data.error || 'Login failed');

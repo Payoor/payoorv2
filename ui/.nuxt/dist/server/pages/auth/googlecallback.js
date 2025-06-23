@@ -66,7 +66,7 @@ var staticRenderFns = [];
 // CONCATENATED MODULE: ./pages/auth/googlecallback.vue?vue&type=template&id=7b948869&scoped=true
 
 // EXTERNAL MODULE: ./api.js
-var api = __webpack_require__(1);
+var api = __webpack_require__(2);
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--2-0!./node_modules/@nuxt/components/dist/loader.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./pages/auth/googlecallback.vue?vue&type=script&lang=js
 

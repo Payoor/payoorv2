@@ -1,4 +1,4 @@
-import { serverurl, handleFetchError } from '@/api'
+import { handleFetch } from '@/api'
 
 export const state = () => ({
   currentUser: {
@@ -81,7 +81,6 @@ export const actions = {
 
   async setUserName ({ commit, dispatch }, name) {
     commit('SET_USER_NAME', name)
-
     await dispatch('updateUserDetails')
   },
 
@@ -97,30 +96,14 @@ export const actions = {
     commit('SET_LOADING', true)
 
     try {
-      const token = localStorage.getItem('jwt')
-
-      const response = await fetch(
-        `${serverurl}/shopper/auth/updatedetails/phonenumber`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Origin: window.location.origin,
-            'Access-Control-Request-Method': 'POST',
-            'Access-Control-Request-Headers': 'Content-Type'
-          },
-          body: JSON.stringify({
-            phoneNumber
-          })
+      const data = await handleFetch({
+        apiroute: 'shopper/auth/updatedetails/phonenumber',
+        method: 'POST',
+        body: {
+          phoneNumber
         }
-      )
+      })
 
-      commit('SET_LOADING', false)
-
-      await handleFetchError(response)
-
-      const data = await response.json()
       const { user } = data
 
       if (user.phoneNumber) {
@@ -133,9 +116,10 @@ export const actions = {
 
       return data
     } catch (error) {
-      commit('SET_LOADING', false)
       console.error('Error during phone number update:', error)
       throw error
+    } finally {
+      commit('SET_LOADING', false)
     }
   },
 
@@ -143,30 +127,14 @@ export const actions = {
     commit('SET_LOADING', true)
 
     try {
-      const token = localStorage.getItem('jwt')
-
-      const response = await fetch(
-        `${serverurl}/shopper/auth/updatedetails/name`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            Origin: window.location.origin,
-            'Access-Control-Request-Method': 'POST',
-            'Access-Control-Request-Headers': 'Content-Type'
-          },
-          body: JSON.stringify({
-            name
-          })
+      const data = await handleFetch({
+        apiroute: 'shopper/auth/updatedetails/name',
+        method: 'POST',
+        body: {
+          name
         }
-      )
+      })
 
-      commit('SET_LOADING', false)
-
-      await handleFetchError(response)
-
-      const data = await response.json()
       const { user } = data
 
       if (user.name) {
@@ -185,9 +153,10 @@ export const actions = {
 
       return data
     } catch (error) {
-      commit('SET_LOADING', false)
-      console.error('Error during phone number update:', error)
+      console.error('Error during name update:', error) // Corrected console error message
       throw error
+    } finally {
+      commit('SET_LOADING', false)
     }
   },
 
@@ -213,27 +182,16 @@ export const actions = {
     try {
       commit('SET_LOADING', true)
 
-      const token = localStorage.getItem('jwt')
-
-      const response = await fetch(`${serverurl}/shopper/auth/updatedetails`, {
+      const data = await handleFetch({
+        apiroute: 'shopper/auth/updatedetails',
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Origin: window.location.origin,
-          'Access-Control-Request-Method': 'POST',
-          'Access-Control-Request-Headers': 'Content-Type'
-        },
-        body: JSON.stringify({
+        body: {
           name: state.currentUser.name,
           phoneNumber: state.currentUser.phoneNumber,
           email: state.currentUser.email
-        })
+        }
       })
 
-      await handleFetchError(response)
-
-      const data = await response.json()
       const { user } = data
 
       if (user.name) {

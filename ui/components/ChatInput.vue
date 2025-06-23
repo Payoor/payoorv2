@@ -41,7 +41,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 import product_mixin from "@/mixins/product_mixin";
 
@@ -100,24 +100,6 @@ export default {
     },
     mounted() {
         const message = this.$route.query.message;
-
-        /*const token = localStorage.getItem('jwt')
-
-        if (this.$route.name === 'authp') {
-            const { email, phoneNumber, name } = this.$route.query;
-
-            if (phoneNumber) {
-                this.$store.dispatch('user/setUserPhoneNumber', phoneNumber);
-            }
-
-            if (name) {
-                this.$store.dispatch('user/setUserName', name);
-            }
-
-            if (email) {
-                this.$store.dispatch('user/setUserEmail', email);
-            }
-        }*/
 
         if (message) {
             this.postMessageFromQuery(message);
@@ -217,80 +199,46 @@ export default {
             }
         },
         async postMessageToServer() {
-            const token = await this.getValidToken();
-            if (this.setLoading) this.setLoading(true);
-
             try {
-                const response = await fetch(`${serverurl}/shopper/message`, {
+                const data = await handleFetch({
+                    apiroute: 'shopper/message',
                     method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    },
-                    body: JSON.stringify({ message: this.userinput })
+                    body: { message: this.userinput },
                 });
 
-                await handleFetchError(response)
+                const { products } = data;
 
-                if (response.status === 200 || response.status === 201) {
-                    const data = await response.json();
-                    const { products } = data;
+                this.$emit("update:products", [...this.products, ...products]);
 
-                    this.$emit("update:products", [...this.products, ...products]);
+                this.$router.replace({
+                    path: this.$route.path,
+                    query: {
+                        ...this.$route.query,
+                        message: this.userinput
+                    }
+                });
 
-                    this.$router.replace({
-                        path: this.$route.path,
-                        query: {
-                            ...this.$route.query,
-                            message: this.userinput
-                        }
-                    });
-
-                    this.userinput = "";
-                    this.$nextTick(() => this.autoResize());
-                }
+                this.userinput = "";
+                this.$nextTick(() => this.autoResize());
             } catch (error) {
-                console.error(error);
-                // Propagate error to sendMessage's catch block if this component doesn't handle it fully
-                throw error;
-            } finally {
-                if (this.setLoading) this.setLoading(false);
+                console.log(error, 'error catcher needs to be placed here');
             }
         },
         async postMessageFromQuery(message) {
-            const token = await this.getValidToken();
-
-            if (!token) return;
-
             if (this.setLoading) this.setLoading(true);
 
             try {
-                const response = await fetch(`${serverurl}/shopper/message`, {
+                const data = await handleFetch({
+                    apiroute: 'shopper/message',
                     method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    },
-                    body: JSON.stringify({ message })
+                    body: { message }
                 });
 
-                await handleFetchError(response)
+                const { products } = data;
+                this.$emit("update:products", [...this.products, ...products]);
 
-                if (response.status === 200 || response.status === 201) {
-                    const data = await response.json();
-                    const { products } = data;
-
-                    this.$emit("update:products", [...this.products, ...products]);
-                }
             } catch (error) {
                 console.error(error);
-                // Propagate error to sendMessage's catch block if this component doesn't handle it fully
                 throw error;
             } finally {
                 if (this.setLoading) this.setLoading(false);

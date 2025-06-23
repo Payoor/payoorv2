@@ -227,14 +227,28 @@ shopperRoute.post(
   authMiddleware,
   async (req, res, next) => {
     try {
-      const { jwt, checkoutId } = req.query
+      const { checkoutId } = req.query;
+      const userId = req.userId
       const { checkout } = req.body
 
-      const validUser = await User.findByToken(jwt)
+      if (!checkoutId || !userId || !checkout) {
+        return res
+          .status(400)
+          .json({
+            userMessage:
+              'Missing required parameters: checkoutId, checkout data, or user ID.'
+          })
+      }
+
+      const validUser = await User.findById(new ObjectId(userId))
 
       if (!validUser) {
-        return res.status(404).json({ userMessage: 'invalid user' })
+        return res
+          .status(401)
+          .json({ userMessage: 'Unauthorized: User not found.' })
       }
+
+      console.log('found a valid user')
 
       const allowedUpdateFields = [
         'delivery_address',
@@ -244,7 +258,7 @@ shopperRoute.post(
         'phone_number'
       ]
 
-      const updateData = {}
+      const updateData = {};
 
       for (const key of allowedUpdateFields) {
         if (checkout.hasOwnProperty(key)) {
@@ -252,7 +266,6 @@ shopperRoute.post(
         }
       }
 
-      // Handle promo code logic if it's being updated
       if (updateData.promo_code && typeof updateData.promo_code === 'string') {
         const coupon = await CouponClass.getCoupon(updateData.promo_code)
 
@@ -283,8 +296,9 @@ shopperRoute.post(
       res.status(200).json({
         message: 'Checkout data updated successfully',
         updatedCheckout: updatedCheckout
-      })
+      });
     } catch (error) {
+      console.error('Error in /shopper/update/checkout route:', error)
       next(error)
     }
   }
@@ -966,7 +980,7 @@ shopperRoute.post(
 
       let subTotal = 0
 
-      const productPriceMap = new Map();
+      const productPriceMap = new Map()
 
       productVariants.forEach(variant => {
         productPriceMap.set(variant._id.toString(), variant.price)

@@ -189,7 +189,8 @@
                     <div class="checkout__content--body">
                         <button class="button-primary" v-if="allowOrderCreation" @click="createOrder"
                             :class="{ 'disabled-btn': loading }">
-                            {{ loading ? applyingCoupon ? 'Applying Coupon' : 'Creating your order...' : `Confirm Order` }}
+                            {{ loading ? applyingCoupon ? 'Applying Coupon' : 'Creating your order...' : `Confirm Order`
+                            }}
                         </button>
                         <!--<button class="button-primary" v-if="allowOrderCreation" @click="toggleProcessorChoice"
                             :class="{ 'disabled-btn': loading }">
@@ -207,7 +208,7 @@
 </template>
 
 <script>
-import { serverurl, handleFetchError, showErrorMessage } from '@/api';
+import { handleFetch } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 import { mapState } from "vuex";
 
@@ -308,23 +309,15 @@ export default {
         },
         async reverseGeocode({ latitude, longitude }) {
             try {
-                const token = localStorage.getItem('jwt');
-
-                const response = await fetch(`${serverurl}/shopper/google/use-current-location?lat=${latitude}&lng=${longitude}`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
+                const data = await handleFetch({
+                    apiroute: 'shopper/google/use-current-location',
+                    queries: { lat: latitude, lng: longitude },
+                    method: 'GET'
                 });
-
-                const data = await response.json();
-
-                await handleFetchError(response);
 
                 const { address, filteredResults } = data.data;
 
-                this.selectAddressFromList(address, 'delivery_address')
+                this.selectAddressFromList(address, 'delivery_address');
 
                 return data.data;
             } catch (err) {
@@ -415,31 +408,16 @@ export default {
                     delivery_instruction: this.delivery_instruction.trim(),
                     promo_code: this.promo_code.trim(),
                     phone_number: this.phone_number.trim(),
-                    //subtotal: this.subtotal,
-                    //delivery_fee: this.delivery_fee,
-                    //service_charge: this.service_charge,
-                    //total: this.total
                 };
 
                 this.loading = true;
 
-                const validToken = await this.getValidToken();
-
-                const response = await fetch(`${serverurl}/shopper/update/checkout?jwt=${this.validToken}&checkoutId=${checkoutId}`, {
+                const data = await handleFetch({
+                    apiroute: 'shopper/update/checkout',
+                    queries: { checkoutId: checkoutId },
                     method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${validToken}`,
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    },
-                    body: JSON.stringify({ checkout: finalCheckout })
+                    body: { checkout: finalCheckout },
                 });
-
-                await handleFetchError(response)
-
-                const data = await response.json();
 
                 const { updatedCheckout } = data;
 
@@ -454,7 +432,7 @@ export default {
                     }
                 });
             } catch (error) {
-                console.log(error)
+                console.error('Error creating order:', error);
             }
         },
         faint(value) {

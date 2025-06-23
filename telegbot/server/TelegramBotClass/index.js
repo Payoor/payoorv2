@@ -12,14 +12,14 @@ import Product from '../models/Product'
 import ProductVariant from '../models/ProductVariant'
 
 const BOT_USERNAME = `alertpabot`
-const PAYOOR_URL = process.env.PAYOOR_URL
+const PAYOOR_URL = process.env.PAYOOR_URL;
 
 function parseTtlToSeconds (input) {
   const match = input.match(/^([0-9]+)([smhdw])$/i)
   if (!match) return null
 
-  const value = parseInt(match[1])
-  const unit = match[2].toLowerCase()
+  const value = parseInt(match[1]);
+  const unit = match[2].toLowerCase();
 
   switch (unit) {
     case 's':
@@ -54,7 +54,7 @@ export class TelegramBotClass {
       const messageText = msg.text.toLowerCase().trim()
       const parts = messageText.split(' ')
       const args = parts.slice(1)
-      const command = parts[0]?.toLowerCase()
+      const command = parts[0]?.toLowerCase();
       const arg1 = args[0]?.trim()
       const arg2 = args[1]?.trim()
 

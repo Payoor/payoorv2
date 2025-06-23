@@ -11,7 +11,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api';
 
 export default {
     name: "OtpInputs",
@@ -100,51 +100,34 @@ export default {
 
                 const otpDigits = this.otpDigits.join("");
 
-                const response = await fetch(`${serverurl}/shopper/auth/verifyotp`, {
+                const data = await handleFetch({
+                    apiroute: 'shopper/auth/verifyotp',
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Origin': window.location.origin,
-                        'Access-Control-Request-Method': 'POST',
-                        'Access-Control-Request-Headers': 'Content-Type'
-                    },
-                    body: JSON.stringify({
+                    body: {
                         submittedOtp: otpDigits
-                    })
+                    }
                 });
 
-                await handleFetchError(response)
+                const { user } = data;
+                const { token } = user;
 
-                const status = response.status;
+                this.$store.dispatch('user/setJwtToken', token);
+                this.$store.dispatch('user/addCurrentUser', user);
 
-                if (status === 200) {
-                    this.$store.dispatch('user/setLoading', false);
-
-                    const data = await response.json();
-
-                    const { user } = data;
-
-                    const { token } = user;
-
-                    this.$store.dispatch('user/setJwtToken', token);
-
-                    this.$store.dispatch('user/addCurrentUser', user);
-
-                    console.log(user, 'user, just user')
-
-                    if (token && this.currentUser.name && this.currentUser.phoneNumber) {
-                        const { email, phoneNumber, name, ...cleanQuery } = this.$route.query;
-                        this.$router.push({ path: '/', query: cleanQuery });
-                    }
+                if (token && this.currentUser.name && this.currentUser.phoneNumber) {
+                    const { email, phoneNumber, name, ...cleanQuery } = this.$route.query;
+                    this.$router.push({ path: '/', query: cleanQuery });
                 }
+
             } catch (error) {
-                this.$store.dispatch('user/setLoading', false);
                 this.otpDigits = Array(this.otpLength).fill("");
                 this.loading = false;
-                console.error('Network or server error during authentication:', error.message);
+                console.error('Error during OTP verification:', error.message);
                 throw error;
+            } finally {
+                this.$store.dispatch('user/setLoading', false);
             }
-        },
+        }
     },
 };
 </script>

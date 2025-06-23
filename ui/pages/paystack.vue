@@ -20,7 +20,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverurl, handleFetchError } from '@/api';
+import { handleFetch } from '@/api'
 import jwt_mixin from "@/mixins/jwt_mixin";
 
 export default {
@@ -37,27 +37,18 @@ export default {
     methods: {
         async generatePaymentLink() {
             try {
-                const validToken = await this.getValidToken();
                 const checkout_id = this.$route.query.checkout_id;
 
-                const response = await fetch(`${serverurl}/shopper/paystack/generate-paystack-link?checkout_id=${checkout_id}`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${validToken}`,
-                        'Content-Type': 'application/json'
-                    },
+                const data = await handleFetch({
+                    apiroute: 'shopper/paystack/generate-paystack-link',
+                    queries: { checkout_id },
+                    method: 'GET'
                 });
 
-                await handleFetchError(response)
-
-                const data = await response.json();
                 const paystackdata = data.data;
-
-                const { authorizationUrl, reference, accessCode } = paystackdata
+                const { authorizationUrl, reference, accessCode } = paystackdata;
 
                 this.authorizationUrl = authorizationUrl;
-
-                console.log('Paystack link generated:', authorizationUrl, reference, accessCode);
             } catch (error) {
                 console.error('Network or server error:', error);
                 this.authorizationUrl = null;
