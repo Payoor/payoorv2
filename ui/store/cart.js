@@ -118,13 +118,21 @@ export const actions = {
     }
   },
 
-  resetCart ({ commit }) {
+  async resetCart ({ commit, state }) {
+    if (state.cartResetPerformed) {
+      //console.log('Cart reset already performed. Skipping action.')
+      return
+    }
+
     commit('RESET_CART_STATE')
+    commit('SET_CART_RESET_PERFORMED', true)
 
     try {
+      localStorage.setItem('cartResetPerformed', 'true')
       localStorage.removeItem('cartItems')
       localStorage.removeItem('cartTotal')
       localStorage.removeItem('cartLength')
+      console.log('Cart successfully reset and flag set.')
     } catch (err) {
       console.error('Failed to clear cart from localStorage:', err)
     }
