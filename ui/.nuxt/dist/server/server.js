@@ -204,12 +204,13 @@ async function handleFetch({
   apiroute,
   queries = {},
   body,
-  method = 'GET'
+  method = 'GET',
+  auth = false
 }) {
   try {
     let url = `${serverurl}/${apiroute}`;
     const token = localStorage.getItem('jwt');
-    if (!token) return;
+    if (!token && !auth) return;
     const options = {
       method,
       headers: {

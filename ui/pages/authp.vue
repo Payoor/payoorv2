@@ -137,7 +137,8 @@ export default {
                     method: 'POST',
                     body: {
                         identifier: value
-                    }
+                    },
+                    auth: true
                 });
 
                 console.log(data, 'otp sent');

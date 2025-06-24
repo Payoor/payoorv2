@@ -105,7 +105,8 @@ export default {
                     method: 'POST',
                     body: {
                         submittedOtp: otpDigits
-                    }
+                    },
+                    auth: true
                 });
 
                 const { user } = data;
