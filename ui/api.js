@@ -95,6 +95,8 @@ export async function handleFetch ({
     let url = `${serverurl}/${apiroute}`
     const token = localStorage.getItem('jwt')
 
+    if (!token) return
+
     const options = {
       method,
       headers: {

@@ -23,7 +23,7 @@ authRoute.post(
   authMiddleware,
   AuthClass.updatePhoneNumber
 );
-
+ 
 authRoute.post(
   '/shopper/auth/updatedetails/name',
   authMiddleware,
