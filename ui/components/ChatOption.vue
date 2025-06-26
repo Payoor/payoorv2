@@ -107,9 +107,9 @@ export default {
         if (this.mongooseid) {
             this.quantity = this.cartItems[this.mongooseid] ? this.cartItems[this.mongooseid] : 0
         } else {
-            const cartItems = JSON.parse(localStorage.getItem('cartItems') || '{}');
+            //const cartItems = JSON.parse(localStorage.getItem('cartItems') || '{}');
 
-            this.quantity = cartItems[this.data._id] ? cartItems[this.data._id] : 0
+            this.quantity = this.cartItems[this.data._id] ? this.cartItems[this.data._id] : 0
         }
     },
     computed: {
@@ -206,7 +206,7 @@ export default {
 
             //  console.log(typeof this.option.price, 'this.price')
 
-            this.$store.dispatch("cart/addItem", { id: this.option._id, quantity: this.quantity, price: this.option.price });
+            this.$store.dispatch("cart/addItemAndPersist", { id: this.option._id, quantity: this.quantity, price: this.option.price });
 
             //this.syncCartToLocalStorage()
         },
@@ -214,7 +214,7 @@ export default {
             if (this.quantity > 0) {
                 this.quantity--;
 
-                this.$store.dispatch("cart/removeItem", { id: this.option._id, quantity: this.quantity, price: this.option.price });
+                this.$store.dispatch("cart/removeItemAndPersist", { id: this.option._id, quantity: this.quantity, price: this.option.price });
             }
 
             //this.syncCartToLocalStorage()
@@ -223,7 +223,7 @@ export default {
             if (this.quantity > 0) {
                 this.quantity = 0;
 
-                this.$store.dispatch("cart/removeItem", { id: this.option._id, quantity: this.quantity, price: this.option.price });
+                this.$store.dispatch("cart/removeItemAndPersist", { id: this.option._id, quantity: this.quantity, price: this.option.price });
             }
 
             //this.syncCartToLocalStorage()

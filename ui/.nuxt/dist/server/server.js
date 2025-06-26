@@ -947,7 +947,8 @@ const state = () => ({
   items: {},
   total: 0,
   totalItems: [],
-  checkout: null
+  checkout: null,
+  payoorDBInstance: null
 });
 const mutations = {
   ADD_ITEM(state, {
@@ -1002,11 +1003,22 @@ const mutations = {
   },
   RESET_CHECKOUT(state) {
     state.checkout = null;
+  },
+  SET_PAYOOR_DB_INSTANCE(state, dbInstance) {
+    state.payoorDBInstance = dbInstance;
+    console.log(state.payoorDBInstance, 'state.payoorDBInstance');
   }
 };
 const actions = {
-  addItem({
-    commit
+  /*async addItem ({ commit }, payload) {
+    const { id, quantity, price } = payload
+     await commit('ADD_ITEM', { id, quantity, price });
+  },*/
+
+  async addItemAndPersist({
+    state,
+    commit,
+    dispatch
   }, payload) {
     const {
       id,
@@ -1018,6 +1030,16 @@ const actions = {
       quantity,
       price
     });
+    const itemToPersist = {
+      id: id,
+      quantity: state.items[id],
+      price: price
+    };
+    try {
+      await dispatch('putCartItem', itemToPersist);
+    } catch (error) {
+      console.error('Failed to persist item to IndexedDB:', error);
+    }
   },
   removeItem({
     commit
@@ -1031,6 +1053,143 @@ const actions = {
       id,
       quantity,
       price
+    });
+  },
+  async removeItemAndPersist({
+    state,
+    commit,
+    dispatch
+  }, payload) {
+    const {
+      id,
+      quantity,
+      price
+    } = payload;
+    const oldQuantity = state.items[id] || 0;
+    commit('REMOVE_ITEM', {
+      id,
+      quantity,
+      price
+    });
+    const newQuantity = state.items[id];
+    console.log(newQuantity, typeof newQuantity);
+    try {
+      if (newQuantity === undefined || newQuantity === 0) {
+        await dispatch('deleteCartItem', id);
+      } else {
+        await dispatch('putCartItem', {
+          id: id,
+          quantity: newQuantity,
+          price: price
+        });
+      }
+    } catch (error) {
+      console.error('Failed to persist item removal/update to IndexedDB:', error);
+      commit('ADD_ITEM', {
+        id,
+        quantity: oldQuantity,
+        price
+      });
+    }
+  },
+  async clearAllCartItems({
+    state,
+    dispatch,
+    commit
+  }) {
+    if (!state.payoorDBInstance) {
+      console.warn('IndexedDB database instance not ready. Cannot clear cart.');
+      throw new Error('IndexedDB not initialized or ready.');
+    }
+    const db = state.payoorDBInstance;
+    const transaction = db.transaction(['payoor_cart'], 'readwrite');
+    const store = transaction.objectStore('payoor_cart');
+    return new Promise((resolve, reject) => {
+      const request = store.clear();
+      request.onsuccess = () => {
+        console.log('All items cleared from IndexedDB.');
+        dispatch('resetCart'); // Reset Vuex state as well
+        resolve();
+      };
+      request.onerror = () => {
+        console.error('Error clearing all items from IndexedDB:', request.error);
+        reject(request.error);
+      };
+    });
+  },
+  async deleteCartItem({
+    state
+  }, id) {
+    if (!state.payoorDBInstance) {
+      console.warn('IndexedDB database instance not ready. Cannot delete item.');
+      return;
+    }
+    const db = state.payoorDBInstance;
+    const transaction = db.transaction(['payoor_cart'], 'readwrite');
+    const store = transaction.objectStore('payoor_cart');
+    return new Promise((resolve, reject) => {
+      const request = store.delete(id);
+      request.onsuccess = () => {
+        console.log('Item deleted from IndexedDB successfully:', id);
+        resolve();
+      };
+      request.onerror = () => {
+        console.error('Error deleting item from IndexedDB:', request.error);
+        reject(request.error);
+      };
+    });
+  },
+  async loadCartFromIndexedDB({
+    commit,
+    dispatch,
+    state
+  }) {
+    // Check if DB is already initialized. If not, dispatch the initialization and await it.
+    if (!state.payoorDBInstance) {
+      console.log('IndexedDB instance not yet available. Initializing...');
+      try {
+        await dispatch('initializePayoorDB');
+        console.log('IndexedDB initialized, proceeding to load cart.');
+      } catch (error) {
+        console.error('Failed to initialize IndexedDB:', error);
+        // If initialization fails, we cannot proceed with loading from DB.
+        // This error will be handled by the outer try-catch in initializeCart.
+        throw error; // Re-throw to propagate the failure.
+      }
+    }
+
+    // After awaiting, state.payoorDBInstance should now be available if initialization was successful.
+    if (!state.payoorDBInstance) {
+      console.error('IndexedDB instance still not available after initialization attempt. This should not happen if initializePayoorDB resolves correctly.');
+      return; // Cannot proceed without DB
+    }
+    const db = state.payoorDBInstance;
+    const transaction = db.transaction(['payoor_cart'], 'readonly');
+    const store = transaction.objectStore('payoor_cart');
+    return new Promise((resolve, reject) => {
+      const request = store.getAll();
+      request.onsuccess = () => {
+        const itemsFromDB = request.result;
+        const items = {};
+        let total = 0;
+        const totalItems = [];
+        itemsFromDB.forEach(item => {
+          items[item.id] = item.quantity;
+          total += item.price * item.quantity;
+          totalItems.push(item.id);
+        });
+        commit('SET_CART_STATE', {
+          items: items,
+          total: total,
+          totalItems: [...new Set(totalItems)] // Ensure unique IDs
+        });
+        console.log('Cart loaded from IndexedDB:', itemsFromDB);
+        resolve(itemsFromDB);
+      };
+      request.onerror = () => {
+        console.error('Error loading cart from IndexedDB:', request.error);
+        reject(request.error);
+      };
     });
   },
   async initializeCart({
@@ -1212,6 +1371,113 @@ const actions = {
     } catch (error) {
       console.error('Error applying promo code:', error);
     }
+  },
+  /*async initializePayoorDB ({ commit }) {
+    const PAYOOR_DB = 'PAYOOR_DB'
+    const DB_VERSION = 1
+     const request = indexedDB.open(PAYOOR_DB, DB_VERSION)
+     request.onupgradeneeded = function (event) {
+      const db = event.target.result
+       if (!db.objectStoreNames.contains('payoor_cart')) {
+        db.createObjectStore('payoor_cart', { keyPath: 'id' })
+        console.log('Object store "payoor_cart" created.')
+      }
+    }
+     request.onsuccess = function (event) {
+      const dbInstance = event.target.result
+       commit('SET_PAYOOR_DB_INSTANCE', dbInstance)
+    }
+     request.onerror = function (event) {
+      /*const errorReport = {
+        message: error.message,
+        name: error.name,
+        code: event.target.errorCode,
+        userAgent: navigator.userAgent, // Browser and OS details
+        timestamp: new Date().toISOString(),
+        // Potentially more context like current page, user ID (if authenticated)
+      };
+      //might need to send a report to our server here as well as browser version of client
+    }
+  },*/
+
+  async initializePayoorDB({
+    commit
+  }) {
+    const PAYOOR_DB = 'PAYOOR_DB';
+    const DB_VERSION = 2; // Increment this version if you change your database schema
+
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(PAYOOR_DB, DB_VERSION);
+      request.onupgradeneeded = function (event) {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains('payoor_cart')) {
+          // Create the 'payoor_cart' object store.
+          // 'id' is set as the keyPath, meaning each object stored must have an 'id' property,
+          // and its value will serve as the unique primary key for that record.
+          db.createObjectStore('payoor_cart', {
+            keyPath: 'id'
+          });
+          console.log('IndexedDB object store "payoor_cart" created/upgraded successfully.');
+        }
+        // If you needed to add new object stores or indexes in a future version,
+        // you'd add more `if (!db.objectStoreNames.contains('another_store'))` blocks here.
+      };
+
+      // onsuccess: This event fires when the database is successfully opened
+      // (either after creation/upgrade or just a regular open).
+      request.onsuccess = function (event) {
+        // The `dbInstance` is the actual IDBDatabase object, which is your connection
+        // to the IndexedDB.
+        const dbInstance = event.target.result;
+        console.log('IndexedDB database "PAYOOR_DB" opened successfully.');
+
+        // Commit the database instance to the Vuex state.
+        commit('SET_PAYOOR_DB_INSTANCE', dbInstance);
+        resolve(dbInstance); // Resolve the promise with the DB instance
+      };
+
+      // onerror: This event fires if there's any error during the database opening process.
+      request.onerror = function (event) {
+        const error = event.target.error;
+        console.error('IndexedDB error:', error.name, error.message, event.target.errorCode);
+
+        // Commit the error to the Vuex state for potential UI display or logging
+        commit('SET_DB_ERROR', error);
+        const errorReport = {
+          message: error.message,
+          name: error.name,
+          code: event.target.errorCode,
+          userAgent: navigator.userAgent,
+          // Browser and OS details
+          timestamp: new Date().toISOString()
+        };
+        console.warn('Simulating sending error report to server:', errorReport);
+        reject(error);
+      };
+    });
+  },
+  async putCartItem({
+    state,
+    commit
+  }, item) {
+    if (!state.payoorDBInstance) {
+      console.warn('IndexedDB database instance not ready. Cannot put item.');
+      return;
+    }
+    const db = state.payoorDBInstance;
+    const transaction = db.transaction(['payoor_cart'], 'readwrite');
+    const store = transaction.objectStore('payoor_cart');
+    return new Promise((resolve, reject) => {
+      const request = store.put(item);
+      request.onsuccess = () => {
+        console.log('Item added/updated in IndexedDB successfully:', item);
+        resolve(request.result);
+      };
+      request.onerror = () => {
+        console.error('Error adding/updating item in IndexedDB:', request.error);
+        reject(request.error);
+      };
+    });
   }
 };
 

@@ -98,7 +98,9 @@ export default {
 
         //this.$store.dispatch('cart/resetCart');
 
-        //this.$store.dispatch('cart/initializeCart');
+        await this.$store.dispatch('cart/loadCartFromIndexedDB');
+
+        //this.$store.dispatch('cart/clearAllCartItems');
 
         const routeStack = this.getRouteStack();
 
