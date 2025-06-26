@@ -40,9 +40,6 @@ var _require = require('@aws-sdk/client-s3'),
   PutObjectCommand = _require.PutObjectCommand,
   DeleteObjectCommand = _require.DeleteObjectCommand;
 var crypto = require('crypto');
-
-//import telegramBot from '../TelegramBotClass'
-
 var ObjectId = _mongoose["default"].Types.ObjectId;
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();

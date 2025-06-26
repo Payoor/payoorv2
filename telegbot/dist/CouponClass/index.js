@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 var _crypto = _interopRequireDefault(require("crypto"));
-var _redisconf = require("../redisconf");
+var _RedisManager = _interopRequireDefault(require("../RedisManager"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
 function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { if (r) i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n;else { var o = function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); }; o("next", 0), o("throw", 1), o("return", 2); } }, _regeneratorDefine2(e, r, n, t); }
@@ -72,7 +72,7 @@ var CouponClass = /*#__PURE__*/function () {
             case 6:
               key = "coupon:type:".concat(type);
               _context.n = 7;
-              return _redisconf.redisClient.exists(key);
+              return _RedisManager["default"].exists(key);
             case 7:
               exists = _context.v;
               if (!exists) {
@@ -89,12 +89,12 @@ var CouponClass = /*#__PURE__*/function () {
                   flat: discount.flat || null,
                   freeDelivery: discount.freeDelivery || false
                 }
-              }; // Save the type config
+              };
               _context.n = 9;
-              return _redisconf.redisClient.set(key, JSON.stringify(config));
+              return _RedisManager["default"].setJSON(key, config);
             case 9:
               _context.n = 10;
-              return _redisconf.redisClient.sadd('coupon:types', type);
+              return _RedisManager["default"].sadd('coupon:types', type);
             case 10:
               return _context.a(2, {
                 success: true,
@@ -109,15 +109,11 @@ var CouponClass = /*#__PURE__*/function () {
       }
       return createCouponType;
     }()
-    /**
-     * Generate a coupon under a specific type.
-     * TTL is fetched from the type configuration.
-     */
   }, {
     key: "createCoupon",
-    value: (function () {
+    value: function () {
       var _createCoupon = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(type) {
-        var typeKey, typeData, _JSON$parse, ttl, code, couponKey, metadata;
+        var typeKey, typeData, ttl, code, couponKey, metadata;
         return _regenerator().w(function (_context2) {
           while (1) switch (_context2.n) {
             case 0:
@@ -129,7 +125,7 @@ var CouponClass = /*#__PURE__*/function () {
             case 1:
               typeKey = "coupon:type:".concat(type);
               _context2.n = 2;
-              return _redisconf.redisClient.get(typeKey);
+              return _RedisManager["default"].getJSON(typeKey);
             case 2:
               typeData = _context2.v;
               if (typeData) {
@@ -138,7 +134,7 @@ var CouponClass = /*#__PURE__*/function () {
               }
               throw new Error('Coupon type does not exist');
             case 3:
-              _JSON$parse = JSON.parse(typeData), ttl = _JSON$parse.ttl;
+              ttl = typeData.ttl;
               code = CouponClass._generateCode();
               couponKey = "coupon:code:".concat(code);
               metadata = {
@@ -147,10 +143,10 @@ var CouponClass = /*#__PURE__*/function () {
                 redeemed: false
               };
               _context2.n = 4;
-              return _redisconf.redisClient.set(couponKey, JSON.stringify(metadata), 'EX', ttl);
+              return _RedisManager["default"].setJSON(couponKey, metadata, ttl);
             case 4:
               _context2.n = 5;
-              return _redisconf.redisClient.sadd("coupon:type:".concat(type, ":codes"), code);
+              return _RedisManager["default"].sadd("coupon:type:".concat(type, ":codes"), code);
             case 5:
               return _context2.a(2, {
                 code: code,
@@ -164,27 +160,21 @@ var CouponClass = /*#__PURE__*/function () {
         return _createCoupon.apply(this, arguments);
       }
       return createCoupon;
-    }())
+    }()
   }, {
     key: "getCoupon",
     value: function () {
       var _getCoupon = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(code) {
-        var couponKey, raw;
+        var couponKey, coupon;
         return _regenerator().w(function (_context3) {
           while (1) switch (_context3.n) {
             case 0:
               couponKey = "coupon:code:".concat(code);
               _context3.n = 1;
-              return _redisconf.redisClient.get(couponKey);
+              return _RedisManager["default"].getJSON(couponKey);
             case 1:
-              raw = _context3.v;
-              if (raw) {
-                _context3.n = 2;
-                break;
-              }
-              return _context3.a(2, null);
-            case 2:
-              return _context3.a(2, JSON.parse(raw));
+              coupon = _context3.v;
+              return _context3.a(2, coupon);
           }
         }, _callee3);
       }));
@@ -197,22 +187,21 @@ var CouponClass = /*#__PURE__*/function () {
     key: "redeemCoupon",
     value: function () {
       var _redeemCoupon = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(code) {
-        var couponKey, raw, coupon;
+        var couponKey, coupon;
         return _regenerator().w(function (_context4) {
           while (1) switch (_context4.n) {
             case 0:
               couponKey = "coupon:code:".concat(code);
               _context4.n = 1;
-              return _redisconf.redisClient.get(couponKey);
+              return _RedisManager["default"].getJSON(couponKey);
             case 1:
-              raw = _context4.v;
-              if (raw) {
+              coupon = _context4.v;
+              if (coupon) {
                 _context4.n = 2;
                 break;
               }
               throw new Error('Invalid or expired coupon code');
             case 2:
-              coupon = JSON.parse(raw);
               if (!coupon.redeemed) {
                 _context4.n = 3;
                 break;
@@ -222,9 +211,7 @@ var CouponClass = /*#__PURE__*/function () {
               coupon.redeemed = true;
               coupon.redeemedAt = Date.now();
               _context4.n = 4;
-              return _redisconf.redisClient.set(couponKey, JSON.stringify(coupon), {
-                KEEPTTL: true
-              });
+              return _RedisManager["default"].setJSON(couponKey, coupon, null, true);
             case 4:
               return _context4.a(2, {
                 success: true,
@@ -248,7 +235,7 @@ var CouponClass = /*#__PURE__*/function () {
           while (1) switch (_context5.n) {
             case 0:
               _context5.n = 1;
-              return _redisconf.redisClient.smembers("coupon:type:".concat(type, ":codes"));
+              return _RedisManager["default"].smembers("coupon:type:".concat(type, ":codes"));
             case 1:
               codes = _context5.v;
               return _context5.a(2, codes);
@@ -264,16 +251,16 @@ var CouponClass = /*#__PURE__*/function () {
     key: "getCouponTypeConfig",
     value: function () {
       var _getCouponTypeConfig = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(type) {
-        var typeKey, raw;
+        var typeKey, config;
         return _regenerator().w(function (_context6) {
           while (1) switch (_context6.n) {
             case 0:
               typeKey = "coupon:type:".concat(type);
               _context6.n = 1;
-              return _redisconf.redisClient.get(typeKey);
+              return _RedisManager["default"].getJSON(typeKey);
             case 1:
-              raw = _context6.v;
-              return _context6.a(2, raw ? JSON.parse(raw) : null);
+              config = _context6.v;
+              return _context6.a(2, config);
           }
         }, _callee6);
       }));

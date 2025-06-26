@@ -2,7 +2,6 @@ const TelegramBot = require('node-telegram-bot-api')
 const fs = require('fs').promises
 import path from 'path'
 import ExcelJS from 'exceljs'
-import { redisClient } from '../redisconf'
 import CouponClass from '../CouponClass'
 
 import Order from '../models/Order'
@@ -11,15 +10,17 @@ import User from '../models/User'
 import Product from '../models/Product'
 import ProductVariant from '../models/ProductVariant'
 
+import redisManager from '../RedisManager'
+
 const BOT_USERNAME = `alertpabot`
-const PAYOOR_URL = process.env.PAYOOR_URL;
+const PAYOOR_URL = process.env.PAYOOR_URL
 
 function parseTtlToSeconds (input) {
   const match = input.match(/^([0-9]+)([smhdw])$/i)
   if (!match) return null
 
-  const value = parseInt(match[1]);
-  const unit = match[2].toLowerCase();
+  const value = parseInt(match[1])
+  const unit = match[2].toLowerCase()
 
   switch (unit) {
     case 's':
@@ -38,8 +39,7 @@ function parseTtlToSeconds (input) {
 }
 
 export class TelegramBotClass {
-  constructor (redisClient) {
-    this.redisClient = redisClient
+  constructor () {
     this.bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true })
     this.admin_code = process.env.ADMIN_CODE
     this.super_admin_id = process.env.SUPER_ADMIN_ID
@@ -54,20 +54,20 @@ export class TelegramBotClass {
       const messageText = msg.text.toLowerCase().trim()
       const parts = messageText.split(' ')
       const args = parts.slice(1)
-      const command = parts[0]?.toLowerCase();
+      const command = parts[0]?.toLowerCase()
       const arg1 = args[0]?.trim()
       const arg2 = args[1]?.trim()
 
       try {
         if (messageText === this.admin_code.toLowerCase()) {
-          await this.redisClient.sadd(this.admin_list_key, telegramid)
+          await redisManager.sadd(this.admin_list_key, telegramid)
           return this.bot.sendMessage(
             telegramid,
             '✅ Admin access granted. Use /help to view commands.'
           )
         }
 
-        const isAdmin = await this.redisClient.sismember(
+        const isAdmin = await redisManager.sismember(
           this.admin_list_key,
           telegramid
         )
@@ -143,7 +143,7 @@ export class TelegramBotClass {
           }
 
           try {
-            await this.redisClient.hset(
+            await redisManager.hset(
               'payment_methods_status',
               paymentMethod,
               'disabled'
@@ -181,7 +181,7 @@ export class TelegramBotClass {
           }
 
           try {
-            await this.redisClient.hset(
+            await redisManager.hset(
               'payment_methods_status',
               paymentMethod,
               'enabled' // Set status to 'enabled'
@@ -201,7 +201,7 @@ export class TelegramBotClass {
 
         if (command === '/getpaymentmethods') {
           try {
-            const paymentMethodsStatus = await this.redisClient.hgetall(
+            const paymentMethodsStatus = await redisManager.hgetall(
               'payment_methods_status'
             )
 
@@ -243,7 +243,7 @@ export class TelegramBotClass {
             )
           }
           const amount = parseFloat(arg1)
-          await this.redisClient.hset(
+          await redisManager.hset(
             'admindirective',
             'deliveryfee',
             amount.toString()
@@ -262,7 +262,7 @@ export class TelegramBotClass {
             )
           }
           const percent = parseFloat(arg1)
-          await this.redisClient.hset(
+          await redisManager.hset(
             'admindirective',
             'servicecharge',
             percent.toString()
@@ -274,7 +274,7 @@ export class TelegramBotClass {
         }
 
         if (command === '/getdeliveryfee') {
-          const deliveryFee = await this.redisClient.hget(
+          const deliveryFee = await redisManager.hget(
             'admindirective',
             'deliveryfee'
           )
@@ -292,7 +292,7 @@ export class TelegramBotClass {
         }
 
         if (command === '/getservicecharge') {
-          const serviceCharge = await this.redisClient.hget(
+          const serviceCharge = await redisManager.hget(
             'admindirective',
             'servicecharge'
           )
@@ -318,7 +318,7 @@ export class TelegramBotClass {
           }
 
           try {
-            const adminIds = await this.redisClient.smembers(
+            const adminIds = await redisManager.smembers(
               this.admin_list_key
             )
 
@@ -347,7 +347,7 @@ export class TelegramBotClass {
             page = 1
           }
 
-          const limit = 20;
+          const limit = 20
           const skip = (page - 1) * limit
 
           try {
@@ -637,7 +637,7 @@ export class TelegramBotClass {
         }
 
         if (command === '/listcoupontypes') {
-          const types = await this.redisClient.smembers('coupon:types')
+          const types = await redisManager.smembers('coupon:types')
           if (!types.length) {
             return this.bot.sendMessage(telegramid, '📭 No coupon types found.')
           }
@@ -658,7 +658,7 @@ export class TelegramBotClass {
           }
 
           const key = `coupon:code:${arg1}`
-          const removed = await this.redisClient.del(key)
+          const removed = await redisManager.del(key)
           return this.bot.sendMessage(
             telegramid,
             removed
@@ -676,8 +676,8 @@ export class TelegramBotClass {
           }
 
           const key = `coupon:type:${arg1}`
-          await this.redisClient.del(key)
-          await this.redisClient.srem('coupon:types', arg1)
+          await redisManager.del(key)
+          await redisManager.srem('coupon:types', arg1)
           return this.bot.sendMessage(
             telegramid,
             `🗑️ Coupon type '${arg1}' deleted.`
@@ -755,7 +755,7 @@ export class TelegramBotClass {
   async callBot (message) {
     if (!message?.length) return
     try {
-      const adminIds = await this.redisClient.smembers(this.admin_list_key)
+      const adminIds = await redisManager.smembers(this.admin_list_key)
       for (const id of adminIds) {
         try {
           await this.bot.sendMessage(id, message)
@@ -769,7 +769,8 @@ export class TelegramBotClass {
   }
 }
 
-const telegramBot = new TelegramBotClass(redisClient)
-telegramBot.startBot()
+const telegramBot = new TelegramBotClass();
 
-export default telegramBot
+telegramBot.startBot();
+
+export default telegramBot;

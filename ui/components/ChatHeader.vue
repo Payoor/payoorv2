@@ -96,9 +96,9 @@ export default {
             this.redirectHome();
         }
 
-        this.$store.dispatch('cart/resetCart');
+        //this.$store.dispatch('cart/resetCart');
 
-        this.$store.dispatch('cart/initializeCart');
+        //this.$store.dispatch('cart/initializeCart');
 
         const routeStack = this.getRouteStack();
 
@@ -150,8 +150,6 @@ export default {
                 routeStack: this.routeStack.join(',')
             }
         });
-
-        // console.log(routeStack, 'routestack')
 
         this.menuopen = window.innerWidth > 900 && this.jwtToken;
 

@@ -99,14 +99,15 @@ export const actions = {
     }
 
     try {
+      console.log('call handleFetch')
       const data = await handleFetch({
         apiroute: 'shopper/initialize',
-        method: 'POST'
+        method: 'GET'
       })
 
       const { user_cart, total } = data
       const items = user_cart.items || {}
-      const totalItems = user_cart.totalItems || []
+      const totalItems = user_cart.totalItems || [];
 
       commit('SET_CART_STATE', { items, total, totalItems })
 
@@ -120,11 +121,10 @@ export const actions = {
 
   async resetCart ({ commit, state }) {
     if (localStorage.getItem('cartResetPerformed')) {
-      return
+      //return
     }
 
-    commit('RESET_CART_STATE')
-    commit('SET_CART_RESET_PERFORMED', true)
+    commit('RESET_CART_STATE');
 
     try {
       localStorage.setItem('cartResetPerformed', 'true')
@@ -153,7 +153,7 @@ export const actions = {
           items: state.items,
           totalItems: state.totalItems
         }
-      })
+      });
 
       const { user_cart, total } = data
       const { items, totalItems } = user_cart
@@ -231,7 +231,3 @@ export const actions = {
     }
   }
 }
-
-//this.$store.dispatch("cart/updateTotal", cartTotal);
-
-//this.$store.dispatch("cart/updateTotal", cartTotal);

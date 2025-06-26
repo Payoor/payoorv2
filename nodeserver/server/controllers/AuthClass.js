@@ -3,18 +3,16 @@ import { Resend } from 'resend'
 import speakeasy from 'speakeasy'
 import crypto from 'crypto'
 
-const jwt = require('jsonwebtoken');
-
 const resend = new Resend(`${process.env.RESEND_API_KEY}`);
 
-import { redisClient } from '../redisconf';
+import redisManager from '../RedisManager';
 
-import User from '../models/User'
+import User from '../models/User';
 
 class AuthClass {
   static async genOtp (identifier) {
     if (!identifier || typeof identifier !== 'string') {
-      throw new Error('Identifier is required and must be a string');
+      throw new Error('Identifier is required and must be a string')
     }
 
     const secret = speakeasy.generateSecret()
@@ -27,7 +25,7 @@ class AuthClass {
     try {
       const { identifier } = req.body
 
-      console.log(identifier)
+      console.log('Received identifier:', identifier)
 
       if (!identifier) {
         return res.status(400).json({ userMessage: 'Identifier is required' })
@@ -104,11 +102,11 @@ class AuthClass {
     `
       })
 
-      console.log(data, 'data')
+      console.log(data, 'email send data')
 
       res.status(200).json({ message: 'Authentication successful' })
     } catch (error) {
-      next(error);
+      next(error)
     }
   }
 
@@ -119,16 +117,21 @@ class AuthClass {
       }
 
       const key = `otp:code:${hashOtp(otp)}`
-      await redisClient.set(key, identifier.toLowerCase().trim(), 'EX', 600)
+      const expirationSeconds = 600;
+
+      await redisManager.setItem({
+        key,
+        item: identifier.toLowerCase().trim(),
+        expiration: expirationSeconds
+      })
 
       console.log(`Mapped hashed OTP to identifier. Key: ${key}`)
       return true
     } catch (error) {
+      console.error('[saveOtpToIdentifier] Error:', error);
       next(error)
     }
   }
-
-  //console.log('toute');
 
   static async verifyOtp (req, res, next) {
     try {
@@ -145,11 +148,12 @@ class AuthClass {
       let identifier
       try {
         console.time('[verifyOtp] Redis GET')
-        identifier = await redisClient.get(hashedKey)
+        
+        identifier = await redisManager.getItem(hashedKey)
         console.timeEnd('[verifyOtp] Redis GET')
       } catch (redisErr) {
         console.error('[verifyOtp] Redis GET failed:', redisErr)
-        return next(redisErr) // ✅ MUST return to stop flow
+        return next(redisErr)
       }
 
       if (!identifier) {
@@ -165,7 +169,7 @@ class AuthClass {
         console.timeEnd('[verifyOtp] Mongo FIND')
       } catch (mongoErr) {
         console.error('[verifyOtp] MongoDB query failed:', mongoErr)
-        return next(mongoErr) // ✅ MUST return to stop flow
+        return next(mongoErr)
       }
 
       if (!user) {
@@ -185,7 +189,7 @@ class AuthClass {
           }
         } catch (createErr) {
           console.error('[verifyOtp] User creation failed:', createErr)
-          return next(createErr) // ✅ Added to handle DB creation errors
+          return next(createErr)
         }
       }
 
@@ -195,23 +199,25 @@ class AuthClass {
         token = await user.generateAuthToken()
         console.timeEnd('[verifyOtp] Generate Token')
       } catch (tokenErr) {
-        return next(tokenErr) // ✅ MUST return
+        return next(tokenErr)
       }
 
       try {
         console.time('[verifyOtp] Redis SETEX')
-        await redisClient.set(
-          `auth:session:${token}`,
-          user._id.toString(),
-          'EX',
-          2592000 // 30 days in seconds
-        )
+       
+        await redisManager.setItem({
+          key: `auth:session:${token}`,
+          item: user._id.toString(),
+          expiration: 2592000 
+        })
         console.timeEnd('[verifyOtp] Redis SETEX')
 
         console.log('[verifyOtp] Cleaning up OTP key')
-        await redisClient.del(hashedKey)
+        
+        await redisManager.deleteItem(hashedKey)
       } catch (redisWriteErr) {
-        return next(redisWriteErr) // ✅ MUST return
+        console.error('[verifyOtp] Redis SETEX/DEL failed:', redisWriteErr)
+        return next(redisWriteErr)
       }
 
       return res.status(200).json({
@@ -226,7 +232,8 @@ class AuthClass {
         }
       })
     } catch (error) {
-      return next(error) // ✅ Safe fallback for uncaught errors
+      console.error('[verifyOtp] Uncaught error:', error)
+      return next(error)
     }
   }
 
@@ -234,7 +241,7 @@ class AuthClass {
     try {
       const { email, googleId, picture } = req.body
 
-      console.log(email, googleId, picture)
+      console.log('Google Auth received:', { email, googleId, picture })
       console.log('==============================')
 
       if (!email || !googleId) {
@@ -279,12 +286,12 @@ class AuthClass {
 
       const token = await user.generateAuthToken()
 
-      await redisClient.set(
-        `auth:session:${token}`,
-        user._id.toString(),
-        'EX',
-        2592000
-      )
+     
+      await redisManager.setItem({
+        key: `auth:session:${token}`,
+        item: user._id.toString(),
+        expiration: 2592000 // 30 days
+      })
 
       console.log({
         id: user._id,
@@ -304,23 +311,19 @@ class AuthClass {
         }
       })
     } catch (error) {
+      console.error('[googleAuth] Error:', error) 
       next(error)
     }
   }
 
   static async getValidUser (req, res, next) {
     try {
-      //console.log('hello get bvalid user')
       const { jwttoken } = req.query
 
-      //console.log(jwttoken)
-
-      const userId = await redisClient.get(`auth:session:${jwttoken}`)
+      const userId = await redisManager.getItem(`auth:session:${jwttoken}`);
 
       if (userId) {
         const user = await User.findByToken(jwttoken)
-
-        //console.log(user)
 
         let name = ''
         let email = ''
@@ -344,7 +347,7 @@ class AuthClass {
           }
         })
       } else {
-        const user = await User.findByToken(jwttoken)
+        const user = await User.findByToken(jwttoken) 
 
         if (user) {
           await user.removeToken(jwttoken)
@@ -356,6 +359,7 @@ class AuthClass {
         })
       }
     } catch (error) {
+      console.error('[getValidUser] Error:', error) 
       next(error)
     }
   }
@@ -363,7 +367,7 @@ class AuthClass {
   static async updateDetails (req, res, next) {
     try {
       const { phoneNumber, name } = req.body
-      const userId = req.userId
+      const userId = req.userId 
 
       if (!userId) {
         return res.status(401).json({
@@ -394,6 +398,7 @@ class AuthClass {
         }
       })
     } catch (error) {
+      console.error('[updateDetails] Error:', error)
       next(error)
     }
   }
@@ -401,7 +406,7 @@ class AuthClass {
   static async updatePhoneNumber (req, res, next) {
     try {
       const { phoneNumber } = req.body
-      const userId = req.userId
+      const userId = req.userId 
 
       if (!userId) {
         return res.status(401).json({
@@ -433,6 +438,7 @@ class AuthClass {
         }
       })
     } catch (error) {
+      console.error('[updatePhoneNumber] Error:', error) 
       next(error)
     }
   }
@@ -440,7 +446,7 @@ class AuthClass {
   static async updateName (req, res, next) {
     try {
       const { name } = req.body
-      const userId = req.userId
+      const userId = req.userId 
 
       if (!userId) {
         return res.status(401).json({
@@ -472,6 +478,7 @@ class AuthClass {
         }
       })
     } catch (error) {
+      console.error('[updateName] Error:', error) 
       next(error)
     }
   }
@@ -489,18 +496,27 @@ class AuthClass {
       const user = await User.findByToken(token)
 
       if (!user) {
-        return res
-          .status(404)
-          .json({ success: false, userMessage: 'Invalid token or user not found' })
+      
+        console.warn(
+          `User not found for token: ${token}, attempting Redis cleanup.`
+        )
+
+        await redisManager.deleteItem(`auth:session:${token}`)
+        return res.status(404).json({
+          success: false,
+          userMessage: 'Invalid token or user not found'
+        })
       }
 
       await user.removeToken(token)
-      await redisClient.del(`auth:session:${token}`)
+      
+      await redisManager.deleteItem(`auth:session:${token}`)
 
       return res
         .status(200)
         .json({ success: true, userMessage: 'Signed out successfully' })
     } catch (error) {
+      console.error('[signOut] Error:', error);
       next(error)
     }
   }
@@ -512,7 +528,7 @@ function hashOtp (otp) {
 
 function identifierType (input) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  const phoneRegex = /^(\+?[1-9]\d{1,14}|0\d{10})$/
+  const phoneRegex = /^(\+?[1-9]\d{1,14}|0\d{10})$/ 
 
   if (emailRegex.test(input.trim().toLowerCase())) {
     return 'email'

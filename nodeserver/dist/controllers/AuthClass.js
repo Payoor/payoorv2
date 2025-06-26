@@ -7,7 +7,7 @@ exports["default"] = void 0;
 var _resend = require("resend");
 var _speakeasy = _interopRequireDefault(require("speakeasy"));
 var _crypto = _interopRequireDefault(require("crypto"));
-var _redisconf = require("../redisconf");
+var _RedisManager = _interopRequireDefault(require("../RedisManager"));
 var _User = _interopRequireDefault(require("../models/User"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -20,7 +20,6 @@ function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), 
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 require('dotenv').config();
-var jwt = require('jsonwebtoken');
 var resend = new _resend.Resend("".concat(process.env.RESEND_API_KEY));
 var AuthClass = /*#__PURE__*/function () {
   function AuthClass() {
@@ -66,7 +65,7 @@ var AuthClass = /*#__PURE__*/function () {
             case 0:
               _context2.prev = 0;
               identifier = req.body.identifier;
-              console.log(identifier);
+              console.log('Received identifier:', identifier);
               if (identifier) {
                 _context2.next = 5;
                 break;
@@ -91,7 +90,7 @@ var AuthClass = /*#__PURE__*/function () {
               });
             case 12:
               data = _context2.sent;
-              console.log(data, 'data');
+              console.log(data, 'email send data');
               res.status(200).json({
                 message: 'Authentication successful'
               });
@@ -116,7 +115,7 @@ var AuthClass = /*#__PURE__*/function () {
     key: "saveOtpToIdentifier",
     value: function () {
       var _saveOtpToIdentifier = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(otp, identifier, next) {
-        var key;
+        var key, expirationSeconds;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
@@ -128,26 +127,32 @@ var AuthClass = /*#__PURE__*/function () {
               throw new Error('OTP and identifier are required');
             case 3:
               key = "otp:code:".concat(hashOtp(otp));
-              _context3.next = 6;
-              return _redisconf.redisClient.set(key, identifier.toLowerCase().trim(), 'EX', 600);
-            case 6:
+              expirationSeconds = 600;
+              _context3.next = 7;
+              return _RedisManager["default"].setItem({
+                key: key,
+                item: identifier.toLowerCase().trim(),
+                expiration: expirationSeconds
+              });
+            case 7:
               console.log("Mapped hashed OTP to identifier. Key: ".concat(key));
               return _context3.abrupt("return", true);
-            case 10:
-              _context3.prev = 10;
+            case 11:
+              _context3.prev = 11;
               _context3.t0 = _context3["catch"](0);
+              console.error('[saveOtpToIdentifier] Error:', _context3.t0);
               next(_context3.t0);
-            case 13:
+            case 15:
             case "end":
               return _context3.stop();
           }
-        }, _callee3, null, [[0, 10]]);
+        }, _callee3, null, [[0, 11]]);
       }));
       function saveOtpToIdentifier(_x5, _x6, _x7) {
         return _saveOtpToIdentifier.apply(this, arguments);
       }
       return saveOtpToIdentifier;
-    }() //console.log('toute');
+    }()
   }, {
     key: "verifyOtp",
     value: function () {
@@ -171,7 +176,7 @@ var AuthClass = /*#__PURE__*/function () {
               _context4.prev = 5;
               console.time('[verifyOtp] Redis GET');
               _context4.next = 9;
-              return _redisconf.redisClient.get(hashedKey);
+              return _RedisManager["default"].getItem(hashedKey);
             case 9:
               identifier = _context4.sent;
               console.timeEnd('[verifyOtp] Redis GET');
@@ -270,21 +275,25 @@ var AuthClass = /*#__PURE__*/function () {
               _context4.prev = 65;
               console.time('[verifyOtp] Redis SETEX');
               _context4.next = 69;
-              return _redisconf.redisClient.set("auth:session:".concat(token), user._id.toString(), 'EX', 2592000 // 30 days in seconds
-              );
+              return _RedisManager["default"].setItem({
+                key: "auth:session:".concat(token),
+                item: user._id.toString(),
+                expiration: 2592000
+              });
             case 69:
               console.timeEnd('[verifyOtp] Redis SETEX');
               console.log('[verifyOtp] Cleaning up OTP key');
               _context4.next = 73;
-              return _redisconf.redisClient.del(hashedKey);
+              return _RedisManager["default"].deleteItem(hashedKey);
             case 73:
-              _context4.next = 78;
+              _context4.next = 79;
               break;
             case 75:
               _context4.prev = 75;
               _context4.t4 = _context4["catch"](65);
+              console.error('[verifyOtp] Redis SETEX/DEL failed:', _context4.t4);
               return _context4.abrupt("return", next(_context4.t4));
-            case 78:
+            case 79:
               return _context4.abrupt("return", res.status(200).json({
                 success: true,
                 userMessage: 'OTP verified',
@@ -296,15 +305,16 @@ var AuthClass = /*#__PURE__*/function () {
                   token: token
                 }
               }));
-            case 81:
-              _context4.prev = 81;
+            case 82:
+              _context4.prev = 82;
               _context4.t5 = _context4["catch"](0);
+              console.error('[verifyOtp] Uncaught error:', _context4.t5);
               return _context4.abrupt("return", next(_context4.t5));
-            case 84:
+            case 86:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[0, 81], [5, 13], [19, 27], [34, 50], [54, 62], [65, 75]]);
+        }, _callee4, null, [[0, 82], [5, 13], [19, 27], [34, 50], [54, 62], [65, 75]]);
       }));
       function verifyOtp(_x8, _x9, _x0) {
         return _verifyOtp.apply(this, arguments);
@@ -321,7 +331,11 @@ var AuthClass = /*#__PURE__*/function () {
             case 0:
               _context5.prev = 0;
               _req$body = req.body, email = _req$body.email, googleId = _req$body.googleId, picture = _req$body.picture;
-              console.log(email, googleId, picture);
+              console.log('Google Auth received:', {
+                email: email,
+                googleId: googleId,
+                picture: picture
+              });
               console.log('==============================');
               if (!(!email || !googleId)) {
                 _context5.next = 6;
@@ -380,7 +394,11 @@ var AuthClass = /*#__PURE__*/function () {
             case 25:
               token = _context5.sent;
               _context5.next = 28;
-              return _redisconf.redisClient.set("auth:session:".concat(token), user._id.toString(), 'EX', 2592000);
+              return _RedisManager["default"].setItem({
+                key: "auth:session:".concat(token),
+                item: user._id.toString(),
+                expiration: 2592000 // 30 days
+              });
             case 28:
               console.log({
                 id: user._id,
@@ -401,8 +419,9 @@ var AuthClass = /*#__PURE__*/function () {
             case 32:
               _context5.prev = 32;
               _context5.t0 = _context5["catch"](0);
+              console.error('[googleAuth] Error:', _context5.t0);
               next(_context5.t0);
-            case 35:
+            case 36:
             case "end":
               return _context5.stop();
           }
@@ -422,10 +441,9 @@ var AuthClass = /*#__PURE__*/function () {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
               _context6.prev = 0;
-              //console.log('hello get bvalid user')
-              jwttoken = req.query.jwttoken; //console.log(jwttoken)
+              jwttoken = req.query.jwttoken;
               _context6.next = 4;
-              return _redisconf.redisClient.get("auth:session:".concat(jwttoken));
+              return _RedisManager["default"].getItem("auth:session:".concat(jwttoken));
             case 4:
               userId = _context6.sent;
               if (!userId) {
@@ -436,7 +454,6 @@ var AuthClass = /*#__PURE__*/function () {
               return _User["default"].findByToken(jwttoken);
             case 8:
               user = _context6.sent;
-              //console.log(user)
               name = '';
               email = '';
               phoneNumber = '';
@@ -473,13 +490,14 @@ var AuthClass = /*#__PURE__*/function () {
                 userMessage: 'User not found'
               }));
             case 23:
-              _context6.next = 28;
+              _context6.next = 29;
               break;
             case 25:
               _context6.prev = 25;
               _context6.t0 = _context6["catch"](0);
+              console.error('[getValidUser] Error:', _context6.t0);
               next(_context6.t0);
-            case 28:
+            case 29:
             case "end":
               return _context6.stop();
           }
@@ -539,8 +557,9 @@ var AuthClass = /*#__PURE__*/function () {
             case 13:
               _context7.prev = 13;
               _context7.t0 = _context7["catch"](0);
+              console.error('[updateDetails] Error:', _context7.t0);
               next(_context7.t0);
-            case 16:
+            case 17:
             case "end":
               return _context7.stop();
           }
@@ -600,8 +619,9 @@ var AuthClass = /*#__PURE__*/function () {
             case 13:
               _context8.prev = 13;
               _context8.t0 = _context8["catch"](0);
+              console.error('[updatePhoneNumber] Error:', _context8.t0);
               next(_context8.t0);
-            case 16:
+            case 17:
             case "end":
               return _context8.stop();
           }
@@ -661,8 +681,9 @@ var AuthClass = /*#__PURE__*/function () {
             case 13:
               _context9.prev = 13;
               _context9.t0 = _context9["catch"](0);
+              console.error('[updateName] Error:', _context9.t0);
               next(_context9.t0);
-            case 16:
+            case 17:
             case "end":
               return _context9.stop();
           }
@@ -697,33 +718,38 @@ var AuthClass = /*#__PURE__*/function () {
             case 6:
               user = _context0.sent;
               if (user) {
-                _context0.next = 9;
+                _context0.next = 12;
                 break;
               }
+              console.warn("User not found for token: ".concat(token, ", attempting Redis cleanup."));
+              _context0.next = 11;
+              return _RedisManager["default"].deleteItem("auth:session:".concat(token));
+            case 11:
               return _context0.abrupt("return", res.status(404).json({
                 success: false,
                 userMessage: 'Invalid token or user not found'
               }));
-            case 9:
-              _context0.next = 11;
+            case 12:
+              _context0.next = 14;
               return user.removeToken(token);
-            case 11:
-              _context0.next = 13;
-              return _redisconf.redisClient.del("auth:session:".concat(token));
-            case 13:
+            case 14:
+              _context0.next = 16;
+              return _RedisManager["default"].deleteItem("auth:session:".concat(token));
+            case 16:
               return _context0.abrupt("return", res.status(200).json({
                 success: true,
                 userMessage: 'Signed out successfully'
               }));
-            case 16:
-              _context0.prev = 16;
-              _context0.t0 = _context0["catch"](0);
-              next(_context0.t0);
             case 19:
+              _context0.prev = 19;
+              _context0.t0 = _context0["catch"](0);
+              console.error('[signOut] Error:', _context0.t0);
+              next(_context0.t0);
+            case 23:
             case "end":
               return _context0.stop();
           }
-        }, _callee0, null, [[0, 16]]);
+        }, _callee0, null, [[0, 19]]);
       }));
       function signOut(_x24, _x25, _x26) {
         return _signOut.apply(this, arguments);

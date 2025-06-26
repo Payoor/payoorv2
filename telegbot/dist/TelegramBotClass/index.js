@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = exports.TelegramBotClass = void 0;
 var _path = _interopRequireDefault(require("path"));
 var _exceljs = _interopRequireDefault(require("exceljs"));
-var _redisconf = require("../redisconf");
 var _CouponClass = _interopRequireDefault(require("../CouponClass"));
 var _Order = _interopRequireDefault(require("../models/Order"));
 var _Checkout = _interopRequireDefault(require("../models/Checkout"));
 var _User = _interopRequireDefault(require("../models/User"));
 var _Product = _interopRequireDefault(require("../models/Product"));
 var _ProductVariant = _interopRequireDefault(require("../models/ProductVariant"));
+var _RedisManager = _interopRequireDefault(require("../RedisManager"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
@@ -56,9 +56,8 @@ function parseTtlToSeconds(input) {
   }
 }
 var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
-  function TelegramBotClass(redisClient) {
+  function TelegramBotClass() {
     _classCallCheck(this, TelegramBotClass);
-    this.redisClient = redisClient;
     this.bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {
       polling: true
     });
@@ -91,12 +90,12 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                   break;
                 }
                 _context.n = 2;
-                return _this.redisClient.sadd(_this.admin_list_key, telegramid);
+                return _RedisManager["default"].sadd(_this.admin_list_key, telegramid);
               case 2:
                 return _context.a(2, _this.bot.sendMessage(telegramid, '✅ Admin access granted. Use /help to view commands.'));
               case 3:
                 _context.n = 4;
-                return _this.redisClient.sismember(_this.admin_list_key, telegramid);
+                return _RedisManager["default"].sismember(_this.admin_list_key, telegramid);
               case 4:
                 isAdmin = _context.v;
                 isSuperAdmin = telegramid === _this.super_admin_id;
@@ -143,7 +142,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
               case 8:
                 _context.p = 8;
                 _context.n = 9;
-                return _this.redisClient.hset('payment_methods_status', paymentMethod, 'disabled');
+                return _RedisManager["default"].hset('payment_methods_status', paymentMethod, 'disabled');
               case 9:
                 return _context.a(2, _this.bot.sendMessage(telegramid, "\u2705 ".concat(arg1, " payment method has been disabled.")));
               case 10:
@@ -172,7 +171,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
               case 13:
                 _context.p = 13;
                 _context.n = 14;
-                return _this.redisClient.hset('payment_methods_status', _paymentMethod, 'enabled' // Set status to 'enabled'
+                return _RedisManager["default"].hset('payment_methods_status', _paymentMethod, 'enabled' // Set status to 'enabled'
                 );
               case 14:
                 return _context.a(2, _this.bot.sendMessage(telegramid, "\u2705 ".concat(arg1, " payment method has been enabled.")));
@@ -188,7 +187,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                 }
                 _context.p = 17;
                 _context.n = 18;
-                return _this.redisClient.hgetall('payment_methods_status');
+                return _RedisManager["default"].hgetall('payment_methods_status');
               case 18:
                 paymentMethodsStatus = _context.v;
                 if (!(!paymentMethodsStatus || Object.keys(paymentMethodsStatus).length === 0)) {
@@ -223,7 +222,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
               case 22:
                 amount = parseFloat(arg1);
                 _context.n = 23;
-                return _this.redisClient.hset('admindirective', 'deliveryfee', amount.toString());
+                return _RedisManager["default"].hset('admindirective', 'deliveryfee', amount.toString());
               case 23:
                 return _context.a(2, _this.bot.sendMessage(telegramid, "\u2705 Delivery fee set to: ".concat(amount)));
               case 24:
@@ -239,7 +238,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
               case 25:
                 percent = parseFloat(arg1);
                 _context.n = 26;
-                return _this.redisClient.hset('admindirective', 'servicecharge', percent.toString());
+                return _RedisManager["default"].hset('admindirective', 'servicecharge', percent.toString());
               case 26:
                 return _context.a(2, _this.bot.sendMessage(telegramid, "\u2705 Service charge set to: ".concat(percent, "%")));
               case 27:
@@ -248,7 +247,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                   break;
                 }
                 _context.n = 28;
-                return _this.redisClient.hget('admindirective', 'deliveryfee');
+                return _RedisManager["default"].hget('admindirective', 'deliveryfee');
               case 28:
                 deliveryFee = _context.v;
                 if (!deliveryFee) {
@@ -264,7 +263,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                   break;
                 }
                 _context.n = 31;
-                return _this.redisClient.hget('admindirective', 'servicecharge');
+                return _RedisManager["default"].hget('admindirective', 'servicecharge');
               case 31:
                 serviceCharge = _context.v;
                 if (!serviceCharge) {
@@ -287,7 +286,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
               case 34:
                 _context.p = 34;
                 _context.n = 35;
-                return _this.redisClient.smembers(_this.admin_list_key);
+                return _RedisManager["default"].smembers(_this.admin_list_key);
               case 35:
                 adminIds = _context.v;
                 if (adminIds.length) {
@@ -595,7 +594,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
                   break;
                 }
                 _context.n = 68;
-                return _this.redisClient.smembers('coupon:types');
+                return _RedisManager["default"].smembers('coupon:types');
               case 68:
                 types = _context.v;
                 if (types.length) {
@@ -621,7 +620,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
               case 71:
                 _key = "coupon:code:".concat(arg1);
                 _context.n = 72;
-                return _this.redisClient.del(_key);
+                return _RedisManager["default"].del(_key);
               case 72:
                 removed = _context.v;
                 return _context.a(2, _this.bot.sendMessage(telegramid, removed ? "\uD83D\uDDD1\uFE0F Coupon code '".concat(arg1, "' deleted.") : "\u274C Code '".concat(arg1, "' not found.")));
@@ -638,10 +637,10 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
               case 74:
                 _key2 = "coupon:type:".concat(arg1);
                 _context.n = 75;
-                return _this.redisClient.del(_key2);
+                return _RedisManager["default"].del(_key2);
               case 75:
                 _context.n = 76;
-                return _this.redisClient.srem('coupon:types', arg1);
+                return _RedisManager["default"].srem('coupon:types', arg1);
               case 76:
                 return _context.a(2, _this.bot.sendMessage(telegramid, "\uD83D\uDDD1\uFE0F Coupon type '".concat(arg1, "' deleted.")));
               case 77:
@@ -726,7 +725,7 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
             case 1:
               _context2.p = 1;
               _context2.n = 2;
-              return this.redisClient.smembers(this.admin_list_key);
+              return _RedisManager["default"].smembers(this.admin_list_key);
             case 2:
               adminIds = _context2.v;
               _iterator = _createForOfIteratorHelper(adminIds);
@@ -781,6 +780,6 @@ var TelegramBotClass = exports.TelegramBotClass = /*#__PURE__*/function () {
     }()
   }]);
 }();
-var telegramBot = new TelegramBotClass(_redisconf.redisClient);
+var telegramBot = new TelegramBotClass();
 telegramBot.startBot();
 var _default = exports["default"] = telegramBot;

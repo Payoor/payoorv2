@@ -141,7 +141,6 @@ export default {
                     auth: true
                 });
 
-                console.log(data, 'otp sent');
                 this.startResendOtpCounter();
 
             } catch (error) {

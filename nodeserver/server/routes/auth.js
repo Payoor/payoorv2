@@ -28,7 +28,7 @@ authRoute.post(
   '/shopper/auth/updatedetails/name',
   authMiddleware,
   AuthClass.updateName
-)
+);
 
 authRoute.post(
   '/shopper/auth/updatedetails',
@@ -38,4 +38,4 @@ authRoute.post(
 
 authRoute.post('/shopper/auth/signout', AuthClass.signOut)
 
-export default authRoute
+export default authRoute;

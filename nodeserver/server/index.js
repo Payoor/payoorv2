@@ -1,8 +1,6 @@
 const express = require('express')
 const app = express()
 const fs = require('fs')
-const path = require('path')
-const axios = require('axios')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -10,22 +8,17 @@ if (process.env.NODE_ENV !== 'production') {
 
 require('./db')
 
-const { redisClient, connectRedis } = require('./redisconf')
-
-import shopperRoute from './routes/shopper'
 import authRoute from './routes/auth'
+import shopperRoute from './routes/shopper'
 import adminRoute from './routes/admin'
 
 import handleError from './handleError'
+import telegramBotErrorLogger from './telegramBotErrorLogger'
+import redisManager from './RedisManager'
 
 const port = process.env.PORT
 
 app.use(express.json())
-
-const errorLogPath = path.join(__dirname, 'error.log')
-const telegbotUrl = 'http://telegbot:3001/errorlog'
-
-//console.log(errorLogPath)
 
 app.get('/health', async (req, res, next) => {
   try {
@@ -38,7 +31,7 @@ app.get('/health', async (req, res, next) => {
   }
 })
 
-app.use(shopperRoute)
+app.use(shopperRoute);
 app.use(authRoute)
 app.use(adminRoute)
 
@@ -56,59 +49,61 @@ app.use(async (err, req, res, next) => {
 
   const errMessageVal = err.message
 
-  console.log(errorMessage, 'errorMessage')
+  const errorDetails = handleError(errorMessage, errMessageVal)
 
-  try {
-    const response = await axios.post(telegbotUrl, errorMessage, {
-      headers: {
-        'Content-Type': 'text/plain',
-        'X-Error-Timestamp': timestamp
-      }
-    })
+  //console.log(errorDetails)
+  const { userMessage, statusCode } = errorDetails
 
-    if (response.status >= 200 && response.status < 300) {
-      console.log('Error message sent to telegbot successfully!')
-    } else {
-      console.error(
-        `Failed to send error message to telegbot. Status: ${response.status}, Body: ${response.data}`
-      )
+  telegramBotErrorLogger(userMessage)
 
-      fs.appendFile(errorLogPath, errorMessage, fileErr => {
-        if (fileErr) {
-          console.error('Failed to write error to fallback log file:', fileErr)
-        } else {
-          console.log(
-            `Error successfully logged to fallback file: ${errorLogPath}`
-          )
-        }
-      })
-    }
-
-    const errorDetails = handleError(errorMessage, errMessageVal)
-
-    console.log(errorDetails)
-    const { userMessage, statusCode } = errorDetails
-
-    res.status(statusCode).json({
-      stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,
-      userMessage
-    })
-  } catch (error) {
-    //we'll only save to a file if this fails here
-    res.status(500).json({ message: 'Internal server error' })
-  }
+  res.status(statusCode).json({
+    stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack,
+    userMessage
+  })
 })
 
 async function startServer () {
-  try {
-    //await connectRedis();
-    console.log('🚀 Connected to Redis')
+  let server
 
-    app.listen(port, () => {
+  const shutdown = async signal => {
+    console.log(`\n${signal} received: Shutting down server gracefully...`)
+
+    if (server) {
+      server.close(async () => {
+        console.log('Express server closed.')
+        await redisManager.disconnectRedis()
+        console.log('Redis disconnected. Exiting process.')
+        process.exit(0)
+      })
+    } else {
+      console.log('Server not running, disconnecting Redis and exiting.')
+      await redisManager.disconnectRedis()
+      process.exit(0)
+    }
+  }
+
+  try {
+    await redisManager.connectRedis()
+    console.log('Redis connected successfully!')
+
+    server = app.listen(port, () => {
       console.log(`✅ Server is running on port ${port}`)
+      console.log(`Access at http://localhost:${port}`)
+    })
+
+    process.on('SIGTERM', () => shutdown('SIGTERM'))
+    process.on('SIGINT', () => shutdown('SIGINT'))
+
+    process.on('unhandledRejection', (reason, promise) => {
+      console.error('Unhandled Rejection at:', promise, 'reason:', reason)
+    })
+
+    process.on('uncaughtException', err => {
+      console.error('Uncaught Exception:', err)
+      shutdown('UncaughtException')
     })
   } catch (error) {
-    console.error('❌ Failed to connect to Redis:', error)
+    console.error('❌ Failed to connect to Redis and start application:', error)
     process.exit(1)
   }
 }

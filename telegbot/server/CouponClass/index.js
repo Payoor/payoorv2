@@ -1,5 +1,6 @@
 import crypto from 'crypto'
-import { redisClient } from '../redisconf'
+
+import redisManager from '../RedisManager';
 
 class CouponClass {
   static async createCouponType (type, ttlInSeconds, discount = {}) {
@@ -43,7 +44,7 @@ class CouponClass {
     }
 
     const key = `coupon:type:${type}`
-    const exists = await redisClient.exists(key)
+    const exists = await redisManager.exists(key)
 
     if (exists) {
       throw new Error('Coupon type already exists')
@@ -59,11 +60,9 @@ class CouponClass {
       }
     }
 
-    // Save the type config
-    await redisClient.set(key, JSON.stringify(config))
+    await redisManager.setJSON(key, config)
 
-    // 👉 Add to set of coupon types
-    await redisClient.sadd('coupon:types', type)
+    await redisManager.sadd('coupon:types', type)
 
     return {
       success: true,
@@ -72,23 +71,19 @@ class CouponClass {
     }
   }
 
-  /**
-   * Generate a coupon under a specific type.
-   * TTL is fetched from the type configuration.
-   */
   static async createCoupon (type) {
     if (!type || typeof type !== 'string') {
       throw new Error('Coupon type is required and must be a string')
     }
 
     const typeKey = `coupon:type:${type}`
-    const typeData = await redisClient.get(typeKey)
+    const typeData = await redisManager.getJSON(typeKey)
 
     if (!typeData) {
       throw new Error('Coupon type does not exist')
     }
 
-    const { ttl } = JSON.parse(typeData)
+    const { ttl } = typeData
 
     const code = CouponClass._generateCode()
     const couponKey = `coupon:code:${code}`
@@ -98,47 +93,44 @@ class CouponClass {
       redeemed: false
     }
 
-    await redisClient.set(couponKey, JSON.stringify(metadata), 'EX', ttl)
-    await redisClient.sadd(`coupon:type:${type}:codes`, code)
+    await redisManager.setJSON(couponKey, metadata, ttl)
+    await redisManager.sadd(`coupon:type:${type}:codes`, code)
 
     return { code, type, expiresIn: ttl }
   }
 
   static async getCoupon (code) {
     const couponKey = `coupon:code:${code}`
-    const raw = await redisClient.get(couponKey)
+    const coupon = await redisManager.getJSON(couponKey)
 
-    if (!raw) return null
-    return JSON.parse(raw)
+    return coupon
   }
 
   static async redeemCoupon (code) {
     const couponKey = `coupon:code:${code}`
-    const raw = await redisClient.get(couponKey)
+    const coupon = await redisManager.getJSON(couponKey)
 
-    if (!raw) throw new Error('Invalid or expired coupon code')
-
-    const coupon = JSON.parse(raw)
+    if (!coupon) throw new Error('Invalid or expired coupon code')
 
     if (coupon.redeemed) throw new Error('Coupon already redeemed')
 
     coupon.redeemed = true
     coupon.redeemedAt = Date.now()
 
-    await redisClient.set(couponKey, JSON.stringify(coupon), { KEEPTTL: true })
+    await redisManager.setJSON(couponKey, coupon, null, true)
 
     return { success: true, message: 'Coupon redeemed', coupon }
   }
 
   static async listCoupons (type) {
-    const codes = await redisClient.smembers(`coupon:type:${type}:codes`)
+    const codes = await redisManager.smembers(`coupon:type:${type}:codes`)
     return codes
   }
 
   static async getCouponTypeConfig (type) {
     const typeKey = `coupon:type:${type}`
-    const raw = await redisClient.get(typeKey)
-    return raw ? JSON.parse(raw) : null
+    const config = await redisManager.getJSON(typeKey)
+    return config
   }
 
   static _generateCode () {

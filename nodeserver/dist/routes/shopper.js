@@ -16,7 +16,7 @@ var _Product = _interopRequireDefault(require("../models/Product"));
 var _ProductVariant = _interopRequireDefault(require("../models/ProductVariant"));
 var _authMiddleware = _interopRequireDefault(require("../middleware/authMiddleware"));
 var _CouponClass = _interopRequireDefault(require("../CouponClass"));
-var _redisconf = require("../redisconf");
+var _RedisManager = _interopRequireDefault(require("../RedisManager"));
 var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _ElasticSearchClass = _interopRequireDefault(require("../controllers/ElasticSearchClass"));
 var _GoogleApiController = _interopRequireDefault(require("../controllers/GoogleApiController"));
@@ -284,7 +284,7 @@ shopperRoute.get('/shopper/init/checkout', _authMiddleware["default"], /*#__PURE
           jwt = req.query.jwt;
           userId = req.userId;
           _context6.next = 5;
-          return Promise.all([_redisconf.redisClient.hget('admindirective', 'deliveryfee'), _redisconf.redisClient.hget('admindirective', 'servicecharge'), _Checkout["default"].findOne({
+          return Promise.all([_RedisManager["default"].hget('admindirective', 'deliveryfee'), _RedisManager["default"].hget('admindirective', 'servicecharge'), _Checkout["default"].findOne({
             user_id: userId
           }).sort({
             created_at: -1
@@ -790,7 +790,7 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
           //console.log(coupon_code, 'coupon_code')
           key = "coupon:code:".concat(coupon_code);
           _context10.next = 9;
-          return _redisconf.redisClient.get(key);
+          return _RedisManager["default"].get(key);
         case 9:
           raw = _context10.sent;
           console.log(raw, 'raw here');
@@ -807,7 +807,7 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
           type = couponConfig.type, redeemed = couponConfig.redeemed;
           typeKey = "coupon:type:".concat(type);
           _context10.next = 18;
-          return _redisconf.redisClient.get(typeKey);
+          return _RedisManager["default"].get(typeKey);
         case 18:
           typeRaw = _context10.sent;
           if (typeRaw) {
@@ -828,10 +828,10 @@ shopperRoute.post('/shopper/apply-coupon', _authMiddleware["default"], /*#__PURE
             break;
           }
           _context10.next = 28;
-          return _redisconf.redisClient.del(key);
+          return _RedisManager["default"].del(key);
         case 28:
           _context10.next = 30;
-          return _redisconf.redisClient.del(typeKey);
+          return _RedisManager["default"].del(typeKey);
         case 30:
           return _context10.abrupt("return", res.status(410).json({
             success: false,
@@ -1128,7 +1128,7 @@ shopperRoute.post('/shopper/cart', _authMiddleware["default"], /*#__PURE__*/func
     return _ref10.apply(this, arguments);
   };
 }());
-shopperRoute.post('/shopper/initialize', _authMiddleware["default"], /*#__PURE__*/function () {
+shopperRoute.get('/shopper/initialize', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref11 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res, next) {
     var userId, foundUserCart, total;
     return _regeneratorRuntime().wrap(function _callee11$(_context12) {
@@ -1136,27 +1136,29 @@ shopperRoute.post('/shopper/initialize', _authMiddleware["default"], /*#__PURE__
         case 0:
           _context12.prev = 0;
           userId = req.userId;
+          console.log('shopper/initialize', userId);
           if (userId) {
-            _context12.next = 4;
+            _context12.next = 5;
             break;
           }
           return _context12.abrupt("return", res.status(401).json({
             userMessage: 'Authentication required: User ID not found.'
           }));
-        case 4:
-          _context12.next = 6;
+        case 5:
+          _context12.next = 7;
           return _UserCart["default"].findOne({
             userId: userId
           });
-        case 6:
+        case 7:
           foundUserCart = _context12.sent;
+          console.log(foundUserCart);
           if (!foundUserCart) {
-            _context12.next = 14;
+            _context12.next = 16;
             break;
           }
-          _context12.next = 10;
+          _context12.next = 12;
           return foundUserCart.calculateTotal();
-        case 10:
+        case 12:
           total = _context12.sent;
           return _context12.abrupt("return", res.status(200).json({
             initialized: true,
@@ -1166,7 +1168,7 @@ shopperRoute.post('/shopper/initialize', _authMiddleware["default"], /*#__PURE__
             },
             total: total
           }));
-        case 14:
+        case 16:
           return _context12.abrupt("return", res.status(200).json({
             initialized: true,
             user_cart: {
@@ -1175,18 +1177,18 @@ shopperRoute.post('/shopper/initialize', _authMiddleware["default"], /*#__PURE__
             },
             total: 0
           }));
-        case 15:
-          _context12.next = 20;
-          break;
         case 17:
-          _context12.prev = 17;
+          _context12.next = 22;
+          break;
+        case 19:
+          _context12.prev = 19;
           _context12.t0 = _context12["catch"](0);
           next(_context12.t0);
-        case 20:
+        case 22:
         case "end":
           return _context12.stop();
       }
-    }, _callee11, null, [[0, 17]]);
+    }, _callee11, null, [[0, 19]]);
   }));
   return function (_x35, _x36, _x37) {
     return _ref11.apply(this, arguments);
@@ -1357,7 +1359,7 @@ shopperRoute.post('/shopper/checkout/create', _authMiddleware["default"], /*#__P
           _context14.next = 33;
           return Promise.all([_User["default"].findOne({
             _id: new _mongoose["default"].Types.ObjectId(userId)
-          }).lean(), _redisconf.redisClient.hget('admindirective', 'deliveryfee'), _redisconf.redisClient.hget('admindirective', 'servicecharge'), _Checkout["default"].findOne({
+          }).lean(), _RedisManager["default"].hget('admindirective', 'deliveryfee'), _RedisManager["default"].hget('admindirective', 'servicecharge'), _Checkout["default"].findOne({
             user_id: userId
           }).sort({
             created_at: -1
@@ -1505,7 +1507,7 @@ shopperRoute.get('/shopper/checkout/getpaymentmethods', _authMiddleware["default
         case 0:
           _context16.prev = 0;
           _context16.next = 3;
-          return _redisconf.redisClient.hgetall('payment_methods_status');
+          return _RedisManager["default"].hgetall('payment_methods_status');
         case 3:
           paymentMethodsStatus = _context16.sent;
           if (!(!paymentMethodsStatus || Object.keys(paymentMethodsStatus).length === 0)) {

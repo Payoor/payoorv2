@@ -1,5 +1,3 @@
-// Assuming 'errorDetails' is the string you provided
-
 function handleError (errorDetails, errMessageVal) {
   if (errorDetails.includes('E11000 duplicate key error')) {
     const matchIndex = errorDetails.match(/index: (\w+)_1/)
@@ -31,8 +29,6 @@ function handleError (errorDetails, errMessageVal) {
       userMessage: userMessage,
       statusCode: 409 // Conflict
     }
-  } else if (errorDetails.includes('SomeOtherKnownError')) {
-    // To do
   } else {
     return {
       type: 'GenericError',
@@ -43,6 +39,3 @@ function handleError (errorDetails, errMessageVal) {
 }
 
 export default handleError
-
-/*const errorResult = handleError(errorString)
-console.log(errorResult.userMessage)*/

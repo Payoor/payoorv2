@@ -12,7 +12,7 @@ import ProductVariant from '../models/ProductVariant'
 import authMiddleware from '../middleware/authMiddleware'
 import CouponClass from '../CouponClass'
 
-import { redisClient } from '../redisconf'
+import redisManager from '../RedisManager';
 
 import payoorDBConnection from '../payoordb'
 
@@ -200,8 +200,8 @@ shopperRoute.get(
       const userId = req.userId
 
       const [fee, servicecharge, latestCheckout] = await Promise.all([
-        redisClient.hget('admindirective', 'deliveryfee'),
-        redisClient.hget('admindirective', 'servicecharge'),
+        redisManager.hget('admindirective', 'deliveryfee'),
+        redisManager.hget('admindirective', 'servicecharge'),
         Checkout.findOne({ user_id: userId }).sort({ created_at: -1 }).lean()
       ])
 
@@ -575,7 +575,7 @@ shopperRoute.post(
       //console.log(coupon_code, 'coupon_code')
 
       const key = `coupon:code:${coupon_code}`
-      const raw = await redisClient.get(key)
+      const raw = await redisManager.get(key)
 
       console.log(raw, 'raw here')
 
@@ -590,7 +590,7 @@ shopperRoute.post(
       const { type, redeemed } = couponConfig
 
       const typeKey = `coupon:type:${type}`
-      const typeRaw = await redisClient.get(typeKey)
+      const typeRaw = await redisManager.get(typeKey)
 
       if (!typeRaw) {
         return res.status(404).json({
@@ -606,8 +606,8 @@ shopperRoute.post(
       const isExpired = now > createdAt + ttl * 1000
 
       if (isExpired) {
-        await redisClient.del(key)
-        await redisClient.del(typeKey)
+        await redisManager.del(key)
+        await redisManager.del(typeKey)
         return res.status(410).json({
           success: false,
           userMessage: 'Coupon code has expired'
@@ -843,12 +843,14 @@ shopperRoute.post('/shopper/cart', authMiddleware, async (req, res, next) => {
   }
 })
 
-shopperRoute.post(
+shopperRoute.get(
   '/shopper/initialize',
   authMiddleware,
   async (req, res, next) => {
     try {
       const userId = req.userId
+
+      console.log('shopper/initialize', userId)
 
       if (!userId) {
         return res
@@ -856,7 +858,9 @@ shopperRoute.post(
           .json({ userMessage: 'Authentication required: User ID not found.' })
       }
 
-      const foundUserCart = await UserCart.findOne({ userId })
+      const foundUserCart = await UserCart.findOne({ userId });
+
+      console.log(foundUserCart)
 
       if (foundUserCart) {
         const total = await foundUserCart.calculateTotal()
@@ -976,18 +980,18 @@ shopperRoute.post(
 
       const productVariants = await ProductVariant.find({
         _id: { $in: objectIdProductIds }
-      }).select('price')
+      }).select('price');
 
       let subTotal = 0
 
-      const productPriceMap = new Map()
+      const productPriceMap = new Map();
 
       productVariants.forEach(variant => {
         productPriceMap.set(variant._id.toString(), variant.price)
-      })
+      });
 
       for (const productId of productIds) {
-        const quantity = Number(items[productId])
+        const quantity = Number(items[productId]);
 
         if (isNaN(quantity) || quantity <= 0) {
           return res.status(400).json({
@@ -1011,8 +1015,8 @@ shopperRoute.post(
       const [validUser, rawDeliveryFee, rawServiceCharge, latestCheckout] =
         await Promise.all([
           User.findOne({ _id: new mongoose.Types.ObjectId(userId) }).lean(),
-          redisClient.hget('admindirective', 'deliveryfee'),
-          redisClient.hget('admindirective', 'servicecharge'),
+          redisManager.hget('admindirective', 'deliveryfee'),
+          redisManager.hget('admindirective', 'servicecharge'),
           Checkout.findOne({ user_id: userId }).sort({ created_at: -1 }).lean()
         ])
 
@@ -1119,7 +1123,7 @@ shopperRoute.get(
   authMiddleware,
   async (req, res, next) => {
     try {
-      const paymentMethodsStatus = await redisClient.hgetall(
+      const paymentMethodsStatus = await redisManager.hgetall(
         'payment_methods_status'
       )
 

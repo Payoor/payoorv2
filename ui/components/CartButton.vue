@@ -43,7 +43,7 @@ export default {
         async syncCartAndOpen() {
             this.isLoading = true; // Set loading to true when the function starts
             try {
-                await this.$store.dispatch("cart/syncCartToServer");
+                //await this.$store.dispatch("cart/syncCartToServer");
 
                 this.$router.push({
                     path: '/cart',

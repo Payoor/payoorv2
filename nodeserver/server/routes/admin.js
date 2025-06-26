@@ -2,26 +2,24 @@ import mongoose from 'mongoose'
 import express from 'express'
 import https from 'https'
 import jwt from 'jsonwebtoken'
-import multer from 'multer'
-import fs from 'fs'
-const axios = require('axios')
+import multer from 'multer';
+import fs from 'fs';
+const axios = require('axios');
 
-const ELASTIC_URL = process.env.ELASTICSEARCHURL
+const ELASTIC_URL = process.env.ELASTICSEARCHURL;
 
 const {
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand
-} = require('@aws-sdk/client-s3')
+} = require('@aws-sdk/client-s3');
 
-const crypto = require('crypto')
+const crypto = require('crypto');
 
-import Order from '../models/Order'
-import Admin from '../models/Admin.js'
-import Checkout from '../models/Checkout.js'
-import ProductVariant from '../models/ProductVariant'
-
-//import telegramBot from '../TelegramBotClass'
+import Order from '../models/Order';
+import Admin from '../models/Admin.js';
+import Checkout from '../models/Checkout.js';
+import ProductVariant from '../models/ProductVariant';
 
 import payoorDBConnection from '../payoordb'
 

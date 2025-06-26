@@ -228,12 +228,10 @@ async function handleFetch({
     if (body && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
       options.body = JSON.stringify(body);
     }
-    console.log(url, options);
     const response = await fetch(url, options);
     await handleFetchError(response);
     if (response.status === 200 || response.status === 201) {
       const data = await response.json();
-      console.log(data, 'data in api now');
       return data;
     }
   } catch (error) {
@@ -1057,9 +1055,10 @@ const actions = {
       console.warn('Failed to load cart from localStorage due to parsing error, falling back to server:', e);
     }
     try {
+      console.log('call handleFetch');
       const data = await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetch */ "a"])({
         apiroute: 'shopper/initialize',
-        method: 'POST'
+        method: 'GET'
       });
       const {
         user_cart,
@@ -1088,10 +1087,9 @@ const actions = {
     state
   }) {
     if (localStorage.getItem('cartResetPerformed')) {
-      return;
+      //return
     }
     commit('RESET_CART_STATE');
-    commit('SET_CART_RESET_PERFORMED', true);
     try {
       localStorage.setItem('cartResetPerformed', 'true');
       localStorage.removeItem('cartItems');
@@ -1216,10 +1214,6 @@ const actions = {
     }
   }
 };
-
-//this.$store.dispatch("cart/updateTotal", cartTotal);
-
-//this.$store.dispatch("cart/updateTotal", cartTotal);
 
 /***/ }),
 /* 41 */

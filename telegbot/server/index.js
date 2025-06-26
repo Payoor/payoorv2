@@ -7,7 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-const { redisClient, connectRedis } = require('./redisconf')
+import redisManager from './RedisManager'
 
 require('./db')
 
@@ -52,7 +52,7 @@ app.post('/errorlog', async (req, res) => {
 
 app.post('/neworder', async (req, res) => {
   try {
-    const { orderId } = req.body;
+    const { orderId } = req.body
 
     if (!orderId) {
       return res
@@ -60,7 +60,7 @@ app.post('/neworder', async (req, res) => {
         .json({ message: 'Missing orderId in request body' })
     }
 
-    const message = `🛒 New order received: ${process.env.PAYOOR_URL}/admin/order?reference=${orderId}`;
+    const message = `🛒 New order received: ${process.env.PAYOOR_URL}/admin/order?reference=${orderId}`
     await telegramBot.callBot(message)
 
     res.status(200).json({ message: 'Notification sent to Telegram bot.' })
@@ -68,7 +68,7 @@ app.post('/neworder', async (req, res) => {
     console.error('❌ Error notifying bot:', err)
     res.status(500).json({ message: 'Internal server error' })
   }
-});
+})
 
 app.post('/send/message/simple', async (req, res) => {
   try {
@@ -87,18 +87,50 @@ app.post('/send/message/simple', async (req, res) => {
     console.error('❌ Error notifying bot:', err)
     res.status(500).json({ message: 'Internal server error' })
   }
-});
+})
 
 async function startServer () {
-  try {
-    //await connectRedis();
-    console.log('🚀 Connected to Redis')
+  let server
 
-    app.listen(port, () => {
+  const shutdown = async signal => {
+    console.log(`\n${signal} received: Shutting down server gracefully...`)
+
+    if (server) {
+      server.close(async () => {
+        console.log('Express server closed.')
+        await redisManager.disconnectRedis()
+        console.log('Redis disconnected. Exiting process.')
+        process.exit(0)
+      })
+    } else {
+      console.log('Server not running, disconnecting Redis and exiting.')
+      await redisManager.disconnectRedis()
+      process.exit(0)
+    }
+  }
+
+  try {
+    await redisManager.connectRedis()
+    console.log('Redis connected successfully!')
+
+    server = app.listen(port, () => {
       console.log(`✅ Server is running on port ${port}`)
+      console.log(`Access at http://localhost:${port}`)
+    })
+
+    process.on('SIGTERM', () => shutdown('SIGTERM'))
+    process.on('SIGINT', () => shutdown('SIGINT'))
+
+    process.on('unhandledRejection', (reason, promise) => {
+      console.error('Unhandled Rejection at:', promise, 'reason:', reason)
+    })
+
+    process.on('uncaughtException', err => {
+      console.error('Uncaught Exception:', err)
+      shutdown('UncaughtException')
     })
   } catch (error) {
-    console.error('❌ Failed to connect to Redis:', error)
+    console.error('❌ Failed to connect to Redis and start application:', error)
     process.exit(1)
   }
 }

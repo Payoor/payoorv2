@@ -6,14 +6,14 @@ const redisClient = new Redis({
   //username: 'default', // needs Redis >= 6
   //password: 'my-top-secret',
   db: 0
-})
+});
 
 /*const redisClient = redis.createClient({
   url: process.env.REDIS_URL,
   database: 0
 })*/
 
-let isConnected = false
+/*let isConnected = false
 
 async function connectRedis () {
   if (!isConnected) {
@@ -27,7 +27,7 @@ async function connectRedis () {
       throw err
     }
   }
-}
+} */
 
 // Event listeners for better visibility
 redisClient.on('connect', () => {
@@ -46,7 +46,7 @@ redisClient.on('error', err => {
   console.error('❌ Redis Client Error:', err)
 })
 
-module.exports = { redisClient, connectRedis }
+module.exports = { redisClient }
 
 //docker exec -it b3e983938e8a bash
 //ps aux | grep node

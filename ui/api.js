@@ -118,16 +118,12 @@ export async function handleFetch ({
       options.body = JSON.stringify(body)
     }
 
-    console.log(url, options)
-
     const response = await fetch(url, options)
 
     await handleFetchError(response)
 
     if (response.status === 200 || response.status === 201) {
       const data = await response.json()
-
-      console.log(data, 'data in api now')
 
       return data
     }
