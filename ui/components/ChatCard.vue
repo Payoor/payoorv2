@@ -67,7 +67,7 @@ export default {
             this.loading = true;
 
             try {
-                await this.$store.dispatch("cart/syncCartToServer");
+               // await this.$store.dispatch("cart/syncCartToServer");
             } catch (error) {
                 console.error("Error syncing cart to server:", error);
             } finally {

@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { serverurl, handleFetchError, handleFetch } from '@/api';
+import { handleFetch } from '@/api';
 import jwt_mixin from "@/mixins/jwt_mixin";
 import { mapState } from "vuex";
 
@@ -87,7 +87,6 @@ export default {
             option: null,
             loading: false,
             product_name: "",
-
         }
     },
     mounted() {
@@ -209,7 +208,7 @@ export default {
 
             this.$store.dispatch("cart/addItem", { id: this.option._id, quantity: this.quantity, price: this.option.price });
 
-            this.syncCartToLocalStorage()
+            //this.syncCartToLocalStorage()
         },
         decrementQuantity() {
             if (this.quantity > 0) {
@@ -218,7 +217,7 @@ export default {
                 this.$store.dispatch("cart/removeItem", { id: this.option._id, quantity: this.quantity, price: this.option.price });
             }
 
-            this.syncCartToLocalStorage()
+            //this.syncCartToLocalStorage()
         },
         removeItem() {
             if (this.quantity > 0) {
@@ -227,7 +226,7 @@ export default {
                 this.$store.dispatch("cart/removeItem", { id: this.option._id, quantity: this.quantity, price: this.option.price });
             }
 
-            this.syncCartToLocalStorage()
+            //this.syncCartToLocalStorage()
         }
     }
 }

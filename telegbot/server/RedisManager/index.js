@@ -18,9 +18,9 @@ class RedisManager {
       console.warn(
         'Redis client is already connecting or connected. Skipping new connection.'
       );
-      
+
       return
-    }
+    }  
 
     try {
       this.redisClient = new Redis({

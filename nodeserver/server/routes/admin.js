@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import express from 'express'
-import https from 'https'
+import https from 'https';
 import jwt from 'jsonwebtoken'
 import multer from 'multer';
 import fs from 'fs';

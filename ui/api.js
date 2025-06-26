@@ -12,7 +12,7 @@ export const serverurl = (() => {
 
 export async function handleFetchError (response) {
   if (!response.ok) {
-    let errorData
+    let errorData;
 
     try {
       errorData = await response.json()
