@@ -36,7 +36,7 @@ export const mutations = {
       state.total = Math.max(0, state.total - price * delta)
     }
 
-    console.log('state.total', state.total, state.items)
+   // console.log('state.total', state.total, state.items)
   },
 
   SET_CART_STATE (state, { items, total, totalItems }) {
@@ -62,7 +62,7 @@ export const mutations = {
   SET_PAYOOR_DB_INSTANCE (state, dbInstance) {
     state.payoorDBInstance = dbInstance
 
-    console.log(state.payoorDBInstance, 'state.payoorDBInstance')
+   // console.log(state.payoorDBInstance, 'state.payoorDBInstance')
   }
 }
 
@@ -106,7 +106,7 @@ export const actions = {
 
     const newQuantity = state.items[id]
 
-    console.log(newQuantity, typeof newQuantity)
+   // console.log(newQuantity, typeof newQuantity)
 
     try {
       if (newQuantity === undefined || newQuantity === 0) {
@@ -139,7 +139,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       const request = store.clear()
       request.onsuccess = () => {
-        console.log('All items cleared from IndexedDB.')
+        //console.log('All items cleared from IndexedDB.')
         dispatch('resetCart') // Reset Vuex state as well
         resolve()
       }
@@ -162,7 +162,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       const request = store.delete(id)
       request.onsuccess = () => {
-        console.log('Item deleted from IndexedDB successfully:', id)
+       // console.log('Item deleted from IndexedDB successfully:', id)
         resolve()
       }
       request.onerror = () => {
@@ -175,10 +175,10 @@ export const actions = {
   async loadCartFromIndexedDB ({ commit, dispatch, state }) {
     // Check if DB is already initialized. If not, dispatch the initialization and await it.
     if (!state.payoorDBInstance) {
-      console.log('IndexedDB instance not yet available. Initializing...')
+     // console.log('IndexedDB instance not yet available. Initializing...')
       try {
         await dispatch('initializePayoorDB')
-        console.log('IndexedDB initialized, proceeding to load cart.')
+      //  console.log('IndexedDB initialized, proceeding to load cart.')
       } catch (error) {
         console.error('Failed to initialize IndexedDB:', error)
         // If initialization fails, we cannot proceed with loading from DB.
@@ -218,7 +218,7 @@ export const actions = {
           total: total,
           totalItems: [...new Set(totalItems)] // Ensure unique IDs
         })
-        console.log('Cart loaded from IndexedDB:', itemsFromDB)
+       // console.log('Cart loaded from IndexedDB:', itemsFromDB)
         resolve(itemsFromDB)
       }
       request.onerror = () => {
@@ -255,7 +255,7 @@ export const actions = {
     }
 
     try {
-      console.log('call handleFetch')
+     // console.log('call handleFetch')
       const data = await handleFetch({
         apiroute: 'shopper/initialize',
         method: 'GET'
@@ -287,7 +287,7 @@ export const actions = {
       localStorage.removeItem('cartItems')
       localStorage.removeItem('cartTotal')
       localStorage.removeItem('cartLength')
-      console.log('Cart successfully reset and flag set.')
+      //console.log('Cart successfully reset and flag set.')
     } catch (err) {
       console.error('Failed to clear cart from localStorage:', err)
     }
@@ -298,7 +298,7 @@ export const actions = {
       const hasItemsToSync = Object.keys(state.items || {}).length > 0
 
       if (!hasItemsToSync) {
-        console.log('No items to sync — skipping server call.')
+      //  console.log('No items to sync — skipping server call.')
         return
       }
 
@@ -316,7 +316,7 @@ export const actions = {
 
       commit('SET_CART_STATE', { items, total, totalItems })
 
-      console.log('Cart synced successfully:', data)
+    //  console.log('Cart synced successfully:', data)
     } catch (error) {
       console.error('Failed to sync cart from localStorage to server:', error)
     }
@@ -334,7 +334,7 @@ export const actions = {
 
       const { checkout } = data
 
-      console.log(checkout)
+    //  console.log(checkout)
       commit('SET_CHECKOUT', checkout)
     } catch (error) {
       console.error('Failed to create checkout:', error)
@@ -351,7 +351,7 @@ export const actions = {
 
       const { checkout } = data
 
-      console.log(checkout, 'getCheckOutData')
+    //  console.log(checkout, 'getCheckOutData')
       commit('SET_CHECKOUT', checkout)
     } catch (error) {
       console.error('Error fetching checkout data:', error)
@@ -374,7 +374,7 @@ export const actions = {
 
       if (data.success) {
         const { updatedCheckout } = data
-        console.log(updatedCheckout, 'applyPromoCode success')
+     //   console.log(updatedCheckout, 'applyPromoCode success')
         commit('SET_CHECKOUT', updatedCheckout)
       } else {
         console.error(
@@ -422,8 +422,8 @@ export const actions = {
   },*/
 
   async initializePayoorDB ({ commit }) {
-    const PAYOOR_DB = 'PAYOOR_DB'
-    const DB_VERSION = 2 // Increment this version if you change your database schema
+    const PAYOOR_DB = 'PAYOOR_DB';
+    const DB_VERSION = 2
 
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(PAYOOR_DB, DB_VERSION)
@@ -431,16 +431,12 @@ export const actions = {
       request.onupgradeneeded = function (event) {
         const db = event.target.result
         if (!db.objectStoreNames.contains('payoor_cart')) {
-          // Create the 'payoor_cart' object store.
-          // 'id' is set as the keyPath, meaning each object stored must have an 'id' property,
-          // and its value will serve as the unique primary key for that record.
+          
           db.createObjectStore('payoor_cart', { keyPath: 'id' })
-          console.log(
+        /*  console.log(
             'IndexedDB object store "payoor_cart" created/upgraded successfully.'
-          )
+          )*/
         }
-        // If you needed to add new object stores or indexes in a future version,
-        // you'd add more `if (!db.objectStoreNames.contains('another_store'))` blocks here.
       }
 
       // onsuccess: This event fires when the database is successfully opened
@@ -449,7 +445,7 @@ export const actions = {
         // The `dbInstance` is the actual IDBDatabase object, which is your connection
         // to the IndexedDB.
         const dbInstance = event.target.result
-        console.log('IndexedDB database "PAYOOR_DB" opened successfully.')
+      //  console.log('IndexedDB database "PAYOOR_DB" opened successfully.')
 
         // Commit the database instance to the Vuex state.
         commit('SET_PAYOOR_DB_INSTANCE', dbInstance)
@@ -498,7 +494,7 @@ export const actions = {
       const request = store.put(item)
 
       request.onsuccess = () => {
-        console.log('Item added/updated in IndexedDB successfully:', item)
+     //   console.log('Item added/updated in IndexedDB successfully:', item)
         resolve(request.result)
       }
 

@@ -56,7 +56,7 @@ export default {
     },
     watch: {
         currentUser(newVal) {
-            console.log(newVal)
+           // console.log(newVal)
         },
         userinput(newValue) {
             if (this.errorMessage && newValue.length > 0) {

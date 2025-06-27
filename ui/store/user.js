@@ -15,7 +15,7 @@ export const mutations = {
   SET_CURRENT_USER (state, user) {
     state.currentUser = user
 
-    console.log(state.currentUser, 'state.current User')
+   // console.log(state.currentUser, 'state.current User')
   },
 
   REMOVE_CURRENT_USER (state) {

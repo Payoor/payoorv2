@@ -61,7 +61,7 @@ export default {
         }),
     },
     mounted() {
-        console.log('calling sync cart')
+        //console.log('calling sync cart')
     },
     methods: {
         continueShopping() {

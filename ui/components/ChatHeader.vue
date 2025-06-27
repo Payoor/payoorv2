@@ -82,7 +82,7 @@ export default {
         ...mapState("user", {
             currentUser: (state) => state.currentUser,
             isLoading: (state) => state.loading,
-            jwtToken: (state) => state.jwtToken,
+            jwtToken: (state) => state.jwtToken, 
         }),
     },
     async mounted() {
@@ -185,7 +185,7 @@ export default {
 
                 const { user } = data;
 
-                console.log(user)
+               // console.log(user)
 
                 this.$store.dispatch('user/setJwtToken', token);
                 this.$store.dispatch('user/addCurrentUser', user);

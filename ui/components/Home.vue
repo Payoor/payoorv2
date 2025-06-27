@@ -159,7 +159,7 @@ export default {
                 this.page += 1;
 
                 if (!data.hasMore) {
-                    console.log("No more products to load.");
+                  //  console.log("No more products to load.");
                     this.noMoreProducts = true;
                 }
             } catch (error) {
@@ -175,7 +175,7 @@ export default {
 
                 if (Math.abs(currentScrollTop - this.lastScrollTop) > scrollThreshold) {
                     if (currentScrollTop > this.lastScrollTop) {
-                        console.log('Scrolling Downwards - Hiding bottom');
+                       // console.log('Scrolling Downwards - Hiding bottom');
                         this.isBottomHidden = true;
                     } else if (currentScrollTop < this.lastScrollTop) {
                         console.log('Scrolling Upwards - Showing bottom');

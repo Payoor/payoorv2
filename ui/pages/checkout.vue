@@ -354,7 +354,7 @@ export default {
                 }
             }
 
-            console.log(this.checkoutData, 'const { } = this.checkoutData;')
+           // console.log(this.checkoutData, 'const { } = this.checkoutData;')
 
             const {
                 cart_items,
@@ -374,7 +374,7 @@ export default {
                 _id
             } = this.checkoutData || {};
 
-            console.log(this.checkoutData, 'this.checkoutData')
+          //  console.log(this.checkoutData, 'this.checkoutData')
 
             this.phone_number = phone_number || this.currentUser.phoneNumber;
             this.delivery_address = delivery_address;
@@ -396,7 +396,7 @@ export default {
         setDeliveryDate(deliver_date) {
             this.delivery_date = deliver_date;
 
-            console.log(this.delivery_date)
+           // console.log(this.delivery_date)
         },
         async createOrder() {
             try {

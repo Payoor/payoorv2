@@ -116,14 +116,14 @@ export default {
                     deliveryAddress
                 } = data;
 
-                console.log("Data from API:", {
+                /*console.log("Data from API:", {
                     name,
                     email,
                     phoneNumber,
                     userId,
                     total,
                     deliveryAddress
-                });
+                });*/
 
                 this.name = name;
                 this.email = email;

@@ -23,6 +23,6 @@ require('../models/Admin');
 require('../models/Checkout');
 require('../models/Order');
 require('../models/User');
-require('../models/UserCart');
+require('../models/UserCart')
 
 export default mongoose;

@@ -1,4 +1,4 @@
-;(async () => {
+/*;(async () => {
   if (typeof window === 'undefined') return
 
   const { initializeApp } = await import(
@@ -64,4 +64,4 @@
       signInWithRedirect(auth, provider)
     })
   }
-})()
+})()*/
