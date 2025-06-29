@@ -276,7 +276,7 @@ export default {
     }
 
     &__text {
-        font-size: 1.4rem;
+        font-size: 1.9rem;
         color: #333;
         line-height: 1.5;
         word-break: break-word;
