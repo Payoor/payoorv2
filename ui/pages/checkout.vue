@@ -22,8 +22,9 @@
                         </div>
 
                         <div class="checkout__section--btn">
-                            <button class="button-primary"
-                                @click="setPlaceholder('Set delivery address', 'Delivery address', 'delivery_address')">Change</button>
+                            <!--<button class="button-primary"
+                                @click="setPlaceholder('Set delivery address', 'Delivery address', 'delivery_address')">Change</button>-->
+                            <button class="button-primary" @click="openAddressList">Change</button>
                         </div>
                     </div>
 
@@ -108,13 +109,7 @@
 
                 </div>
 
-                <!---->
 
-                <div v-if="place_holder && checkout_input === 'delivery_address'">
-                    <AddressesList :selectAddressFromList="selectAddressFromList"
-                        :getCurrentLocation="getCurrentLocation" :locationLoading="locationLoading"
-                        :checkout_input="checkout_input" :setPlaceholder="setPlaceholder" />
-                </div>
 
                 <div class="checkout__inputs" v-if="place_holder && checkout_input !== 'delivery_address'"
                     @click.stop="setPlaceholder(false, false, null)">
@@ -258,6 +253,10 @@ export default {
         ...mapState("user", {
             currentUser: (state) => state.currentUser
         }),
+        ...mapState("addresslist", {
+            deliveryAddress: (state) => state.deliveryAddress,
+            checkoutInput: (state) => state.checkoutInput,
+        }),
         allowOrderCreation() {
             const ready =
                 this.delivery_address.trim().length > 0 &&
@@ -306,11 +305,11 @@ export default {
                 //showErrorMessage('invalid coupon code')
                 //this.recalculateTotal();
             }
-        }
+        },
     },
     methods: {
         async callAddressSearch(event) {
-           // console.log(event.target.value)
+            // console.log(event.target.value)
             const value = event.target.value;
             this.checkout_inputs['delivery_address'] = value;
 
@@ -388,7 +387,7 @@ export default {
             //  console.log(this.checkoutData, 'this.checkoutData')
 
             this.phone_number = phone_number || this.currentUser.phoneNumber;
-            this.delivery_address = delivery_address;
+            this.delivery_address = this.$route.query.deliveryAddress ? this.$route.query.deliveryAddress : delivery_address;
             this.subtotal = subtotal;
             this.delivery_fee = delivery_fee;
             this.service_charge = service_charge;
@@ -410,6 +409,15 @@ export default {
             this.delivery_date = deliver_date;
 
             // console.log(this.delivery_date)
+        },
+        openAddressList() {
+            this.$router.push({
+                path: '/addresslist',
+                query: {
+                    ...this.$route.query,
+                    prevpage: this.$route.path
+                }
+            });
         },
         async createOrder() {
             try {

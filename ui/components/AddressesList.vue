@@ -1,42 +1,45 @@
 <template>
-    <div class="addresseslist">
-        <div class="addresseslist__header">
+    <div>
+        <div class="addresseslist">
             <div class="addresseslist__input">
-                <input placeholder="Search for an address" v-model="query" @focus="handleInputFocus"
-                    @blur="handleInputBlur" />
+                <input placeholder="Search for an address" v-model="query" />
             </div>
 
-            <div class="addresseslist__button-area"
-                :class="{ 'addresseslist__button-area--keyboard-active': keyboardActive }">
-                <div class="addresseslist__currentlocation">
-                    <span class="addresseslist__currentlocation--btn" @click.stop="getCurrentLocation">
-                        <template v-if="!locationLoading">
-                            📍 Use Your Current Location
-                        </template>
-                        <template v-else>
-                            <span class="loader"></span> Getting location...
-                        </template>
-                    </span>
+            <div class="addresseslist__button">
+                <div>
+                    <div class="addresseslist__currentlocation">
+                        <span class="addresseslist__currentlocation--btn" @click.stop="getCurrentLocation">
+                            <template v-if="!locationLoading">
+                                📍 Use Your Current Location
+                            </template>
+                            <template v-else>
+                                <span class="loader"></span> Getting location...
+                            </template>
+                        </span>
+                    </div>
                 </div>
                 <button class="button-primary" @click="setPlaceholder(false, false, checkout_input)">Done</button>
             </div>
-        </div>
 
-        <div class="addresseslist__content">
-            <div v-if="loading" class="addresseslist__loading">
-                <LoadingAnimation /> Searching for places...
+            <div class="addresseslist__content">
+
+                <div v-if="loading" class="addresseslist__loading">
+                    <LoadingAnimation /> Searching for places...
+                </div>
+
+                <div class="addresseslist__item" v-for="{ formatted_address, icon } in addressesList"
+                    :key="formatted_address" @click="selectAddressFromListAndClose(formatted_address, checkout_input)">
+                    <figure class="addresseslist__icon">
+                        <img :src="icon" alt="Location Icon" />
+                    </figure>
+                    <span class="addresseslist__text">{{ formatted_address }}</span>
+                </div>
+                <div v-if="!addressesList.length && !loading && query.length" class="addresseslist__no-results">
+                    No results found for "{{ query }}"
+                </div>
             </div>
 
-            <div class="addresseslist__item" v-for="{ formatted_address, icon } in addressesList"
-                :key="formatted_address" @click="selectAddressFromListAndClose(formatted_address, checkout_input)">
-                <figure class="addresseslist__icon">
-                    <img :src="icon" alt="Location Icon" />
-                </figure>
-                <span class="addresseslist__text">{{ formatted_address }}</span>
-            </div>
-            <div v-if="!addressesList.length && !loading && query.length" class="addresseslist__no-results">
-                No results found for "{{ query }}"
-            </div>
+
         </div>
     </div>
 </template>
@@ -51,6 +54,7 @@ export default {
         'selectAddressFromList',
         'checkout_input',
         'locationLoading',
+        'selectAddressFromList',
         'setPlaceholder'
     ],
     data() {
@@ -58,8 +62,7 @@ export default {
             addressesList: [],
             debouncedQueryAddressList: null,
             loading: false,
-            query: "",
-            keyboardActive: false // New state for keyboard visibility
+            query: ""
         };
     },
     watch: {
@@ -71,18 +74,17 @@ export default {
         this.debouncedQueryAddressList = debounce(this.queryAddressList, 500);
     },
     mounted() {
+        // Prevent body scrolling when the component is mounted
         document.body.style.overflow = 'hidden';
-        // Listen for keyboard events (more reliable on some devices/browsers)
-        window.visualViewport.addEventListener('resize', this.handleViewportResize);
     },
     beforeUnmount() {
+        // Restore body scrolling when the component is unmounted
         document.body.style.overflow = '';
-        window.visualViewport.removeEventListener('resize', this.handleViewportResize);
     },
     methods: {
         async queryAddressList(query) {
             if (!query || !query.length) {
-                this.addressesList = [];
+                this.addressesList = []; // Clear results if query is empty
                 this.loading = false;
                 return;
             }
@@ -99,39 +101,13 @@ export default {
                 this.addressesList = data.data.placesResponse || [];
             } catch (error) {
                 console.error('Autocomplete error:', error);
-                this.addressesList = [];
+                this.addressesList = []; // Clear results on error
             } finally {
                 this.loading = false;
             }
         },
         selectAddressFromListAndClose(formatted_address, checkout_input) {
             this.selectAddressFromList(formatted_address, checkout_input);
-            // Optionally, close the keyboard when an address is selected
-            if (document.activeElement) {
-                document.activeElement.blur();
-            }
-        },
-        handleInputFocus() {
-            // This might not directly mean the keyboard is up, but it's a good indicator
-            // The visualViewport resize event is more definitive.
-            // this.keyboardActive = true;
-        },
-        handleInputBlur() {
-            // This also doesn't directly mean the keyboard is down.
-            // The visualViewport resize event is more definitive.
-            // this.keyboardActive = false;
-        },
-        handleViewportResize() {
-            // Determine if the keyboard is active by comparing layout viewport height
-            // with visual viewport height.
-            // The visual viewport is the currently visible portion of the screen.
-            // The layout viewport is the full content area.
-            const viewportHeight = window.visualViewport.height;
-            const screenHeight = window.innerHeight; // This is the layout viewport height
-
-            // If the visual viewport height is significantly less than the layout viewport height,
-            // it's likely the keyboard is open. Adjust the threshold as needed.
-            this.keyboardActive = viewportHeight < screenHeight * 0.7; // Example threshold
         }
     }
 }
@@ -146,29 +122,21 @@ export default {
     top: 0;
     left: 0;
     z-index: 7;
-    // padding: 1.5rem; // Removed global padding, now applied per section
-    overflow: hidden; // Prevent main wrapper scroll
+    padding: 1.5rem;
+    // overflow-y: hidden; // This should be handled by addresseslist__content
+    overflow-x: hidden;
     display: flex;
-    flex-direction: column;
-
-    &__header {
-        position: fixed;
-        width: 100%;
-        top: 0;
-        left: 0;
-        z-index: 8;
-        background: $white;
-        padding: 1.5rem; // Padding for the header area
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Optional: add a subtle shadow
-        display: flex;
-        flex-direction: column;
-        // height will be determined by its content
-    }
+    flex-direction: column; // Enable flexbox for vertical alignment
 
     &__input {
         width: 100%;
-        // No fixed position here anymore, it's inside the fixed header
-        padding-bottom: 1.5rem; // Space between input and buttons within header
+        left: 0;
+        overflow: hidden;
+        position: fixed; // Keep input fixed at the top
+        top: 2rem;
+        padding: 0 1.5rem;
+        background: $white;
+        z-index: 8; // Ensure input is above content
 
         & input {
             outline: none;
@@ -182,77 +150,18 @@ export default {
         }
     }
 
-    &__button-area {
+    &__content {
+        flex-grow: 1; // Allow content to take available space
+        border-radius: 1rem;
+        // margin: 0 auto;
+        overflow-y: scroll; // This makes the content scrollable
         display: flex;
         flex-direction: column;
-        align-items: center; // Center items horizontally
-        padding-top: 1.5rem; // Space from input
-        padding-bottom: 1.5rem; // Space for the bottom
-
-        // When keyboard is active, position this area to float above it
-        &--keyboard-active {
-            position: absolute; // Change to absolute within the fixed header
-            bottom: 0; // Stick to the bottom of the header
-            width: calc(100% - 3rem); // Account for header padding (1.5rem left + 1.5rem right)
-            background: $white; // Ensure background covers content below
-            padding-bottom: 0.5rem; // Reduced padding
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); // Optional: add a subtle shadow
-        }
-
-        & button {
-            font-size: 2rem;
-            padding: 2rem;
-            width: 60rem; // Max width for desktop
-            margin-top: 1rem; // Space from current location
-            display: block;
-
-            @include respond(tab-port) {
-                width: 100%;
-            }
-        }
-    }
-
-    &__currentlocation {
-        //text-align: center; // Center the current location button
-        width: 100%; // Take full width
-
-        &--btn {
-            margin-bottom: 1rem;
-            display: inline-block;
-            background: transparent;
-            color: $primary-color;
-            padding: 1rem;
-            border: 1px solid $primary-color;
-            border-radius: 12px;
-            font-size: 1.2rem;
-            font-weight: 500;
-            position: relative;
-            cursor: pointer;
-
-            .loader {
-                border: 2px solid #f3f3f3;
-                border-top: 2px solid $primary-color;
-                border-radius: 50%;
-                width: 1.4rem;
-                height: 1.4rem;
-                display: inline-block;
-                vertical-align: middle;
-                margin-right: 0.5rem;
-                animation: spin 0.8s linear infinite;
-            }
-        }
-    }
-
-    &__content {
-        flex-grow: 1;
-        // Adjusted padding-top to account for the dynamic header height
-        // This will need to be approximated or dynamically calculated if header height changes significantly
-        padding-top: var(--header-height, 150px); // Placeholder, will be set dynamically
-        padding-bottom: 1.5rem; // Consistent padding from the bottom
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        padding-left: 1.5rem; // Apply padding here
-        padding-right: 1.5rem; // Apply padding here
+        padding-top: 21rem;
+        //padding-bottom: 12rem; // Space for the fixed button area
+        -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+        width: 100%;
+        padding-bottom: 16rem;
     }
 
     &__loading {
@@ -294,7 +203,7 @@ export default {
         border-radius: 1rem;
         margin-bottom: 1rem;
         transition: background 0.2s ease;
-        cursor: pointer;
+        cursor: pointer; // Indicate it's clickable
 
         &:hover {
             background: #f0f0f0;
@@ -305,7 +214,7 @@ export default {
         width: 1.3rem;
         height: 1.3rem;
         margin-right: 1.5rem;
-        flex-shrink: 0;
+        flex-shrink: 0; // Prevent icon from shrinking
 
         img {
             width: 100%;
@@ -326,6 +235,65 @@ export default {
         font-size: 1.4rem;
         color: #666;
         margin-top: 2rem;
+    }
+
+    &__button {
+        width: 100%;
+        left: 0;
+        //overflow: hidden;
+        position: fixed; // Keep buttons fixed at the bottom
+        bottom: 2rem;
+        //padding: 0 1.5rem;
+        background: $white;
+        height: 13rem;
+        z-index: 8;
+        top: 7rem;
+        padding: 1.5rem;
+
+        @include respond(tab-port) {
+            display: block; // This seems to be for responsiveness
+        }
+
+        & button {
+            font-size: 2rem;
+            padding: 2rem;
+            width: 60rem;
+            margin: 0 auto; // Center the button if less than 100% width
+            display: block; // Make margin auto work
+
+            @include respond(tab-port) {
+                width: 100%;
+            }
+        }
+    }
+
+    &__currentlocation {
+
+        &--btn {
+            margin-bottom: 1rem;
+            display: inline-block;
+            background: transparent;
+            color: $primary-color;
+            padding: 1rem;
+            border: 1px solid $primary-color;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            position: relative;
+            cursor: pointer; // Indicate it's clickable
+
+            .loader {
+                border: 2px solid #f3f3f3;
+                border-top: 2px solid $primary-color;
+                border-radius: 50%;
+                width: 1.4rem;
+                height: 1.4rem;
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 0.5rem;
+                animation: spin 0.8s linear infinite;
+            }
+        }
     }
 }
 </style>

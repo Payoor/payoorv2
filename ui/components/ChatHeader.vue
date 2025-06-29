@@ -67,22 +67,23 @@
 import { mapState } from "vuex";
 import { handleFetch } from '@/api';
 import jwt_mixin from '@/mixins/jwt_mixin';
+import navigation_mixin from '@/mixins/navigation_mixin';
 
 export default {
-    mixins: [jwt_mixin],
+    mixins: [jwt_mixin, navigation_mixin],
     props: ['logovisible', 'name', 'backRoute', 'green'],
     emits: ['update:authValue'],
     data() {
         return {
             menuopen: false,
-            routeStack: ['/']
+            //routeStack: ['/']
         };
     },
     computed: {
         ...mapState("user", {
             currentUser: (state) => state.currentUser,
             isLoading: (state) => state.loading,
-            jwtToken: (state) => state.jwtToken, 
+            jwtToken: (state) => state.jwtToken,
         }),
     },
     async mounted() {
@@ -185,7 +186,7 @@ export default {
 
                 const { user } = data;
 
-               // console.log(user)
+                // console.log(user)
 
                 this.$store.dispatch('user/setJwtToken', token);
                 this.$store.dispatch('user/addCurrentUser', user);
@@ -199,32 +200,32 @@ export default {
         toggleSideMenu() {
             this.menuopen = !this.menuopen;
         },
-        goBack() {
-            const currentRouteStackQuery = this.$route.query.routeStack;
-
-            let routeStackArray = [];
-            if (currentRouteStackQuery) {
-                routeStackArray = currentRouteStackQuery.split(',').map(item => item.trim()).filter(item => item !== '');
-            }
-
-            let targetPath = '/';
-
-            if (routeStackArray.length >= 2) {
-                targetPath = routeStackArray[routeStackArray.length - 2];
-            } else if (routeStackArray.length === 1) {
-                targetPath = routeStackArray[0];
-            }
-
-            const newRouteStack = routeStackArray.slice(0, -1);
-
-            this.$router.push({
-                path: targetPath,
-                query: {
-                    ...this.$route.query,
-                    routeStack: newRouteStack.join(',')
-                }
-            });
-        },
+        /* goBack() {
+             const currentRouteStackQuery = this.$route.query.routeStack;
+ 
+             let routeStackArray = [];
+             if (currentRouteStackQuery) {
+                 routeStackArray = currentRouteStackQuery.split(',').map(item => item.trim()).filter(item => item !== '');
+             }
+ 
+             let targetPath = '/';
+ 
+             if (routeStackArray.length >= 2) {
+                 targetPath = routeStackArray[routeStackArray.length - 2];
+             } else if (routeStackArray.length === 1) {
+                 targetPath = routeStackArray[0];
+             }
+ 
+             const newRouteStack = routeStackArray.slice(0, -1);
+ 
+             this.$router.push({
+                 path: targetPath,
+                 query: {
+                     ...this.$route.query,
+                     routeStack: newRouteStack.join(',')
+                 }
+             });
+         },*/
         handleResize() {
             this.menuopen = window.innerWidth > 900;
         },
