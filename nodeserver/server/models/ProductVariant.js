@@ -36,3 +36,6 @@ const ProductVariantSchema = new mongoose.Schema(
 const ProductVariant = mongoose.model('ProductVariant', ProductVariantSchema)
 
 module.exports = ProductVariant
+
+/*Example: For your variantsCollection.find({ productId: productId }), 
+ensuring productId is indexed on the productvariants collection is paramount.*/

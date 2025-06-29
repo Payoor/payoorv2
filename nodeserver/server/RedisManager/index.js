@@ -1,12 +1,13 @@
-import Redis from 'ioredis'
+import Redis from 'ioredis';
 
 class RedisManager {
   constructor () {
     if (RedisManager.instance) {
       return RedisManager.instance
     }
-    this.redisClient = null
-    RedisManager.instance = this
+
+    this.redisClient = null;
+    RedisManager.instance = this;
   }
 
   async connectRedis () {
@@ -417,6 +418,6 @@ class RedisManager {
   }
 }
 
-const redisManager = new RedisManager()
+const redisManager = new RedisManager();
 
 export default redisManager

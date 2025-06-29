@@ -43,7 +43,7 @@ module.exports =
 /******/
 /******/ 		// "0" is the signal for "already loaded"
 /******/ 		if(installedChunks[chunkId] !== 0) {
-/******/ 			var chunk = require("./" + ({"1":"components/address-list","2":"components/authenticator","3":"components/cart-button","4":"components/chat-body","5":"components/chat-card","6":"components/chat-categories","7":"components/chat-header","8":"components/chat-input","9":"components/chat-option","10":"components/chat-options","11":"components/choose-payment-processor","12":"components/google-btn","13":"components/home","14":"components/landing","15":"components/landing-categories","16":"components/landing-copy","17":"components/landing-faq","18":"components/landing-footer","19":"components/landing-page","20":"components/loading-animation","21":"components/order-display","22":"components/otp-input","23":"pages/aboutus","24":"pages/admin/checkout","25":"pages/admin/dashboard","26":"pages/admin/index","27":"pages/admin/order/index","28":"pages/auth/googlecallback","29":"pages/authp","30":"pages/banipay","31":"pages/cart","32":"pages/checkout","33":"pages/index","34":"pages/options","35":"pages/orders","36":"pages/payment","37":"pages/paystack","38":"pages/userorder/_orderid"}[chunkId]||chunkId) + ".js");
+/******/ 			var chunk = require("./" + ({"1":"components/address-list","2":"components/addresses-list","3":"components/authenticator","4":"components/cart-button","5":"components/chat-body","6":"components/chat-card","7":"components/chat-categories","8":"components/chat-header","9":"components/chat-input","10":"components/chat-option","11":"components/chat-options","12":"components/choose-payment-processor","13":"components/google-btn","14":"components/home","15":"components/landing","16":"components/landing-categories","17":"components/landing-copy","18":"components/landing-faq","19":"components/landing-footer","20":"components/landing-page","21":"components/loading-animation","22":"components/order-display","23":"components/otp-input","24":"pages/aboutus","25":"pages/addresslist","26":"pages/admin/checkout","27":"pages/admin/dashboard","28":"pages/admin/index","29":"pages/admin/order/index","30":"pages/auth/googlecallback","31":"pages/authp","32":"pages/banipay","33":"pages/cart","34":"pages/checkout","35":"pages/index","36":"pages/options","37":"pages/orders","38":"pages/payment","39":"pages/paystack","40":"pages/userorder/_orderid"}[chunkId]||chunkId) + ".js");
 /******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids;
 /******/ 			for(var moduleId in moreModules) {
 /******/ 				modules[moduleId] = moreModules[moduleId];
@@ -1716,6 +1716,7 @@ __webpack_require__.r(__webpack_exports__);
 var components_namespaceObject = {};
 __webpack_require__.r(components_namespaceObject);
 __webpack_require__.d(components_namespaceObject, "AddressList", function() { return AddressList; });
+__webpack_require__.d(components_namespaceObject, "AddressesList", function() { return AddressesList; });
 __webpack_require__.d(components_namespaceObject, "Authenticator", function() { return Authenticator; });
 __webpack_require__.d(components_namespaceObject, "CartButton", function() { return CartButton; });
 __webpack_require__.d(components_namespaceObject, "ChatBody", function() { return ChatBody; });
@@ -2467,22 +2468,23 @@ function shouldScrollToTop(route) {
 
 
 
-const _0b411c9a = () => interopDefault(__webpack_require__.e(/* import() | pages/aboutus */ 23).then(__webpack_require__.bind(null, 194)));
-const _dd64b54c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/index */ 26).then(__webpack_require__.bind(null, 177)));
-const _57c1bc10 = () => interopDefault(__webpack_require__.e(/* import() | pages/authp */ 29).then(__webpack_require__.bind(null, 178)));
-const _32c2dd76 = () => interopDefault(__webpack_require__.e(/* import() | pages/banipay */ 30).then(__webpack_require__.bind(null, 179)));
-const _b50a5bf0 = () => interopDefault(__webpack_require__.e(/* import() | pages/cart */ 31).then(__webpack_require__.bind(null, 180)));
-const _0973792e = () => interopDefault(__webpack_require__.e(/* import() | pages/checkout */ 32).then(__webpack_require__.bind(null, 181)));
-const _6d3c63e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/options */ 34).then(__webpack_require__.bind(null, 182)));
-const _29fc7b4d = () => interopDefault(__webpack_require__.e(/* import() | pages/orders */ 35).then(__webpack_require__.bind(null, 183)));
-const _25be1b4e = () => interopDefault(__webpack_require__.e(/* import() | pages/payment */ 36).then(__webpack_require__.bind(null, 195)));
-const _585909c8 = () => interopDefault(__webpack_require__.e(/* import() | pages/paystack */ 37).then(__webpack_require__.bind(null, 184)));
-const _612343ee = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/checkout */ 24).then(__webpack_require__.bind(null, 185)));
-const _0ce7be1c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/dashboard */ 25).then(__webpack_require__.bind(null, 193)));
-const _4c8a984e = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/order/index */ 27).then(__webpack_require__.bind(null, 186)));
-const _d51f82e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/auth/googlecallback */ 28).then(__webpack_require__.bind(null, 187)));
-const _60a90fcc = () => interopDefault(__webpack_require__.e(/* import() | pages/index */ 33).then(__webpack_require__.bind(null, 188)));
-const _8e720484 = () => interopDefault(__webpack_require__.e(/* import() | pages/userorder/_orderid */ 38).then(__webpack_require__.bind(null, 189)));
+const _0b411c9a = () => interopDefault(__webpack_require__.e(/* import() | pages/aboutus */ 24).then(__webpack_require__.bind(null, 202)));
+const _367d9dda = () => interopDefault(__webpack_require__.e(/* import() | pages/addresslist */ 25).then(__webpack_require__.bind(null, 183)));
+const _dd64b54c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/index */ 28).then(__webpack_require__.bind(null, 184)));
+const _57c1bc10 = () => interopDefault(__webpack_require__.e(/* import() | pages/authp */ 31).then(__webpack_require__.bind(null, 185)));
+const _32c2dd76 = () => interopDefault(__webpack_require__.e(/* import() | pages/banipay */ 32).then(__webpack_require__.bind(null, 186)));
+const _b50a5bf0 = () => interopDefault(__webpack_require__.e(/* import() | pages/cart */ 33).then(__webpack_require__.bind(null, 187)));
+const _0973792e = () => interopDefault(__webpack_require__.e(/* import() | pages/checkout */ 34).then(__webpack_require__.bind(null, 188)));
+const _6d3c63e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/options */ 36).then(__webpack_require__.bind(null, 189)));
+const _29fc7b4d = () => interopDefault(__webpack_require__.e(/* import() | pages/orders */ 37).then(__webpack_require__.bind(null, 190)));
+const _25be1b4e = () => interopDefault(__webpack_require__.e(/* import() | pages/payment */ 38).then(__webpack_require__.bind(null, 203)));
+const _585909c8 = () => interopDefault(__webpack_require__.e(/* import() | pages/paystack */ 39).then(__webpack_require__.bind(null, 191)));
+const _612343ee = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/checkout */ 26).then(__webpack_require__.bind(null, 192)));
+const _0ce7be1c = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/dashboard */ 27).then(__webpack_require__.bind(null, 201)));
+const _4c8a984e = () => interopDefault(__webpack_require__.e(/* import() | pages/admin/order/index */ 29).then(__webpack_require__.bind(null, 193)));
+const _d51f82e6 = () => interopDefault(__webpack_require__.e(/* import() | pages/auth/googlecallback */ 30).then(__webpack_require__.bind(null, 194)));
+const _60a90fcc = () => interopDefault(__webpack_require__.e(/* import() | pages/index */ 35).then(__webpack_require__.bind(null, 195)));
+const _8e720484 = () => interopDefault(__webpack_require__.e(/* import() | pages/userorder/_orderid */ 40).then(__webpack_require__.bind(null, 196)));
 const emptyFn = () => {};
 external_vue_default.a.use(external_vue_router_default.a);
 const routerOptions = {
@@ -2495,6 +2497,10 @@ const routerOptions = {
     path: "/aboutus",
     component: _0b411c9a,
     name: "aboutus"
+  }, {
+    path: "/addresslist",
+    component: _367d9dda,
+    name: "addresslist"
   }, {
     path: "/admin",
     component: _dd64b54c,
@@ -3301,28 +3307,29 @@ function mergeProperty(storeModule, moduleData, property) {
   }
 }
 // CONCATENATED MODULE: ./.nuxt/components/index.js
-const AddressList = () => __webpack_require__.e(/* import() | components/address-list */ 1).then(__webpack_require__.bind(null, 136)).then(c => wrapFunctional(c.default || c));
-const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 2).then(__webpack_require__.bind(null, 190)).then(c => wrapFunctional(c.default || c));
-const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 3).then(__webpack_require__.bind(null, 47)).then(c => wrapFunctional(c.default || c));
-const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 4).then(__webpack_require__.bind(null, 106)).then(c => wrapFunctional(c.default || c));
-const ChatCard = () => __webpack_require__.e(/* import() | components/chat-card */ 5).then(__webpack_require__.bind(null, 93)).then(c => wrapFunctional(c.default || c));
-const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 6).then(__webpack_require__.bind(null, 89)).then(c => wrapFunctional(c.default || c));
-const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 7).then(__webpack_require__.bind(null, 51)).then(c => wrapFunctional(c.default || c));
-const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 8).then(__webpack_require__.bind(null, 90)).then(c => wrapFunctional(c.default || c));
-const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 9).then(__webpack_require__.bind(null, 71)).then(c => wrapFunctional(c.default || c));
-const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 10).then(__webpack_require__.bind(null, 191)).then(c => wrapFunctional(c.default || c));
-const ChoosePaymentProcessor = () => __webpack_require__.e(/* import() | components/choose-payment-processor */ 11).then(__webpack_require__.bind(null, 137)).then(c => wrapFunctional(c.default || c));
-const GoogleBtn = () => __webpack_require__.e(/* import() | components/google-btn */ 12).then(__webpack_require__.bind(null, 140)).then(c => wrapFunctional(c.default || c));
-const Home = () => __webpack_require__.e(/* import() | components/home */ 13).then(__webpack_require__.bind(null, 139)).then(c => wrapFunctional(c.default || c));
-const Landing = () => __webpack_require__.e(/* import() | components/landing */ 14).then(__webpack_require__.bind(null, 192)).then(c => wrapFunctional(c.default || c));
-const LandingCategories = () => __webpack_require__.e(/* import() | components/landing-categories */ 15).then(__webpack_require__.bind(null, 94)).then(c => wrapFunctional(c.default || c));
-const LandingCopy = () => __webpack_require__.e(/* import() | components/landing-copy */ 16).then(__webpack_require__.bind(null, 95)).then(c => wrapFunctional(c.default || c));
-const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 17).then(__webpack_require__.bind(null, 91)).then(c => wrapFunctional(c.default || c));
-const LandingFooter = () => __webpack_require__.e(/* import() | components/landing-footer */ 18).then(__webpack_require__.bind(null, 92)).then(c => wrapFunctional(c.default || c));
-const LandingPage = () => __webpack_require__.e(/* import() | components/landing-page */ 19).then(__webpack_require__.bind(null, 138)).then(c => wrapFunctional(c.default || c));
-const LoadingAnimation = () => __webpack_require__.e(/* import() | components/loading-animation */ 20).then(__webpack_require__.bind(null, 54)).then(c => wrapFunctional(c.default || c));
-const OrderDisplay = () => __webpack_require__.e(/* import() | components/order-display */ 21).then(__webpack_require__.bind(null, 72)).then(c => wrapFunctional(c.default || c));
-const OtpInput = () => __webpack_require__.e(/* import() | components/otp-input */ 22).then(__webpack_require__.bind(null, 105)).then(c => wrapFunctional(c.default || c));
+const AddressList = () => __webpack_require__.e(/* import() | components/address-list */ 1).then(__webpack_require__.bind(null, 197)).then(c => wrapFunctional(c.default || c));
+const AddressesList = () => __webpack_require__.e(/* import() | components/addresses-list */ 2).then(__webpack_require__.bind(null, 138)).then(c => wrapFunctional(c.default || c));
+const Authenticator = () => __webpack_require__.e(/* import() | components/authenticator */ 3).then(__webpack_require__.bind(null, 198)).then(c => wrapFunctional(c.default || c));
+const CartButton = () => __webpack_require__.e(/* import() | components/cart-button */ 4).then(__webpack_require__.bind(null, 48)).then(c => wrapFunctional(c.default || c));
+const ChatBody = () => __webpack_require__.e(/* import() | components/chat-body */ 5).then(__webpack_require__.bind(null, 106)).then(c => wrapFunctional(c.default || c));
+const ChatCard = () => __webpack_require__.e(/* import() | components/chat-card */ 6).then(__webpack_require__.bind(null, 93)).then(c => wrapFunctional(c.default || c));
+const ChatCategories = () => __webpack_require__.e(/* import() | components/chat-categories */ 7).then(__webpack_require__.bind(null, 89)).then(c => wrapFunctional(c.default || c));
+const ChatHeader = () => __webpack_require__.e(/* import() | components/chat-header */ 8).then(__webpack_require__.bind(null, 51)).then(c => wrapFunctional(c.default || c));
+const ChatInput = () => __webpack_require__.e(/* import() | components/chat-input */ 9).then(__webpack_require__.bind(null, 90)).then(c => wrapFunctional(c.default || c));
+const ChatOption = () => __webpack_require__.e(/* import() | components/chat-option */ 10).then(__webpack_require__.bind(null, 71)).then(c => wrapFunctional(c.default || c));
+const ChatOptions = () => __webpack_require__.e(/* import() | components/chat-options */ 11).then(__webpack_require__.bind(null, 199)).then(c => wrapFunctional(c.default || c));
+const ChoosePaymentProcessor = () => __webpack_require__.e(/* import() | components/choose-payment-processor */ 12).then(__webpack_require__.bind(null, 139)).then(c => wrapFunctional(c.default || c));
+const GoogleBtn = () => __webpack_require__.e(/* import() | components/google-btn */ 13).then(__webpack_require__.bind(null, 142)).then(c => wrapFunctional(c.default || c));
+const Home = () => __webpack_require__.e(/* import() | components/home */ 14).then(__webpack_require__.bind(null, 141)).then(c => wrapFunctional(c.default || c));
+const Landing = () => __webpack_require__.e(/* import() | components/landing */ 15).then(__webpack_require__.bind(null, 200)).then(c => wrapFunctional(c.default || c));
+const LandingCategories = () => __webpack_require__.e(/* import() | components/landing-categories */ 16).then(__webpack_require__.bind(null, 94)).then(c => wrapFunctional(c.default || c));
+const LandingCopy = () => __webpack_require__.e(/* import() | components/landing-copy */ 17).then(__webpack_require__.bind(null, 95)).then(c => wrapFunctional(c.default || c));
+const LandingFaq = () => __webpack_require__.e(/* import() | components/landing-faq */ 18).then(__webpack_require__.bind(null, 91)).then(c => wrapFunctional(c.default || c));
+const LandingFooter = () => __webpack_require__.e(/* import() | components/landing-footer */ 19).then(__webpack_require__.bind(null, 92)).then(c => wrapFunctional(c.default || c));
+const LandingPage = () => __webpack_require__.e(/* import() | components/landing-page */ 20).then(__webpack_require__.bind(null, 140)).then(c => wrapFunctional(c.default || c));
+const LoadingAnimation = () => __webpack_require__.e(/* import() | components/loading-animation */ 21).then(__webpack_require__.bind(null, 54)).then(c => wrapFunctional(c.default || c));
+const OrderDisplay = () => __webpack_require__.e(/* import() | components/order-display */ 22).then(__webpack_require__.bind(null, 72)).then(c => wrapFunctional(c.default || c));
+const OtpInput = () => __webpack_require__.e(/* import() | components/otp-input */ 23).then(__webpack_require__.bind(null, 105)).then(c => wrapFunctional(c.default || c));
 
 // nuxt/nuxt.js#8607
 function wrapFunctional(options) {

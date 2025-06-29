@@ -7,6 +7,7 @@ You can directly use them in pages and other components without the need to impo
 **Tip:** If a component is conditionally rendered with `v-if` and is big, it is better to use `Lazy` or `lazy-` prefix to lazy load.
 
 - `<AddressList>` | `<address-list>` (components/AddressList.vue)
+- `<AddressesList>` | `<addresses-list>` (components/AddressesList.vue)
 - `<Authenticator>` | `<authenticator>` (components/Authenticator.vue)
 - `<CartButton>` | `<cart-button>` (components/CartButton.vue)
 - `<ChatBody>` | `<chat-body>` (components/ChatBody.vue)

@@ -7,6 +7,13 @@
     "_name": "_0b411c9a"
   },
   {
+    "name": "addresslist",
+    "path": "/addresslist",
+    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/addresslist.vue",
+    "chunkName": "pages/addresslist",
+    "_name": "_367d9dda"
+  },
+  {
     "name": "admin",
     "path": "/admin",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/index.vue",

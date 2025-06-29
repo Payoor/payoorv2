@@ -33,3 +33,6 @@ var ProductVariantSchema = new _mongoose["default"].Schema({
 });
 var ProductVariant = _mongoose["default"].model('ProductVariant', ProductVariantSchema);
 module.exports = ProductVariant;
+
+/*Example: For your variantsCollection.find({ productId: productId }), 
+ensuring productId is indexed on the productvariants collection is paramount.*/

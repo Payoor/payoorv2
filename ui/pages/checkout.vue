@@ -108,28 +108,39 @@
 
                 </div>
 
-                <div class="checkout__inputs" v-if="place_holder" @click.stop="setPlaceholder(false, false, null)">
+                <!---->
+
+                <div v-if="place_holder && checkout_input === 'delivery_address'">
+                    <AddressesList :selectAddressFromList="selectAddressFromList"
+                        :getCurrentLocation="getCurrentLocation" :locationLoading="locationLoading"
+                        :checkout_input="checkout_input" :setPlaceholder="setPlaceholder" />
+                </div>
+
+                <div class="checkout__inputs" v-if="place_holder && checkout_input !== 'delivery_address'"
+                    @click.stop="setPlaceholder(false, false, null)">
                     <div class="checkout__inputs--body">
                         <div class="checkout__inputcontent slide-fade-in-up">
                             <h2 class="checkout__inputcontent--h2">{{ input_label }}</h2>
 
-                            <div v-if="input_label === 'Delivery address'">
+
+
+                            <!--<div v-if="input_label === 'Delivery address'">
                                 <AddressList :query="delivery_address" :selectAddressFromList="selectAddressFromList"
                                     :checkout_input="checkout_input" />
-                            </div>
+                            </div>-->
 
-                            <div v-if="input_label === 'Delivery address'">
+                            <!--<div v-if="input_label === 'Delivery address'">
                                 <div class="checkout__currentlocation">
                                     <span class="checkout__currentlocation--btn" @click.stop="getCurrentLocation">
                                         <template v-if="!locationLoading">
                                             📍 Use Your Current Location
                                         </template>
-                                        <template v-else>
+<template v-else>
                                             <span class="loader"></span> Getting location...
                                         </template>
-                                    </span>
-                                </div>
-                            </div>
+</span>
+</div>
+</div>-->
 
 
                             <div class="checkout__input">
@@ -299,7 +310,7 @@ export default {
     },
     methods: {
         async callAddressSearch(event) {
-            console.log(event.target.value)
+           // console.log(event.target.value)
             const value = event.target.value;
             this.checkout_inputs['delivery_address'] = value;
 
@@ -354,7 +365,7 @@ export default {
                 }
             }
 
-           // console.log(this.checkoutData, 'const { } = this.checkoutData;')
+            // console.log(this.checkoutData, 'const { } = this.checkoutData;')
 
             const {
                 cart_items,
@@ -374,7 +385,7 @@ export default {
                 _id
             } = this.checkoutData || {};
 
-          //  console.log(this.checkoutData, 'this.checkoutData')
+            //  console.log(this.checkoutData, 'this.checkoutData')
 
             this.phone_number = phone_number || this.currentUser.phoneNumber;
             this.delivery_address = delivery_address;
@@ -392,11 +403,13 @@ export default {
             this.checkout_inputs[checkout_input] = formatted_address;
 
             this.delivery_address = this.checkout_inputs[checkout_input];
+
+            this.setPlaceholder(false, false, checkout_input);
         },
         setDeliveryDate(deliver_date) {
             this.delivery_date = deliver_date;
 
-           // console.log(this.delivery_date)
+            // console.log(this.delivery_date)
         },
         async createOrder() {
             try {
@@ -722,8 +735,6 @@ export default {
         background: $white;
         padding: 1rem;
         padding-bottom: 2rem;
-
-
 
         display: flex;
         justify-content: center;

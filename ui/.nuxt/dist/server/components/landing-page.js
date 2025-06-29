@@ -1,4 +1,4 @@
-exports.ids = [19,3,7,15,16,17,18];
+exports.ids = [20,4,8,16,17,18,19];
 exports.modules = {
 
 /***/ 100:
@@ -46,7 +46,7 @@ module.exports = ___CSS_LOADER_EXPORT___;
 
 /***/ }),
 
-/***/ 138:
+/***/ 140:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -222,7 +222,7 @@ module.exports.__inject__ = function (context) {
 
 /***/ }),
 
-/***/ 47:
+/***/ 48:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -675,7 +675,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* harmony default export */ var ChatHeader = __webpack_exports__["default"] = (component.exports);
 
 /* nuxt-component-imports */
-installComponents(component, {CartButton: __webpack_require__(47).default})
+installComponents(component, {CartButton: __webpack_require__(48).default})
 
 
 /***/ }),

@@ -178,7 +178,7 @@ export default {
                        // console.log('Scrolling Downwards - Hiding bottom');
                         this.isBottomHidden = true;
                     } else if (currentScrollTop < this.lastScrollTop) {
-                        console.log('Scrolling Upwards - Showing bottom');
+                       // console.log('Scrolling Upwards - Showing bottom');
                         this.isBottomHidden = false;
                     }
                 }

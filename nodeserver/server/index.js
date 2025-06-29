@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const app = express()
 const fs = require('fs')
 
@@ -6,19 +6,19 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-require('./db')
+require('./db');
 
-import authRoute from './routes/auth'
-import shopperRoute from './routes/shopper'
+import authRoute from './routes/auth';
+import shopperRoute from './routes/shopper';
 import adminRoute from './routes/admin'
 
-import handleError from './handleError'
-import telegramBotErrorLogger from './telegramBotErrorLogger'
-import redisManager from './RedisManager'
+import handleError from './handleError';
+import telegramBotErrorLogger from './telegramBotErrorLogger';
+import redisManager from './RedisManager';
 
 const port = process.env.PORT
 
-app.use(express.json())
+app.use(express.json());
 
 app.get('/health', async (req, res, next) => {
   try {

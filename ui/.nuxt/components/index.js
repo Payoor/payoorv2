@@ -1,4 +1,5 @@
 export const AddressList = () => import('../../components/AddressList.vue' /* webpackChunkName: "components/address-list" */).then(c => wrapFunctional(c.default || c))
+export const AddressesList = () => import('../../components/AddressesList.vue' /* webpackChunkName: "components/addresses-list" */).then(c => wrapFunctional(c.default || c))
 export const Authenticator = () => import('../../components/Authenticator.vue' /* webpackChunkName: "components/authenticator" */).then(c => wrapFunctional(c.default || c))
 export const CartButton = () => import('../../components/CartButton.vue' /* webpackChunkName: "components/cart-button" */).then(c => wrapFunctional(c.default || c))
 export const ChatBody = () => import('../../components/ChatBody.vue' /* webpackChunkName: "components/chat-body" */).then(c => wrapFunctional(c.default || c))

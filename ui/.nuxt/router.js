@@ -5,6 +5,7 @@ import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
 const _0b411c9a = () => interopDefault(import('../pages/aboutus.vue' /* webpackChunkName: "pages/aboutus" */))
+const _367d9dda = () => interopDefault(import('../pages/addresslist.vue' /* webpackChunkName: "pages/addresslist" */))
 const _dd64b54c = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
 const _57c1bc10 = () => interopDefault(import('../pages/authp.vue' /* webpackChunkName: "pages/authp" */))
 const _32c2dd76 = () => interopDefault(import('../pages/banipay.vue' /* webpackChunkName: "pages/banipay" */))
@@ -36,6 +37,10 @@ export const routerOptions = {
     path: "/aboutus",
     component: _0b411c9a,
     name: "aboutus"
+  }, {
+    path: "/addresslist",
+    component: _367d9dda,
+    name: "addresslist"
   }, {
     path: "/admin",
     component: _dd64b54c,

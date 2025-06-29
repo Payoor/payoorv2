@@ -1,4 +1,4 @@
-exports.ids = [21,3,7];
+exports.ids = [22,4,8];
 exports.modules = {
 
 /***/ 44:
@@ -77,7 +77,7 @@ module.exports.__inject__ = function (context) {
 
 /***/ }),
 
-/***/ 47:
+/***/ 48:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -530,7 +530,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* harmony default export */ var ChatHeader = __webpack_exports__["default"] = (component.exports);
 
 /* nuxt-component-imports */
-installComponents(component, {CartButton: __webpack_require__(47).default})
+installComponents(component, {CartButton: __webpack_require__(48).default})
 
 
 /***/ }),

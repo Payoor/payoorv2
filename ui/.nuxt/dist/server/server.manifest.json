@@ -2,6 +2,7 @@
   "entry": "server.js",
   "files": {
     "components/address-list.js": "components/address-list.js",
+    "components/addresses-list.js": "components/addresses-list.js",
     "components/authenticator.js": "components/authenticator.js",
     "components/cart-button.js": "components/cart-button.js",
     "components/chat-body.js": "components/chat-body.js",
@@ -24,6 +25,7 @@
     "components/order-display.js": "components/order-display.js",
     "components/otp-input.js": "components/otp-input.js",
     "pages/aboutus.js": "pages/aboutus.js",
+    "pages/addresslist.js": "pages/addresslist.js",
     "pages/admin/checkout.js": "pages/admin/checkout.js",
     "pages/admin/dashboard.js": "pages/admin/dashboard.js",
     "pages/admin/index.js": "pages/admin/index.js",
@@ -43,6 +45,7 @@
   },
   "maps": {
     "components/address-list.js": "components/address-list.js.map",
+    "components/addresses-list.js": "components/addresses-list.js.map",
     "components/authenticator.js": "components/authenticator.js.map",
     "components/cart-button.js": "components/cart-button.js.map",
     "components/chat-body.js": "components/chat-body.js.map",
@@ -65,6 +68,7 @@
     "components/order-display.js": "components/order-display.js.map",
     "components/otp-input.js": "components/otp-input.js.map",
     "pages/aboutus.js": "pages/aboutus.js.map",
+    "pages/addresslist.js": "pages/addresslist.js.map",
     "pages/admin/checkout.js": "pages/admin/checkout.js.map",
     "pages/admin/dashboard.js": "pages/admin/dashboard.js.map",
     "pages/admin/index.js": "pages/admin/index.js.map",

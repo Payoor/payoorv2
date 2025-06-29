@@ -2,6 +2,9 @@
   "AddressList": {
     "description": "Auto imported from components/AddressList.vue"
   },
+  "AddressesList": {
+    "description": "Auto imported from components/AddressesList.vue"
+  },
   "Authenticator": {
     "description": "Auto imported from components/Authenticator.vue"
   },

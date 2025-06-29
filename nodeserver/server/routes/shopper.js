@@ -118,7 +118,7 @@ shopperRoute.get(
       next(error)
     }
   }
-)
+);
 
 shopperRoute.get(
   '/shopper/getproduct',
