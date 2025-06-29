@@ -213,7 +213,7 @@ export default {
         //padding-bottom: 12rem; // Space for the fixed button area
         -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
         width: 100%;
-        padding-bottom: 16rem;
+        padding-bottom: 70vh;
     }
 
     &__loading {
