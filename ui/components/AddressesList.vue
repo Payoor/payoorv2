@@ -5,7 +5,24 @@
                 <input placeholder="Search for an address" v-model="query" />
             </div>
 
+            <div class="addresseslist__button">
+                <div>
+                    <div class="addresseslist__currentlocation">
+                        <span class="addresseslist__currentlocation--btn" @click.stop="getCurrentLocation">
+                            <template v-if="!locationLoading">
+                                📍 Use Your Current Location
+                            </template>
+                            <template v-else>
+                                <span class="loader"></span> Getting location...
+                            </template>
+                        </span>
+                    </div>
+                </div>
+                <button class="button-primary" @click="setPlaceholder(false, false, checkout_input)">Done</button>
+            </div>
+
             <div class="addresseslist__content">
+
                 <div v-if="loading" class="addresseslist__loading">
                     <LoadingAnimation /> Searching for places...
                 </div>
@@ -22,21 +39,7 @@
                 </div>
             </div>
 
-            <div class="addresseslist__button">
-                <div>
-                    <div class="addresseslist__currentlocation">
-                        <span class="addresseslist__currentlocation--btn" @click.stop="getCurrentLocation">
-                            <template v-if="!locationLoading">
-                                📍 Use Your Current Location
-                            </template>
-                            <template v-else>
-                                <span class="loader"></span> Getting location...
-                            </template>
-                        </span>
-                    </div>
-                </div>
-                <button class="button-primary" @click="setPlaceholder(false, false, checkout_input)">Done</button>
-            </div>
+
         </div>
     </div>
 </template>
@@ -150,14 +153,15 @@ export default {
     &__content {
         flex-grow: 1; // Allow content to take available space
         border-radius: 1rem;
-        max-width: 60rem;
-        margin: 0 auto;
+        // margin: 0 auto;
         overflow-y: scroll; // This makes the content scrollable
         display: flex;
         flex-direction: column;
-        padding-top: 8rem; // Space for the fixed input
-        padding-bottom: 12rem; // Space for the fixed button area
+        padding-top: 21rem;
+        //padding-bottom: 12rem; // Space for the fixed button area
         -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+        width: 100%;
+        padding-bottom: 16rem;
     }
 
     &__loading {
@@ -236,12 +240,15 @@ export default {
     &__button {
         width: 100%;
         left: 0;
-        overflow: hidden;
+        //overflow: hidden;
         position: fixed; // Keep buttons fixed at the bottom
         bottom: 2rem;
-        padding: 0 1.5rem;
+        //padding: 0 1.5rem;
         background: $white;
-        z-index: 8; // Ensure buttons are above content
+        height: 13rem;
+        z-index: 8;
+        top: 7rem;
+        padding: 1.5rem;
 
         @include respond(tab-port) {
             display: block; // This seems to be for responsiveness
