@@ -209,7 +209,7 @@ export default {
         overflow-y: scroll; // This makes the content scrollable
         display: flex;
         flex-direction: column;
-        padding-top: 21rem;
+        padding-top: 13rem;
         //padding-bottom: 12rem; // Space for the fixed button area
         -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
         width: 100%;
@@ -338,7 +338,7 @@ export default {
             padding: 1rem;
             border: 1px solid $primary-color;
             border-radius: 12px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: 500;
             position: relative;
             cursor: pointer; 
