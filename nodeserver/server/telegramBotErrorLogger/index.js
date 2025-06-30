@@ -1,12 +1,14 @@
-const path = require('path');
-const axios = require('axios');
+const path = require('path')
+const axios = require('axios')
 
-const telegbotUrl = 'http://telegbot:3001/errorlog';
+const telegbotUrl = 'http://telegbot:3001/errorlog'
 
-const errorLogPath = path.join(__dirname, 'error.log');
+const errorLogPath = path.join(__dirname, 'error.log')
 
 async function telegramBotErrorLogger (errorMessage) {
   try {
+    const timestamp = new Date().toISOString()
+
     const response = await axios.post(telegbotUrl, errorMessage, {
       headers: {
         'Content-Type': 'text/plain',

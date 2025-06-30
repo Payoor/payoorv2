@@ -1,25 +1,25 @@
 import mongoose from 'mongoose'
 import express from 'express'
-import https from 'https';
+import https from 'https'
 import jwt from 'jsonwebtoken'
-import multer from 'multer';
-import fs from 'fs';
-const axios = require('axios');
+import multer from 'multer'
+import fs from 'fs'
+const axios = require('axios')
 
-const ELASTIC_URL = process.env.ELASTICSEARCHURL;
+const ELASTIC_URL = process.env.ELASTICSEARCHURL
 
 const {
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand
-} = require('@aws-sdk/client-s3');
+} = require('@aws-sdk/client-s3')
 
-const crypto = require('crypto');
+const crypto = require('crypto')
 
-import Order from '../models/Order';
-import Admin from '../models/Admin.js';
-import Checkout from '../models/Checkout.js';
-import ProductVariant from '../models/ProductVariant';
+import Order from '../models/Order'
+import Admin from '../models/Admin.js'
+import Checkout from '../models/Checkout.js'
+import ProductVariant from '../models/ProductVariant'
 
 import payoorDBConnection from '../payoordb'
 
@@ -235,12 +235,13 @@ adminRoute.post('/bani/webhook/payment-response', async (req, res, next) => {
   try {
     const merchant_private_key = process.env.MERCHANT_PRIVATE_KEY_BANI
     const headers = req.headers
-    const body = req.rawBody
+    const webhookData = req.body
 
-    if (!body) {
-      return res
-        .status(400)
-        .json({ status: false, message: 'No body provided' })
+    if (!webhookData) {
+      return res.status(400).json({
+        status: false,
+        message: 'No body provided or body was empty/invalid'
+      })
     }
 
     if (!headers['bani-hook-signature']) {
@@ -251,30 +252,36 @@ adminRoute.post('/bani/webhook/payment-response', async (req, res, next) => {
 
     const sig = Buffer.from(headers['bani-hook-signature'], 'utf8')
     const hmac = crypto.createHmac('sha256', merchant_private_key)
-    const digest = Buffer.from(hmac.update(body).digest('hex'), 'utf8')
+    const bodyForHmac = JSON.stringify(webhookData)
 
-    if (sig.length !== digest.length || !crypto.timingSafeEqual(digest, sig)) {
+    const digest = Buffer.from(hmac.update(bodyForHmac).digest('hex'), 'utf8')
+
+    /*if (sig.length !== digest.length || !crypto.timingSafeEqual(digest, sig)) {
       return res
         .status(401)
         .json({ status: false, message: 'Invalid signature' })
-    }
-
-    const webhookData = JSON.parse(body)
+    }*/
 
     const { checkoutId, userId } = webhookData.data.custom_data
+
     const paymentStatus = webhookData.data.pay_status
 
-    const telegbotUrl = 'http://telegbot:3001/neworder';
+    /* console.log(webhookData, 'check here for bani')
+    console.log(headers, 'check headers for bani')
+    console.log(
+      webhookData.data.custom_data,
+      'this is a test hewre',
+      paymentStatus
+    )*/
 
-    const telegbotSimpleMsgUrl = 'http://telegbot:3001/send/message/simple';
+    const telegbotUrl = 'http://telegbot:3001/neworder'
+    //const telegbotSimpleMsgUrl = 'http://telegbot:3001/send/message/simple'
 
-    const debugOrderMessage = `${checkoutId}, ${userId}, order confirmation`;
+    //const debugOrderMessage = `${checkoutId}, ${userId}, order confirmation`
 
-    console.log(debugOrderMessage);
-
-    await axios.post(telegbotSimpleMsgUrl, {
+    /*await axios.post(telegbotSimpleMsgUrl, {
       simplemessage: debugOrderMessage
-    });
+    })*/
 
     if (paymentStatus === 'paid') {
       const newOrder = new Order({
@@ -282,12 +289,12 @@ adminRoute.post('/bani/webhook/payment-response', async (req, res, next) => {
         checkout_id: checkoutId
       })
 
-      await newOrder.save();
+      await newOrder.save()
 
       await orderconfirmEmail(
         userId,
         `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`
-      );
+      )
 
       await axios.post(telegbotUrl, {
         orderId: newOrder._id
@@ -295,16 +302,15 @@ adminRoute.post('/bani/webhook/payment-response', async (req, res, next) => {
 
       return res.sendStatus(200)
     } else {
-      console.log(
-        `Webhook received for order_ref: ${order_ref} with status: ${paymentStatus}`
-      )
+      const orderIdentifier = checkoutId || 'N/A'
       return res.status(200).json({
         status: true,
-        message: `Webhook received for status: ${paymentStatus}`
+        message: `Webhook received for status: ${paymentStatus} for order: ${orderIdentifier}`
       })
     }
   } catch (error) {
     console.error('Webhook processing error:', error)
+    res.status(500).json({ status: false, message: 'Internal Server Error' })
     next(error)
   }
 })

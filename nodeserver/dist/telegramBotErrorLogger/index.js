@@ -17,19 +17,20 @@ function telegramBotErrorLogger(_x) {
 }
 function _telegramBotErrorLogger() {
   _telegramBotErrorLogger = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(errorMessage) {
-    var response;
+    var timestamp, response;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
-          _context.next = 3;
+          timestamp = new Date().toISOString();
+          _context.next = 4;
           return axios.post(telegbotUrl, errorMessage, {
             headers: {
               'Content-Type': 'text/plain',
               'X-Error-Timestamp': timestamp
             }
           });
-        case 3:
+        case 4:
           response = _context.sent;
           if (response.status >= 200 && response.status < 300) {
             console.log('Error message sent to telegbot successfully!');
@@ -43,19 +44,19 @@ function _telegramBotErrorLogger() {
               }
             });
           }
-          _context.next = 10;
+          _context.next = 11;
           break;
-        case 7:
-          _context.prev = 7;
+        case 8:
+          _context.prev = 8;
           _context.t0 = _context["catch"](0);
           //we'll only save to a file if this fails here
           //res.status(500).json({ message: 'Internal server error' })
           console.log(_context.t0);
-        case 10:
+        case 11:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[0, 8]]);
   }));
   return _telegramBotErrorLogger.apply(this, arguments);
 }

@@ -304,21 +304,21 @@ adminRoute.post('/admin/paystack/payment-response', /*#__PURE__*/function () {
 }());
 adminRoute.post('/bani/webhook/payment-response', /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res, next) {
-    var merchant_private_key, headers, body, sig, hmac, digest, webhookData, _webhookData$data$cus, checkoutId, userId, paymentStatus, telegbotUrl, telegbotSimpleMsgUrl, debugOrderMessage, newOrder;
+    var merchant_private_key, headers, webhookData, sig, hmac, bodyForHmac, digest, _webhookData$data$cus, checkoutId, userId, paymentStatus, telegbotUrl, newOrder, orderIdentifier;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           _context4.prev = 0;
           merchant_private_key = process.env.MERCHANT_PRIVATE_KEY_BANI;
           headers = req.headers;
-          body = req.rawBody;
-          if (body) {
+          webhookData = req.body;
+          if (webhookData) {
             _context4.next = 6;
             break;
           }
           return _context4.abrupt("return", res.status(400).json({
             status: false,
-            message: 'No body provided'
+            message: 'No body provided or body was empty/invalid'
           }));
         case 6:
           if (headers['bani-hook-signature']) {
@@ -332,67 +332,70 @@ adminRoute.post('/bani/webhook/payment-response', /*#__PURE__*/function () {
         case 8:
           sig = Buffer.from(headers['bani-hook-signature'], 'utf8');
           hmac = crypto.createHmac('sha256', merchant_private_key);
-          digest = Buffer.from(hmac.update(body).digest('hex'), 'utf8');
-          if (!(sig.length !== digest.length || !crypto.timingSafeEqual(digest, sig))) {
-            _context4.next = 13;
-            break;
-          }
-          return _context4.abrupt("return", res.status(401).json({
-            status: false,
-            message: 'Invalid signature'
-          }));
-        case 13:
-          webhookData = JSON.parse(body);
+          bodyForHmac = JSON.stringify(webhookData);
+          digest = Buffer.from(hmac.update(bodyForHmac).digest('hex'), 'utf8');
+          /*if (sig.length !== digest.length || !crypto.timingSafeEqual(digest, sig)) {
+            return res
+              .status(401)
+              .json({ status: false, message: 'Invalid signature' })
+          }*/
           _webhookData$data$cus = webhookData.data.custom_data, checkoutId = _webhookData$data$cus.checkoutId, userId = _webhookData$data$cus.userId;
           paymentStatus = webhookData.data.pay_status;
-          telegbotUrl = 'http://telegbot:3001/neworder';
-          telegbotSimpleMsgUrl = 'http://telegbot:3001/send/message/simple';
-          debugOrderMessage = "".concat(checkoutId, ", ").concat(userId, ", order confirmation");
-          console.log(debugOrderMessage);
-          _context4.next = 22;
-          return axios.post(telegbotSimpleMsgUrl, {
+          /* console.log(webhookData, 'check here for bani')
+          console.log(headers, 'check headers for bani')
+          console.log(
+            webhookData.data.custom_data,
+            'this is a test hewre',
+            paymentStatus
+          )*/
+          telegbotUrl = 'http://telegbot:3001/neworder'; //const telegbotSimpleMsgUrl = 'http://telegbot:3001/send/message/simple'
+          //const debugOrderMessage = `${checkoutId}, ${userId}, order confirmation`
+          /*await axios.post(telegbotSimpleMsgUrl, {
             simplemessage: debugOrderMessage
-          });
-        case 22:
+          })*/
           if (!(paymentStatus === 'paid')) {
-            _context4.next = 33;
+            _context4.next = 26;
             break;
           }
           newOrder = new _Order["default"]({
             user_id: userId,
             checkout_id: checkoutId
           });
-          _context4.next = 26;
+          _context4.next = 19;
           return newOrder.save();
-        case 26:
-          _context4.next = 28;
+        case 19:
+          _context4.next = 21;
           return (0, _orderconfirmEmail["default"])(userId, "".concat(process.env.PAYOOR_URL, "/userorder/").concat(newOrder._id));
-        case 28:
-          _context4.next = 30;
+        case 21:
+          _context4.next = 23;
           return axios.post(telegbotUrl, {
             orderId: newOrder._id
           });
-        case 30:
+        case 23:
           return _context4.abrupt("return", res.sendStatus(200));
-        case 33:
-          console.log("Webhook received for order_ref: ".concat(order_ref, " with status: ").concat(paymentStatus));
+        case 26:
+          orderIdentifier = checkoutId || 'N/A';
           return _context4.abrupt("return", res.status(200).json({
             status: true,
-            message: "Webhook received for status: ".concat(paymentStatus)
+            message: "Webhook received for status: ".concat(paymentStatus, " for order: ").concat(orderIdentifier)
           }));
-        case 35:
-          _context4.next = 41;
+        case 28:
+          _context4.next = 35;
           break;
-        case 37:
-          _context4.prev = 37;
+        case 30:
+          _context4.prev = 30;
           _context4.t0 = _context4["catch"](0);
           console.error('Webhook processing error:', _context4.t0);
+          res.status(500).json({
+            status: false,
+            message: 'Internal Server Error'
+          });
           next(_context4.t0);
-        case 41:
+        case 35:
         case "end":
           return _context4.stop();
       }
-    }, _callee4, null, [[0, 37]]);
+    }, _callee4, null, [[0, 30]]);
   }));
   return function (_x0, _x1, _x10) {
     return _ref4.apply(this, arguments);
