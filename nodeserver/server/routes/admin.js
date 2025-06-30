@@ -315,6 +315,82 @@ adminRoute.post('/bani/webhook/payment-response', async (req, res, next) => {
   }
 })
 
+adminRoute.post('/manual-payment-response-trigger', async (req, res, next) => {
+  try {
+    const { userId, checkoutId, paymentStatus = 'paid' } = req.body
+
+    // Basic validation for required fields
+    if (!userId || !checkoutId) {
+      return res.status(400).json({
+        status: false,
+        message: 'Missing userId or checkoutId in request body.'
+      })
+    }
+
+    // Simulate the necessary data structure for the original logic
+    // We assume 'paymentStatus' defaults to 'paid' for manual triggers,
+    // but you can allow it to be passed in the body if you need to test other statuses.
+    const simulatedWebhookData = {
+      data: {
+        custom_data: {
+          checkoutId: checkoutId,
+          userId: userId
+        },
+        pay_status: paymentStatus
+      }
+    }
+
+    const telegbotUrl = 'http://telegbot:3001/neworder'
+
+    if (simulatedWebhookData.data.pay_status === 'paid') {
+      const newOrder = new Order({
+        user_id: simulatedWebhookData.data.custom_data.userId,
+        checkout_id: simulatedWebhookData.data.custom_data.checkoutId
+      })
+
+      await newOrder.save()
+
+      await orderconfirmEmail(
+        simulatedWebhookData.data.custom_data.userId,
+        `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`
+      )
+
+      await axios.post(telegbotUrl, {
+        orderId: newOrder._id
+      })
+
+      console.log(
+        `Manual trigger successful: Order ${newOrder._id} created for user ${userId}, checkout ${checkoutId}`
+      )
+      return res.status(200).json({
+        status: true,
+        message:
+          'Manual payment trigger processed successfully (Order created).',
+        orderId: newOrder._id
+      })
+    } else {
+      const orderIdentifier =
+        simulatedWebhookData.data.custom_data.checkoutId || 'N/A'
+      console.log(
+        `Manual trigger for status: ${simulatedWebhookData.data.pay_status} for order: ${orderIdentifier}`
+      )
+      return res.status(200).json({
+        status: true,
+        message: `Manual payment trigger processed for status: ${simulatedWebhookData.data.pay_status} for order: ${orderIdentifier}`
+      })
+    }
+  } catch (error) {
+    console.error('Manual payment trigger error:', error)
+    res
+      .status(500)
+      .json({
+        status: false,
+        message: 'Internal Server Error during manual trigger.'
+      })
+    next(error) // Pass error to Express error handling middleware if configured
+  }
+})
+
 adminRoute.post('/admin/register', async (req, res, next) => {
   try {
     const { creatorpw } = req.query
