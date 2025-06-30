@@ -303,18 +303,27 @@ export default {
         padding: 1.5rem;
 
         @include respond(tab-port) {
-            display: block; // This seems to be for responsiveness
+            display: flex;
+            height: 7rem;
+            align-items: center;
+            justify-content: space-between;
         }
 
         & button {
             font-size: 2rem;
             padding: 2rem;
             width: 60rem;
-            margin: 0 auto; // Center the button if less than 100% width
+           // margin: 0 auto; // Center the button if less than 100% width
             display: block; // Make margin auto work
 
             @include respond(tab-port) {
-                width: 100%;
+                padding: 1.1rem !important;
+                border: 1px solid $primary-color;
+                border-radius: 12px;
+                font-size: 1.5rem !important;
+                font-weight: 500;
+                position: relative;
+                width: 20rem;
             }
         }
     }
@@ -322,7 +331,7 @@ export default {
     &__currentlocation {
 
         &--btn {
-            margin-bottom: 1rem;
+            //margin-bottom: 1rem;
             display: inline-block;
             background: transparent;
             color: $primary-color;
@@ -332,7 +341,7 @@ export default {
             font-size: 1.2rem;
             font-weight: 500;
             position: relative;
-            cursor: pointer; // Indicate it's clickable
+            cursor: pointer; 
 
             .loader {
                 border: 2px solid #f3f3f3;
