@@ -10,7 +10,7 @@
                     <div class="addresseslist__currentlocation">
                         <span class="addresseslist__currentlocation--btn" @click.stop="getCurrentLocation">
                             <template v-if="!locationLoading">
-                                📍 Use Your Current Location
+                                📍 Use Current Location
                             </template>
                             <template v-else>
                                 <span class="loader"></span> Getting location...
