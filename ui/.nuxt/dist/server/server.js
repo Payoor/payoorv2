@@ -1348,6 +1348,7 @@ const actions = {
     try {
       const data = await Object(_api__WEBPACK_IMPORTED_MODULE_16__[/* handleFetch */ "a"])({
         apiroute: 'shopper/checkout/create',
+        //'checkout-service/create/checkout', //'shopper/checkout/create',
         method: 'POST',
         body: {
           items: state.items
@@ -1462,8 +1463,8 @@ const actions = {
             keyPath: 'id'
           });
           /*  console.log(
-              'IndexedDB object store "payoor_cart" created/upgraded successfully.'
-            )*/
+            'IndexedDB object store "payoor_cart" created/upgraded successfully.'
+          )*/
         }
       };
 

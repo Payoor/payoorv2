@@ -10,7 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 var connection_string = process.env.PAYOOR_DB;
-var payoorDBConnection = _mongoose["default"].createConnection("".concat(connection_string, "/payoordb"), {
+var payoorDBConnection = _mongoose["default"].createConnection("".concat(connection_string), {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });

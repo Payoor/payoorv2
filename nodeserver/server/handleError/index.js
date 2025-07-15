@@ -38,4 +38,4 @@ function handleError (errorDetails, errMessageVal) {
   }
 }
 
-export default handleError
+export default handleError;

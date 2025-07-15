@@ -80,8 +80,8 @@ export default {
 
             this.backRoute = this.$route.path
 
-            localStorage.setItem('cartItems', JSON.stringify(cartItems));
-            localStorage.setItem('cartTotal', JSON.stringify(cartTotal));
+            //localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            //localStorage.setItem('cartTotal', JSON.stringify(cartTotal));
 
             try {
                 await this.$store.dispatch('cart/createCheckout');

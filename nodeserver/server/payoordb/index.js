@@ -7,12 +7,12 @@ if (process.env.NODE_ENV !== 'production') {
 const connection_string = process.env.PAYOOR_DB;
 
 const payoorDBConnection = mongoose.createConnection(
-  `${connection_string}/payoordb`,
+  `${connection_string}`,
   {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true 
   }
-)
+);
 
 payoorDBConnection.on('connected', () => {
   console.log('Successfully connected to payoordb')

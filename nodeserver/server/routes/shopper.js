@@ -30,7 +30,7 @@ const productIndex = 'products'
 
 const elasticSearchCl = new ElasticSearchClass(elasticsearchUrl)
 
-const shopperRoute = express()
+const shopperRoute = express();
 
 shopperRoute.post(
   '/shopper/message',

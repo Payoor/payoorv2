@@ -48,6 +48,12 @@ export default {
                     class: 'farmfresh'
                 },
                 {
+                    image: '/imgs/avocados-fit-fam.png',
+                    name: 'Fit Fam',
+                    description: 'Beef, Chicken, Turkey, and fresh Fish — protein-packed goodness.',
+                    class: 'fit-fam'
+                },
+                {
                     image: '/imgs/protein.png',
                     name: 'Protein',
                     description: 'Beef, Chicken, Turkey, and fresh Fish — protein-packed goodness.',
@@ -157,6 +163,8 @@ export default {
             height: 5rem;
             width: 5rem;
             margin-right: .5rem;
+            border-radius: 100%;
+            overflow: hidden;
 
             & img {
                 height: 100%;
@@ -184,6 +192,10 @@ export default {
 
         &.fruits {
             background: pink;
+        }
+
+        &.fit-fam {
+            background: #a8f0b7;
         }
     }
 }

@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express')
 const app = express()
 const fs = require('fs')
 
@@ -6,19 +6,23 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-require('./db');
+require('./db')
 
-import authRoute from './routes/auth';
-import shopperRoute from './routes/shopper';
+//import { runKafka } from './services/kafka-service'
+
+import authRoute from './routes/auth'
+import shopperRoute from './routes/shopper'
 import adminRoute from './routes/admin'
 
-import handleError from './handleError';
-import telegramBotErrorLogger from './telegramBotErrorLogger';
-import redisManager from './RedisManager';
+//import checkoutServiceRoute from './services/checkout-service/routes'
+
+import handleError from './handleError'
+import telegramBotErrorLogger from './telegramBotErrorLogger'
+import redisManager from './RedisManager'
 
 const port = process.env.PORT
 
-app.use(express.json());
+app.use(express.json())
 
 app.get('/health', async (req, res, next) => {
   try {
@@ -31,9 +35,11 @@ app.get('/health', async (req, res, next) => {
   }
 })
 
-app.use(shopperRoute);
+app.use(shopperRoute)
 app.use(authRoute)
 app.use(adminRoute)
+
+//app.use(checkoutServiceRoute)
 
 app.use(async (err, req, res, next) => {
   const timestamp = new Date().toISOString()
@@ -84,6 +90,8 @@ async function startServer () {
 
   try {
     await redisManager.connectRedis()
+
+   // runKafka()
     console.log('Redis connected successfully!')
 
     server = app.listen(port, () => {

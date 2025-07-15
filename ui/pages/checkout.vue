@@ -177,7 +177,7 @@
                         <span class="value">&#8358;{{ delivery_fee }}</span>
                     </div>
 
-                    <div class="checkout__summaryitem">
+                    <div class="checkout__summaryitem" v-if="service_charge !== 0">
                         <span class="subject">Service Charge</span>
 
                         <span class="value">&#8358;{{ service_charge }}</span>
