@@ -1,4 +1,4 @@
-exports.ids = [38,4,8,12];
+exports.ids = [39,4,8,12];
 exports.modules = {
 
 /***/ 107:
@@ -34,7 +34,7 @@ module.exports = ___CSS_LOADER_EXPORT___;
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(160);
+var content = __webpack_require__(161);
 if(content.__esModule) content = content.default;
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
@@ -46,7 +46,7 @@ module.exports.__inject__ = function (context) {
 
 /***/ }),
 
-/***/ 137:
+/***/ 138:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -187,7 +187,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 /***/ }),
 
-/***/ 159:
+/***/ 160:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -199,7 +199,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 160:
+/***/ 161:
 /***/ (function(module, exports, __webpack_require__) {
 
 // Imports
@@ -214,7 +214,7 @@ module.exports = ___CSS_LOADER_EXPORT___;
 
 /***/ }),
 
-/***/ 204:
+/***/ 208:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -245,7 +245,7 @@ var componentNormalizer = __webpack_require__(3);
 var script = {}
 function injectStyles (context) {
   
-  var style0 = __webpack_require__(159)
+  var style0 = __webpack_require__(160)
 if (style0.__inject__) style0.__inject__(context)
 
 }
@@ -266,7 +266,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* harmony default export */ var payment = __webpack_exports__["default"] = (component.exports);
 
 /* nuxt-component-imports */
-installComponents(component, {ChatHeader: __webpack_require__(52).default,ChoosePaymentProcessor: __webpack_require__(137).default})
+installComponents(component, {ChatHeader: __webpack_require__(52).default,ChoosePaymentProcessor: __webpack_require__(138).default})
 
 
 /***/ }),

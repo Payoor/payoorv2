@@ -15,6 +15,7 @@ const _6d3c63e6 = () => interopDefault(import('../pages/options.vue' /* webpackC
 const _29fc7b4d = () => interopDefault(import('../pages/orders.vue' /* webpackChunkName: "pages/orders" */))
 const _25be1b4e = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
 const _585909c8 = () => interopDefault(import('../pages/paystack.vue' /* webpackChunkName: "pages/paystack" */))
+const _f8d677a6 = () => interopDefault(import('../pages/admin/categorycards.vue' /* webpackChunkName: "pages/admin/categorycards" */))
 const _612343ee = () => interopDefault(import('../pages/admin/checkout.vue' /* webpackChunkName: "pages/admin/checkout" */))
 const _0ce7be1c = () => interopDefault(import('../pages/admin/dashboard.vue' /* webpackChunkName: "pages/admin/dashboard" */))
 const _4c8a984e = () => interopDefault(import('../pages/admin/order/index.vue' /* webpackChunkName: "pages/admin/order/index" */))
@@ -77,6 +78,10 @@ export const routerOptions = {
     path: "/paystack",
     component: _585909c8,
     name: "paystack"
+  }, {
+    path: "/admin/categorycards",
+    component: _f8d677a6,
+    name: "admin-categorycards"
   }, {
     path: "/admin/checkout",
     component: _612343ee,

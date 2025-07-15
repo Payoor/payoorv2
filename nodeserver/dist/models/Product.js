@@ -1,6 +1,7 @@
 "use strict";
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
+var _Category = _interopRequireDefault(require("./Category"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 var ProductSchema = new _mongoose["default"].Schema({
   image: {
@@ -9,7 +10,7 @@ var ProductSchema = new _mongoose["default"].Schema({
   },
   generatedDescription: {
     type: String,
-    required: true,
+    // required: true,
     trim: true
   },
   generatedCategories: {
@@ -34,7 +35,12 @@ var ProductSchema = new _mongoose["default"].Schema({
   metadata: {
     type: String,
     trim: true
-  }
+  },
+  // Array of ObjectIds referencing the 'Category' model
+  categories: [{
+    type: _mongoose["default"].Schema.Types.ObjectId,
+    ref: 'Category'
+  }]
 }, {
   timestamps: true,
   collection: 'newproducts'

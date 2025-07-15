@@ -1,4 +1,4 @@
-exports.ids = [35,4,5,6,7,8,9,14,16,17,18,19,20,21];
+exports.ids = [36,4,5,6,7,8,9,14,16,17,18,19,20,21];
 exports.modules = Array(45).concat([
 /* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2153,7 +2153,8 @@ module.exports = ___CSS_LOADER_EXPORT___;
 /* 135 */,
 /* 136 */,
 /* 137 */,
-/* 138 */
+/* 138 */,
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2252,7 +2253,7 @@ installComponents(component, {ChatHeader: __webpack_require__(52).default,Landin
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2500,7 +2501,6 @@ installComponents(component, {ChatHeader: __webpack_require__(52).default,ChatBo
 
 
 /***/ }),
-/* 140 */,
 /* 141 */,
 /* 142 */,
 /* 143 */,
@@ -2555,7 +2555,11 @@ installComponents(component, {ChatHeader: __webpack_require__(52).default,ChatBo
 /* 192 */,
 /* 193 */,
 /* 194 */,
-/* 195 */
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2627,7 +2631,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* harmony default export */ var pages = __webpack_exports__["default"] = (component.exports);
 
 /* nuxt-component-imports */
-installComponents(component, {LandingPage: __webpack_require__(138).default,Home: __webpack_require__(139).default})
+installComponents(component, {LandingPage: __webpack_require__(139).default,Home: __webpack_require__(140).default})
 
 
 /***/ })

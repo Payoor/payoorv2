@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+import Category from './Category'
+
 const ProductSchema = new mongoose.Schema(
   {
     image: {
@@ -8,7 +10,7 @@ const ProductSchema = new mongoose.Schema(
     },
     generatedDescription: {
       type: String,
-      required: true,
+     // required: true,
       trim: true
     },
     generatedCategories: {
@@ -33,7 +35,14 @@ const ProductSchema = new mongoose.Schema(
     metadata: {
       type: String,
       trim: true
-    }
+    },
+    // Array of ObjectIds referencing the 'Category' model
+    categories: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
+      }
+    ]
   },
   {
     timestamps: true,

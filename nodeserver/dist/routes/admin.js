@@ -1,6 +1,5 @@
 "use strict";
 
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -14,12 +13,15 @@ var _fs = _interopRequireDefault(require("fs"));
 var _Order = _interopRequireDefault(require("../models/Order"));
 var _Admin = _interopRequireDefault(require("../models/Admin.js"));
 var _Checkout = _interopRequireDefault(require("../models/Checkout.js"));
+var _Product = _interopRequireDefault(require("../models/Product.js"));
 var _ProductVariant = _interopRequireDefault(require("../models/ProductVariant"));
+var _Category = _interopRequireDefault(require("../models/Category.js"));
 var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _orderconfirmEmail = _interopRequireDefault(require("../utils/orderconfirmEmail"));
 var _excluded = ["_id", "__v"],
   _excluded2 = ["_id", "__v"];
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _objectWithoutProperties(e, t) { if (null == e) return {}; var o, r, i = _objectWithoutPropertiesLoose(e, t); if (Object.getOwnPropertySymbols) { var n = Object.getOwnPropertySymbols(e); for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]); } return i; }
 function _objectWithoutPropertiesLoose(r, e) { if (null == r) return {}; var t = {}; for (var n in r) if ({}.hasOwnProperty.call(r, n)) { if (-1 !== e.indexOf(n)) continue; t[n] = r[n]; } return t; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -551,7 +553,7 @@ adminRoute.post('/admin/register', /*#__PURE__*/function () {
   };
 }());
 adminRoute.post('/admin/login', /*#__PURE__*/function () {
-  var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+  var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res, next) {
     var _req$body4, email, password, admin, isMatch, token;
     return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) switch (_context7.prev = _context7.next) {
@@ -614,7 +616,7 @@ adminRoute.post('/admin/login', /*#__PURE__*/function () {
       }
     }, _callee7, null, [[0, 18]]);
   }));
-  return function (_x17, _x18) {
+  return function (_x17, _x18, _x19) {
     return _ref7.apply(this, arguments);
   };
 }());
@@ -695,7 +697,7 @@ adminRoute.get('/admin/products-with-variants', /*#__PURE__*/function () {
       }
     }, _callee8, null, [[0, 25]]);
   }));
-  return function (_x19, _x20, _x21) {
+  return function (_x20, _x21, _x22) {
     return _ref8.apply(this, arguments);
   };
 }());
@@ -741,7 +743,7 @@ adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /
       }
     }, _callee9, null, [[0, 14]]);
   }));
-  return function (_x22, _x23, _x24) {
+  return function (_x23, _x24, _x25) {
     return _ref9.apply(this, arguments);
   };
 }());
@@ -806,7 +808,7 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
       }
     }, _callee0, null, [[0, 19]]);
   }));
-  return function (_x25, _x26, _x27) {
+  return function (_x26, _x27, _x28) {
     return _ref0.apply(this, arguments);
   };
 }());
@@ -875,7 +877,7 @@ adminRoute.post('/admin/add-variant/:productId', /*#__PURE__*/function () {
       }
     }, _callee1, null, [[0, 17]]);
   }));
-  return function (_x28, _x29, _x30) {
+  return function (_x29, _x30, _x31) {
     return _ref1.apply(this, arguments);
   };
 }());
@@ -943,7 +945,7 @@ adminRoute.put('/admin/update-product/:productId', /*#__PURE__*/function () {
       }
     }, _callee10, null, [[0, 18]]);
   }));
-  return function (_x31, _x32, _x33) {
+  return function (_x32, _x33, _x34) {
     return _ref10.apply(this, arguments);
   };
 }());
@@ -995,7 +997,7 @@ adminRoute.put('/admin/update-variant/:variantId', /*#__PURE__*/function () {
       }
     }, _callee11, null, [[0, 13]]);
   }));
-  return function (_x34, _x35, _x36) {
+  return function (_x35, _x36, _x37) {
     return _ref11.apply(this, arguments);
   };
 }());
@@ -1032,7 +1034,7 @@ adminRoute["delete"]('/admin/delete-product/:productId', /*#__PURE__*/function (
       }
     }, _callee12, null, [[0, 9]]);
   }));
-  return function (_x37, _x38, _x39) {
+  return function (_x38, _x39, _x40) {
     return _ref12.apply(this, arguments);
   };
 }());
@@ -1093,7 +1095,7 @@ adminRoute["delete"]('/admin/delete-variant/:variantId', /*#__PURE__*/function (
       }
     }, _callee13, null, [[0, 15]]);
   }));
-  return function (_x40, _x41, _x42) {
+  return function (_x41, _x42, _x43) {
     return _ref13.apply(this, arguments);
   };
 }());
@@ -1106,35 +1108,35 @@ function testTelegbotNotify() {
   return _testTelegbotNotify.apply(this, arguments);
 }
 function _testTelegbotNotify() {
-  _testTelegbotNotify = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee16() {
+  _testTelegbotNotify = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee22() {
     var telegbotUrl, response;
-    return _regeneratorRuntime().wrap(function _callee16$(_context16) {
-      while (1) switch (_context16.prev = _context16.next) {
+    return _regeneratorRuntime().wrap(function _callee22$(_context22) {
+      while (1) switch (_context22.prev = _context22.next) {
         case 0:
           telegbotUrl = 'http://telegbot:3001/notify';
-          _context16.prev = 1;
-          _context16.next = 4;
+          _context22.prev = 1;
+          _context22.next = 4;
           return axios.post(telegbotUrl, {
             orderId: 'test-order-12345'
           });
         case 4:
-          response = _context16.sent;
+          response = _context22.sent;
           console.log('✅ Response from telegbot:', response.data);
-          _context16.next = 11;
+          _context22.next = 11;
           break;
         case 8:
-          _context16.prev = 8;
-          _context16.t0 = _context16["catch"](1);
-          if (_context16.t0.response) {
-            console.error('❌ Error response:', _context16.t0.response.status, _context16.t0.response.data);
+          _context22.prev = 8;
+          _context22.t0 = _context22["catch"](1);
+          if (_context22.t0.response) {
+            console.error('❌ Error response:', _context22.t0.response.status, _context22.t0.response.data);
           } else {
-            console.error('❌ Request error:', _context16.t0.message);
+            console.error('❌ Request error:', _context22.t0.message);
           }
         case 11:
         case "end":
-          return _context16.stop();
+          return _context22.stop();
       }
-    }, _callee16, null, [[1, 8]]);
+    }, _callee22, null, [[1, 8]]);
   }));
   return _testTelegbotNotify.apply(this, arguments);
 }
@@ -1177,7 +1179,7 @@ adminRoute.get('/admin/checkout', /*#__PURE__*/function () {
       }
     }, _callee14, null, [[0, 8]]);
   }));
-  return function (_x43, _x44, _x45) {
+  return function (_x44, _x45, _x46) {
     return _ref14.apply(this, arguments);
   };
 }());
@@ -1224,8 +1226,357 @@ adminRoute.get('/admin/getoption', /*#__PURE__*/function () {
       }
     }, _callee15, null, [[0, 12]]);
   }));
-  return function (_x46, _x47, _x48) {
+  return function (_x47, _x48, _x49) {
     return _ref15.apply(this, arguments);
+  };
+}());
+adminRoute.post('/admin/create-category', /*#__PURE__*/function () {
+  var _ref16 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee16(req, res, next) {
+    var _req$body9, name, description, image, hexcolor, newCategory;
+    return _regeneratorRuntime().wrap(function _callee16$(_context16) {
+      while (1) switch (_context16.prev = _context16.next) {
+        case 0:
+          _context16.prev = 0;
+          _req$body9 = req.body, name = _req$body9.name, description = _req$body9.description, image = _req$body9.image, hexcolor = _req$body9.hexcolor;
+          if (!(!name || !description || !image)) {
+            _context16.next = 4;
+            break;
+          }
+          return _context16.abrupt("return", res.status(400).json({
+            message: 'Name, description, and image are required for a category.'
+          }));
+        case 4:
+          newCategory = new _Category["default"]({
+            name: name,
+            description: description,
+            image: image,
+            hexcolor: hexcolor
+          });
+          _context16.next = 7;
+          return newCategory.save();
+        case 7:
+          res.status(201).json({
+            message: 'Category created successfully!',
+            category: newCategory
+          });
+          _context16.next = 13;
+          break;
+        case 10:
+          _context16.prev = 10;
+          _context16.t0 = _context16["catch"](0);
+          next(_context16.t0);
+        case 13:
+        case "end":
+          return _context16.stop();
+      }
+    }, _callee16, null, [[0, 10]]);
+  }));
+  return function (_x50, _x51, _x52) {
+    return _ref16.apply(this, arguments);
+  };
+}());
+adminRoute.get('/admin/categories', /*#__PURE__*/function () {
+  var _ref17 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee17(req, res, next) {
+    var _req$query, product_id, _req$query$page, page, _req$query$limit, limit, product, pageNum, limitNum, skip, categories, totalCategories, totalPages;
+    return _regeneratorRuntime().wrap(function _callee17$(_context17) {
+      while (1) switch (_context17.prev = _context17.next) {
+        case 0:
+          _context17.prev = 0;
+          _req$query = req.query, product_id = _req$query.product_id, _req$query$page = _req$query.page, page = _req$query$page === void 0 ? 1 : _req$query$page, _req$query$limit = _req$query.limit, limit = _req$query$limit === void 0 ? 10 : _req$query$limit;
+          console.log(_typeof(product_id), product_id);
+          if (!(product_id !== 'undefined' && product_id !== undefined)) {
+            _context17.next = 12;
+            break;
+          }
+          _context17.next = 6;
+          return _Product["default"].findById(product_id).populate('categories');
+        case 6:
+          product = _context17.sent;
+          if (product) {
+            _context17.next = 9;
+            break;
+          }
+          return _context17.abrupt("return", res.status(404).json({
+            message: 'Product not found.'
+          }));
+        case 9:
+          res.status(200).json({
+            categories: product.categories
+          });
+          _context17.next = 23;
+          break;
+        case 12:
+          pageNum = parseInt(page, 10);
+          limitNum = parseInt(limit, 10);
+          skip = (pageNum - 1) * limitNum;
+          _context17.next = 17;
+          return _Category["default"].find({}).skip(skip).limit(limitNum);
+        case 17:
+          categories = _context17.sent;
+          _context17.next = 20;
+          return _Category["default"].countDocuments({});
+        case 20:
+          totalCategories = _context17.sent;
+          totalPages = Math.ceil(totalCategories / limitNum);
+          res.status(200).json({
+            categories: categories,
+            currentPage: pageNum,
+            totalPages: totalPages,
+            totalCategories: totalCategories
+          });
+        case 23:
+          _context17.next = 28;
+          break;
+        case 25:
+          _context17.prev = 25;
+          _context17.t0 = _context17["catch"](0);
+          next(_context17.t0);
+        case 28:
+        case "end":
+          return _context17.stop();
+      }
+    }, _callee17, null, [[0, 25]]);
+  }));
+  return function (_x53, _x54, _x55) {
+    return _ref17.apply(this, arguments);
+  };
+}());
+adminRoute.put('/admin/update-category/:id', /*#__PURE__*/function () {
+  var _ref18 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee18(req, res, next) {
+    var id, _req$body0, name, description, image, hexcolor, updatedCategory;
+    return _regeneratorRuntime().wrap(function _callee18$(_context18) {
+      while (1) switch (_context18.prev = _context18.next) {
+        case 0:
+          _context18.prev = 0;
+          id = req.params.id;
+          _req$body0 = req.body, name = _req$body0.name, description = _req$body0.description, image = _req$body0.image, hexcolor = _req$body0.hexcolor; // Basic validation for update fields
+          if (!(!name || !description || !image)) {
+            _context18.next = 5;
+            break;
+          }
+          return _context18.abrupt("return", res.status(400).json({
+            message: 'Name, description, and image are required for updating a category.'
+          }));
+        case 5:
+          _context18.next = 7;
+          return _Category["default"].findByIdAndUpdate(id, {
+            name: name,
+            description: description,
+            image: image,
+            hexcolor: hexcolor
+          }, {
+            "new": true,
+            runValidators: true
+          });
+        case 7:
+          updatedCategory = _context18.sent;
+          if (updatedCategory) {
+            _context18.next = 10;
+            break;
+          }
+          return _context18.abrupt("return", res.status(404).json({
+            message: 'Category not found.'
+          }));
+        case 10:
+          res.status(200).json({
+            message: 'Category updated successfully!',
+            category: updatedCategory
+          });
+          _context18.next = 16;
+          break;
+        case 13:
+          _context18.prev = 13;
+          _context18.t0 = _context18["catch"](0);
+          next(_context18.t0);
+        case 16:
+        case "end":
+          return _context18.stop();
+      }
+    }, _callee18, null, [[0, 13]]);
+  }));
+  return function (_x56, _x57, _x58) {
+    return _ref18.apply(this, arguments);
+  };
+}());
+adminRoute["delete"]('/admin/delete-category/:id', /*#__PURE__*/function () {
+  var _ref19 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee19(req, res, next) {
+    var id, deletedCategory;
+    return _regeneratorRuntime().wrap(function _callee19$(_context19) {
+      while (1) switch (_context19.prev = _context19.next) {
+        case 0:
+          _context19.prev = 0;
+          id = req.params.id;
+          _context19.next = 4;
+          return _Category["default"].findByIdAndDelete(id);
+        case 4:
+          deletedCategory = _context19.sent;
+          if (deletedCategory) {
+            _context19.next = 7;
+            break;
+          }
+          return _context19.abrupt("return", res.status(404).json({
+            message: 'Category not found.'
+          }));
+        case 7:
+          res.status(200).json({
+            message: 'Category deleted successfully!'
+          });
+          _context19.next = 13;
+          break;
+        case 10:
+          _context19.prev = 10;
+          _context19.t0 = _context19["catch"](0);
+          next(_context19.t0);
+        case 13:
+        case "end":
+          return _context19.stop();
+      }
+    }, _callee19, null, [[0, 10]]);
+  }));
+  return function (_x59, _x60, _x61) {
+    return _ref19.apply(this, arguments);
+  };
+}());
+adminRoute.post('/admin/add-category-to-product', /*#__PURE__*/function () {
+  var _ref20 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee20(req, res, next) {
+    var _req$body1, productId, categoryId, product, category;
+    return _regeneratorRuntime().wrap(function _callee20$(_context20) {
+      while (1) switch (_context20.prev = _context20.next) {
+        case 0:
+          _context20.prev = 0;
+          _req$body1 = req.body, productId = _req$body1.productId, categoryId = _req$body1.categoryId;
+          if (!(!productId || !categoryId)) {
+            _context20.next = 4;
+            break;
+          }
+          return _context20.abrupt("return", res.status(400).json({
+            message: 'Product ID and Category ID are required.'
+          }));
+        case 4:
+          if (!(!_mongoose["default"].Types.ObjectId.isValid(productId) || !_mongoose["default"].Types.ObjectId.isValid(categoryId))) {
+            _context20.next = 6;
+            break;
+          }
+          return _context20.abrupt("return", res.status(400).json({
+            message: 'Invalid Product ID or Category ID format.'
+          }));
+        case 6:
+          _context20.next = 8;
+          return _Product["default"].findById(productId);
+        case 8:
+          product = _context20.sent;
+          if (product) {
+            _context20.next = 11;
+            break;
+          }
+          return _context20.abrupt("return", res.status(404).json({
+            message: 'Product not found.'
+          }));
+        case 11:
+          _context20.next = 13;
+          return _Category["default"].findById(categoryId);
+        case 13:
+          category = _context20.sent;
+          if (category) {
+            _context20.next = 16;
+            break;
+          }
+          return _context20.abrupt("return", res.status(404).json({
+            message: 'Category not found.'
+          }));
+        case 16:
+          if (!product.categories.includes(categoryId)) {
+            _context20.next = 18;
+            break;
+          }
+          return _context20.abrupt("return", res.status(409).json({
+            message: 'Category already linked to this product.'
+          }));
+        case 18:
+          product.categories.push(categoryId);
+          _context20.next = 21;
+          return product.save();
+        case 21:
+          res.status(200).json({
+            message: 'Category successfully added to product!',
+            product: product.populate('categories')
+          });
+          _context20.next = 27;
+          break;
+        case 24:
+          _context20.prev = 24;
+          _context20.t0 = _context20["catch"](0);
+          next(_context20.t0);
+        case 27:
+        case "end":
+          return _context20.stop();
+      }
+    }, _callee20, null, [[0, 24]]);
+  }));
+  return function (_x62, _x63, _x64) {
+    return _ref20.apply(this, arguments);
+  };
+}());
+adminRoute.post('/admin/remove-category-from-product', /*#__PURE__*/function () {
+  var _ref21 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee21(req, res, next) {
+    var _req$body10, productId, categoryId, updatedProduct;
+    return _regeneratorRuntime().wrap(function _callee21$(_context21) {
+      while (1) switch (_context21.prev = _context21.next) {
+        case 0:
+          _context21.prev = 0;
+          _req$body10 = req.body, productId = _req$body10.productId, categoryId = _req$body10.categoryId;
+          if (!(!productId || !categoryId)) {
+            _context21.next = 4;
+            break;
+          }
+          return _context21.abrupt("return", res.status(400).json({
+            message: 'Product ID and Category ID are required.'
+          }));
+        case 4:
+          if (!(!_mongoose["default"].Types.ObjectId.isValid(productId) || !_mongoose["default"].Types.ObjectId.isValid(categoryId))) {
+            _context21.next = 6;
+            break;
+          }
+          return _context21.abrupt("return", res.status(400).json({
+            message: 'Invalid Product ID or Category ID format.'
+          }));
+        case 6:
+          _context21.next = 8;
+          return _Product["default"].findByIdAndUpdate(productId, {
+            $pull: {
+              categories: categoryId
+            }
+          }, {
+            "new": true
+          }).populate('categories');
+        case 8:
+          updatedProduct = _context21.sent;
+          if (updatedProduct) {
+            _context21.next = 11;
+            break;
+          }
+          return _context21.abrupt("return", res.status(404).json({
+            message: 'Product not found.'
+          }));
+        case 11:
+          res.status(200).json({
+            message: 'Category successfully removed from product!',
+            product: updatedProduct
+          });
+          _context21.next = 17;
+          break;
+        case 14:
+          _context21.prev = 14;
+          _context21.t0 = _context21["catch"](0);
+          next(_context21.t0);
+        case 17:
+        case "end":
+          return _context21.stop();
+      }
+    }, _callee21, null, [[0, 14]]);
+  }));
+  return function (_x65, _x66, _x67) {
+    return _ref21.apply(this, arguments);
   };
 }());
 

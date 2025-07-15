@@ -77,6 +77,13 @@
     "_name": "_585909c8"
   },
   {
+    "name": "admin-categorycards",
+    "path": "/admin/categorycards",
+    "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/categorycards.vue",
+    "chunkName": "pages/admin/categorycards",
+    "_name": "_f8d677a6"
+  },
+  {
     "name": "admin-checkout",
     "path": "/admin/checkout",
     "component": "/home/azurik/mywork/shopping_assistant/ui/pages/admin/checkout.vue",

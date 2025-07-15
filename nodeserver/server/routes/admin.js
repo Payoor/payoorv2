@@ -19,7 +19,9 @@ const crypto = require('crypto')
 import Order from '../models/Order'
 import Admin from '../models/Admin.js'
 import Checkout from '../models/Checkout.js'
+import Product from '../models/Product.js'
 import ProductVariant from '../models/ProductVariant'
+import Category from '../models/Category.js'
 
 import payoorDBConnection from '../payoordb'
 
@@ -381,12 +383,10 @@ adminRoute.post('/manual-payment-response-trigger', async (req, res, next) => {
     }
   } catch (error) {
     console.error('Manual payment trigger error:', error)
-    res
-      .status(500)
-      .json({
-        status: false,
-        message: 'Internal Server Error during manual trigger.'
-      })
+    res.status(500).json({
+      status: false,
+      message: 'Internal Server Error during manual trigger.'
+    })
     next(error) // Pass error to Express error handling middleware if configured
   }
 })
@@ -421,7 +421,7 @@ adminRoute.post('/admin/register', async (req, res, next) => {
   }
 })
 
-adminRoute.post('/admin/login', async (req, res) => {
+adminRoute.post('/admin/login', async (req, res, next) => {
   try {
     const { email, password } = req.body
 
@@ -835,6 +835,214 @@ adminRoute.get('/admin/getoption', async (req, res, next) => {
     next(error)
   }
 })
+
+adminRoute.post('/admin/create-category', async (req, res, next) => {
+  try {
+    const { name, description, image, hexcolor } = req.body
+
+    if (!name || !description || !image) {
+      return res.status(400).json({
+        message: 'Name, description, and image are required for a category.'
+      })
+    }
+
+    const newCategory = new Category({
+      name,
+      description,
+      image,
+      hexcolor
+    })
+
+    await newCategory.save()
+
+    res.status(201).json({
+      message: 'Category created successfully!',
+      category: newCategory
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.get('/admin/categories', async (req, res, next) => {
+  try {
+    const { product_id, page = 1, limit = 10 } = req.query
+
+    console.log(typeof product_id, product_id)
+
+    if (product_id !== 'undefined' && product_id !== undefined) {
+      const product = await Product.findById(product_id).populate('categories')
+
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found.' })
+      }
+
+      res.status(200).json({ categories: product.categories })
+    } else {
+      const pageNum = parseInt(page, 10)
+      const limitNum = parseInt(limit, 10)
+      const skip = (pageNum - 1) * limitNum
+
+      const categories = await Category.find({}).skip(skip).limit(limitNum)
+
+      const totalCategories = await Category.countDocuments({})
+      const totalPages = Math.ceil(totalCategories / limitNum)
+
+      res.status(200).json({
+        categories,
+        currentPage: pageNum,
+        totalPages,
+        totalCategories
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.put('/admin/update-category/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const { name, description, image, hexcolor } = req.body
+
+    // Basic validation for update fields
+    if (!name || !description || !image) {
+      return res.status(400).json({
+        message:
+          'Name, description, and image are required for updating a category.'
+      })
+    }
+
+    const updatedCategory = await Category.findByIdAndUpdate(
+      id,
+      {
+        name,
+        description,
+        image,
+        hexcolor
+      },
+      { new: true, runValidators: true }
+    )
+
+    if (!updatedCategory) {
+      return res.status(404).json({ message: 'Category not found.' })
+    }
+
+    res.status(200).json({
+      message: 'Category updated successfully!',
+      category: updatedCategory
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.delete('/admin/delete-category/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params
+
+    const deletedCategory = await Category.findByIdAndDelete(id)
+
+    if (!deletedCategory) {
+      return res.status(404).json({ message: 'Category not found.' })
+    }
+
+    res.status(200).json({ message: 'Category deleted successfully!' })
+  } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.post('/admin/add-category-to-product', async (req, res, next) => {
+  try {
+    const { productId, categoryId } = req.body
+
+    if (!productId || !categoryId) {
+      return res
+        .status(400)
+        .json({ message: 'Product ID and Category ID are required.' })
+    }
+
+    if (
+      !mongoose.Types.ObjectId.isValid(productId) ||
+      !mongoose.Types.ObjectId.isValid(categoryId)
+    ) {
+      return res
+        .status(400)
+        .json({ message: 'Invalid Product ID or Category ID format.' })
+    }
+
+    const product = await Product.findById(productId)
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found.' })
+    }
+
+    const category = await Category.findById(categoryId)
+
+    if (!category) {
+      return res.status(404).json({ message: 'Category not found.' })
+    }
+
+    if (product.categories.includes(categoryId)) {
+      return res
+        .status(409)
+        .json({ message: 'Category already linked to this product.' })
+    }
+
+    product.categories.push(categoryId)
+
+    await product.save()
+
+    res.status(200).json({
+      message: 'Category successfully added to product!',
+      product: product.populate('categories')
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.post(
+  '/admin/remove-category-from-product',
+  async (req, res, next) => {
+    try {
+      const { productId, categoryId } = req.body
+
+      if (!productId || !categoryId) {
+        return res
+          .status(400)
+          .json({ message: 'Product ID and Category ID are required.' })
+      } 
+
+      if (
+        !mongoose.Types.ObjectId.isValid(productId) ||
+        !mongoose.Types.ObjectId.isValid(categoryId)
+      ) {
+        return res
+          .status(400)
+          .json({ message: 'Invalid Product ID or Category ID format.' })
+      }
+
+      const updatedProduct = await Product.findByIdAndUpdate(
+        productId,
+        { $pull: { categories: categoryId } },
+        { new: true }
+      ).populate('categories')
+
+      if (!updatedProduct) {
+        return res.status(404).json({ message: 'Product not found.' })
+      }
+
+      res.status(200).json({
+        message: 'Category successfully removed from product!',
+        product: updatedProduct
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+)
 
 //testTelegbotNotify()
 

@@ -4,6 +4,7 @@
             <h1>Admin Dashboard</h1>
             <div class="dashboard-actions">
                 <button @click="showAddProductForm = true">Add Product</button>
+                <button @click="$router.push('/admin/categorycards')">View Category Cards</button>
                 <button @click="logout">Logout</button>
             </div>
         </div>
@@ -73,6 +74,7 @@
                             <button @click="toggleVariants(index)">
                                 {{ product.showVariants ? 'Hide Variants' : 'Show Variants' }}
                             </button>
+                            <button @click="showProductCategories(product._id, product.name)">Show Categories</button>
                             <button @click="saveProduct(product)" :disabled="product.isSaving">
                                 <span v-if="product.isSaving" class="spinner"></span> Save
                             </button>
@@ -463,6 +465,10 @@ export default {
                 console.error('Add variant error:', err);
                 alert('Failed to add variant');
             }
+        },
+        showProductCategories(product_id, product_name) {
+            console.log(product_id)
+            this.$router.push(`/admin/categorycards?product_id=${product_id}&product_name=${product_name}`)
         }
     }
 }
