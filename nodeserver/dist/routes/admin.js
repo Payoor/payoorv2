@@ -796,7 +796,7 @@ adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /
 
 adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
   var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res, next) {
-    var _searchResponse$data$, _req$body5, name, image, generatedDescription, generatedCategories, newProduct, productCollection, result, product, _id, __v, removeIdField, productForIndexing, bulkPayload, bulkResponse, searchResponse, hits;
+    var _searchResponse$data$, _req$body5, name, image, generatedDescription, generatedCategories, newProduct, productCollection, result, product, _id, __v, removeIdField, productForIndexing, bulkPayload, bulkResponse, failedItems, searchResponse, hits;
     return _regeneratorRuntime().wrap(function _callee0$(_context0) {
       while (1) switch (_context0.prev = _context0.next) {
         case 0:
@@ -848,7 +848,16 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
           });
         case 17:
           bulkResponse = _context0.sent;
-          _context0.next = 20;
+          if (bulkResponse.data.errors) {
+            failedItems = bulkResponse.data.items.filter(function (item) {
+              var _item$index;
+              return (_item$index = item.index) === null || _item$index === void 0 ? void 0 : _item$index.error;
+            });
+            console.error('❌ Bulk insert had errors:', failedItems);
+          }
+
+          // Search immediately to verify the product was indexed
+          _context0.next = 21;
           return axios.post("".concat(ELASTIC_URL, "/products/_search"), {
             query: {
               match: {
@@ -860,7 +869,7 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
               'Content-Type': 'application/json'
             }
           });
-        case 20:
+        case 21:
           searchResponse = _context0.sent;
           hits = ((_searchResponse$data$ = searchResponse.data.hits) === null || _searchResponse$data$ === void 0 ? void 0 : _searchResponse$data$.hits) || [];
           console.log(hits, 'these are the hits');
@@ -872,8 +881,8 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
               return hit._source;
             })
           }));
-        case 26:
-          _context0.prev = 26;
+        case 27:
+          _context0.prev = 27;
           _context0.t0 = _context0["catch"](0);
           if (_context0.t0.response) {
             console.error('Elasticsearch error:', _context0.t0.response.status, _context0.t0.response.data);
@@ -881,11 +890,11 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
             console.error('Unexpected error:', _context0.t0.message);
           }
           next(_context0.t0);
-        case 30:
+        case 31:
         case "end":
           return _context0.stop();
       }
-    }, _callee0, null, [[0, 26]]);
+    }, _callee0, null, [[0, 27]]);
   }));
   return function (_x26, _x27, _x28) {
     return _ref0.apply(this, arguments);

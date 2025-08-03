@@ -632,6 +632,14 @@ adminRoute.post('/admin/create-product', async (req, res, next) => {
       }
     )
 
+    if (bulkResponse.data.errors) {
+      const failedItems = bulkResponse.data.items.filter(item => {
+        return item.index?.error
+      })
+
+      console.error('❌ Bulk insert had errors:', failedItems)
+    }
+
     // Search immediately to verify the product was indexed
     const searchResponse = await axios.post(
       `${ELASTIC_URL}/products/_search`,
@@ -649,7 +657,7 @@ adminRoute.post('/admin/create-product', async (req, res, next) => {
 
     const hits = searchResponse.data.hits?.hits || []
 
-    console.log(hits, 'these are the hits');
+    console.log(hits, 'these are the hits')
 
     return res.status(201).json({
       message: 'Product created and indexed',
