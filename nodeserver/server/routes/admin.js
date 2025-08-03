@@ -542,7 +542,7 @@ adminRoute.post(
   }
 )
 
-adminRoute.post('/admin/create-product', async (req, res, next) => {
+/*adminRoute.post('/admin/create-product', async (req, res, next) => {
   try {
     const { name, image, generatedDescription, generatedCategories } = req.body
 
@@ -586,6 +586,90 @@ adminRoute.post('/admin/create-product', async (req, res, next) => {
     console.error('Error in create-product:', error)
     next(error)
   }
+})*/
+
+adminRoute.post('/admin/create-product', async (req, res, next) => {
+  try {
+    const { name, image, generatedDescription, generatedCategories } = req.body
+
+    if (!name || !image) {
+      return res.status(400).json({ error: 'Name and image are required' })
+    }
+
+    const newProduct = {
+      name,
+      image,
+      generatedDescription: generatedDescription || '',
+      generatedCategories: Array.isArray(generatedCategories)
+        ? generatedCategories
+        : [],
+      synced_to_algolia: false,
+      variantCount: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+
+    const productCollection = payoorDBConnection.db.collection('newproducts')
+    const result = await productCollection.insertOne(newProduct)
+    const product = await productCollection.findOne({ _id: result.insertedId })
+
+    const { _id, __v, ...removeIdField } = product
+    const productForIndexing = { _mongooseid: _id.toString(), ...removeIdField }
+
+    // NDJSON bulk payload
+    const bulkPayload =
+      JSON.stringify({ index: { _id: _id.toString() } }) +
+      '\n' +
+      JSON.stringify(productForIndexing) +
+      '\n'
+
+    // Index in Elasticsearch
+    const bulkResponse = await axios.post(
+      `${ELASTIC_URL}/products/_bulk?refresh`,
+      bulkPayload,
+      {
+        headers: { 'Content-Type': 'application/x-ndjson' }
+      }
+    )
+
+    // Search immediately to verify the product was indexed
+    const searchResponse = await axios.post(
+      `${ELASTIC_URL}/products/_search`,
+      {
+        query: {
+          match: {
+            name: name
+          }
+        }
+      },
+      {
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
+
+    const hits = searchResponse.data.hits?.hits || []
+
+    console.log(hits, 'these are the hits');
+
+    return res.status(201).json({
+      message: 'Product created and indexed',
+      product,
+      indexed: hits.length > 0,
+      elasticHits: hits.map(hit => hit._source)
+    })
+  } catch (error) {
+    if (error.response) {
+      console.error(
+        'Elasticsearch error:',
+        error.response.status,
+        error.response.data
+      )
+    } else {
+      console.error('Unexpected error:', error.message)
+    }
+
+    next(error)
+  }
 })
 
 adminRoute.post('/admin/add-variant/:productId', async (req, res, next) => {
@@ -608,7 +692,7 @@ adminRoute.post('/admin/add-variant/:productId', async (req, res, next) => {
       image,
       createdAt: new Date(),
       updatedAt: new Date()
-    });
+    })
 
     //console.log(result)
 

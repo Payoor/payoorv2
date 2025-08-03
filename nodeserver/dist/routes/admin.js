@@ -747,9 +747,56 @@ adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /
     return _ref9.apply(this, arguments);
   };
 }());
+
+/*adminRoute.post('/admin/create-product', async (req, res, next) => {
+  try {
+    const { name, image, generatedDescription, generatedCategories } = req.body
+
+    if (!name || !image) {
+      return res.status(400).json({ error: 'Name and image are required' })
+    }
+
+    const newProduct = {
+      name,
+      image,
+      generatedDescription: generatedDescription || '',
+      generatedCategories: Array.isArray(generatedCategories)
+        ? generatedCategories
+        : [],
+      synced_to_algolia: false,
+      variantCount: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+
+    const productCollection = payoorDBConnection.db.collection('newproducts')
+    const result = await productCollection.insertOne(newProduct)
+    const product = await productCollection.findOne({ _id: result.insertedId })
+
+    const { _id, __v, ...removeIdField } = product
+    const productForIndexing = { _mongooseid: _id, ...removeIdField }
+
+    // Build NDJSON payload for Elasticsearch bulk insert
+    const bulkPayload =
+      JSON.stringify({ index: { _id: _id.toString() } }) +
+      '\n' +
+      JSON.stringify(productForIndexing) +
+      '\n'
+
+    await axios.post(`${ELASTIC_URL}/products/_bulk?refresh`, bulkPayload, {
+      headers: { 'Content-Type': 'application/x-ndjson' }
+    })
+
+    return res.status(201).json({ product })
+  } catch (error) {
+    console.error('Error in create-product:', error)
+    next(error)
+  }
+})*/
+
 adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
   var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res, next) {
-    var _req$body5, name, image, generatedDescription, generatedCategories, newProduct, productCollection, result, product, _id, __v, removeIdField, productForIndexing, bulkPayload;
+    var _searchResponse$data$, _req$body5, name, image, generatedDescription, generatedCategories, newProduct, productCollection, result, product, _id, __v, removeIdField, productForIndexing, bulkPayload, bulkResponse, searchResponse, hits;
     return _regeneratorRuntime().wrap(function _callee0$(_context0) {
       while (1) switch (_context0.prev = _context0.next) {
         case 0:
@@ -786,13 +833,13 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
           product = _context0.sent;
           _id = product._id, __v = product.__v, removeIdField = _objectWithoutProperties(product, _excluded);
           productForIndexing = _objectSpread({
-            _mongooseid: _id
-          }, removeIdField); // Build NDJSON payload for Elasticsearch bulk insert
+            _mongooseid: _id.toString()
+          }, removeIdField); // NDJSON bulk payload
           bulkPayload = JSON.stringify({
             index: {
               _id: _id.toString()
             }
-          }) + '\n' + JSON.stringify(productForIndexing) + '\n';
+          }) + '\n' + JSON.stringify(productForIndexing) + '\n'; // Index in Elasticsearch
           _context0.next = 17;
           return axios.post("".concat(ELASTIC_URL, "/products/_bulk?refresh"), bulkPayload, {
             headers: {
@@ -800,19 +847,45 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
             }
           });
         case 17:
-          return _context0.abrupt("return", res.status(201).json({
-            product: product
-          }));
+          bulkResponse = _context0.sent;
+          _context0.next = 20;
+          return axios.post("".concat(ELASTIC_URL, "/products/_search"), {
+            query: {
+              match: {
+                name: name
+              }
+            }
+          }, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
         case 20:
-          _context0.prev = 20;
+          searchResponse = _context0.sent;
+          hits = ((_searchResponse$data$ = searchResponse.data.hits) === null || _searchResponse$data$ === void 0 ? void 0 : _searchResponse$data$.hits) || [];
+          console.log(hits, 'these are the hits');
+          return _context0.abrupt("return", res.status(201).json({
+            message: 'Product created and indexed',
+            product: product,
+            indexed: hits.length > 0,
+            elasticHits: hits.map(function (hit) {
+              return hit._source;
+            })
+          }));
+        case 26:
+          _context0.prev = 26;
           _context0.t0 = _context0["catch"](0);
-          console.error('Error in create-product:', _context0.t0);
+          if (_context0.t0.response) {
+            console.error('Elasticsearch error:', _context0.t0.response.status, _context0.t0.response.data);
+          } else {
+            console.error('Unexpected error:', _context0.t0.message);
+          }
           next(_context0.t0);
-        case 24:
+        case 30:
         case "end":
           return _context0.stop();
       }
-    }, _callee0, null, [[0, 20]]);
+    }, _callee0, null, [[0, 26]]);
   }));
   return function (_x26, _x27, _x28) {
     return _ref0.apply(this, arguments);
