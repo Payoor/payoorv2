@@ -374,6 +374,8 @@ export default {
                     synced_to_algolia: product.synced_to_algolia
                 }
 
+                console.log(updated)
+
                 const res = await fetch(`${serverurl}/admin/update-product/${product._id}`, {
                     method: 'PUT',
                     headers: this.getAuthHeaders(),

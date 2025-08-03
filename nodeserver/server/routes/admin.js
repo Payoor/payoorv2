@@ -570,16 +570,20 @@ adminRoute.post('/admin/create-product', async (req, res, next) => {
     const { _id, __v, ...removeIdField } = product
     const productForIndexing = { _mongooseid: _id, ...removeIdField }
 
-    await axios.post(
-      `${ELASTIC_URL}/products/_doc/` + _id.toString(),
-      productForIndexing,
-      {
-        headers: { 'Content-Type': 'application/json' }
-      }
-    )
+    // Build NDJSON payload for Elasticsearch bulk insert
+    const bulkPayload =
+      JSON.stringify({ index: { _id: _id.toString() } }) +
+      '\n' +
+      JSON.stringify(productForIndexing) +
+      '\n'
+
+    await axios.post(`${ELASTIC_URL}/products/_bulk?refresh`, bulkPayload, {
+      headers: { 'Content-Type': 'application/x-ndjson' }
+    })
 
     return res.status(201).json({ product })
   } catch (error) {
+    console.error('Error in create-product:', error)
     next(error)
   }
 })
@@ -604,7 +608,7 @@ adminRoute.post('/admin/add-variant/:productId', async (req, res, next) => {
       image,
       createdAt: new Date(),
       updatedAt: new Date()
-    })
+    });
 
     //console.log(result)
 
@@ -1013,7 +1017,7 @@ adminRoute.post(
         return res
           .status(400)
           .json({ message: 'Product ID and Category ID are required.' })
-      } 
+      }
 
       if (
         !mongoose.Types.ObjectId.isValid(productId) ||

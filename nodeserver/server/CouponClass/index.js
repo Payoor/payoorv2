@@ -147,4 +147,4 @@ class CouponClass {
   }
 }
 
-export default CouponClass
+export default CouponClass 

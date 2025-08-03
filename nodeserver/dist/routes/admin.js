@@ -749,7 +749,7 @@ adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /
 }());
 adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
   var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res, next) {
-    var _req$body5, name, image, generatedDescription, generatedCategories, newProduct, productCollection, result, product, _id, __v, removeIdField, productForIndexing;
+    var _req$body5, name, image, generatedDescription, generatedCategories, newProduct, productCollection, result, product, _id, __v, removeIdField, productForIndexing, bulkPayload;
     return _regeneratorRuntime().wrap(function _callee0$(_context0) {
       while (1) switch (_context0.prev = _context0.next) {
         case 0:
@@ -787,26 +787,32 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
           _id = product._id, __v = product.__v, removeIdField = _objectWithoutProperties(product, _excluded);
           productForIndexing = _objectSpread({
             _mongooseid: _id
-          }, removeIdField);
-          _context0.next = 16;
-          return axios.post("".concat(ELASTIC_URL, "/products/_doc/") + _id.toString(), productForIndexing, {
+          }, removeIdField); // Build NDJSON payload for Elasticsearch bulk insert
+          bulkPayload = JSON.stringify({
+            index: {
+              _id: _id.toString()
+            }
+          }) + '\n' + JSON.stringify(productForIndexing) + '\n';
+          _context0.next = 17;
+          return axios.post("".concat(ELASTIC_URL, "/products/_bulk?refresh"), bulkPayload, {
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/x-ndjson'
             }
           });
-        case 16:
+        case 17:
           return _context0.abrupt("return", res.status(201).json({
             product: product
           }));
-        case 19:
-          _context0.prev = 19;
+        case 20:
+          _context0.prev = 20;
           _context0.t0 = _context0["catch"](0);
+          console.error('Error in create-product:', _context0.t0);
           next(_context0.t0);
-        case 22:
+        case 24:
         case "end":
           return _context0.stop();
       }
-    }, _callee0, null, [[0, 19]]);
+    }, _callee0, null, [[0, 20]]);
   }));
   return function (_x26, _x27, _x28) {
     return _ref0.apply(this, arguments);
