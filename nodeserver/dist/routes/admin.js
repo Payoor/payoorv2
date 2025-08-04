@@ -1091,7 +1091,7 @@ adminRoute.put('/admin/update-variant/:variantId', /*#__PURE__*/function () {
 }());
 adminRoute["delete"]('/admin/delete-product/:productId', /*#__PURE__*/function () {
   var _ref12 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res, next) {
-    var productId;
+    var productId, elasticDeleteResponse;
     return _regeneratorRuntime().wrap(function _callee12$(_context12) {
       while (1) switch (_context12.prev = _context12.next) {
         case 0:
@@ -1107,20 +1107,36 @@ adminRoute["delete"]('/admin/delete-product/:productId', /*#__PURE__*/function (
             productId: productId
           });
         case 6:
-          res.status(200).json({
-            message: 'Product and its variants deleted successfully'
+          _context12.next = 8;
+          return axios["delete"]("".concat(ELASTIC_URL, "/products/_doc/").concat(productId.toString()), {
+            headers: {
+              'Content-Type': 'application/json'
+            }
           });
-          _context12.next = 12;
+        case 8:
+          elasticDeleteResponse = _context12.sent;
+          if (elasticDeleteResponse.status !== 200 && elasticDeleteResponse.status !== 202) {
+            console.warn('⚠️ Elasticsearch delete returned unexpected status:', elasticDeleteResponse.status);
+          }
+          res.status(200).json({
+            message: 'Product and its variants deleted successfully from MongoDB and Elasticsearch'
+          });
+          _context12.next = 17;
           break;
-        case 9:
-          _context12.prev = 9;
+        case 13:
+          _context12.prev = 13;
           _context12.t0 = _context12["catch"](0);
+          if (_context12.t0.response) {
+            console.error('Elasticsearch error:', _context12.t0.response.status, _context12.t0.response.data);
+          } else {
+            console.error('Unexpected error:', _context12.t0.message);
+          }
           next(_context12.t0);
-        case 12:
+        case 17:
         case "end":
           return _context12.stop();
       }
-    }, _callee12, null, [[0, 9]]);
+    }, _callee12, null, [[0, 13]]);
   }));
   return function (_x38, _x39, _x40) {
     return _ref12.apply(this, arguments);

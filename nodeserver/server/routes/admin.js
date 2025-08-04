@@ -810,14 +810,43 @@ adminRoute.delete(
       await payoorDBConnection.db
         .collection('newproducts')
         .deleteOne({ _id: productId })
+
       await payoorDBConnection.db
         .collection('productvariants')
         .deleteMany({ productId })
 
-      res
-        .status(200)
-        .json({ message: 'Product and its variants deleted successfully' })
+      const elasticDeleteResponse = await axios.delete(
+        `${ELASTIC_URL}/products/_doc/${productId.toString()}`,
+        {
+          headers: { 'Content-Type': 'application/json' }
+        }
+      )
+
+      if (
+        elasticDeleteResponse.status !== 200 &&
+        elasticDeleteResponse.status !== 202
+      ) {
+        console.warn(
+          '⚠️ Elasticsearch delete returned unexpected status:',
+          elasticDeleteResponse.status
+        )
+      }
+
+      res.status(200).json({
+        message:
+          'Product and its variants deleted successfully from MongoDB and Elasticsearch'
+      })
     } catch (error) {
+      if (error.response) {
+        console.error(
+          'Elasticsearch error:',
+          error.response.status,
+          error.response.data
+        )
+      } else {
+        console.error('Unexpected error:', error.message)
+      }
+
       next(error)
     }
   }
