@@ -5,6 +5,12 @@
   "AddressesList": {
     "description": "Auto imported from components/AddressesList.vue"
   },
+  "AdminHeader": {
+    "description": "Auto imported from components/AdminHeader.vue"
+  },
+  "AdminProductsTable": {
+    "description": "Auto imported from components/AdminProductsTable.vue"
+  },
   "Authenticator": {
     "description": "Auto imported from components/Authenticator.vue"
   },

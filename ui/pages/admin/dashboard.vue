@@ -308,6 +308,8 @@ export default {
 
                 const data = await res.json()
 
+                console.log(data, 'data is here in old ui')
+
                 this.products = (data.products || []).map(p => ({
                     ...p,
                     showVariants: false,

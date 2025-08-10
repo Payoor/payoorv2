@@ -8,6 +8,8 @@ You can directly use them in pages and other components without the need to impo
 
 - `<AddressList>` | `<address-list>` (components/AddressList.vue)
 - `<AddressesList>` | `<addresses-list>` (components/AddressesList.vue)
+- `<AdminHeader>` | `<admin-header>` (components/AdminHeader.vue)
+- `<AdminProductsTable>` | `<admin-products-table>` (components/AdminProductsTable.vue)
 - `<Authenticator>` | `<authenticator>` (components/Authenticator.vue)
 - `<CartButton>` | `<cart-button>` (components/CartButton.vue)
 - `<ChatBody>` | `<chat-body>` (components/ChatBody.vue)
