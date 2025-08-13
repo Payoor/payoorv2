@@ -10,7 +10,7 @@ const ProductSchema = new mongoose.Schema(
     },
     generatedDescription: {
       type: String,
-     // required: true,
+      // required: true,
       trim: true
     },
     generatedCategories: {
@@ -35,6 +35,11 @@ const ProductSchema = new mongoose.Schema(
     metadata: {
       type: String,
       trim: true
+    },
+    description: {
+      type: String,
+      trim: true,
+      default: ''
     },
     // Array of ObjectIds referencing the 'Category' model
     categories: [

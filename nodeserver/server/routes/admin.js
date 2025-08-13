@@ -582,6 +582,56 @@ adminRoute.post(
   }
 )
 
+adminRoute.put('/admin/product/update/description', async (req, res) => {
+  try {
+    const { id } = req.query
+    const { description } = req.body
+
+    if (typeof description !== 'string' || description.trim().length === 0) {
+      return res
+        .status(400)
+        .json({ ok: false, error: 'Description is required' })
+    }
+
+    const updated = await Product.findByIdAndUpdate(
+      id,
+      { $set: { description: description.trim() } },
+      { new: true }
+    )
+
+    if (!updated) {
+      return res.status(404).json({ ok: false, error: 'Product not found' })
+    }
+
+    return res.json({ ok: true, product: updated })
+  } catch (err) {
+    console.error(err)
+    return res.status(500).json({ ok: false, error: 'Internal server error' })
+  }
+})
+
+adminRoute.get('/admin/product/description', async (req, res) => {
+  try {
+    const { id } = req.query
+    if (!id)
+      return res
+        .status(400)
+        .json({ ok: false, error: 'Product ID is required' })
+
+    const product = await Product.findById(id).select('description')
+    if (!product)
+      return res.status(404).json({ ok: false, error: 'Product not found' })
+
+    res.json({
+      ok: true,
+      description: product.description ? product.description : ''
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ ok: false, error: 'Internal server error' });
+  }
+})
+
 /*adminRoute.post('/admin/create-product', async (req, res, next) => {
   try {
     const { name, image, generatedDescription, generatedCategories } = req.body

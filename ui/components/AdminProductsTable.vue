@@ -58,7 +58,7 @@
                                                 @click="closeNewItemForm">Cancel</button>-->
 
                                             <button
-                                                v-if="(focusedItem._id === item._id && item._id !== '0' && isRowDirty(item._id)) || currentItem"
+                                                v-if="(focusedItem._id === item._id && item._id !== '0' && isRowDirty(item._id))"
                                                 class="admintable__actions--savebtn save" @click="saveItem(item)">
                                                 Save
                                             </button>
@@ -111,7 +111,7 @@
                                     </template>
 
                                     <template v-else>
-                                        <input type="text" class="table-input"
+                                        <input type="text" class="table-input" :disabled="currentItem"
                                             @focus="setFocused({ item, inputId: `${header.key}-${item._id}` })"
                                             :id="`${header.key}-${item._id}`" :class="{
                                                 first: header.key === 'name' || header.key === 'unit',
@@ -135,7 +135,7 @@
                 :model="'ProductVariant'" :parentItem="currentItem" />
 
             <EditableItemTable :tableName="`Edit ${editableItem ? editableItem.name : ''}`" :headers="headers"
-                :editableItem="editableItem" :items="[]" />
+                :editableItem="editableItem" :items="[]" :parentItem="currentItem" />
         </div>
 
         <div v-if="!currentItem">

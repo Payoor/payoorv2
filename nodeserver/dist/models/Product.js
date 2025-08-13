@@ -36,6 +36,11 @@ var ProductSchema = new _mongoose["default"].Schema({
     type: String,
     trim: true
   },
+  description: {
+    type: String,
+    trim: true,
+    "default": ''
+  },
   // Array of ObjectIds referencing the 'Category' model
   categories: [{
     type: _mongoose["default"].Schema.Types.ObjectId,

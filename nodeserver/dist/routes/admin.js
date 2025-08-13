@@ -793,6 +793,119 @@ adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /
     return _ref9.apply(this, arguments);
   };
 }());
+adminRoute.put('/admin/product/update/description', /*#__PURE__*/function () {
+  var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res) {
+    var id, description, updated;
+    return _regeneratorRuntime().wrap(function _callee0$(_context0) {
+      while (1) switch (_context0.prev = _context0.next) {
+        case 0:
+          _context0.prev = 0;
+          id = req.query.id;
+          description = req.body.description;
+          if (!(typeof description !== 'string' || description.trim().length === 0)) {
+            _context0.next = 5;
+            break;
+          }
+          return _context0.abrupt("return", res.status(400).json({
+            ok: false,
+            error: 'Description is required'
+          }));
+        case 5:
+          _context0.next = 7;
+          return _Product["default"].findByIdAndUpdate(id, {
+            $set: {
+              description: description.trim()
+            }
+          }, {
+            "new": true
+          });
+        case 7:
+          updated = _context0.sent;
+          if (updated) {
+            _context0.next = 10;
+            break;
+          }
+          return _context0.abrupt("return", res.status(404).json({
+            ok: false,
+            error: 'Product not found'
+          }));
+        case 10:
+          return _context0.abrupt("return", res.json({
+            ok: true,
+            product: updated
+          }));
+        case 13:
+          _context0.prev = 13;
+          _context0.t0 = _context0["catch"](0);
+          console.error(_context0.t0);
+          return _context0.abrupt("return", res.status(500).json({
+            ok: false,
+            error: 'Internal server error'
+          }));
+        case 17:
+        case "end":
+          return _context0.stop();
+      }
+    }, _callee0, null, [[0, 13]]);
+  }));
+  return function (_x26, _x27) {
+    return _ref0.apply(this, arguments);
+  };
+}());
+adminRoute.get('/admin/product/description', /*#__PURE__*/function () {
+  var _ref1 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee1(req, res) {
+    var id, product;
+    return _regeneratorRuntime().wrap(function _callee1$(_context1) {
+      while (1) switch (_context1.prev = _context1.next) {
+        case 0:
+          _context1.prev = 0;
+          id = req.query.id;
+          if (id) {
+            _context1.next = 4;
+            break;
+          }
+          return _context1.abrupt("return", res.status(400).json({
+            ok: false,
+            error: 'Product ID is required'
+          }));
+        case 4:
+          _context1.next = 6;
+          return _Product["default"].findById(id).select('description');
+        case 6:
+          product = _context1.sent;
+          if (product) {
+            _context1.next = 9;
+            break;
+          }
+          return _context1.abrupt("return", res.status(404).json({
+            ok: false,
+            error: 'Product not found'
+          }));
+        case 9:
+          res.json({
+            ok: true,
+            description: product.description ? product.description : ''
+          });
+          _context1.next = 16;
+          break;
+        case 12:
+          _context1.prev = 12;
+          _context1.t0 = _context1["catch"](0);
+          console.error(_context1.t0);
+          res.status(500).json({
+            ok: false,
+            error: 'Internal server error'
+          });
+        case 16:
+        case "end":
+          return _context1.stop();
+      }
+    }, _callee1, null, [[0, 12]]);
+  }));
+  return function (_x28, _x29) {
+    return _ref1.apply(this, arguments);
+  };
+}());
 
 /*adminRoute.post('/admin/create-product', async (req, res, next) => {
   try {
@@ -841,18 +954,18 @@ adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /
 })*/
 
 adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
-  var _ref0 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee0(req, res, next) {
+  var _ref10 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res, next) {
     var _searchResponse$data$, _req$body5, name, image, metadata, generatedDescription, generatedCategories, newProduct, productCollection, result, product, _id, __v, removeIdField, productForIndexing, bulkPayload, bulkResponse, failedItems, searchResponse, hits;
-    return _regeneratorRuntime().wrap(function _callee0$(_context0) {
-      while (1) switch (_context0.prev = _context0.next) {
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+      while (1) switch (_context10.prev = _context10.next) {
         case 0:
-          _context0.prev = 0;
+          _context10.prev = 0;
           _req$body5 = req.body, name = _req$body5.name, image = _req$body5.image, metadata = _req$body5.metadata, generatedDescription = _req$body5.generatedDescription, generatedCategories = _req$body5.generatedCategories;
           if (!(!name || !image)) {
-            _context0.next = 4;
+            _context10.next = 4;
             break;
           }
-          return _context0.abrupt("return", res.status(400).json({
+          return _context10.abrupt("return", res.status(400).json({
             error: 'Name and image are required'
           }));
         case 4:
@@ -869,16 +982,16 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
             updatedAt: new Date()
           };
           productCollection = _payoordb["default"].db.collection('newproducts');
-          _context0.next = 9;
+          _context10.next = 9;
           return productCollection.insertOne(newProduct);
         case 9:
-          result = _context0.sent;
-          _context0.next = 12;
+          result = _context10.sent;
+          _context10.next = 12;
           return productCollection.findOne({
             _id: result.insertedId
           });
         case 12:
-          product = _context0.sent;
+          product = _context10.sent;
           _id = product._id, __v = product.__v, removeIdField = _objectWithoutProperties(product, _excluded);
           productForIndexing = _objectSpread({
             _mongooseid: _id.toString()
@@ -888,14 +1001,14 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
               _id: _id.toString()
             }
           }) + '\n' + JSON.stringify(productForIndexing) + '\n'; // Index in Elasticsearch
-          _context0.next = 18;
+          _context10.next = 18;
           return axios.post("".concat(ELASTIC_URL, "/products/_bulk?refresh"), bulkPayload, {
             headers: {
               'Content-Type': 'application/x-ndjson'
             }
           });
         case 18:
-          bulkResponse = _context0.sent;
+          bulkResponse = _context10.sent;
           if (bulkResponse.data.errors) {
             failedItems = bulkResponse.data.items.filter(function (item) {
               var _item$index;
@@ -905,7 +1018,7 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
           }
 
           // Search immediately to verify the product was indexed
-          _context0.next = 22;
+          _context10.next = 22;
           return axios.post("".concat(ELASTIC_URL, "/products/_search"), {
             query: {
               match: {
@@ -918,10 +1031,10 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
             }
           });
         case 22:
-          searchResponse = _context0.sent;
+          searchResponse = _context10.sent;
           hits = ((_searchResponse$data$ = searchResponse.data.hits) === null || _searchResponse$data$ === void 0 ? void 0 : _searchResponse$data$.hits) || [];
           console.log(hits, 'these are the hits');
-          return _context0.abrupt("return", res.status(201).json({
+          return _context10.abrupt("return", res.status(201).json({
             message: 'Product created and indexed',
             product: product,
             indexed: hits.length > 0,
@@ -930,43 +1043,43 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
             })
           }));
         case 28:
-          _context0.prev = 28;
-          _context0.t0 = _context0["catch"](0);
-          if (_context0.t0.response) {
-            console.error('Elasticsearch error:', _context0.t0.response.status, _context0.t0.response.data);
+          _context10.prev = 28;
+          _context10.t0 = _context10["catch"](0);
+          if (_context10.t0.response) {
+            console.error('Elasticsearch error:', _context10.t0.response.status, _context10.t0.response.data);
           } else {
-            console.error('Unexpected error:', _context0.t0.message);
+            console.error('Unexpected error:', _context10.t0.message);
           }
-          next(_context0.t0);
+          next(_context10.t0);
         case 32:
         case "end":
-          return _context0.stop();
+          return _context10.stop();
       }
-    }, _callee0, null, [[0, 28]]);
+    }, _callee10, null, [[0, 28]]);
   }));
-  return function (_x26, _x27, _x28) {
-    return _ref0.apply(this, arguments);
+  return function (_x30, _x31, _x32) {
+    return _ref10.apply(this, arguments);
   };
 }());
 adminRoute.post('/admin/add-variant/:productId', /*#__PURE__*/function () {
-  var _ref1 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee1(req, res, next) {
+  var _ref11 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res, next) {
     var productId, _req$body6, unit, price, availability, image, variantCollection, result, newVariant;
-    return _regeneratorRuntime().wrap(function _callee1$(_context1) {
-      while (1) switch (_context1.prev = _context1.next) {
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+      while (1) switch (_context11.prev = _context11.next) {
         case 0:
-          _context1.prev = 0;
+          _context11.prev = 0;
           productId = new ObjectId(req.params.productId);
           _req$body6 = req.body, unit = _req$body6.unit, price = _req$body6.price, availability = _req$body6.availability, image = _req$body6.image;
           if (!(!unit || !price || !availability || !image)) {
-            _context1.next = 5;
+            _context11.next = 5;
             break;
           }
-          return _context1.abrupt("return", res.status(400).json({
+          return _context11.abrupt("return", res.status(400).json({
             error: 'All fields are required'
           }));
         case 5:
           variantCollection = _payoordb["default"].db.collection('productvariants');
-          _context1.next = 8;
+          _context11.next = 8;
           return variantCollection.insertOne({
             productId: productId,
             unit: unit,
@@ -977,8 +1090,8 @@ adminRoute.post('/admin/add-variant/:productId', /*#__PURE__*/function () {
             updatedAt: new Date()
           });
         case 8:
-          result = _context1.sent;
-          _context1.next = 11;
+          result = _context11.sent;
+          _context11.next = 11;
           return _payoordb["default"].db.collection('newproducts').updateOne({
             _id: productId
           }, {
@@ -990,47 +1103,47 @@ adminRoute.post('/admin/add-variant/:productId', /*#__PURE__*/function () {
             }
           });
         case 11:
-          _context1.next = 13;
+          _context11.next = 13;
           return variantCollection.findOne({
             _id: result.insertedId
           });
         case 13:
-          newVariant = _context1.sent;
+          newVariant = _context11.sent;
           //console.log(newVariant)
 
           res.status(201).json({
             variant: newVariant
           });
-          _context1.next = 20;
+          _context11.next = 20;
           break;
         case 17:
-          _context1.prev = 17;
-          _context1.t0 = _context1["catch"](0);
-          next(_context1.t0);
+          _context11.prev = 17;
+          _context11.t0 = _context11["catch"](0);
+          next(_context11.t0);
         case 20:
         case "end":
-          return _context1.stop();
+          return _context11.stop();
       }
-    }, _callee1, null, [[0, 17]]);
+    }, _callee11, null, [[0, 17]]);
   }));
-  return function (_x29, _x30, _x31) {
-    return _ref1.apply(this, arguments);
+  return function (_x33, _x34, _x35) {
+    return _ref11.apply(this, arguments);
   };
 }());
 adminRoute.put('/admin/update-product/:productId', /*#__PURE__*/function () {
-  var _ref10 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res, next) {
+  var _ref12 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res, next) {
     var productId, _req$body7, name, image, metadata, generatedDescription, generatedCategories, synced_to_algolia, updateFields, updatedProduct, _id, __v, removeIdField, productForIndexing;
-    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
-      while (1) switch (_context10.prev = _context10.next) {
+    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+      while (1) switch (_context12.prev = _context12.next) {
         case 0:
-          _context10.prev = 0;
+          _context12.prev = 0;
           productId = new ObjectId(req.params.productId);
           _req$body7 = req.body, name = _req$body7.name, image = _req$body7.image, metadata = _req$body7.metadata, generatedDescription = _req$body7.generatedDescription, generatedCategories = _req$body7.generatedCategories, synced_to_algolia = _req$body7.synced_to_algolia;
           if (!(!name || !Array.isArray(generatedCategories))) {
-            _context10.next = 5;
+            _context12.next = 5;
             break;
           }
-          return _context10.abrupt("return", res.status(400).json({
+          return _context12.abrupt("return", res.status(400).json({
             error: 'Invalid input'
           }));
         case 5:
@@ -1043,24 +1156,24 @@ adminRoute.put('/admin/update-product/:productId', /*#__PURE__*/function () {
             synced_to_algolia: synced_to_algolia,
             updatedAt: new Date()
           };
-          _context10.next = 8;
+          _context12.next = 8;
           return _payoordb["default"].db.collection('newproducts').updateOne({
             _id: productId
           }, {
             $set: updateFields
           });
         case 8:
-          _context10.next = 10;
+          _context12.next = 10;
           return _payoordb["default"].db.collection('newproducts').findOne({
             _id: productId
           });
         case 10:
-          updatedProduct = _context10.sent;
+          updatedProduct = _context12.sent;
           _id = updatedProduct._id, __v = updatedProduct.__v, removeIdField = _objectWithoutProperties(updatedProduct, _excluded2);
           productForIndexing = _objectSpread({
             _mongooseid: _id
           }, removeIdField);
-          _context10.next = 15;
+          _context12.next = 15;
           return axios.post("".concat(ELASTIC_URL, "/products/_doc/") + _id.toString(), productForIndexing, {
             headers: {
               'Content-Type': 'application/json'
@@ -1070,37 +1183,37 @@ adminRoute.put('/admin/update-product/:productId', /*#__PURE__*/function () {
           res.status(200).json({
             message: 'Product updated successfully'
           });
-          _context10.next = 21;
+          _context12.next = 21;
           break;
         case 18:
-          _context10.prev = 18;
-          _context10.t0 = _context10["catch"](0);
-          next(_context10.t0);
+          _context12.prev = 18;
+          _context12.t0 = _context12["catch"](0);
+          next(_context12.t0);
         case 21:
         case "end":
-          return _context10.stop();
+          return _context12.stop();
       }
-    }, _callee10, null, [[0, 18]]);
+    }, _callee12, null, [[0, 18]]);
   }));
-  return function (_x32, _x33, _x34) {
-    return _ref10.apply(this, arguments);
+  return function (_x36, _x37, _x38) {
+    return _ref12.apply(this, arguments);
   };
 }());
 adminRoute.put('/admin/update-variant/:variantId', /*#__PURE__*/function () {
-  var _ref11 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res, next) {
+  var _ref13 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee13(req, res, next) {
     var variantId, _req$body8, unit, price, availability, image, updateFields, result;
-    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
-      while (1) switch (_context11.prev = _context11.next) {
+    return _regeneratorRuntime().wrap(function _callee13$(_context13) {
+      while (1) switch (_context13.prev = _context13.next) {
         case 0:
-          _context11.prev = 0;
+          _context13.prev = 0;
           variantId = new ObjectId(req.params.variantId);
           _req$body8 = req.body, unit = _req$body8.unit, price = _req$body8.price, availability = _req$body8.availability, image = _req$body8.image;
           if (!(!unit || !price || !availability)) {
-            _context11.next = 6;
+            _context13.next = 6;
             break;
           }
           console.log('All fields are required');
-          return _context11.abrupt("return", res.status(400).json({
+          return _context13.abrupt("return", res.status(400).json({
             error: 'All fields are required'
           }));
         case 6:
@@ -1111,117 +1224,117 @@ adminRoute.put('/admin/update-variant/:variantId', /*#__PURE__*/function () {
             image: image,
             updatedAt: new Date()
           };
-          _context11.next = 9;
+          _context13.next = 9;
           return _payoordb["default"].db.collection('productvariants').updateOne({
             _id: variantId
           }, {
             $set: updateFields
           });
         case 9:
-          result = _context11.sent;
+          result = _context13.sent;
           res.status(200).json({
             message: 'Variant updated successfully'
           });
-          _context11.next = 16;
+          _context13.next = 16;
           break;
         case 13:
-          _context11.prev = 13;
-          _context11.t0 = _context11["catch"](0);
-          next(_context11.t0);
+          _context13.prev = 13;
+          _context13.t0 = _context13["catch"](0);
+          next(_context13.t0);
         case 16:
         case "end":
-          return _context11.stop();
+          return _context13.stop();
       }
-    }, _callee11, null, [[0, 13]]);
+    }, _callee13, null, [[0, 13]]);
   }));
-  return function (_x35, _x36, _x37) {
-    return _ref11.apply(this, arguments);
+  return function (_x39, _x40, _x41) {
+    return _ref13.apply(this, arguments);
   };
 }());
 adminRoute["delete"]('/admin/delete-product/:productId', /*#__PURE__*/function () {
-  var _ref12 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res, next) {
+  var _ref14 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee14(req, res, next) {
     var productId, elasticDeleteResponse;
-    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
-      while (1) switch (_context12.prev = _context12.next) {
+    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+      while (1) switch (_context14.prev = _context14.next) {
         case 0:
-          _context12.prev = 0;
+          _context14.prev = 0;
           productId = new ObjectId(req.params.productId);
-          _context12.next = 4;
+          _context14.next = 4;
           return _payoordb["default"].db.collection('newproducts').deleteOne({
             _id: productId
           });
         case 4:
-          _context12.next = 6;
+          _context14.next = 6;
           return _payoordb["default"].db.collection('productvariants').deleteMany({
             productId: productId
           });
         case 6:
-          _context12.next = 8;
+          _context14.next = 8;
           return axios["delete"]("".concat(ELASTIC_URL, "/products/_doc/").concat(productId.toString()), {
             headers: {
               'Content-Type': 'application/json'
             }
           });
         case 8:
-          elasticDeleteResponse = _context12.sent;
+          elasticDeleteResponse = _context14.sent;
           if (elasticDeleteResponse.status !== 200 && elasticDeleteResponse.status !== 202) {
             console.warn('⚠️ Elasticsearch delete returned unexpected status:', elasticDeleteResponse.status);
           }
           res.status(200).json({
             message: 'Product and its variants deleted successfully from MongoDB and Elasticsearch'
           });
-          _context12.next = 17;
+          _context14.next = 17;
           break;
         case 13:
-          _context12.prev = 13;
-          _context12.t0 = _context12["catch"](0);
-          if (_context12.t0.response) {
-            console.error('Elasticsearch error:', _context12.t0.response.status, _context12.t0.response.data);
+          _context14.prev = 13;
+          _context14.t0 = _context14["catch"](0);
+          if (_context14.t0.response) {
+            console.error('Elasticsearch error:', _context14.t0.response.status, _context14.t0.response.data);
           } else {
-            console.error('Unexpected error:', _context12.t0.message);
+            console.error('Unexpected error:', _context14.t0.message);
           }
-          next(_context12.t0);
+          next(_context14.t0);
         case 17:
         case "end":
-          return _context12.stop();
+          return _context14.stop();
       }
-    }, _callee12, null, [[0, 13]]);
+    }, _callee14, null, [[0, 13]]);
   }));
-  return function (_x38, _x39, _x40) {
-    return _ref12.apply(this, arguments);
+  return function (_x42, _x43, _x44) {
+    return _ref14.apply(this, arguments);
   };
 }());
 
 // Server-side route for deleting a variant
 adminRoute["delete"]('/admin/delete-variant/:variantId', /*#__PURE__*/function () {
-  var _ref13 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee13(req, res, next) {
+  var _ref15 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee15(req, res, next) {
     var variantId, variantCollection, variant;
-    return _regeneratorRuntime().wrap(function _callee13$(_context13) {
-      while (1) switch (_context13.prev = _context13.next) {
+    return _regeneratorRuntime().wrap(function _callee15$(_context15) {
+      while (1) switch (_context15.prev = _context15.next) {
         case 0:
-          _context13.prev = 0;
+          _context15.prev = 0;
           variantId = new ObjectId(req.params.variantId);
           variantCollection = _payoordb["default"].db.collection('productvariants');
-          _context13.next = 5;
+          _context15.next = 5;
           return variantCollection.findOne({
             _id: variantId
           });
         case 5:
-          variant = _context13.sent;
+          variant = _context15.sent;
           if (variant) {
-            _context13.next = 8;
+            _context15.next = 8;
             break;
           }
-          return _context13.abrupt("return", res.status(404).json({
+          return _context15.abrupt("return", res.status(404).json({
             error: 'Variant not found'
           }));
         case 8:
-          _context13.next = 10;
+          _context15.next = 10;
           return variantCollection.deleteOne({
             _id: variantId
           });
         case 10:
-          _context13.next = 12;
+          _context15.next = 12;
           return _payoordb["default"].db.collection('newproducts').updateOne({
             _id: variant.productId
           }, {
@@ -1236,20 +1349,20 @@ adminRoute["delete"]('/admin/delete-variant/:variantId', /*#__PURE__*/function (
           res.status(200).json({
             message: 'Variant deleted successfully'
           });
-          _context13.next = 18;
+          _context15.next = 18;
           break;
         case 15:
-          _context13.prev = 15;
-          _context13.t0 = _context13["catch"](0);
-          next(_context13.t0);
+          _context15.prev = 15;
+          _context15.t0 = _context15["catch"](0);
+          next(_context15.t0);
         case 18:
         case "end":
-          return _context13.stop();
+          return _context15.stop();
       }
-    }, _callee13, null, [[0, 15]]);
+    }, _callee15, null, [[0, 15]]);
   }));
-  return function (_x41, _x42, _x43) {
-    return _ref13.apply(this, arguments);
+  return function (_x45, _x46, _x47) {
+    return _ref15.apply(this, arguments);
   };
 }());
 function generateUniqueFileName(originalname) {
@@ -1261,47 +1374,47 @@ function testTelegbotNotify() {
   return _testTelegbotNotify.apply(this, arguments);
 }
 function _testTelegbotNotify() {
-  _testTelegbotNotify = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee22() {
+  _testTelegbotNotify = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee24() {
     var telegbotUrl, response;
-    return _regeneratorRuntime().wrap(function _callee22$(_context22) {
-      while (1) switch (_context22.prev = _context22.next) {
+    return _regeneratorRuntime().wrap(function _callee24$(_context24) {
+      while (1) switch (_context24.prev = _context24.next) {
         case 0:
           telegbotUrl = 'http://telegbot:3001/notify';
-          _context22.prev = 1;
-          _context22.next = 4;
+          _context24.prev = 1;
+          _context24.next = 4;
           return axios.post(telegbotUrl, {
             orderId: 'test-order-12345'
           });
         case 4:
-          response = _context22.sent;
+          response = _context24.sent;
           console.log('✅ Response from telegbot:', response.data);
-          _context22.next = 11;
+          _context24.next = 11;
           break;
         case 8:
-          _context22.prev = 8;
-          _context22.t0 = _context22["catch"](1);
-          if (_context22.t0.response) {
-            console.error('❌ Error response:', _context22.t0.response.status, _context22.t0.response.data);
+          _context24.prev = 8;
+          _context24.t0 = _context24["catch"](1);
+          if (_context24.t0.response) {
+            console.error('❌ Error response:', _context24.t0.response.status, _context24.t0.response.data);
           } else {
-            console.error('❌ Request error:', _context22.t0.message);
+            console.error('❌ Request error:', _context24.t0.message);
           }
         case 11:
         case "end":
-          return _context22.stop();
+          return _context24.stop();
       }
-    }, _callee22, null, [[1, 8]]);
+    }, _callee24, null, [[1, 8]]);
   }));
   return _testTelegbotNotify.apply(this, arguments);
 }
 adminRoute.get('/admin/checkout', /*#__PURE__*/function () {
-  var _ref14 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee14(req, res, next) {
+  var _ref16 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee16(req, res, next) {
     var checkoutid, checkout;
-    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
-      while (1) switch (_context14.prev = _context14.next) {
+    return _regeneratorRuntime().wrap(function _callee16$(_context16) {
+      while (1) switch (_context16.prev = _context16.next) {
         case 0:
-          _context14.prev = 0;
+          _context16.prev = 0;
           checkoutid = req.query.checkoutid;
-          _context14.next = 4;
+          _context16.next = 4;
           return _Checkout["default"].findOne({
             _id: checkoutid
           }).populate({
@@ -1309,7 +1422,7 @@ adminRoute.get('/admin/checkout', /*#__PURE__*/function () {
             select: 'email phoneNumber'
           });
         case 4:
-          checkout = _context14.sent;
+          checkout = _context16.sent;
           if (checkout) {
             res.status(200).json({
               checkout: checkout
@@ -1320,32 +1433,32 @@ adminRoute.get('/admin/checkout', /*#__PURE__*/function () {
               checkout: {}
             });
           }
-          _context14.next = 11;
+          _context16.next = 11;
           break;
         case 8:
-          _context14.prev = 8;
-          _context14.t0 = _context14["catch"](0);
-          next(_context14.t0);
+          _context16.prev = 8;
+          _context16.t0 = _context16["catch"](0);
+          next(_context16.t0);
         case 11:
         case "end":
-          return _context14.stop();
+          return _context16.stop();
       }
-    }, _callee14, null, [[0, 8]]);
+    }, _callee16, null, [[0, 8]]);
   }));
-  return function (_x44, _x45, _x46) {
-    return _ref14.apply(this, arguments);
+  return function (_x48, _x49, _x50) {
+    return _ref16.apply(this, arguments);
   };
 }());
 adminRoute.get('/admin/getoption', /*#__PURE__*/function () {
-  var _ref15 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee15(req, res, next) {
+  var _ref17 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee17(req, res, next) {
     var mongooseid, objectId, variant;
-    return _regeneratorRuntime().wrap(function _callee15$(_context15) {
-      while (1) switch (_context15.prev = _context15.next) {
+    return _regeneratorRuntime().wrap(function _callee17$(_context17) {
+      while (1) switch (_context17.prev = _context17.next) {
         case 0:
-          _context15.prev = 0;
+          _context17.prev = 0;
           mongooseid = req.query.mongooseid;
           objectId = new ObjectId(mongooseid);
-          _context15.next = 5;
+          _context17.next = 5;
           return _ProductVariant["default"].findOne({
             _id: objectId
           }).populate({
@@ -1353,13 +1466,13 @@ adminRoute.get('/admin/getoption', /*#__PURE__*/function () {
             select: 'name'
           });
         case 5:
-          variant = _context15.sent;
+          variant = _context17.sent;
           console.log(variant);
           if (variant) {
-            _context15.next = 9;
+            _context17.next = 9;
             break;
           }
-          return _context15.abrupt("return", res.status(404).json({
+          return _context17.abrupt("return", res.status(404).json({
             message: 'Variant not found'
           }));
         case 9:
@@ -1367,35 +1480,35 @@ adminRoute.get('/admin/getoption', /*#__PURE__*/function () {
             message: 'Variant found',
             variant: variant
           });
-          _context15.next = 15;
+          _context17.next = 15;
           break;
         case 12:
-          _context15.prev = 12;
-          _context15.t0 = _context15["catch"](0);
-          next(_context15.t0);
+          _context17.prev = 12;
+          _context17.t0 = _context17["catch"](0);
+          next(_context17.t0);
         case 15:
         case "end":
-          return _context15.stop();
+          return _context17.stop();
       }
-    }, _callee15, null, [[0, 12]]);
+    }, _callee17, null, [[0, 12]]);
   }));
-  return function (_x47, _x48, _x49) {
-    return _ref15.apply(this, arguments);
+  return function (_x51, _x52, _x53) {
+    return _ref17.apply(this, arguments);
   };
 }());
 adminRoute.post('/admin/create-category', /*#__PURE__*/function () {
-  var _ref16 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee16(req, res, next) {
+  var _ref18 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee18(req, res, next) {
     var _req$body9, name, description, image, hexcolor, newCategory;
-    return _regeneratorRuntime().wrap(function _callee16$(_context16) {
-      while (1) switch (_context16.prev = _context16.next) {
+    return _regeneratorRuntime().wrap(function _callee18$(_context18) {
+      while (1) switch (_context18.prev = _context18.next) {
         case 0:
-          _context16.prev = 0;
+          _context18.prev = 0;
           _req$body9 = req.body, name = _req$body9.name, description = _req$body9.description, image = _req$body9.image, hexcolor = _req$body9.hexcolor;
           if (!(!name || !description || !image)) {
-            _context16.next = 4;
+            _context18.next = 4;
             break;
           }
-          return _context16.abrupt("return", res.status(400).json({
+          return _context18.abrupt("return", res.status(400).json({
             message: 'Name, description, and image are required for a category.'
           }));
         case 4:
@@ -1405,71 +1518,71 @@ adminRoute.post('/admin/create-category', /*#__PURE__*/function () {
             image: image,
             hexcolor: hexcolor
           });
-          _context16.next = 7;
+          _context18.next = 7;
           return newCategory.save();
         case 7:
           res.status(201).json({
             message: 'Category created successfully!',
             category: newCategory
           });
-          _context16.next = 13;
+          _context18.next = 13;
           break;
         case 10:
-          _context16.prev = 10;
-          _context16.t0 = _context16["catch"](0);
-          next(_context16.t0);
+          _context18.prev = 10;
+          _context18.t0 = _context18["catch"](0);
+          next(_context18.t0);
         case 13:
         case "end":
-          return _context16.stop();
+          return _context18.stop();
       }
-    }, _callee16, null, [[0, 10]]);
+    }, _callee18, null, [[0, 10]]);
   }));
-  return function (_x50, _x51, _x52) {
-    return _ref16.apply(this, arguments);
+  return function (_x54, _x55, _x56) {
+    return _ref18.apply(this, arguments);
   };
 }());
 adminRoute.get('/admin/categories', /*#__PURE__*/function () {
-  var _ref17 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee17(req, res, next) {
+  var _ref19 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee19(req, res, next) {
     var _req$query2, product_id, _req$query2$page, page, _req$query2$limit, limit, product, pageNum, limitNum, skip, categories, totalCategories, totalPages;
-    return _regeneratorRuntime().wrap(function _callee17$(_context17) {
-      while (1) switch (_context17.prev = _context17.next) {
+    return _regeneratorRuntime().wrap(function _callee19$(_context19) {
+      while (1) switch (_context19.prev = _context19.next) {
         case 0:
-          _context17.prev = 0;
+          _context19.prev = 0;
           _req$query2 = req.query, product_id = _req$query2.product_id, _req$query2$page = _req$query2.page, page = _req$query2$page === void 0 ? 1 : _req$query2$page, _req$query2$limit = _req$query2.limit, limit = _req$query2$limit === void 0 ? 10 : _req$query2$limit;
           console.log(_typeof(product_id), product_id);
           if (!(product_id !== 'undefined' && product_id !== undefined)) {
-            _context17.next = 12;
+            _context19.next = 12;
             break;
           }
-          _context17.next = 6;
+          _context19.next = 6;
           return _Product["default"].findById(product_id).populate('categories');
         case 6:
-          product = _context17.sent;
+          product = _context19.sent;
           if (product) {
-            _context17.next = 9;
+            _context19.next = 9;
             break;
           }
-          return _context17.abrupt("return", res.status(404).json({
+          return _context19.abrupt("return", res.status(404).json({
             message: 'Product not found.'
           }));
         case 9:
           res.status(200).json({
             categories: product.categories
           });
-          _context17.next = 23;
+          _context19.next = 23;
           break;
         case 12:
           pageNum = parseInt(page, 10);
           limitNum = parseInt(limit, 10);
           skip = (pageNum - 1) * limitNum;
-          _context17.next = 17;
+          _context19.next = 17;
           return _Category["default"].find({}).skip(skip).limit(limitNum);
         case 17:
-          categories = _context17.sent;
-          _context17.next = 20;
+          categories = _context19.sent;
+          _context19.next = 20;
           return _Category["default"].countDocuments({});
         case 20:
-          totalCategories = _context17.sent;
+          totalCategories = _context19.sent;
           totalPages = Math.ceil(totalCategories / limitNum);
           res.status(200).json({
             categories: categories,
@@ -1478,40 +1591,40 @@ adminRoute.get('/admin/categories', /*#__PURE__*/function () {
             totalCategories: totalCategories
           });
         case 23:
-          _context17.next = 28;
+          _context19.next = 28;
           break;
         case 25:
-          _context17.prev = 25;
-          _context17.t0 = _context17["catch"](0);
-          next(_context17.t0);
+          _context19.prev = 25;
+          _context19.t0 = _context19["catch"](0);
+          next(_context19.t0);
         case 28:
         case "end":
-          return _context17.stop();
+          return _context19.stop();
       }
-    }, _callee17, null, [[0, 25]]);
+    }, _callee19, null, [[0, 25]]);
   }));
-  return function (_x53, _x54, _x55) {
-    return _ref17.apply(this, arguments);
+  return function (_x57, _x58, _x59) {
+    return _ref19.apply(this, arguments);
   };
 }());
 adminRoute.put('/admin/update-category/:id', /*#__PURE__*/function () {
-  var _ref18 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee18(req, res, next) {
+  var _ref20 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee20(req, res, next) {
     var id, _req$body0, name, description, image, hexcolor, updatedCategory;
-    return _regeneratorRuntime().wrap(function _callee18$(_context18) {
-      while (1) switch (_context18.prev = _context18.next) {
+    return _regeneratorRuntime().wrap(function _callee20$(_context20) {
+      while (1) switch (_context20.prev = _context20.next) {
         case 0:
-          _context18.prev = 0;
+          _context20.prev = 0;
           id = req.params.id;
           _req$body0 = req.body, name = _req$body0.name, description = _req$body0.description, image = _req$body0.image, hexcolor = _req$body0.hexcolor; // Basic validation for update fields
           if (!(!name || !description || !image)) {
-            _context18.next = 5;
+            _context20.next = 5;
             break;
           }
-          return _context18.abrupt("return", res.status(400).json({
+          return _context20.abrupt("return", res.status(400).json({
             message: 'Name, description, and image are required for updating a category.'
           }));
         case 5:
-          _context18.next = 7;
+          _context20.next = 7;
           return _Category["default"].findByIdAndUpdate(id, {
             name: name,
             description: description,
@@ -1522,12 +1635,12 @@ adminRoute.put('/admin/update-category/:id', /*#__PURE__*/function () {
             runValidators: true
           });
         case 7:
-          updatedCategory = _context18.sent;
+          updatedCategory = _context20.sent;
           if (updatedCategory) {
-            _context18.next = 10;
+            _context20.next = 10;
             break;
           }
-          return _context18.abrupt("return", res.status(404).json({
+          return _context20.abrupt("return", res.status(404).json({
             message: 'Category not found.'
           }));
         case 10:
@@ -1535,166 +1648,166 @@ adminRoute.put('/admin/update-category/:id', /*#__PURE__*/function () {
             message: 'Category updated successfully!',
             category: updatedCategory
           });
-          _context18.next = 16;
+          _context20.next = 16;
           break;
         case 13:
-          _context18.prev = 13;
-          _context18.t0 = _context18["catch"](0);
-          next(_context18.t0);
+          _context20.prev = 13;
+          _context20.t0 = _context20["catch"](0);
+          next(_context20.t0);
         case 16:
         case "end":
-          return _context18.stop();
+          return _context20.stop();
       }
-    }, _callee18, null, [[0, 13]]);
+    }, _callee20, null, [[0, 13]]);
   }));
-  return function (_x56, _x57, _x58) {
-    return _ref18.apply(this, arguments);
+  return function (_x60, _x61, _x62) {
+    return _ref20.apply(this, arguments);
   };
 }());
 adminRoute["delete"]('/admin/delete-category/:id', /*#__PURE__*/function () {
-  var _ref19 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee19(req, res, next) {
+  var _ref21 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee21(req, res, next) {
     var id, deletedCategory;
-    return _regeneratorRuntime().wrap(function _callee19$(_context19) {
-      while (1) switch (_context19.prev = _context19.next) {
+    return _regeneratorRuntime().wrap(function _callee21$(_context21) {
+      while (1) switch (_context21.prev = _context21.next) {
         case 0:
-          _context19.prev = 0;
+          _context21.prev = 0;
           id = req.params.id;
-          _context19.next = 4;
+          _context21.next = 4;
           return _Category["default"].findByIdAndDelete(id);
         case 4:
-          deletedCategory = _context19.sent;
+          deletedCategory = _context21.sent;
           if (deletedCategory) {
-            _context19.next = 7;
+            _context21.next = 7;
             break;
           }
-          return _context19.abrupt("return", res.status(404).json({
+          return _context21.abrupt("return", res.status(404).json({
             message: 'Category not found.'
           }));
         case 7:
           res.status(200).json({
             message: 'Category deleted successfully!'
           });
-          _context19.next = 13;
+          _context21.next = 13;
           break;
         case 10:
-          _context19.prev = 10;
-          _context19.t0 = _context19["catch"](0);
-          next(_context19.t0);
+          _context21.prev = 10;
+          _context21.t0 = _context21["catch"](0);
+          next(_context21.t0);
         case 13:
         case "end":
-          return _context19.stop();
+          return _context21.stop();
       }
-    }, _callee19, null, [[0, 10]]);
+    }, _callee21, null, [[0, 10]]);
   }));
-  return function (_x59, _x60, _x61) {
-    return _ref19.apply(this, arguments);
+  return function (_x63, _x64, _x65) {
+    return _ref21.apply(this, arguments);
   };
 }());
 adminRoute.post('/admin/add-category-to-product', /*#__PURE__*/function () {
-  var _ref20 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee20(req, res, next) {
+  var _ref22 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee22(req, res, next) {
     var _req$body1, productId, categoryId, product, category;
-    return _regeneratorRuntime().wrap(function _callee20$(_context20) {
-      while (1) switch (_context20.prev = _context20.next) {
+    return _regeneratorRuntime().wrap(function _callee22$(_context22) {
+      while (1) switch (_context22.prev = _context22.next) {
         case 0:
-          _context20.prev = 0;
+          _context22.prev = 0;
           _req$body1 = req.body, productId = _req$body1.productId, categoryId = _req$body1.categoryId;
           if (!(!productId || !categoryId)) {
-            _context20.next = 4;
+            _context22.next = 4;
             break;
           }
-          return _context20.abrupt("return", res.status(400).json({
+          return _context22.abrupt("return", res.status(400).json({
             message: 'Product ID and Category ID are required.'
           }));
         case 4:
           if (!(!_mongoose["default"].Types.ObjectId.isValid(productId) || !_mongoose["default"].Types.ObjectId.isValid(categoryId))) {
-            _context20.next = 6;
+            _context22.next = 6;
             break;
           }
-          return _context20.abrupt("return", res.status(400).json({
+          return _context22.abrupt("return", res.status(400).json({
             message: 'Invalid Product ID or Category ID format.'
           }));
         case 6:
-          _context20.next = 8;
+          _context22.next = 8;
           return _Product["default"].findById(productId);
         case 8:
-          product = _context20.sent;
+          product = _context22.sent;
           if (product) {
-            _context20.next = 11;
+            _context22.next = 11;
             break;
           }
-          return _context20.abrupt("return", res.status(404).json({
+          return _context22.abrupt("return", res.status(404).json({
             message: 'Product not found.'
           }));
         case 11:
-          _context20.next = 13;
+          _context22.next = 13;
           return _Category["default"].findById(categoryId);
         case 13:
-          category = _context20.sent;
+          category = _context22.sent;
           if (category) {
-            _context20.next = 16;
+            _context22.next = 16;
             break;
           }
-          return _context20.abrupt("return", res.status(404).json({
+          return _context22.abrupt("return", res.status(404).json({
             message: 'Category not found.'
           }));
         case 16:
           if (!product.categories.includes(categoryId)) {
-            _context20.next = 18;
+            _context22.next = 18;
             break;
           }
-          return _context20.abrupt("return", res.status(409).json({
+          return _context22.abrupt("return", res.status(409).json({
             message: 'Category already linked to this product.'
           }));
         case 18:
           product.categories.push(categoryId);
-          _context20.next = 21;
+          _context22.next = 21;
           return product.save();
         case 21:
           res.status(200).json({
             message: 'Category successfully added to product!',
             product: product.populate('categories')
           });
-          _context20.next = 27;
+          _context22.next = 27;
           break;
         case 24:
-          _context20.prev = 24;
-          _context20.t0 = _context20["catch"](0);
-          next(_context20.t0);
+          _context22.prev = 24;
+          _context22.t0 = _context22["catch"](0);
+          next(_context22.t0);
         case 27:
         case "end":
-          return _context20.stop();
+          return _context22.stop();
       }
-    }, _callee20, null, [[0, 24]]);
+    }, _callee22, null, [[0, 24]]);
   }));
-  return function (_x62, _x63, _x64) {
-    return _ref20.apply(this, arguments);
+  return function (_x66, _x67, _x68) {
+    return _ref22.apply(this, arguments);
   };
 }());
 adminRoute.post('/admin/remove-category-from-product', /*#__PURE__*/function () {
-  var _ref21 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee21(req, res, next) {
+  var _ref23 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee23(req, res, next) {
     var _req$body10, productId, categoryId, updatedProduct;
-    return _regeneratorRuntime().wrap(function _callee21$(_context21) {
-      while (1) switch (_context21.prev = _context21.next) {
+    return _regeneratorRuntime().wrap(function _callee23$(_context23) {
+      while (1) switch (_context23.prev = _context23.next) {
         case 0:
-          _context21.prev = 0;
+          _context23.prev = 0;
           _req$body10 = req.body, productId = _req$body10.productId, categoryId = _req$body10.categoryId;
           if (!(!productId || !categoryId)) {
-            _context21.next = 4;
+            _context23.next = 4;
             break;
           }
-          return _context21.abrupt("return", res.status(400).json({
+          return _context23.abrupt("return", res.status(400).json({
             message: 'Product ID and Category ID are required.'
           }));
         case 4:
           if (!(!_mongoose["default"].Types.ObjectId.isValid(productId) || !_mongoose["default"].Types.ObjectId.isValid(categoryId))) {
-            _context21.next = 6;
+            _context23.next = 6;
             break;
           }
-          return _context21.abrupt("return", res.status(400).json({
+          return _context23.abrupt("return", res.status(400).json({
             message: 'Invalid Product ID or Category ID format.'
           }));
         case 6:
-          _context21.next = 8;
+          _context23.next = 8;
           return _Product["default"].findByIdAndUpdate(productId, {
             $pull: {
               categories: categoryId
@@ -1703,12 +1816,12 @@ adminRoute.post('/admin/remove-category-from-product', /*#__PURE__*/function () 
             "new": true
           }).populate('categories');
         case 8:
-          updatedProduct = _context21.sent;
+          updatedProduct = _context23.sent;
           if (updatedProduct) {
-            _context21.next = 11;
+            _context23.next = 11;
             break;
           }
-          return _context21.abrupt("return", res.status(404).json({
+          return _context23.abrupt("return", res.status(404).json({
             message: 'Product not found.'
           }));
         case 11:
@@ -1716,20 +1829,20 @@ adminRoute.post('/admin/remove-category-from-product', /*#__PURE__*/function () 
             message: 'Category successfully removed from product!',
             product: updatedProduct
           });
-          _context21.next = 17;
+          _context23.next = 17;
           break;
         case 14:
-          _context21.prev = 14;
-          _context21.t0 = _context21["catch"](0);
-          next(_context21.t0);
+          _context23.prev = 14;
+          _context23.t0 = _context23["catch"](0);
+          next(_context23.t0);
         case 17:
         case "end":
-          return _context21.stop();
+          return _context23.stop();
       }
-    }, _callee21, null, [[0, 14]]);
+    }, _callee23, null, [[0, 14]]);
   }));
-  return function (_x65, _x66, _x67) {
-    return _ref21.apply(this, arguments);
+  return function (_x69, _x70, _x71) {
+    return _ref23.apply(this, arguments);
   };
 }());
 
