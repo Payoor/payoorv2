@@ -11,6 +11,9 @@
   "AdminProductsTable": {
     "description": "Auto imported from components/AdminProductsTable.vue"
   },
+  "AdminUiHeader": {
+    "description": "Auto imported from components/AdminUiHeader.vue"
+  },
   "Authenticator": {
     "description": "Auto imported from components/Authenticator.vue"
   },
@@ -41,6 +44,9 @@
   "ChoosePaymentProcessor": {
     "description": "Auto imported from components/ChoosePaymentProcessor.vue"
   },
+  "EditableItemTable": {
+    "description": "Auto imported from components/EditableItemTable.vue"
+  },
   "GoogleBtn": {
     "description": "Auto imported from components/GoogleBtn.vue"
   },
@@ -68,10 +74,16 @@
   "LoadingAnimation": {
     "description": "Auto imported from components/LoadingAnimation.vue"
   },
+  "NewItemForm": {
+    "description": "Auto imported from components/NewItemForm.vue"
+  },
   "OrderDisplay": {
     "description": "Auto imported from components/OrderDisplay.vue"
   },
   "OtpInput": {
     "description": "Auto imported from components/OtpInput.vue"
+  },
+  "VariantProductsTable": {
+    "description": "Auto imported from components/VariantProductsTable.vue"
   }
 }

@@ -31,7 +31,7 @@ app.get('/health', async (req, res, next) => {
       message: 'server is up and running here now'
     })
   } catch (error) {
-    next(error)
+    next(error) 
   }
 })
 

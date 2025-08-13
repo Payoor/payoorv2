@@ -81,3 +81,15 @@
     width: 100%;
     transition: width 4s linear;
 }
+
+.table-input {
+    background: transparent;
+    color: $white;
+    border: none;
+    outline: none;
+    text-align: right;
+
+    &.first {
+        text-align: left;
+    }
+}

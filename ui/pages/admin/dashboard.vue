@@ -382,7 +382,7 @@ export default {
                     method: 'PUT',
                     headers: this.getAuthHeaders(),
                     body: JSON.stringify(updated)
-                })
+                });
 
                 await handleFetchError(res)
             } catch (error) {

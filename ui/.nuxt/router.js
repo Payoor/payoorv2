@@ -4,25 +4,25 @@ import { normalizeURL, decode } from 'ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _3796093a = () => interopDefault(import('../pages/aboutus.vue' /* webpackChunkName: "pages/aboutus" */))
-const _3fff19e1 = () => interopDefault(import('../pages/addresslist.vue' /* webpackChunkName: "pages/addresslist" */))
-const _ca61bd3e = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
-const _2fb0e516 = () => interopDefault(import('../pages/adminui/index.vue' /* webpackChunkName: "pages/adminui/index" */))
-const _e212ed52 = () => interopDefault(import('../pages/authp.vue' /* webpackChunkName: "pages/authp" */))
-const _6ff974fd = () => interopDefault(import('../pages/banipay.vue' /* webpackChunkName: "pages/banipay" */))
-const _2b63bfe1 = () => interopDefault(import('../pages/cart.vue' /* webpackChunkName: "pages/cart" */))
-const _730fd287 = () => interopDefault(import('../pages/checkout.vue' /* webpackChunkName: "pages/checkout" */))
-const _ab1a0926 = () => interopDefault(import('../pages/options.vue' /* webpackChunkName: "pages/options" */))
-const _4d3d5234 = () => interopDefault(import('../pages/orders.vue' /* webpackChunkName: "pages/orders" */))
-const _62f4b2d5 = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
-const _7c1539be = () => interopDefault(import('../pages/paystack.vue' /* webpackChunkName: "pages/paystack" */))
-const _a08d6d98 = () => interopDefault(import('../pages/admin/categorycards.vue' /* webpackChunkName: "pages/admin/categorycards" */))
-const _d73912f2 = () => interopDefault(import('../pages/admin/checkout.vue' /* webpackChunkName: "pages/admin/checkout" */))
-const _41addea3 = () => interopDefault(import('../pages/admin/dashboard.vue' /* webpackChunkName: "pages/admin/dashboard" */))
-const _150a62c0 = () => interopDefault(import('../pages/admin/order/index.vue' /* webpackChunkName: "pages/admin/order/index" */))
-const _7cd678d8 = () => interopDefault(import('../pages/auth/googlecallback.vue' /* webpackChunkName: "pages/auth/googlecallback" */))
-const _06e04561 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
-const _150a3bd7 = () => interopDefault(import('../pages/userorder/_orderid.vue' /* webpackChunkName: "pages/userorder/_orderid" */))
+const _0b411c9a = () => interopDefault(import('../pages/aboutus.vue' /* webpackChunkName: "pages/aboutus" */))
+const _367d9dda = () => interopDefault(import('../pages/addresslist.vue' /* webpackChunkName: "pages/addresslist" */))
+const _dd64b54c = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
+const _3914f72e = () => interopDefault(import('../pages/adminui/index.vue' /* webpackChunkName: "pages/adminui/index" */))
+const _57c1bc10 = () => interopDefault(import('../pages/authp.vue' /* webpackChunkName: "pages/authp" */))
+const _32c2dd76 = () => interopDefault(import('../pages/banipay.vue' /* webpackChunkName: "pages/banipay" */))
+const _b50a5bf0 = () => interopDefault(import('../pages/cart.vue' /* webpackChunkName: "pages/cart" */))
+const _0973792e = () => interopDefault(import('../pages/checkout.vue' /* webpackChunkName: "pages/checkout" */))
+const _6d3c63e6 = () => interopDefault(import('../pages/options.vue' /* webpackChunkName: "pages/options" */))
+const _29fc7b4d = () => interopDefault(import('../pages/orders.vue' /* webpackChunkName: "pages/orders" */))
+const _25be1b4e = () => interopDefault(import('../pages/payment.vue' /* webpackChunkName: "pages/payment" */))
+const _585909c8 = () => interopDefault(import('../pages/paystack.vue' /* webpackChunkName: "pages/paystack" */))
+const _f8d677a6 = () => interopDefault(import('../pages/admin/categorycards.vue' /* webpackChunkName: "pages/admin/categorycards" */))
+const _612343ee = () => interopDefault(import('../pages/admin/checkout.vue' /* webpackChunkName: "pages/admin/checkout" */))
+const _0ce7be1c = () => interopDefault(import('../pages/admin/dashboard.vue' /* webpackChunkName: "pages/admin/dashboard" */))
+const _4c8a984e = () => interopDefault(import('../pages/admin/order/index.vue' /* webpackChunkName: "pages/admin/order/index" */))
+const _d51f82e6 = () => interopDefault(import('../pages/auth/googlecallback.vue' /* webpackChunkName: "pages/auth/googlecallback" */))
+const _60a90fcc = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _8e720484 = () => interopDefault(import('../pages/userorder/_orderid.vue' /* webpackChunkName: "pages/userorder/_orderid" */))
 
 const emptyFn = () => {}
 
@@ -37,79 +37,79 @@ export const routerOptions = {
 
   routes: [{
     path: "/aboutus",
-    component: _3796093a,
+    component: _0b411c9a,
     name: "aboutus"
   }, {
     path: "/addresslist",
-    component: _3fff19e1,
+    component: _367d9dda,
     name: "addresslist"
   }, {
     path: "/admin",
-    component: _ca61bd3e,
+    component: _dd64b54c,
     name: "admin"
   }, {
     path: "/adminui",
-    component: _2fb0e516,
+    component: _3914f72e,
     name: "adminui"
   }, {
     path: "/authp",
-    component: _e212ed52,
+    component: _57c1bc10,
     name: "authp"
   }, {
     path: "/banipay",
-    component: _6ff974fd,
+    component: _32c2dd76,
     name: "banipay"
   }, {
     path: "/cart",
-    component: _2b63bfe1,
+    component: _b50a5bf0,
     name: "cart"
   }, {
     path: "/checkout",
-    component: _730fd287,
+    component: _0973792e,
     name: "checkout"
   }, {
     path: "/options",
-    component: _ab1a0926,
+    component: _6d3c63e6,
     name: "options"
   }, {
     path: "/orders",
-    component: _4d3d5234,
+    component: _29fc7b4d,
     name: "orders"
   }, {
     path: "/payment",
-    component: _62f4b2d5,
+    component: _25be1b4e,
     name: "payment"
   }, {
     path: "/paystack",
-    component: _7c1539be,
+    component: _585909c8,
     name: "paystack"
   }, {
     path: "/admin/categorycards",
-    component: _a08d6d98,
+    component: _f8d677a6,
     name: "admin-categorycards"
   }, {
     path: "/admin/checkout",
-    component: _d73912f2,
+    component: _612343ee,
     name: "admin-checkout"
   }, {
     path: "/admin/dashboard",
-    component: _41addea3,
+    component: _0ce7be1c,
     name: "admin-dashboard"
   }, {
     path: "/admin/order",
-    component: _150a62c0,
+    component: _4c8a984e,
     name: "admin-order"
   }, {
     path: "/auth/googlecallback",
-    component: _7cd678d8,
+    component: _d51f82e6,
     name: "auth-googlecallback"
   }, {
     path: "/",
-    component: _06e04561,
+    component: _60a90fcc,
     name: "index"
   }, {
     path: "/userorder/:orderid?",
-    component: _150a3bd7,
+    component: _8e720484,
     name: "userorder-orderid"
   }],
 

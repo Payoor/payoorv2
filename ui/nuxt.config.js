@@ -68,7 +68,8 @@ export default {
       '~/assets/scss/main.scss',
       '~/assets/scss/animations.scss',
       '~/assets/scss/classes.scss',
-      '~/assets/scss/landing.scss'
+      '~/assets/scss/landing.scss',
+      '~/assets/scss/admintable.scss',
       //'~/assets/scss/index.scss',
     ],
     hoistUseStatements: true

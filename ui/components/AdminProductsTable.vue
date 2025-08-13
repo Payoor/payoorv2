@@ -1,33 +1,26 @@
 <template>
-    <div class="markettable">
+    <div class="admintable">
 
-        <div class="markettable__top" v-if="filters && filters.length > 0">
-            <div class="markettable__top--side left">
-                <div class="markettable__searchinput">
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em"
-                        width="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="none" d="M0 0h24v24H0V0z"></path>
-                        <path
-                            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
-                        </path>
-                    </svg>
-                    <input placeholder="Search products" />
+        <div class="admintable__content">
+
+            <div class="admintable__headerarea">
+                <div class="admintable__headerarea--section">
+                    <!--<span class="admintable__headerarea--backbutton">
+                        <svg data-v-7f082eaa="">
+                            <use data-v-7f082eaa="" xlink:href="/svg/symbol-defs.svg#icon-arrow_back"></use>
+                        </svg>
+                    </span>-->
+                    <h1 class="admintable__h1">{{ tableName }}</h1>
+                </div>
+
+                <div class="admintable__headerarea--section" v-if="!currentItem">
+                    <button class="newitem" @click="openNewItemForm">New Item</button>
                 </div>
             </div>
-            <div class="markettable__top--side right">
-                <div class="markettable__top--pills right">
-                    <button v-for="(filter, index) in filters" :key="index" class="markettable__top--button"
-                        :class="{ current: currentfilter === filter }" @click="setCurrent(filter)">
-                        <span>{{ filter }}</span>
-                    </button>
-                </div>
-            </div>
-        </div>
 
-        <div class="markettable__content">
-            <div class="markettable__table-wrapper">
-                <table class="markettable__table">
-                    <thead class="markettable__tableh">
+            <div class="admintable__table-wrapper">
+                <table class="admintable__table">
+                    <thead class="admintable__tableh">
                         <tr>
                             <th v-for="(header, index) in headers" :key="index" :class="header.class">
                                 <span>
@@ -37,17 +30,16 @@
                         </tr>
                     </thead>
 
-                    <tbody class="markettable__tableb">
-                        <tr v-for="(item, itemIndex) in items" :key="itemIndex">
+                    <tbody class="admintable__tableb">
+                        <tr v-for="(item, itemIndex) in localItems" :key="itemIndex">
                             <td v-for="(header, headerIndex) in headers" :key="headerIndex" :class="header.class">
                                 <div>
 
                                     <template v-if="header.key === 'actions'">
-                                        <div class="markettable__actions">
-                                            <!-- The dropdown trigger button -->
-                                            <button class="markettable__actions--dropdown-button"
+                                        <div class="admintable__actions">
+                                            <button class="admintable__actions--dropdown-button"
+                                                v-if="!focusedItem._id && !currentItem && item._id !== `0`"
                                                 @click.stop="toggleDropdown(item)">
-                                                <!-- Three dots icon -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -58,521 +50,266 @@
                                                 </svg>
                                             </button>
 
-                                            <!-- The dropdown menu -->
-                                            <div class="markettable__actions--dropdown"
+                                            <button v-if="focusedItem._id === item._id"
+                                                class="admintable__actions--savebtn cancel"
+                                                @click="closeItem">Cancel</button>
+
+                                            <!--<button v-if="item._id === `0`" class="admintable__actions--savebtn cancel"
+                                                @click="closeNewItemForm">Cancel</button>-->
+
+                                            <button
+                                                v-if="(focusedItem._id === item._id && item._id !== '0' && isRowDirty(item._id)) || currentItem"
+                                                class="admintable__actions--savebtn save" @click="saveItem(item)">
+                                                Save
+                                            </button>
+
+                                            <button
+                                                v-if="focusedItem._id === item._id && item._id === `0` && item.image && item.name && item.metadata"
+                                                class="admintable__actions--savebtn save"
+                                                @click="saveNewItemToDB(item)">Save</button>
+
+                                            <button v-if="currentItem" class="admintable__actions--savebtn close"
+                                                @click="closeItem">Close</button>
+
+                                            <div class="admintable__actions--dropdown"
                                                 v-if="dropdownOpenItemId === item._id">
-                                                <button @click.stop="$emit('edit-item', item)">View Variants</button>
-                                                <button @click.stop="$emit('delete-item', item)">Delete</button>
+                                                <button @click.stop="viewItem(item)">View
+                                                    Item</button>
+                                                <button @click.stop="deleteProduct(item._id)">Delete</button>
                                             </div>
                                         </div>
                                     </template>
 
-
                                     <template v-else-if="header.key === 'image'">
-                                        <figure class="markettable__content--img">
-                                            <img width="30" height="30" :src="item.image" :alt="item.name">
+                                        <figure class="admintable__content--img">
+                                            <label :for="'image-upload-' + item._id">
+                                                <img width="30" height="30"
+                                                    :src="item.image ? item.image : '/imgs/cartlogo.png'"
+                                                    :alt="item.name">
+                                            </label>
+                                            <input :id="'image-upload-' + item._id" type="file"
+                                                @change="handleImageUpload" accept="image/*" style="display: none;">
                                         </figure>
                                     </template>
-                                    <template v-else-if="header.key === 'createdAt' || header.key === 'updatedAt'">
+
+                                    <template v-else-if="['createdAt', 'updatedAt'].includes(header.key)">
                                         <span>{{ new Date(item[header.key]).toLocaleString() }}</span>
                                     </template>
-                                    <template v-else-if="header.key === 'name'">
-                                        <span>{{ item[header.key] }}</span>
+
+                                    <template v-else-if="['variantCount'].includes(header.key)">
+                                        <span>{{ `${item[header.key]}` }}</span>
                                     </template>
+
+                                    <template v-else-if="item._id === '0'">
+                                        <input type="text" class="table-input"
+                                            @focus="setFocused({ item, inputId: `${header.key}-${item._id}` })"
+                                            :id="`${header.key}-${item._id}`" :class="{
+                                                first: header.key === 'name' || header.key === 'unit',
+                                                dirty: isKeyDirty(item._id, header.key)
+                                            }" :placeholder="header.key" v-model="item[header.key]"
+                                            @input="onFieldInput(item._id, header.key)" />
+                                    </template>
+
                                     <template v-else>
-                                        {{ item[header.key] }}
+                                        <input type="text" class="table-input"
+                                            @focus="setFocused({ item, inputId: `${header.key}-${item._id}` })"
+                                            :id="`${header.key}-${item._id}`" :class="{
+                                                first: header.key === 'name' || header.key === 'unit',
+                                                dirty: isKeyDirty(item._id, header.key)
+                                            }" v-model="item[header.key]"
+                                            @input="onFieldInput(item._id, header.key)" />
                                     </template>
+
+
                                 </div>
                             </td>
                         </tr>
                     </tbody>
+
                 </table>
             </div>
         </div>
 
-        <div class="markettable__pagination" v-if="hasPagination">
-            <button class="markettable__pagination--button" @click="$emit('prev-page')" :disabled="currentPage === 1">
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 192 512" height="1em"
-                    width="1em" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M192 127.338v257.324c0 17.818-21.543 26.741-34.142 14.142L29.196 270.142c-7.81-7.81-7.81-20.474 0-28.284l128.662-128.662c12.599-12.6 34.142-3.676 34.142 14.142z">
-                    </path>
-                </svg> Prev
-            </button>
-            <span class="markettable__pagination--info">
-                Page <strong class="markettable__pagination--current">{{ currentPage }}</strong> of
-                <strong class="markettable__pagination--total">{{ totalPages }}</strong>
-            </span>
-            <button class="markettable__pagination--button" @click="$emit('next-page')"
-                :disabled="currentPage === totalPages">
-                Next <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 192 512" height="1em"
-                    width="1em" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z">
-                    </path>
-                </svg>
-            </button>
+        <div v-if="currentItem">
+            <VariantProductsTable :headers="variantHeaders" :items="currentVariants" :tableName="`variants`"
+                :model="'ProductVariant'" :parentItem="currentItem" />
+
+            <EditableItemTable :tableName="`Edit ${editableItem ? editableItem.name : ''}`" :headers="headers"
+                :editableItem="editableItem" :items="[]" />
+        </div>
+
+        <div v-if="!currentItem">
+            <div class="admintable__pagination" v-if="hasPagination">
+                <button class="admintable__pagination--button" @click="$emit('prev-page')"
+                    :disabled="currentPage === 1">
+                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 192 512" height="1em"
+                        width="1em" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M192 127.338v257.324c0 17.818-21.543 26.741-34.142 14.142L29.196 270.142c-7.81-7.81-7.81-20.474 0-28.284l128.662-128.662c12.599-12.6 34.142-3.676 34.142 14.142z">
+                        </path>
+                    </svg> Prev
+                </button>
+                <span class="admintable__pagination--info">
+                    Page <strong class="admintable__pagination--current">{{ currentPage }}</strong> of
+                    <strong class="admintable__pagination--total">{{ totalPages }}</strong>
+                </span>
+                <button class="admintable__pagination--button" @click="$emit('next-page')"
+                    :disabled="currentPage === totalPages">
+                    Next <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 192 512"
+                        height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
         </div>
 
     </div>
 </template>
 
 <script>
+import adminTable from '@/mixins/admin_table';
+import { serverurl, handleFetchError, showErrorMessage } from '@/api'
+
 export default {
-    props: {
-        headers: { type: Array, required: true },
-        items: { type: Array, required: true },
-        filters: { type: Array, default: () => [] },
-        hasPagination: { type: Boolean, default: false },
-        currentPage: { type: Number, default: 1 },
-        totalPages: { type: Number, default: 1 },
-    },
+    mixins: [adminTable],
     data() {
         return {
             currentfilter: 'All',
-            dropdownOpenItemId: null
+            variantHeaders: [
+                { text: 'Image', key: 'image', class: 'fixed-column' },
+                //{ text: 'Product ID', key: 'productId', class: 'fixed-column asset-column' },
+                { text: 'Unit', key: 'unit' },
+                { text: 'Price', key: 'price' },
+                { text: 'Availability', key: 'availability' },
+                { text: 'Created At', key: 'createdAt' },
+                { text: 'Updated At', key: 'updatedAt' },
+                { text: 'Actions', key: 'actions' },
+            ],
+            currentVariants: []
         }
     },
     methods: {
-        setCurrent(filter) {
-            this.currentfilter = filter;
+        async fetchProductVariants(product_id) {
+            this.currentItem = this.localItems.find(product => product._id === product_id);
+            this.currentVariants = this.currentItem.variants;
+
+            console.log(this.currentVariants)
+            this.closeDropdown();
         },
-        toggleDropdown(item) {
-            if (this.dropdownOpenItemId === item._id) {
-                this.dropdownOpenItemId = null; // Close if it's already open
-            } else {
-                this.dropdownOpenItemId = item._id // Open for this item
+        viewItem(item) {
+            console.log(item, 'item here')
+            this.fetchProductVariants(item._id);
+            this.seteditableItem(item)
+        },
+
+        saveItem(itemToSave) {
+            const updatedItem = this.localItems.find(
+                item => item._id === itemToSave._id
+            )
+
+            this.saveItemToDB(updatedItem)
+        },
+
+        async saveItemToDB(itemToSave) {
+            try {
+                const res = await fetch(`${serverurl}/admin/update-product/${itemToSave._id}`, {
+                    method: 'PUT',
+                    headers: this.getAuthHeaders(),
+                    body: JSON.stringify(itemToSave)
+                })
+                await handleFetchError(res)
+
+                this.finalizeSaveSnapshot(itemToSave)
+                this.focusedItem = {}
+            } catch (error) {
+                console.error('Update error:', error)
             }
         },
-        // Closes the dropdown when a click occurs outside of it.
-        closeDropdown(event) {
-            // Check if the click is outside the dropdown container
-            if (!this.$el.contains(event.target) || !event.target.closest('.markettable__actions')) {
-                this.dropdownOpenItemId = null;
+
+        async saveNewItemToDB(item) {
+            try {
+                const res = await fetch(`${serverurl}/admin/create-product`, {
+                    method: 'POST',
+                    headers: this.getAuthHeaders(),
+                    body: JSON.stringify(item)
+                })
+                await handleFetchError(res)
+                const { product } = await res.json()
+
+                const localItems = [...this.localItems]
+                localItems[0] = product
+                this.localItems = localItems
+
+                this.finalizeSaveSnapshot(product)
+                this.currentItem = null
+                this.currentVariants = []
+                this.seteditableItem(null)
+                this.focusedItem = {}
+            } catch (error) {
+                console.error('Add product error:', error)
             }
+        },
+
+        async deleteProduct(itemId) {
+            if (!confirm('Are you sure you want to delete this product and its variants?')) return;
+
+            try {
+                const res = await fetch(`${serverurl}/admin/delete-product/${itemId}`, {
+                    method: 'DELETE',
+                    headers: this.getAuthHeaders()
+                });
+
+                await handleFetchError(res)
+
+                if (res.ok) {
+                    this.localItems = this.localItems.filter(item => item._id !== itemId);
+                    // showSuccessMessage('Product and variants deleted successfully!');
+                } else {
+                    showErrorMessage('Failed to delete product. Please try again.');
+                }
+            } catch (error) {
+                console.error('Delete product error:', error);
+            }
+        },
+
+        initializeItems(newValue) {
+            let itemsWithNew = [...JSON.parse(JSON.stringify(newValue))];
+
+            if (itemsWithNew.length > 0 && !this.currentItem) {
+                const templateItem = itemsWithNew[0];
+                const newItem = Object.keys(templateItem).reduce((acc, key) => {
+                    if (key === '_id') {
+                        acc[key] = `0`;
+                    } else if (key === 'image') {
+                        acc[key] = null;
+                    } else if (key === 'variantCount') {
+                        acc[key] = 0;
+                    } else if (['createdAt', 'updatedAt'].includes(key)) {
+                        acc[key] = new Date().toISOString();
+                    } else if (key === 'variants') {
+                        acc[key] = [];
+                    } else {
+                        acc[key] = '';
+                    }
+                    return acc;
+                }, {});
+
+                itemsWithNew.unshift(newItem);
+            }
+
+            const seenIds = new Set();
+            const uniqueItems = itemsWithNew.filter(item => {
+                const isDuplicate = seenIds.has(item._id);
+                seenIds.add(item._id);
+                return !isDuplicate;
+            });
+
+            this.localItems = uniqueItems;
         }
-    }
+    },
+
+    computed: {}
 }
 </script>
-
-<style lang="scss" scoped>
-.markettable {
-    color: $white;
-    font-weight: 500;
-
-    @media (max-width: 480px) {
-        overflow: hidden;
-    }
-
-    &__top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem; // Added some space below top section
-
-        @media (max-width: 480px) {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        &--pills {
-            display: flex;
-            overflow: hidden;
-
-            @media (max-width: 480px) {
-                width: 100vw;
-                margin-top: 1rem;
-                overflow-x: scroll;
-
-                @include hide-scrollbar;
-            }
-        }
-
-        &--button {
-            margin-left: .5rem;
-            padding: .5rem 1rem;
-            font-size: 1.3rem;
-            border-radius: .4rem;
-
-            border: .4px solid #d4d4d4;
-            cursor: pointer;
-            background: transparent;
-            transition: all .5s ease;
-
-            &.current {
-                background: rgba(64, 64, 64, .1);
-                font-weight: 500;
-            }
-
-            &:hover {
-                background: rgba(64, 64, 64, .1);
-            }
-
-            @media (max-width: 480px) {
-                margin-left: 0;
-                margin-right: .5rem;
-            }
-        }
-    }
-
-    &__searchinput {
-        display: flex; // Added display flex to align icon and input
-        align-items: center; // Align items vertically
-        background: rgba(64, 64, 64, .1);
-        overflow: hidden;
-        padding: .5rem;
-        border-radius: .5rem;
-
-        @media (max-width: 480px) {
-            padding: .6rem;
-        }
-
-        __actions & svg {
-            height: 1.2rem; // Slightly larger icon
-            width: 1.2rem;
-            fill: rgba($white, .5);
-            color: rgba($white, .5);
-            margin-right: .5rem; // Space between icon and input
-
-            @media (max-width: 480px) {
-                height: 1.7rem; // Slightly larger icon
-                width: 1.7rem;
-            }
-        }
-
-        & input {
-            border: none;
-            background: transparent;
-            outline: none;
-            width: 30rem;
-            font-size: 1.2rem; // Match overall font size
-
-            @media (max-width: 480px) {
-                font-size: 1.2rem;
-            }
-        }
-    }
-
-    &__content {
-
-        // No changes needed here, as it contains the table itself
-        &--link {
-            text-decoration: none;
-            color: rgba($white, 1)
-        }
-
-        &--asset {
-            display: flex;
-            align-items: center;
-
-            & a {
-                text-decoration: none;
-            }
-        }
-
-        &--img {
-            height: 2.3rem;
-            width: 2.3rem;
-            overflow: hidden;
-            border-radius: 100%;
-            margin-right: .5rem;
-
-            & img {
-                object-fit: cover;
-                height: 100%;
-                width: 100%;
-            }
-        }
-
-        &--assetname {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.5rem;
-
-            & span {
-                text-transform: uppercase;
-
-                &.name {
-                    text-transform: capitalize;
-                }
-
-                &.ticker {
-                    font-size: .9rem;
-                    font-weight: 500;
-                    color: rgba($white, .5)
-                }
-            }
-        }
-    }
-
-    &__table-wrapper {
-        @media (max-width: 480px) {
-            overflow-x: auto;
-            /* Enable horizontal scrolling for the table content */
-            -webkit-overflow-scrolling: touch;
-            /* Smooth scrolling on iOS */
-            position: relative;
-            /* Needed for sticky positioning */
-            width: 100%;
-            /* Ensure it takes full width */
-
-            @include hide-scrollbar;
-        }
-    }
-
-    &__table {
-        width: 100%;
-        margin-top: 2rem;
-        font-size: 1.2rem;
-        border-collapse: separate;
-        border-spacing: 0 1rem;
-
-        & th,
-        td {
-            margin-bottom: 2rem;
-            text-align: right;
-            padding-bottom: .3rem;
-
-            &:first-child,
-            &:nth-child(2) {
-                text-align: left;
-            }
-        }
-
-        & td {
-            border-bottom: 1px solid $white;
-        }
-
-        & th:nth-child(1) {
-            width: 4%;
-        }
-
-        // Rank
-        & th:nth-child(2) {
-            width: 18%;
-        }
-
-        // Asset Name (Coin + Ticker)
-        & th:nth-child(3) {
-            width: 2%;
-        }
-
-        // Empty column
-        & th:nth-child(4) {
-            width: 10%;
-        }
-
-        // Price
-        & th:nth-child(5) {
-            width: 12%;
-        }
-
-        // Market Cap
-        & th:nth-child(6) {
-            width: 12%;
-        }
-
-        // 24h Volume
-        & th:nth-child(7) {
-            width: 8%;
-        }
-
-        // 24h Change
-        & th:nth-child(8) {
-            width: 8%;
-        }
-
-        // 7d Change
-        & th:nth-child(9) {
-            width: 8%;
-        }
-
-        // 30d Change
-        & th:nth-child(10) {
-            width: 18%;
-        }
-
-        @media (max-width: 480px) {
-            width: auto;
-            /* Allow table to be wider than viewport if content demands it */
-            min-width: 600px;
-            /* Adjust this value as needed to ensure enough scrollable area */
-
-            & .fixed-column {
-                position: sticky;
-                left: 0;
-                z-index: 10;
-                /* Ensure it stays above scrolling content */
-                background-color: #fff;
-                /* Match your table background */
-            }
-
-            & .asset-column {
-                left: 10px;
-                /* Adjust based on the width of the first column (#) */
-            }
-
-
-            // Mobile Column Width Overrides
-            & th:nth-child(1),
-            & td:nth-child(1) {
-                width: 10px;
-                min-width: 10px;
-                font-size: 1rem; // Adjust font size for mobile
-            }
-
-            & th:nth-child(2),
-            & td:nth-child(2) {
-                width: 120px;
-                min-width: 120px;
-                font-size: 1.1rem; // Adjust font size for mobile
-            }
-
-            & th:nth-child(3),
-            & td:nth-child(3) {
-                width: 0;
-                display: none;
-            }
-
-            & th:nth-child(4),
-            & td:nth-child(4) {
-                width: 120px;
-                min-width: 120px;
-                font-size: 1.1rem; // Adjust font size for mobile
-            }
-
-            & th:nth-child(5),
-            & td:nth-child(5),
-            & th:nth-child(6),
-            & td:nth-child(6),
-            & th:nth-child(8),
-            & td:nth-child(8),
-            & th:nth-child(9),
-            & td:nth-child(9) {
-                width: 0;
-                display: none;
-            }
-
-            & th:nth-child(7),
-            & td:nth-child(7) {
-                width: 100px;
-                min-width: 100px;
-                font-size: 1.1rem; // Adjust font size for mobile
-            }
-
-            & th:nth-child(10),
-            & td:nth-child(10) {
-                width: 150px;
-                min-width: 150px;
-            }
-        }
-
-        & tr {
-
-            &:hover {
-                background: rgba($white, .1);
-                transition: all .4s ease;
-                padding: 0 .2rem;
-            }
-        }
-
-        & tbody tr:last-child td {}
-    }
-
-    &__pagination {
-        display: flex;
-        align-items: center;
-        justify-content: center; // Center the pagination controls
-        gap: 1.5rem; // Space between elements
-        padding-top: 2rem; // Space above the pagination controls
-        font-size: 1.2rem; // Match the table's general font size
-
-        &--button {
-            padding: .75rem 1rem; // Adjusted padding for buttons
-            border: 1px solid #d4d4d4; // Border similar to filter buttons
-            border-radius: .4rem;
-            background: transparent;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-            font-size: 1.2rem; // Match info text font size
-            color: $white; // Default text color
-
-            &:hover:not(:disabled) {
-                background: rgba(64, 64, 64, .1); // Hover effect
-            }
-
-            &:disabled {
-                opacity: 0.4; // Make disabled buttons less prominent
-                cursor: not-allowed; // Indicate it's not clickable
-                background-color: transparent; // Ensure disabled background is transparent
-            }
-
-            & svg {
-                width: .8rem; // Adjust SVG size
-                height: .8rem;
-                fill: currentColor; // Inherit color from parent text
-            }
-        }
-
-        &--info {
-            color: $white; // Text color for "Page X of Y"
-            display: flex;
-            align-items: center;
-            gap: .25rem;
-        }
-
-        &--current,
-        &--total {
-            font-weight: 600; // Make page numbers bold
-            color: $white; // Use your primary text color for emphasis
-        }
-    }
-
-    &__actions {
-        position: relative; // Position the dropdown relative to this container
-
-        &--dropdown-button {
-            padding: 0.4rem;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-
-            svg {
-                width: 1.5rem;
-                height: 1.5rem;
-                color: #555;
-            }
-        }
-
-        &--dropdown {
-            position: absolute;
-            top: 100%; // Position below the button
-            right: 0;
-            z-index: 20;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 0.4rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            min-width: 120px;
-            overflow: hidden;
-
-            button {
-                padding: 0.8rem 1rem;
-                text-align: left;
-                background: transparent;
-                border: none;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
-
-                &:hover {
-                    background-color: #f4f4f4;
-                }
-            }
-        }
-    }
-}
-</style>

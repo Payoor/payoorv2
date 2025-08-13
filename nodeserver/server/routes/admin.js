@@ -533,9 +533,49 @@ adminRoute.post(
 
       const imageUrl = `https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/${fileName}`
 
-      console.log('Uploaded:', imageUrl)
+      const { itemId, model } = req.query
 
-      return res.status(200).json({ url: imageUrl })
+      console.log(itemId, model)
+
+      let updatedItem
+
+      if (itemId !== `0`) {
+        if (model === 'NewProduct') {
+          updatedItem = await Product.findOneAndUpdate(
+            { _id: itemId },
+            { image: imageUrl },
+            {
+              new: true,
+              runValidators: true
+            }
+          )
+
+          if (updatedItem) {
+            console.log('Successfully updated product:', updatedItem)
+          } else {
+            console.log('No product found with ID:', itemId)
+          }
+        } else {
+          updatedItem = await ProductVariant.findOneAndUpdate(
+            { _id: itemId },
+            { image: imageUrl },
+            {
+              new: true,
+              runValidators: true
+            }
+          )
+
+          if (updatedItem) {
+            console.log('Successfully updated product:', updatedItem)
+          } else {
+            console.log('No product found with ID:', itemId)
+          }
+        }
+      }
+
+      // console.log('Uploaded:', imageUrl)
+
+      return res.status(200).json({ url: imageUrl, updatedItem })
     } catch (error) {
       next(error)
     }
@@ -590,15 +630,19 @@ adminRoute.post(
 
 adminRoute.post('/admin/create-product', async (req, res, next) => {
   try {
-    const { name, image, generatedDescription, generatedCategories } = req.body
+    const { name, image, metadata, generatedDescription, generatedCategories } =
+      req.body
 
     if (!name || !image) {
       return res.status(400).json({ error: 'Name and image are required' })
     }
 
+    console.log(req.body, '/admin/create-product')
+
     const newProduct = {
       name,
       image,
+      metadata,
       generatedDescription: generatedDescription || '',
       generatedCategories: Array.isArray(generatedCategories)
         ? generatedCategories
@@ -730,6 +774,7 @@ adminRoute.put('/admin/update-product/:productId', async (req, res, next) => {
     const {
       name,
       image,
+      metadata,
       generatedDescription,
       generatedCategories,
       synced_to_algolia
@@ -742,6 +787,7 @@ adminRoute.put('/admin/update-product/:productId', async (req, res, next) => {
     const updateFields = {
       name,
       image,
+      metadata,
       generatedDescription,
       generatedCategories,
       synced_to_algolia,

@@ -1,0 +1,542 @@
+.admintable {
+    color: $white;
+    font-weight: 500;
+
+    @media (max-width: 480px) {
+        overflow: hidden;
+    }
+
+    &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem; // Added some space below top section
+
+        @media (max-width: 480px) {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        &--pills {
+            display: flex;
+            overflow: hidden;
+
+            @media (max-width: 480px) {
+                width: 100vw;
+                margin-top: 1rem;
+                overflow-x: scroll;
+
+                @include hide-scrollbar;
+            }
+        }
+
+        &--button {
+            margin-left: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 1.3rem;
+            border-radius: 0.4rem;
+
+            border: 0.4px solid #d4d4d4;
+            cursor: pointer;
+            background: transparent;
+            transition: all 0.5s ease;
+
+            &.current {
+                background: rgba(64, 64, 64, 0.1);
+                font-weight: 500;
+            }
+
+            &:hover {
+                background: rgba(64, 64, 64, 0.1);
+            }
+
+            @media (max-width: 480px) {
+                margin-left: 0;
+                margin-right: 0.5rem;
+            }
+        }
+    }
+
+    &__searchinput {
+        display: flex;
+        align-items: center;
+        background: rgba(64, 64, 64, 0.1);
+        overflow: hidden;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+
+        @media (max-width: 480px) {
+            padding: 0.6rem;
+        }
+
+        & svg {
+            height: 1.2rem;
+            width: 1.2rem;
+            fill: $white;
+            color: $white;
+            margin-right: 0.5rem;
+
+            @media (max-width: 480px) {
+                height: 1.7rem;
+                width: 1.7rem;
+            }
+        }
+
+        & input {
+            border: none;
+            color: $white;
+            background: transparent;
+            outline: none;
+            width: 30rem;
+            font-size: 1.2rem;
+
+            @media (max-width: 480px) {
+                font-size: 1.2rem;
+            }
+        }
+    }
+
+    &__content {
+        &--link {
+            text-decoration: none;
+            color: rgba($white, 1);
+        }
+
+        &--asset {
+            display: flex;
+            align-items: center;
+
+            & a {
+                text-decoration: none;
+            }
+        }
+
+        &--img {
+            height: 2.3rem;
+            width: 2.3rem;
+            overflow: hidden;
+            border-radius: 100%;
+            margin-right: 0.5rem;
+
+            border: 0.3px solid rgba($white, 0.5);
+            cursor: pointer;
+
+            & img {
+                object-fit: cover;
+                height: 100%;
+                width: 100%;
+                cursor: pointer;
+            }
+        }
+
+        &--assetname {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5rem;
+
+            & span {
+                text-transform: uppercase;
+
+                &.name {
+                    text-transform: capitalize;
+                }
+
+                &.ticker {
+                    font-size: 0.9rem;
+                    font-weight: 500;
+                    color: rgba($white, 0.5);
+                }
+            }
+        }
+    }
+
+    &__headerarea {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        justify-content: space-between;
+
+        margin-bottom: 2rem;
+
+        &--backbutton {
+            margin-right: 0.5rem;
+            display: flex;
+            align-items: center;
+
+            & svg {
+                fill: $white;
+                height: 1.5rem;
+                width: 1.5rem;
+            }
+        }
+
+        &--section {
+            display: flex;
+            align-items: center;
+
+            & button {
+                margin-left: 1.3rem;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                color: $black;
+                background: $red;
+                font-weight: 600;
+                border-radius: 0.3rem;
+                font-size: 1.2rem;
+                padding: 0.5rem;
+                color: $white;
+
+                &.newitem {
+                    background: $primary-color;
+                }
+
+                &.logout {
+                    background: transparent;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+
+    &__h1 {
+        font-weight: 500;
+        font-size: 1.5rem;
+        text-transform: capitalize;
+    }
+
+    &__table-wrapper {
+        @media (max-width: 480px) {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            width: 100%;
+
+            @include hide-scrollbar;
+        }
+    }
+
+    &__table {
+        width: 100%;
+        margin-top: 2rem;
+        font-size: 1.2rem;
+        border-collapse: separate;
+        border-spacing: 0 1rem;
+
+        & th,
+        td {
+            margin-bottom: 2rem;
+            text-align: right;
+            padding-bottom: 0.3rem;
+
+            &:first-child,
+            &:nth-child(2) {
+                text-align: left;
+            }
+        }
+
+        & td {
+            border-bottom: 1px solid $white;
+        }
+
+        & th:nth-child(1) {
+            width: 4%;
+        }
+
+        // Rank
+        & th:nth-child(2) {
+            width: 18%;
+        }
+
+        // Asset Name (Coin + Ticker)
+        & th:nth-child(3) {
+            width: 2%;
+        }
+
+        // Empty column
+        & th:nth-child(4) {
+            width: 10%;
+        }
+
+        // Price
+        & th:nth-child(5) {
+            width: 12%;
+        }
+
+        // Market Cap
+        & th:nth-child(6) {
+            width: 12%;
+        }
+
+        // 24h Volume
+        & th:nth-child(7) {
+            width: 8%;
+        }
+
+        // 24h Change
+        & th:nth-child(8) {
+            width: 8%;
+        }
+
+        // 7d Change
+        & th:nth-child(9) {
+            width: 8%;
+        }
+
+        // 30d Change
+        & th:nth-child(10) {
+            width: 18%;
+        }
+
+        @media (max-width: 480px) {
+            width: auto;
+            /* Allow table to be wider than viewport if content demands it */
+            min-width: 600px;
+            /* Adjust this value as needed to ensure enough scrollable area */
+
+            & .fixed-column {
+                position: sticky;
+                left: 0;
+                z-index: 10;
+                /* Ensure it stays above scrolling content */
+                background-color: #fff;
+                /* Match your table background */
+            }
+
+            & .asset-column {
+                left: 10px;
+                /* Adjust based on the width of the first column (#) */
+            }
+
+            // Mobile Column Width Overrides
+            & th:nth-child(1),
+            & td:nth-child(1) {
+                width: 10px;
+                min-width: 10px;
+                font-size: 1rem; // Adjust font size for mobile
+            }
+
+            & th:nth-child(2),
+            & td:nth-child(2) {
+                width: 120px;
+                min-width: 120px;
+                font-size: 1.1rem; // Adjust font size for mobile
+            }
+
+            & th:nth-child(3),
+            & td:nth-child(3) {
+                width: 0;
+                display: none;
+            }
+
+            & th:nth-child(4),
+            & td:nth-child(4) {
+                width: 120px;
+                min-width: 120px;
+                font-size: 1.1rem; // Adjust font size for mobile
+            }
+
+            & th:nth-child(5),
+            & td:nth-child(5),
+            & th:nth-child(6),
+            & td:nth-child(6),
+            & th:nth-child(8),
+            & td:nth-child(8),
+            & th:nth-child(9),
+            & td:nth-child(9) {
+                width: 0;
+                display: none;
+            }
+
+            & th:nth-child(7),
+            & td:nth-child(7) {
+                width: 100px;
+                min-width: 100px;
+                font-size: 1.1rem; // Adjust font size for mobile
+            }
+
+            & th:nth-child(10),
+            & td:nth-child(10) {
+                width: 150px;
+                min-width: 150px;
+            }
+        }
+
+        & tr {
+            &:hover {
+                background: rgba($white, 0.1);
+                transition: all 0.4s ease;
+                padding: 0 0.2rem;
+            }
+        }
+
+        & tbody tr:last-child td {
+        }
+    }
+
+    &__editinputarea {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+
+        //padding-right: 1rem;
+
+        & input,
+        textarea {
+            background: transparent;
+            border: 0.3px solid rgba($white, 0.5);
+            padding: 1rem;
+            font-size: 1.4rem;
+            outline: none;
+            color: rgba($white, 1);
+        }
+
+        & label {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+    }
+
+    &__editinputimgarea {
+        margin-top: 2rem;
+
+        & figure {
+            height: 10rem;
+            width: 10rem;
+            border-radius: 1rem;
+        }
+    }
+
+    &__pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center; // Center the pagination controls
+        gap: 1.5rem; // Space between elements
+        padding-top: 2rem; // Space above the pagination controls
+        font-size: 1.2rem; // Match the table's general font size
+
+        &--button {
+            padding: 0.75rem 1rem; // Adjusted padding for buttons
+            border: 1px solid #d4d4d4; // Border similar to filter buttons
+            border-radius: 0.4rem;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem; // Match info text font size
+            color: $white; // Default text color
+
+            &:hover:not(:disabled) {
+                background: rgba(64, 64, 64, 0.1); // Hover effect
+            }
+
+            &:disabled {
+                opacity: 0.4; // Make disabled buttons less prominent
+                cursor: not-allowed; // Indicate it's not clickable
+                background-color: transparent; // Ensure disabled background is transparent
+            }
+
+            & svg {
+                width: 0.8rem; // Adjust SVG size
+                height: 0.8rem;
+                fill: currentColor; // Inherit color from parent text
+            }
+        }
+
+        &--info {
+            color: $white; // Text color for "Page X of Y"
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        &--current,
+        &--total {
+            font-weight: 600; // Make page numbers bold
+            color: $white; // Use your primary text color for emphasis
+        }
+    }
+
+    &__actions {
+        position: relative; // Position the dropdown relative to this container
+
+        &--dropdown-button {
+            padding: 0.4rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+
+            svg {
+                width: 1.5rem;
+                height: 1.5rem;
+                color: #555;
+            }
+        }
+
+        &--dropdown {
+            position: absolute;
+            top: 100%; // Position below the button
+            right: 0;
+            z-index: 20;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 0.4rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            min-width: 120px;
+            overflow: hidden;
+
+            button {
+                padding: 0.8rem 1rem;
+                text-align: left;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background-color: #f4f4f4;
+                }
+            }
+        }
+
+        &--savebtn {
+            border: none;
+            background: $primary-color;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            height: 100%;
+            color: $black;
+            font-weight: 500;
+            padding: 0.1rem;
+            font-size: 1.2rem;
+            //transform: translateY(-1rem);
+
+            &.cancel {
+                background: rgba($white, 0.5);
+            }
+
+            &.close {
+                background: transparent;
+                border: 0.2px solid rgba($primary-color, 1);
+                color: rgba($primary-color, 1);
+            }
+
+            &.save {
+                color: rgba($white, 1);
+            }
+
+            &.delete {
+                background: red;
+                color: $white;
+            }
+        }
+    }
+}
