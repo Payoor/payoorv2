@@ -47,10 +47,10 @@ export default {
           this.prevFocusedItem = JSON.parse(JSON.stringify(oldValue))
         }
 
-        console.log(
+        /*console.log(
           'focusedItem has changed. Old value stored in prevFocusedItem:',
           this.prevFocusedItem
-        )
+        )*/
       },
       deep: true
     },
@@ -72,6 +72,32 @@ export default {
   },
 
   methods: {
+    formatDateForInput (date) {
+      if (!date) return ''
+      const d = new Date(date)
+      const year = d.getFullYear()
+      const month = (d.getMonth() + 1).toString().padStart(2, '0')
+      const day = d.getDate().toString().padStart(2, '0')
+      return `${year}-${month}-${day}`
+    },
+
+    onDateInput (itemId, key, event) {
+      const date = new Date(event.target.value)
+
+      const item = this.localItems.find(i => i._id === itemId)
+      if (item) {
+        item[key] = date
+      }
+
+      this.onFieldInput(itemId, key)
+    },
+
+    truncateText (value, length = 50) {
+      if (!value) return ''
+      value = String(value)
+      return value.length > length ? value.slice(0, length) + '…' : value
+    },
+    
     getAuthHeaders () {
       const token = localStorage.getItem('admin_token')
       return {
@@ -87,13 +113,14 @@ export default {
     seteditableItem (item) {
       this.editableItem = item
 
-      console.log(this.editableItem)
+      // console.log(this.editableItem)
     },
 
     toggleDropdown (item) {
       if (this.dropdownOpenItemId === item._id) {
         this.dropdownOpenItemId = null
       } else {
+        this.dropdownOpenItemId = null
         this.dropdownOpenItemId = item._id
       }
     },

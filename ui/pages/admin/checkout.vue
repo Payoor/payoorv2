@@ -113,7 +113,7 @@ export default {
                 for (const productId in cart_items) {
                     if (cart_items.hasOwnProperty(productId)) {
                         const quantity = cart_items[productId];
-                        console.log(`Product ID: ${productId}, Quantity: ${quantity}`);
+                      //  console.log(`Product ID: ${productId}, Quantity: ${quantity}`);
 
                         const item = {
                             productId,
@@ -123,7 +123,7 @@ export default {
                     }
                 }
                 this.checkout_items = checkout_items;
-                console.log(this.checkout_items, 'checkout_items')
+               // console.log(this.checkout_items, 'checkout_items')
 
             } catch (error) {
                 console.log(error)

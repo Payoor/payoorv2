@@ -8,18 +8,21 @@ export const state = () => ({
     //email: ''
   },
   loading: false,
-  jwtToken: null
+  jwtToken: null,
+  checkedValidUser: false
 })
 
 export const mutations = {
   SET_CURRENT_USER (state, user) {
     state.currentUser = user
 
-   // console.log(state.currentUser, 'state.current User')
+    // console.log(state.currentUser, 'state.current User')
   },
 
   REMOVE_CURRENT_USER (state) {
-    state.currentUser = {}
+    state.currentUser = {
+      otpMode: false
+    }
   },
 
   SET_USER_NAME (state, name) {
@@ -63,6 +66,10 @@ export const mutations = {
 
   SET_JWT_TOKEN (state, token) {
     state.jwtToken = token
+  },
+
+  SET_CHECKED_VALID_USER (state, value) {
+    state.checkedValidUser = value
   },
 
   REMOVE_JWT_TOKEN (state) {
@@ -171,11 +178,13 @@ export const actions = {
   setJwtToken ({ commit }, token) {
     localStorage.setItem('jwt', token)
     commit('SET_JWT_TOKEN', token)
+    commit('SET_CHECKED_VALID_USER', true)
   },
 
   removeJwtToken ({ commit }) {
     localStorage.removeItem('jwt')
     commit('REMOVE_JWT_TOKEN')
+    commit('SET_CHECKED_VALID_USER', true)
   },
 
   async updateUserDetails ({ state, commit }) {

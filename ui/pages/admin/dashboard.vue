@@ -213,7 +213,7 @@ export default {
             }
         },
         onSearchInput() {
-            console.log('Search:', this.searchQuery);
+          //  console.log('Search:', this.searchQuery);
         },
         async handleImageUpload(event) {
             const file = event.target.files[0];
@@ -308,7 +308,7 @@ export default {
 
                 const data = await res.json()
 
-                console.log(data, 'data is here in old ui')
+               // console.log(data, 'data is here in old ui')
 
                 this.products = (data.products || []).map(p => ({
                     ...p,
@@ -376,7 +376,7 @@ export default {
                     synced_to_algolia: product.synced_to_algolia
                 }
 
-                console.log(updated)
+               // console.log(updated)
 
                 const res = await fetch(`${serverurl}/admin/update-product/${product._id}`, {
                     method: 'PUT',
@@ -471,7 +471,7 @@ export default {
             }
         },
         showProductCategories(product_id, product_name) {
-            console.log(product_id)
+          //  console.log(product_id)
             this.$router.push(`/admin/categorycards?product_id=${product_id}&product_name=${product_name}`)
         }
     }

@@ -91,7 +91,7 @@ export default {
                     window.parent.postMessage({ type: "onClose", data: response }, "*");
                 },
                 callback: (response) => {
-                    console.log("Bani Success Event:", response);
+                 //   console.log("Bani Success Event:", response);
                     const message = { type: "onSuccess", data: response };
                     window.parent.postMessage(message, "*");
                 },

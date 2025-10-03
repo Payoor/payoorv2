@@ -1,6 +1,44 @@
+.adminui {
+    padding: 4rem 30rem;
+    background: rgba(0, 0, 0, 0.9);
+    min-height: 100vh;
+}
+
+/* quick pill styles; adjust to your design system */
+.admintable__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admintable__top--side.left {
+    flex: 1;
+}
+
+.admintable__top--side.right {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.admintable__top--pills .admintable__top--button {
+    padding: 0.4rem 0.8rem;
+    border-radius: 1rem;
+}
+
+.logout {
+    background: #444;
+    color: #fff;
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.6rem;
+}
+
 .admintable {
     color: $white;
     font-weight: 500;
+    //background: rgba(0, 0, 0, .9);
+    min-height: 100vh;
 
     @media (max-width: 480px) {
         overflow: hidden;
@@ -243,53 +281,21 @@
             border-bottom: 1px solid $white;
         }
 
-        & th:nth-child(1) {
-            width: 4%;
-        }
+        & th,
+        td {
+            &:nth-child(1) {
+                width: 4%;
+            }
 
-        // Rank
-        & th:nth-child(2) {
-            width: 18%;
-        }
+            // Column 2 (Customer Name for example)
+            &:nth-child(2) {
+                width: 18%;
+            }
 
-        // Asset Name (Coin + Ticker)
-        & th:nth-child(3) {
-            width: 2%;
-        }
-
-        // Empty column
-        & th:nth-child(4) {
-            width: 10%;
-        }
-
-        // Price
-        & th:nth-child(5) {
-            width: 12%;
-        }
-
-        // Market Cap
-        & th:nth-child(6) {
-            width: 12%;
-        }
-
-        // 24h Volume
-        & th:nth-child(7) {
-            width: 8%;
-        }
-
-        // 24h Change
-        & th:nth-child(8) {
-            width: 8%;
-        }
-
-        // 7d Change
-        & th:nth-child(9) {
-            width: 8%;
-        }
-
-        // 30d Change
-        & th:nth-child(10) {
-            width: 18%;
+            // The rest divide equally
+            &:nth-child(n + 3) {
+                width: auto;
+            }
         }
 
         @media (max-width: 480px) {

@@ -146,7 +146,7 @@ export default {
             const safeCartLength = Object.keys(safeCartItems).length;
             const total = this.cartTotal;
 
-            console.log(total, 'check the total here')
+            //console.log(total, 'check the total here')
 
             try {
                 localStorage.setItem('cartItems', JSON.stringify(safeCartItems));
@@ -191,7 +191,7 @@ export default {
                 this.option = variant;
                 this.product_name = variant.productId.name;
 
-                console.log(this.option, 'option shown here');
+              //  console.log(this.option, 'option shown here');
             } catch (error) {
                 console.error(error);
             } finally {

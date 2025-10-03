@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <div v-if="!currentUser.email">
+            <div v-if="!currentUser.email && checkedValidUser">
                 <LandingPage />
             </div>
 
@@ -10,7 +10,10 @@
             </div>
         </div>
 
-        <!--<div class="pleasewait">Please wait...</div>-->
+        <div class="pleasewait" v-if="!checkedValidUser">
+            <ChatHeader :logovisible="true" :green="true" />
+            Please hold your horses...
+        </div>
     </div>
 </template>
 
@@ -19,14 +22,15 @@ import { mapState } from "vuex";
 
 export default {
     mounted() {
-
+        console.log(this.currentUser)
     },
     computed: {
         ...mapState("user", {
             currentUser: (state) => state.currentUser,
             isLoading: (state) => state.loading,
             jwtToken: (state) => state.jwtToken,
-            globalLoading: (state) => state.loading
+            globalLoading: (state) => state.loading,
+            checkedValidUser: (state) => state.checkedValidUser
         }),
         cleanedUserName() {
             if (!this.currentUser?.name) return "";

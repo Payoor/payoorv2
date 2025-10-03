@@ -32,7 +32,7 @@ export default {
     },
     watch: {
         query(newQuery) {
-            console.log(newQuery)
+           // console.log(newQuery)
             this.debouncedQueryAddressList(newQuery);
         }
     },

@@ -131,7 +131,7 @@ export default {
                         acc[key] = 'YES';
                     } else if (key === 'productId') {
                         acc[key] = this.parentItem._id;
-                        console.log('fond the prif', this.parentItem)
+                       // console.log('fond the prif', this.parentItem)
                     } else if (['createdAt', 'updatedAt'].includes(key)) {
                         acc[key] = new Date().toISOString();
                     } else if (key === 'variants') {
@@ -192,7 +192,7 @@ export default {
             const updatedItem = this.localItems.find(
                 item => item._id === itemToSave._id
             );
-            console.log(updatedItem);
+            //console.log(updatedItem);
             this.saveItemToDB(updatedItem);
         },
         async saveItemToDB(itemToSave) {
@@ -217,7 +217,7 @@ export default {
                 const productId =
                     this.productId || draft.productId || (this.editableItem && this.editableItem._id);
 
-                console.log(productId, 'productId')
+                //console.log(productId, 'productId')
 
                 if (!productId) {
                     throw new Error('Missing productId for add-variant request')

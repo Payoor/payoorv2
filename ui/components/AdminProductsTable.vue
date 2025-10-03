@@ -195,11 +195,11 @@ export default {
             this.currentItem = this.localItems.find(product => product._id === product_id);
             this.currentVariants = this.currentItem.variants;
 
-            console.log(this.currentVariants)
+          // console.log(this.currentVariants)
             this.closeDropdown();
         },
         viewItem(item) {
-            console.log(item, 'item here')
+           // console.log(item, 'item here')
             this.fetchProductVariants(item._id);
             this.seteditableItem(item)
         },
@@ -234,7 +234,8 @@ export default {
                     method: 'POST',
                     headers: this.getAuthHeaders(),
                     body: JSON.stringify(item)
-                })
+                });
+                
                 await handleFetchError(res)
                 const { product } = await res.json()
 

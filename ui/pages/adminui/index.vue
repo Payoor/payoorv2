@@ -30,6 +30,8 @@
 
         <!-- DASHBOARD VIEW -->
         <div v-else class="adminui">
+            <AdminSideNav />
+
             <div class="admintable__top">
                 <div class="admintable__top--side left">
                     <div class="admintable__searchinput">
@@ -66,12 +68,12 @@
 </template>
 
 <script>
-import AdminProductsTable from '@/components/AdminProductsTable.vue'
+//import AdminProductsTable from '@/components/AdminProductsTable.vue'
 import { serverurl, handleFetchError, showErrorMessage } from '@/api'
 
 export default {
     name: 'AdminPortal',
-    components: { AdminProductsTable },
+    //components: { AdminProductsTable },
     data() {
         return {
             // auth
@@ -216,10 +218,10 @@ export default {
         },
         editItem(item) {
             // open editor / route / modal as you prefer
-            console.log('Editing item:', item)
+           // console.log('Editing item:', item)
         },
         deleteItem(item) {
-            console.log('Deleting item:', item)
+           // console.log('Deleting item:', item)
         }
     }
 }
@@ -303,42 +305,5 @@ export default {
         margin-top: .2rem;
         display: block;
     }
-}
-
-/* --- Dashboard styles you had --- */
-.adminui {
-    padding: 4rem 30rem;
-    background: rgba(0, 0, 0, .9);
-    min-height: 100vh;
-}
-
-/* quick pill styles; adjust to your design system */
-.admintable__top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-}
-
-.admintable__top--side.left {
-    flex: 1;
-}
-
-.admintable__top--side.right {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.admintable__top--pills .admintable__top--button {
-    padding: .4rem .8rem;
-    border-radius: 1rem;
-}
-
-.logout {
-    background: #444;
-    color: #fff;
-    padding: .5rem .9rem;
-    border-radius: .6rem;
 }
 </style>

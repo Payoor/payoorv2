@@ -11,6 +11,9 @@
   "AdminProductsTable": {
     "description": "Auto imported from components/AdminProductsTable.vue"
   },
+  "AdminSideNav": {
+    "description": "Auto imported from components/AdminSideNav.vue"
+  },
   "AdminUiHeader": {
     "description": "Auto imported from components/AdminUiHeader.vue"
   },
@@ -19,6 +22,9 @@
   },
   "CartButton": {
     "description": "Auto imported from components/CartButton.vue"
+  },
+  "CategoriesTable": {
+    "description": "Auto imported from components/CategoriesTable.vue"
   },
   "ChatBody": {
     "description": "Auto imported from components/ChatBody.vue"
@@ -43,6 +49,9 @@
   },
   "ChoosePaymentProcessor": {
     "description": "Auto imported from components/ChoosePaymentProcessor.vue"
+  },
+  "CouponsTable": {
+    "description": "Auto imported from components/CouponsTable.vue"
   },
   "EditableItemTable": {
     "description": "Auto imported from components/EditableItemTable.vue"
@@ -79,6 +88,12 @@
   },
   "OrderDisplay": {
     "description": "Auto imported from components/OrderDisplay.vue"
+  },
+  "OrderItemsTable": {
+    "description": "Auto imported from components/OrderItemsTable.vue"
+  },
+  "OrderTable": {
+    "description": "Auto imported from components/OrderTable.vue"
   },
   "OtpInput": {
     "description": "Auto imported from components/OtpInput.vue"

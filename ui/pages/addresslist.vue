@@ -135,7 +135,7 @@ export default {
                 });
 
                 const { address, filteredResults } = data.data;
-                console.log(address, 'address')
+               // console.log(address, 'address')
                 this.$store.dispatch('addresslist/setAddressDetails', { formatted_address: address, checkout_input: 'delivery_address' });
 
                 //this.selectAddressFromList(address, 'delivery_address');

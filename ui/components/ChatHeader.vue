@@ -166,6 +166,8 @@ export default {
             return this.$route.query.routestack;
         },
         redirectHome() {
+            this.$store.dispatch('user/removeJwtToken');
+            this.$store.dispatch('user/removeCurrentUser');
             if (!this.excludedPaths.includes(this.$route.path)) {
                 this.$emit('update:authValue', null);
                 this.$router.push({ path: '/', query: { ...this.$route.query } });
@@ -185,6 +187,8 @@ export default {
                 });
 
                 const { user } = data;
+
+               // console.log(data, 'data')
 
                 // console.log(user)
 

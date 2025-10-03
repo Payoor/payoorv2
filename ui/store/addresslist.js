@@ -14,13 +14,13 @@ export const mutations = {
     state.checkoutInput = checkout_input_key
     state.deliveryAddress = formatted_address
 
-    console.log(state.deliveryAddress, 'newVal')
+   //console.log(state.deliveryAddress, 'newVal')
   }
 }
 
 export const actions = {
   setAddressDetails ({ commit }, { formatted_address, checkout_input }) {
-    console.log(formatted_address, checkout_input)
+    //console.log(formatted_address, checkout_input)
     commit('SET_CHECKOUT_INPUT_AND_DELIVERY_ADDRESS', {
       checkoutInput: checkout_input,
       formatted_address: formatted_address

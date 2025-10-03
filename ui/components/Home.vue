@@ -117,7 +117,7 @@ export default {
             if (value) {
                 localStorage.setItem("jwt", value);
             } else {
-                console.log("logged out here");
+               // console.log("logged out here");
             }
         },
 

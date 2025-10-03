@@ -7,7 +7,7 @@ export const serverurl = (() => {
     }
   }
 
-  return 'http://localhost'
+  return 'http://192.168.0.196'
 })()
 
 export async function handleFetchError (response) {
@@ -162,7 +162,7 @@ export async function handleFetchDebug ({
       options.body = JSON.stringify(body)
     }
 
-    console.log(url, options, body, JSON.stringify(body))
+   // console.log(url, options, body, JSON.stringify(body))
 
     const response = await fetch(url, options)
 
