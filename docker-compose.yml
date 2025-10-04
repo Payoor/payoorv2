@@ -46,7 +46,6 @@ services:
       - NODE_ENV=production
     depends_on:
       - redisdb
-      - mongodb
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
@@ -66,7 +65,6 @@ services:
       - NODE_ENV=production
     depends_on:
       - redisdb
-      - mongodb
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
@@ -86,7 +84,6 @@ services:
       - NODE_ENV=production
     depends_on:
       - redisdb
-      - mongodb
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
@@ -106,7 +103,6 @@ services:
       - NODE_ENV=production
     depends_on:
       - redisdb
-      - mongodb
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
