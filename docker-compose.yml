@@ -29,21 +29,11 @@ services:
     volumes: 
       - redisdata:/data
 
-  mongodb:
-    container_name: mongodb
-    image: mongo
-    restart: always
-    networks:
-      - shopping_assistant
-
-  # Build the nodeserver image once
   nodeserver-build:
     build: ./nodeserver
     image: nodeserver-image
     networks:
       - shopping_assistant
-
-  # Containers from the same nodeserver image
 
   nodeserver:
     container_name: nodeserver
@@ -52,9 +42,6 @@ services:
       - "3001:3001"
     networks:
       - shopping_assistant
-    volumes:
-      - ./nodeserver:/app
-      - /app/node_modules
     environment:
       - NODE_ENV=production
     depends_on:
@@ -67,7 +54,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
-
+  
   nodeserver2:
     container_name: nodeserver2
     image: nodeserver-image
@@ -75,9 +62,6 @@ services:
       - "3002:3001"
     networks:
       - shopping_assistant
-    volumes:
-      - ./nodeserver:/app
-      - /app/node_modules
     environment:
       - NODE_ENV=production
     depends_on:
@@ -98,9 +82,6 @@ services:
       - "3003:3001"
     networks:
       - shopping_assistant
-    volumes:
-      - ./nodeserver:/app
-      - /app/node_modules
     environment:
       - NODE_ENV=production
     depends_on:
@@ -121,9 +102,6 @@ services:
       - "3005:3001"
     networks:
       - shopping_assistant
-    volumes:
-      - ./telegbot:/app
-      - /app/node_modules
     environment:
       - NODE_ENV=production
     depends_on:
