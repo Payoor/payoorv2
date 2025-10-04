@@ -163,9 +163,6 @@ services:
       context: ./ui
     depends_on:
       - nodeserver
-    volumes:
-      - ./ui:/var/www/dockerize-nuxt/nuxt-app
-      - /var/www/dockerize-nuxt/nuxt-app/node_modules
     ports:
       - "3000:8082"
     environment:
