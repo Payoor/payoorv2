@@ -1,7 +1,10 @@
 const axios = require('axios')
 
+const elasticsearchUrl = process.env.ELASTICSEARCHURL
+const productIndex = 'products'
+
 class ElasticSearchClass {
-  constructor (elasticsearchUrl) {
+  constructor () {
     this.elasticsearchUrl = elasticsearchUrl
   }
 
@@ -74,9 +77,49 @@ class ElasticSearchClass {
           }
         }
       )
+
       return response.data
     } catch (error) {
       console.error('Error performing paginated search:', error)
+    }
+  }
+
+  async updateProduct ({ mongooseId, variantCount }) {
+    try {
+      console.log(
+        'Updating product:',
+        mongooseId,
+        '→ variantCount:',
+        variantCount
+      )
+
+      const response = await axios.post(
+        `${this.elasticsearchUrl}/${productIndex}/_update/${mongooseId}`,
+        {
+          doc: {
+            variantCount
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+          // Uncomment if you have security enabled:
+          // auth: {
+          //   username: 'elastic',
+          //   password: 'your_password'
+          // }
+        }
+      )
+
+      console.log('✅ Product updated successfully:', response.data)
+      return response.data
+    } catch (error) {
+      console.error(
+        '❌ Error updating product:',
+        error.response?.data || error.message
+      )
+      throw error
     }
   }
 }

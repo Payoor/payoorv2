@@ -1,0 +1,1 @@
+export const product_variant_added = 'product_variant_added'

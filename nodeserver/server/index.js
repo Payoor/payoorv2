@@ -2,6 +2,11 @@ const express = require('express')
 const app = express()
 const fs = require('fs')
 
+//import { connectProducer } from './kafkaclient/producer.js'
+
+import cron from 'node-cron'
+import updateProductsVariantCounts from './utils/updateProductsVariantCounts.js'
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
@@ -31,7 +36,7 @@ app.get('/health', async (req, res, next) => {
       message: 'server is up and running here now'
     })
   } catch (error) {
-    next(error) 
+    next(error)
   }
 })
 
@@ -68,6 +73,45 @@ app.use(async (err, req, res, next) => {
   })
 })
 
+console.log(process.env.LEADER, typeof process.env.LEADER)
+
+if (process.env.LEADER === 'true') {
+  ;(async () => {
+    try {
+      console.log('[CRON] Updating product variant counts...')
+      // const result = await updateProductsVariantCounts()
+      //console.log(`[CRON] Updated ${result.updated} products`)
+    } catch (err) {
+      console.error('[CRON] Error updating product variant counts', err)
+    }
+  })()
+}
+
+console.log('help')
+/*if (process.env.LEADER === 'true') {
+  ;(async () => {
+    try {
+      console.log('[CRON] Updating product variant counts...')
+      const result = await updateProductsVariantCounts()
+      console.log(`[CRON] Updated ${result.updated} products`)
+    } catch (err) {
+      console.error('[CRON] Error updating product variant counts', err)
+    }
+  })()
+
+  cron.schedule('0 2 * * *', async () => {
+    try {
+      console.log('[CRON] Updating product variant counts...')
+      const res = await updateProductsVariantCounts()
+      console.log(`[CRON] Updated ${res.updated} products`)
+    } catch (err) {
+      console.error('[CRON] Error updating product variant counts', err)
+    }
+  })
+}*/
+
+//68e072dc4afc53be4ff1d94d
+
 async function startServer () {
   let server
 
@@ -91,10 +135,11 @@ async function startServer () {
   try {
     await redisManager.connectRedis()
 
-   // runKafka()
+    // runKafka()
     console.log('Redis connected successfully!')
 
-    server = app.listen(port, () => {
+    server = app.listen(port, async () => {
+      // await connectProducer()
       console.log(`✅ Server is running on port ${port}`)
       console.log(`Access at http://localhost:${port}`)
     })

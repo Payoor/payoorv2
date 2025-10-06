@@ -23,12 +23,10 @@ if (process.env.NODE_ENV !== 'production') {
 import ElasticSearchClass from '../controllers/ElasticSearchClass'
 import GoogleApiController from '../controllers/GoogleApiController'
 
-const ObjectId = mongoose.Types.ObjectId
+const ObjectId = mongoose.Types.ObjectId;
+const productIndex = 'products';
 
-const elasticsearchUrl = process.env.ELASTICSEARCHURL
-const productIndex = 'products'
-
-const elasticSearchCl = new ElasticSearchClass(elasticsearchUrl)
+const elasticSearchCl = new ElasticSearchClass()
 
 const shopperRoute = express();
 
@@ -53,7 +51,7 @@ shopperRoute.post(
       const totalItems = total.value
       const currentCount = page * size
 
-      //console.log(hits)
+      //console.log(hits);
 
       res.status(200).json({
         message: 'message sent',
@@ -99,7 +97,7 @@ shopperRoute.get(
     try {
       const { mongooseid } = req.query
 
-      console.log('this is the mongoose Id', mongooseid)
+      //console.log('this is the mongoose Id', mongooseid)
 
       const productId = new ObjectId(mongooseid)
 

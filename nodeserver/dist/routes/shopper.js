@@ -44,9 +44,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 var ObjectId = _mongoose["default"].Types.ObjectId;
-var elasticsearchUrl = process.env.ELASTICSEARCHURL;
 var productIndex = 'products';
-var elasticSearchCl = new _ElasticSearchClass["default"](elasticsearchUrl);
+var elasticSearchCl = new _ElasticSearchClass["default"]();
 var shopperRoute = (0, _express["default"])();
 shopperRoute.post('/shopper/message', _authMiddleware["default"], /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res, next) {
@@ -69,7 +68,7 @@ shopperRoute.post('/shopper/message', _authMiddleware["default"], /*#__PURE__*/f
           data = _context.sent;
           _data$hits = data.hits, total = _data$hits.total, hits = _data$hits.hits;
           totalItems = total.value;
-          currentCount = page * size; //console.log(hits)
+          currentCount = page * size; //console.log(hits);
           res.status(200).json({
             message: 'message sent',
             input: message,
@@ -138,31 +137,30 @@ shopperRoute.get('/shopper/getoptions', _authMiddleware["default"], /*#__PURE__*
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
           _context3.prev = 0;
-          mongooseid = req.query.mongooseid;
-          console.log('this is the mongoose Id', mongooseid);
+          mongooseid = req.query.mongooseid; //console.log('this is the mongoose Id', mongooseid)
           productId = new ObjectId(mongooseid);
           variantsCollection = _payoordb["default"].db.collection('productvariants');
-          _context3.next = 7;
+          _context3.next = 6;
           return variantsCollection.find({
             productId: productId
           }).toArray();
-        case 7:
+        case 6:
           variants = _context3.sent;
           res.status(200).json({
             message: 'Variants found',
             variants: variants
           });
-          _context3.next = 14;
+          _context3.next = 13;
           break;
-        case 11:
-          _context3.prev = 11;
+        case 10:
+          _context3.prev = 10;
           _context3.t0 = _context3["catch"](0);
           next(_context3.t0);
-        case 14:
+        case 13:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[0, 11]]);
+    }, _callee3, null, [[0, 10]]);
   }));
   return function (_x7, _x8, _x9) {
     return _ref3.apply(this, arguments);

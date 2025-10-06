@@ -4,14 +4,19 @@ const ObjectId = mongoose.Types.ObjectId
 
 import payoorDBConnection from '../payoordb'
 
-const UserCartSchema = new mongoose.Schema({
-  items: {
-    type: Map,
-    of: Number
+const UserCartSchema = new mongoose.Schema(
+  {
+    items: {
+      type: Map,
+      of: Number
+    },
+    totalItems: [],
+    userId: mongoose.Schema.Types.ObjectId
   },
-  totalItems: [],
-  userId: mongoose.Schema.Types.ObjectId
-});
+  {
+    timestamps: true
+  }
+)
 
 UserCartSchema.methods.calculateTotal = async function () {
   let total = 0
@@ -35,7 +40,7 @@ UserCartSchema.methods.calculateTotal = async function () {
       this.items.get(item_id),
       typeof this.items.get(item_id),
       item_id,
-      typeof item_id 
+      typeof item_id
     )
     return itemTotal
   })

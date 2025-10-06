@@ -8,6 +8,13 @@ const axios = require('axios')
 
 const ELASTIC_URL = process.env.ELASTICSEARCHURL
 
+import ElasticSearchClass from '../controllers/ElasticSearchClass'
+
+const elasticSearchCl = new ElasticSearchClass()
+
+//import { product_variant_added } from '../kafkaclient/topics.js'
+//import { sendMessage } from '../kafkaclient/producer.js'
+
 const {
   S3Client,
   PutObjectCommand,
@@ -22,10 +29,14 @@ import Checkout from '../models/Checkout.js'
 import Product from '../models/Product.js'
 import ProductVariant from '../models/ProductVariant'
 import Category from '../models/Category.js'
+import Coupon from '../models/Coupon.js'
+
+//import '../scripts/createCoupons.js'
 
 import payoorDBConnection from '../payoordb'
 
 import orderconfirmEmail from '../utils/orderconfirmEmail'
+import { send } from 'process'
 
 const ObjectId = mongoose.Types.ObjectId
 
@@ -483,11 +494,14 @@ adminRoute.get('/admin/products-with-variants', async (req, res, next) => {
       .toArray()
 
     const variantMap = {}
+
     for (const variant of variants) {
       const key = variant.productId.toString()
+
       if (!variantMap[key]) {
         variantMap[key] = []
       }
+
       variantMap[key].push(variant)
     }
 
@@ -555,8 +569,23 @@ adminRoute.post(
           } else {
             console.log('No product found with ID:', itemId)
           }
-        } else {
+        } else if (model === 'ProductVariant') {
           updatedItem = await ProductVariant.findOneAndUpdate(
+            { _id: itemId },
+            { image: imageUrl },
+            {
+              new: true,
+              runValidators: true
+            }
+          )
+
+          if (updatedItem) {
+            console.log('Successfully updated product:', updatedItem)
+          } else {
+            console.log('No product found with ID:', itemId)
+          }
+        } else {
+          updatedItem = await Category.findOneAndUpdate(
             { _id: itemId },
             { image: imageUrl },
             {
@@ -628,7 +657,7 @@ adminRoute.get('/admin/product/description', async (req, res) => {
     })
   } catch (err) {
     console.error(err)
-    res.status(500).json({ ok: false, error: 'Internal server error' });
+    res.status(500).json({ ok: false, error: 'Internal server error' })
   }
 })
 
@@ -751,7 +780,7 @@ adminRoute.post('/admin/create-product', async (req, res, next) => {
 
     const hits = searchResponse.data.hits?.hits || []
 
-    console.log(hits, 'these are the hits')
+    //console.log(hits, 'these are the hits')
 
     return res.status(201).json({
       message: 'Product created and indexed',
@@ -775,6 +804,8 @@ adminRoute.post('/admin/create-product', async (req, res, next) => {
 })
 
 adminRoute.post('/admin/add-variant/:productId', async (req, res, next) => {
+  //console.log('adding a new variant')
+
   try {
     const productId = new ObjectId(req.params.productId)
     const { unit, price, availability, image } = req.body
@@ -785,7 +816,9 @@ adminRoute.post('/admin/add-variant/:productId', async (req, res, next) => {
 
     const variantCollection =
       payoorDBConnection.db.collection('productvariants')
+    const productsCollection = payoorDBConnection.db.collection('newproducts')
 
+    // 1️⃣ Insert the new variant
     const result = await variantCollection.insertOne({
       productId,
       unit,
@@ -796,23 +829,40 @@ adminRoute.post('/admin/add-variant/:productId', async (req, res, next) => {
       updatedAt: new Date()
     })
 
-    //console.log(result)
-
-    await payoorDBConnection.db.collection('newproducts').updateOne(
+    // 2️⃣ Increment variantCount and get the new value
+    const updateResult = await productsCollection.findOneAndUpdate(
       { _id: productId },
       {
         $inc: { variantCount: 1 },
         $set: { updatedAt: new Date() }
-      }
+      },
+      { returnDocument: 'after' }
     )
 
     const newVariant = await variantCollection.findOne({
       _id: result.insertedId
     })
 
-    //console.log(newVariant)
+    //console.log(updateResult, 'updateResult')
 
-    res.status(201).json({ variant: newVariant })
+    const mongooseId = updateResult._id
+    const variantCount = updateResult.variantCount
+
+    const data = await elasticSearchCl.updateProduct({
+      mongooseId,
+      variantCount
+    })
+
+    /*sendMessage(product_variant_added, {
+      mongooseId,
+      variantCount
+    })*/
+
+    // 3️⃣ Include the new variantCount in the response
+    res.status(201).json({
+      variant: newVariant,
+      variantCount: updateResult.variantCount
+    })
   } catch (error) {
     next(error)
   }
@@ -962,12 +1012,22 @@ adminRoute.delete(
       if (!variant) return res.status(404).json({ error: 'Variant not found' })
 
       await variantCollection.deleteOne({ _id: variantId })
-      await payoorDBConnection.db
+
+      const updateResult = await payoorDBConnection.db
         .collection('newproducts')
-        .updateOne(
+        .findOneAndUpdate(
           { _id: variant.productId },
-          { $inc: { variantCount: -1 }, $set: { updatedAt: new Date() } }
+          { $inc: { variantCount: -1 }, $set: { updatedAt: new Date() } },
+          { returnDocument: 'after' }
         )
+
+      const mongooseId = variant.productId
+      const variantCount = updateResult.variantCount
+
+      const data = await elasticSearchCl.updateProduct({
+        mongooseId,
+        variantCount
+      })
 
       res.status(200).json({ message: 'Variant deleted successfully' })
     } catch (error) {
@@ -1087,35 +1147,27 @@ adminRoute.post('/admin/create-category', async (req, res, next) => {
 
 adminRoute.get('/admin/categories', async (req, res, next) => {
   try {
-    const { product_id, page = 1, limit = 10 } = req.query
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
+    const search = req.query.search || ''
+    const skip = (page - 1) * limit
 
-    console.log(typeof product_id, product_id)
-
-    if (product_id !== 'undefined' && product_id !== undefined) {
-      const product = await Product.findById(product_id).populate('categories')
-
-      if (!product) {
-        return res.status(404).json({ message: 'Product not found.' })
-      }
-
-      res.status(200).json({ categories: product.categories })
-    } else {
-      const pageNum = parseInt(page, 10)
-      const limitNum = parseInt(limit, 10)
-      const skip = (pageNum - 1) * limitNum
-
-      const categories = await Category.find({}).skip(skip).limit(limitNum)
-
-      const totalCategories = await Category.countDocuments({})
-      const totalPages = Math.ceil(totalCategories / limitNum)
-
-      res.status(200).json({
-        categories,
-        currentPage: pageNum,
-        totalPages,
-        totalCategories
-      })
+    let query = {}
+    if (search) {
+      query = { name: { $regex: new RegExp(search, 'i') } }
     }
+
+    const totalCategories = await Category.countDocuments(query)
+    const totalPages = Math.ceil(totalCategories / limit)
+
+    const categories = await Category.find(query).skip(skip).limit(limit)
+
+    res.status(200).json({
+      categories,
+      currentPage: page,
+      totalPages,
+      totalCategories
+    })
   } catch (error) {
     next(error)
   }
@@ -1266,5 +1318,437 @@ adminRoute.post(
 )
 
 //testTelegbotNotify()
+
+adminRoute.get('/admin/orders', async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page, 10) || 1
+    const limit = parseInt(req.query.limit, 10) || 10
+    const skip = (page - 1) * limit
+    const search = (req.query.search || '').trim()
+
+    const matchQuery = {
+      checkout_id: { $exists: true }
+    }
+
+    if (search) {
+      const searchRegex = new RegExp(search, 'i')
+      matchQuery.$or = [
+        { 'user.name': searchRegex },
+        { 'checkout.delivery_address': searchRegex },
+        { 'checkout.promo_code': searchRegex },
+        { 'checkout.promo_code_type': searchRegex }
+      ]
+    }
+
+    const countResult = await Order.aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      {
+        $lookup: {
+          from: 'checkouts',
+          localField: 'checkout_id',
+          foreignField: '_id',
+          as: 'checkout'
+        }
+      },
+      {
+        $unwind: { path: '$user', preserveNullAndEmptyArrays: true }
+      },
+      {
+        $unwind: { path: '$checkout', preserveNullAndEmptyArrays: true }
+      },
+      {
+        $match: matchQuery
+      },
+      {
+        $count: 'totalOrders'
+      }
+    ])
+
+    const total = countResult.length > 0 ? countResult[0].totalOrders : 0
+
+    const orders = await Order.aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      {
+        $lookup: {
+          from: 'checkouts',
+          localField: 'checkout_id',
+          foreignField: '_id',
+          as: 'checkout'
+        }
+      },
+      {
+        $unwind: { path: '$user', preserveNullAndEmptyArrays: true }
+      },
+      {
+        $unwind: { path: '$checkout', preserveNullAndEmptyArrays: true }
+      },
+      {
+        $match: matchQuery
+      },
+      {
+        $sort: { _id: -1 }
+      },
+      {
+        $skip: skip
+      },
+      {
+        $limit: limit
+      },
+      {
+        $project: {
+          _id: '$_id',
+          name: '$user.name',
+          email: '$user.email',
+          phoneNumber: '$user.phoneNumber',
+          delivery_address: '$checkout.delivery_address',
+          delivery_date: '$checkout.delivery_date',
+          delivery_instruction: '$checkout.delivery_instruction',
+          promo_code: '$checkout.promo_code',
+          promo_code_type: '$checkout.promo_code_type',
+          cart_items: '$checkout.cart_items',
+          subtotal: '$checkout.subtotal',
+          delivery_fee: '$checkout.delivery_fee',
+          service_charge: '$checkout.service_charge',
+          total: '$checkout.total'
+        }
+      }
+    ])
+
+    return res.status(200).json({
+      message: 'Paginated orders',
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit),
+      orders: orders // The `orders` array is now already in the desired format
+    })
+
+    /*const query = {
+      checkout_id: { $exists: true }
+    }
+
+    if (search) {
+      const searchRegex = new RegExp(search, 'i')
+
+      query.$or = [
+        { 'user_id.name': searchRegex },
+        { 'checkout_id.delivery_address': searchRegex },
+        { 'checkout_id.promo_code': searchRegex },
+        { 'checkout_id.promo_code_type': searchRegex }
+      ];
+
+      console.log(query, 'physics')
+    }
+
+    const total = await Order.countDocuments(query)
+
+    const orders = await Order.find(query)
+      .populate([
+        { path: 'user_id', select: 'name email phoneNumber' },
+        {
+          path: 'checkout_id',
+          select:
+            'delivery_address delivery_date delivery_instruction promo_code promo_code_type cart_items subtotal delivery_fee service_charge total'
+        }
+      ])
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(limit)
+
+    //console.log(orders)
+
+    const cleanedOrders = orders.map(o => {
+      const checkoutData = o.checkout_id
+      const userData = o.user_id
+
+      const final = {
+        ...checkoutData.toObject({ virtuals: false }),
+        ...userData.toObject({ virtuals: false }),
+
+        _id: o._id
+      }
+
+      return final
+    })
+
+    return res.status(200).json({
+      message: 'Paginated orders',
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit),
+      orders: cleanedOrders
+    })
+
+    /*const agg = [
+      // Join checkout
+      {
+        $lookup: {
+          from: 'checkouts',
+          localField: 'checkout_id',
+          foreignField: '_id',
+          as: 'checkout'
+        }
+      }
+      { $unwind: { path: '$checkout', preserveNullAndEmptyArrays: true } },
+
+      // Join user
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
+
+      // Compute itemsCount from checkout.cart_items (object of {productId: qty})
+      {
+        $addFields: {
+          itemsCount: {
+            $sum: {
+              $map: {
+                input: {
+                  $objectToArray: { $ifNull: ['$checkout.cart_items', {}] }
+                },
+                as: 'kv',
+                in: { $toInt: { $ifNull: ['$$kv.v', 0] } }
+              }
+            }
+          }
+        }
+      }
+    ]
+
+    // Optional search on joined fields
+    if (rx) {
+      agg.push({
+        $match: {
+          $or: [
+            { 'user.name': { $regex: rx } },
+            { 'user.email': { $regex: rx } },
+            { 'user.phoneNumber': { $regex: rx } },
+            { 'checkout.delivery_address': { $regex: rx } },
+            { 'checkout.phone_number': { $regex: rx } }
+          ]
+        }
+      })
+    }
+
+    // Sort by most recent first (fallback to _id)
+    agg.push({ $sort: { 'checkout.created_at': -1, _id: -1 } })
+
+    // Paginate + total in one pass
+    agg.push({
+      $facet: {
+        data: [{ $skip: skip }, { $limit: limit }],
+        count: [{ $count: 'total' }]
+      }
+    })
+
+    const [{ data, count }] = await Order.aggregate(agg).allowDiskUse(true)
+
+    console.log(data, count, 'data, count')
+
+    const total = count?.[0]?.total || 0
+    const pages = Math.max(1, Math.ceil(total / limit))
+
+    // Shape the response
+    const shapedOrders = data.map((o, idx) => ({
+      index: skip + idx + 1, // for your "Index" column
+      id: o._id?.toString(),
+      userId: o.user?._id?.toString() || null,
+      email: o.user?.email ?? null,
+      name: o.user?.name ?? null,
+      phoneNumber: o.user?.phoneNumber ?? o.checkout?.phone_number ?? null,
+      deliveryAddress: o.checkout?.delivery_address ?? null,
+      deliveryDate: o.checkout?.delivery_date
+        ? `${o.checkout.delivery_date.day}, ${o.checkout.delivery_date.month} ${o.checkout.delivery_date.date}`
+        : null,
+      itemsCount: o.itemsCount ?? 0,
+      subtotal: o.checkout?.subtotal ?? 0,
+      deliveryFee: o.checkout?.delivery_fee ?? 0,
+      serviceCharge: o.checkout?.service_charge ?? 0,
+      total: o.checkout?.total ?? 0,
+      createdAt: o.checkout?.created_at ?? null
+    }))
+    // keep rows that actually have an address (as you had)
+    //.filter(o => o.deliveryAddress)
+
+    //console.log(shapedOrders)
+
+    return res.status(200).json({
+      message: 'Paginated orders',
+      page,
+      limit,
+      total,
+      pages,
+      orders: shapedOrders
+    })*/
+  } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.get('/admin/order/details', async (req, res, next) => {
+  try {
+    const { orderId } = req.query
+
+    const order = await Order.findOne({ _id: orderId })
+      .populate({
+        path: 'checkout_id',
+        select:
+          'delivery_address delivery_date phone_number cart_items subtotal delivery_fee service_charge total created_at'
+      })
+      .populate({ path: 'user_id', select: 'email name phoneNumber' })
+      .lean()
+
+    const { cart_items } = order.checkout_id
+    const productIds = Object.keys(cart_items)
+    console.log(productIds, productIds.length)
+
+    const orderItems = await ProductVariant.find({
+      _id: { $in: productIds }
+    })
+      .populate({
+        path: 'productId'
+      })
+      .lean()
+
+    const enrichedItems = orderItems.map(p => ({
+      ...p,
+      amount: cart_items[p._id.toString()]
+    }))
+
+    res.status(200).json({
+      message: 'Orders found',
+      orderItems: enrichedItems
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.get('/admin/coupons', async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
+    const search = req.query.search || ''
+    const skip = (page - 1) * limit
+
+    // Start with a base query that checks for the existence of the expiresAt field
+    let query = { expiresAt: { $exists: true } }
+
+    if (search) {
+      // Create a case-insensitive search query across multiple fields
+      const searchQuery = {
+        $or: [
+          { name: { $regex: new RegExp(search, 'i') } },
+          { affiliateKey: { $regex: new RegExp(search, 'i') } },
+          { code: { $regex: new RegExp(search, 'i') } },
+          { singleUse: { $regex: new RegExp(search, 'i') } }
+        ]
+      }
+
+      // Combine the base query with the search query using $and
+      query = { ...query, ...searchQuery }
+    }
+
+    // Get the total count of documents that match the combined query
+    const totalCoupons = await Coupon.countDocuments(query)
+    const totalPages = Math.ceil(totalCoupons / limit)
+
+    // Find the coupons with pagination and the search query
+    const coupons = await Coupon.find(query).skip(skip).limit(limit).lean()
+
+    // Respond with the list of coupons and pagination information
+    res.status(200).json({
+      coupons,
+      currentPage: page,
+      totalPages,
+      totalCoupons
+    })
+  } catch (error) {
+    // Pass any errors to the Express error-handling middleware
+    next(error)
+  }
+})
+
+const generateCouponCode = () => {
+  return crypto.randomBytes(5).toString('hex').toUpperCase()
+}
+
+adminRoute.post('/admin/coupons', async (req, res, next) => {
+  try {
+    const { _id, ...couponData } = req.body
+
+    const finalCouponData = { ...couponData, code: generateCouponCode() }
+
+    const newCoupon = new Coupon(finalCouponData)
+
+    const savedCoupon = await newCoupon.save()
+
+    res.status(201).json({
+      message: 'Coupon created successfully',
+      coupon: savedCoupon
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.put('/admin/coupons/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const updatedCoupon = await Coupon.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true
+    })
+
+    if (!updatedCoupon) {
+      return res.status(404).json({ message: 'Coupon not found.' })
+    }
+
+    res.status(200).json({
+      message: 'Coupon updated successfully',
+      coupon: updatedCoupon
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
+adminRoute.delete('/admin/coupons/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const deletedCoupon = await Coupon.findByIdAndDelete(id)
+
+    if (!deletedCoupon) {
+      return res.status(404).json({ message: 'Coupon not found.' })
+    }
+
+    res.status(200).json({
+      message: 'Coupon deleted successfully',
+      deletedCoupon
+    })
+  } catch (error) {
+    next(error)
+  }
+})
 
 export default adminRoute

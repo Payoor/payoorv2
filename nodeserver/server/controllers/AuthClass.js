@@ -193,7 +193,8 @@ class AuthClass {
         }
       }
 
-      let token
+      let token;
+      
       try {
         console.time('[verifyOtp] Generate Token')
         token = await user.generateAuthToken()

@@ -20,7 +20,7 @@ mongoose
 require('../models/Product');
 require('../models/ProductVariant');
 require('../models/Admin');
-require('../models/Checkout');
+require('../models/Checkout'); 
 require('../models/Order');
 require('../models/User');
 require('../models/UserCart');

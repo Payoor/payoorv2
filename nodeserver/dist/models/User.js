@@ -29,10 +29,10 @@ var UserSchema = new mongoose.Schema({
     unique: true,
     sparse: true
     /*validate: {
-      validator: function (v) {
-        return !v || /^\+?[1-9]\d{1,14}$/.test(v)
-      },
-      message: props => `${props.value} is not a valid phone number!`
+    validator: function (v) {
+      return !v || /^\+?[1-9]\d{1,14}$/.test(v)
+    },
+    message: props => `${props.value} is not a valid phone number!`
     }*/
   },
   tokens: [{
@@ -62,6 +62,8 @@ var UserSchema = new mongoose.Schema({
     type: Date,
     "default": Date.now
   }
+}, {
+  timestamps: true
 });
 UserSchema.methods.generateAuthToken = function () {
   var user = this;

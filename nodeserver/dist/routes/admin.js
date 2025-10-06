@@ -1,5 +1,6 @@
 "use strict";
 
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -10,18 +11,21 @@ var _https = _interopRequireDefault(require("https"));
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 var _multer = _interopRequireDefault(require("multer"));
 var _fs = _interopRequireDefault(require("fs"));
+var _ElasticSearchClass = _interopRequireDefault(require("../controllers/ElasticSearchClass"));
 var _Order = _interopRequireDefault(require("../models/Order"));
 var _Admin = _interopRequireDefault(require("../models/Admin.js"));
 var _Checkout = _interopRequireDefault(require("../models/Checkout.js"));
 var _Product = _interopRequireDefault(require("../models/Product.js"));
 var _ProductVariant = _interopRequireDefault(require("../models/ProductVariant"));
 var _Category = _interopRequireDefault(require("../models/Category.js"));
+var _Coupon = _interopRequireDefault(require("../models/Coupon.js"));
 var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _orderconfirmEmail = _interopRequireDefault(require("../utils/orderconfirmEmail"));
+var _process = require("process");
 var _excluded = ["_id", "__v"],
-  _excluded2 = ["_id", "__v"];
+  _excluded2 = ["_id", "__v"],
+  _excluded3 = ["_id"];
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _objectWithoutProperties(e, t) { if (null == e) return {}; var o, r, i = _objectWithoutPropertiesLoose(e, t); if (Object.getOwnPropertySymbols) { var n = Object.getOwnPropertySymbols(e); for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]); } return i; }
 function _objectWithoutPropertiesLoose(r, e) { if (null == r) return {}; var t = {}; for (var n in r) if ({}.hasOwnProperty.call(r, n)) { if (-1 !== e.indexOf(n)) continue; t[n] = r[n]; } return t; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -37,11 +41,19 @@ function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 var axios = require('axios');
 var ELASTIC_URL = process.env.ELASTICSEARCHURL;
+var elasticSearchCl = new _ElasticSearchClass["default"]();
+
+//import { product_variant_added } from '../kafkaclient/topics.js'
+//import { sendMessage } from '../kafkaclient/producer.js'
+
 var _require = require('@aws-sdk/client-s3'),
   S3Client = _require.S3Client,
   PutObjectCommand = _require.PutObjectCommand,
   DeleteObjectCommand = _require.DeleteObjectCommand;
 var crypto = require('crypto');
+
+//import '../scripts/createCoupons.js'
+
 var ObjectId = _mongoose["default"].Types.ObjectId;
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -732,7 +744,7 @@ adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /
           _req$query = req.query, itemId = _req$query.itemId, model = _req$query.model;
           console.log(itemId, model);
           if (!(itemId !== "0")) {
-            _context9.next = 24;
+            _context9.next = 31;
             break;
           }
           if (!(model === 'NewProduct')) {
@@ -755,10 +767,14 @@ adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /
           } else {
             console.log('No product found with ID:', itemId);
           }
-          _context9.next = 24;
+          _context9.next = 31;
           break;
         case 20:
-          _context9.next = 22;
+          if (!(model === 'ProductVariant')) {
+            _context9.next = 27;
+            break;
+          }
+          _context9.next = 23;
           return _ProductVariant["default"].findOneAndUpdate({
             _id: itemId
           }, {
@@ -767,27 +783,46 @@ adminRoute.post('/admin/upload-image', uploadFileWithMulter().single('image'), /
             "new": true,
             runValidators: true
           });
-        case 22:
+        case 23:
           updatedItem = _context9.sent;
           if (updatedItem) {
             console.log('Successfully updated product:', updatedItem);
           } else {
             console.log('No product found with ID:', itemId);
           }
-        case 24:
+          _context9.next = 31;
+          break;
+        case 27:
+          _context9.next = 29;
+          return _Category["default"].findOneAndUpdate({
+            _id: itemId
+          }, {
+            image: imageUrl
+          }, {
+            "new": true,
+            runValidators: true
+          });
+        case 29:
+          updatedItem = _context9.sent;
+          if (updatedItem) {
+            console.log('Successfully updated product:', updatedItem);
+          } else {
+            console.log('No product found with ID:', itemId);
+          }
+        case 31:
           return _context9.abrupt("return", res.status(200).json({
             url: imageUrl,
             updatedItem: updatedItem
           }));
-        case 27:
-          _context9.prev = 27;
+        case 34:
+          _context9.prev = 34;
           _context9.t0 = _context9["catch"](0);
           next(_context9.t0);
-        case 30:
+        case 37:
         case "end":
           return _context9.stop();
       }
-    }, _callee9, null, [[0, 27]]);
+    }, _callee9, null, [[0, 34]]);
   }));
   return function (_x23, _x24, _x25) {
     return _ref9.apply(this, arguments);
@@ -1032,8 +1067,7 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
           });
         case 22:
           searchResponse = _context10.sent;
-          hits = ((_searchResponse$data$ = searchResponse.data.hits) === null || _searchResponse$data$ === void 0 ? void 0 : _searchResponse$data$.hits) || [];
-          console.log(hits, 'these are the hits');
+          hits = ((_searchResponse$data$ = searchResponse.data.hits) === null || _searchResponse$data$ === void 0 ? void 0 : _searchResponse$data$.hits) || []; //console.log(hits, 'these are the hits')
           return _context10.abrupt("return", res.status(201).json({
             message: 'Product created and indexed',
             product: product,
@@ -1042,8 +1076,8 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
               return hit._source;
             })
           }));
-        case 28:
-          _context10.prev = 28;
+        case 27:
+          _context10.prev = 27;
           _context10.t0 = _context10["catch"](0);
           if (_context10.t0.response) {
             console.error('Elasticsearch error:', _context10.t0.response.status, _context10.t0.response.data);
@@ -1051,11 +1085,11 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
             console.error('Unexpected error:', _context10.t0.message);
           }
           next(_context10.t0);
-        case 32:
+        case 31:
         case "end":
           return _context10.stop();
       }
-    }, _callee10, null, [[0, 28]]);
+    }, _callee10, null, [[0, 27]]);
   }));
   return function (_x30, _x31, _x32) {
     return _ref10.apply(this, arguments);
@@ -1063,7 +1097,7 @@ adminRoute.post('/admin/create-product', /*#__PURE__*/function () {
 }());
 adminRoute.post('/admin/add-variant/:productId', /*#__PURE__*/function () {
   var _ref11 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res, next) {
-    var productId, _req$body6, unit, price, availability, image, variantCollection, result, newVariant;
+    var productId, _req$body6, unit, price, availability, image, variantCollection, productsCollection, result, updateResult, newVariant, mongooseId, variantCount, data;
     return _regeneratorRuntime().wrap(function _callee11$(_context11) {
       while (1) switch (_context11.prev = _context11.next) {
         case 0:
@@ -1079,7 +1113,8 @@ adminRoute.post('/admin/add-variant/:productId', /*#__PURE__*/function () {
           }));
         case 5:
           variantCollection = _payoordb["default"].db.collection('productvariants');
-          _context11.next = 8;
+          productsCollection = _payoordb["default"].db.collection('newproducts'); // 1️⃣ Insert the new variant
+          _context11.next = 9;
           return variantCollection.insertOne({
             productId: productId,
             unit: unit,
@@ -1089,10 +1124,10 @@ adminRoute.post('/admin/add-variant/:productId', /*#__PURE__*/function () {
             createdAt: new Date(),
             updatedAt: new Date()
           });
-        case 8:
+        case 9:
           result = _context11.sent;
-          _context11.next = 11;
-          return _payoordb["default"].db.collection('newproducts').updateOne({
+          _context11.next = 12;
+          return productsCollection.findOneAndUpdate({
             _id: productId
           }, {
             $inc: {
@@ -1101,30 +1136,48 @@ adminRoute.post('/admin/add-variant/:productId', /*#__PURE__*/function () {
             $set: {
               updatedAt: new Date()
             }
+          }, {
+            returnDocument: 'after'
           });
-        case 11:
-          _context11.next = 13;
+        case 12:
+          updateResult = _context11.sent;
+          _context11.next = 15;
           return variantCollection.findOne({
             _id: result.insertedId
           });
-        case 13:
+        case 15:
           newVariant = _context11.sent;
-          //console.log(newVariant)
-
-          res.status(201).json({
-            variant: newVariant
-          });
+          //console.log(updateResult, 'updateResult')
+          mongooseId = updateResult._id;
+          variantCount = updateResult.variantCount;
           _context11.next = 20;
+          return elasticSearchCl.updateProduct({
+            mongooseId: mongooseId,
+            variantCount: variantCount
+          });
+        case 20:
+          data = _context11.sent;
+          /*sendMessage(product_variant_added, {
+            mongooseId,
+            variantCount
+          })*/
+
+          // 3️⃣ Include the new variantCount in the response
+          res.status(201).json({
+            variant: newVariant,
+            variantCount: updateResult.variantCount
+          });
+          _context11.next = 27;
           break;
-        case 17:
-          _context11.prev = 17;
+        case 24:
+          _context11.prev = 24;
           _context11.t0 = _context11["catch"](0);
           next(_context11.t0);
-        case 20:
+        case 27:
         case "end":
           return _context11.stop();
       }
-    }, _callee11, null, [[0, 17]]);
+    }, _callee11, null, [[0, 24]]);
   }));
   return function (_x33, _x34, _x35) {
     return _ref11.apply(this, arguments);
@@ -1308,7 +1361,7 @@ adminRoute["delete"]('/admin/delete-product/:productId', /*#__PURE__*/function (
 // Server-side route for deleting a variant
 adminRoute["delete"]('/admin/delete-variant/:variantId', /*#__PURE__*/function () {
   var _ref15 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee15(req, res, next) {
-    var variantId, variantCollection, variant;
+    var variantId, variantCollection, variant, updateResult, mongooseId, variantCount, data;
     return _regeneratorRuntime().wrap(function _callee15$(_context15) {
       while (1) switch (_context15.prev = _context15.next) {
         case 0:
@@ -1335,7 +1388,7 @@ adminRoute["delete"]('/admin/delete-variant/:variantId', /*#__PURE__*/function (
           });
         case 10:
           _context15.next = 12;
-          return _payoordb["default"].db.collection('newproducts').updateOne({
+          return _payoordb["default"].db.collection('newproducts').findOneAndUpdate({
             _id: variant.productId
           }, {
             $inc: {
@@ -1344,22 +1397,34 @@ adminRoute["delete"]('/admin/delete-variant/:variantId', /*#__PURE__*/function (
             $set: {
               updatedAt: new Date()
             }
+          }, {
+            returnDocument: 'after'
           });
         case 12:
+          updateResult = _context15.sent;
+          mongooseId = variant.productId;
+          variantCount = updateResult.variantCount;
+          _context15.next = 17;
+          return elasticSearchCl.updateProduct({
+            mongooseId: mongooseId,
+            variantCount: variantCount
+          });
+        case 17:
+          data = _context15.sent;
           res.status(200).json({
             message: 'Variant deleted successfully'
           });
-          _context15.next = 18;
+          _context15.next = 24;
           break;
-        case 15:
-          _context15.prev = 15;
+        case 21:
+          _context15.prev = 21;
           _context15.t0 = _context15["catch"](0);
           next(_context15.t0);
-        case 18:
+        case 24:
         case "end":
           return _context15.stop();
       }
-    }, _callee15, null, [[0, 15]]);
+    }, _callee15, null, [[0, 21]]);
   }));
   return function (_x45, _x46, _x47) {
     return _ref15.apply(this, arguments);
@@ -1374,35 +1439,35 @@ function testTelegbotNotify() {
   return _testTelegbotNotify.apply(this, arguments);
 }
 function _testTelegbotNotify() {
-  _testTelegbotNotify = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee24() {
+  _testTelegbotNotify = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee30() {
     var telegbotUrl, response;
-    return _regeneratorRuntime().wrap(function _callee24$(_context24) {
-      while (1) switch (_context24.prev = _context24.next) {
+    return _regeneratorRuntime().wrap(function _callee30$(_context30) {
+      while (1) switch (_context30.prev = _context30.next) {
         case 0:
           telegbotUrl = 'http://telegbot:3001/notify';
-          _context24.prev = 1;
-          _context24.next = 4;
+          _context30.prev = 1;
+          _context30.next = 4;
           return axios.post(telegbotUrl, {
             orderId: 'test-order-12345'
           });
         case 4:
-          response = _context24.sent;
+          response = _context30.sent;
           console.log('✅ Response from telegbot:', response.data);
-          _context24.next = 11;
+          _context30.next = 11;
           break;
         case 8:
-          _context24.prev = 8;
-          _context24.t0 = _context24["catch"](1);
-          if (_context24.t0.response) {
-            console.error('❌ Error response:', _context24.t0.response.status, _context24.t0.response.data);
+          _context30.prev = 8;
+          _context30.t0 = _context30["catch"](1);
+          if (_context30.t0.response) {
+            console.error('❌ Error response:', _context30.t0.response.status, _context30.t0.response.data);
           } else {
-            console.error('❌ Request error:', _context24.t0.message);
+            console.error('❌ Request error:', _context30.t0.message);
           }
         case 11:
         case "end":
-          return _context24.stop();
+          return _context30.stop();
       }
-    }, _callee24, null, [[1, 8]]);
+    }, _callee30, null, [[1, 8]]);
   }));
   return _testTelegbotNotify.apply(this, arguments);
 }
@@ -1543,65 +1608,49 @@ adminRoute.post('/admin/create-category', /*#__PURE__*/function () {
 }());
 adminRoute.get('/admin/categories', /*#__PURE__*/function () {
   var _ref19 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee19(req, res, next) {
-    var _req$query2, product_id, _req$query2$page, page, _req$query2$limit, limit, product, pageNum, limitNum, skip, categories, totalCategories, totalPages;
+    var page, limit, search, skip, query, totalCategories, totalPages, categories;
     return _regeneratorRuntime().wrap(function _callee19$(_context19) {
       while (1) switch (_context19.prev = _context19.next) {
         case 0:
           _context19.prev = 0;
-          _req$query2 = req.query, product_id = _req$query2.product_id, _req$query2$page = _req$query2.page, page = _req$query2$page === void 0 ? 1 : _req$query2$page, _req$query2$limit = _req$query2.limit, limit = _req$query2$limit === void 0 ? 10 : _req$query2$limit;
-          console.log(_typeof(product_id), product_id);
-          if (!(product_id !== 'undefined' && product_id !== undefined)) {
-            _context19.next = 12;
-            break;
+          page = parseInt(req.query.page) || 1;
+          limit = parseInt(req.query.limit) || 10;
+          search = req.query.search || '';
+          skip = (page - 1) * limit;
+          query = {};
+          if (search) {
+            query = {
+              name: {
+                $regex: new RegExp(search, 'i')
+              }
+            };
           }
-          _context19.next = 6;
-          return _Product["default"].findById(product_id).populate('categories');
-        case 6:
-          product = _context19.sent;
-          if (product) {
-            _context19.next = 9;
-            break;
-          }
-          return _context19.abrupt("return", res.status(404).json({
-            message: 'Product not found.'
-          }));
+          _context19.next = 9;
+          return _Category["default"].countDocuments(query);
         case 9:
-          res.status(200).json({
-            categories: product.categories
-          });
-          _context19.next = 23;
-          break;
-        case 12:
-          pageNum = parseInt(page, 10);
-          limitNum = parseInt(limit, 10);
-          skip = (pageNum - 1) * limitNum;
-          _context19.next = 17;
-          return _Category["default"].find({}).skip(skip).limit(limitNum);
-        case 17:
-          categories = _context19.sent;
-          _context19.next = 20;
-          return _Category["default"].countDocuments({});
-        case 20:
           totalCategories = _context19.sent;
-          totalPages = Math.ceil(totalCategories / limitNum);
+          totalPages = Math.ceil(totalCategories / limit);
+          _context19.next = 13;
+          return _Category["default"].find(query).skip(skip).limit(limit);
+        case 13:
+          categories = _context19.sent;
           res.status(200).json({
             categories: categories,
-            currentPage: pageNum,
+            currentPage: page,
             totalPages: totalPages,
             totalCategories: totalCategories
           });
-        case 23:
-          _context19.next = 28;
+          _context19.next = 20;
           break;
-        case 25:
-          _context19.prev = 25;
+        case 17:
+          _context19.prev = 17;
           _context19.t0 = _context19["catch"](0);
           next(_context19.t0);
-        case 28:
+        case 20:
         case "end":
           return _context19.stop();
       }
-    }, _callee19, null, [[0, 25]]);
+    }, _callee19, null, [[0, 17]]);
   }));
   return function (_x57, _x58, _x59) {
     return _ref19.apply(this, arguments);
@@ -1847,4 +1896,397 @@ adminRoute.post('/admin/remove-category-from-product', /*#__PURE__*/function () 
 }());
 
 //testTelegbotNotify()
+
+adminRoute.get('/admin/orders', /*#__PURE__*/function () {
+  var _ref24 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee24(req, res, next) {
+    var page, limit, skip, search, matchQuery, searchRegex, countResult, total, orders;
+    return _regeneratorRuntime().wrap(function _callee24$(_context24) {
+      while (1) switch (_context24.prev = _context24.next) {
+        case 0:
+          _context24.prev = 0;
+          page = parseInt(req.query.page, 10) || 1;
+          limit = parseInt(req.query.limit, 10) || 10;
+          skip = (page - 1) * limit;
+          search = (req.query.search || '').trim();
+          matchQuery = {
+            checkout_id: {
+              $exists: true
+            }
+          };
+          if (search) {
+            searchRegex = new RegExp(search, 'i');
+            matchQuery.$or = [{
+              'user.name': searchRegex
+            }, {
+              'checkout.delivery_address': searchRegex
+            }, {
+              'checkout.promo_code': searchRegex
+            }, {
+              'checkout.promo_code_type': searchRegex
+            }];
+          }
+          _context24.next = 9;
+          return _Order["default"].aggregate([{
+            $lookup: {
+              from: 'users',
+              localField: 'user_id',
+              foreignField: '_id',
+              as: 'user'
+            }
+          }, {
+            $lookup: {
+              from: 'checkouts',
+              localField: 'checkout_id',
+              foreignField: '_id',
+              as: 'checkout'
+            }
+          }, {
+            $unwind: {
+              path: '$user',
+              preserveNullAndEmptyArrays: true
+            }
+          }, {
+            $unwind: {
+              path: '$checkout',
+              preserveNullAndEmptyArrays: true
+            }
+          }, {
+            $match: matchQuery
+          }, {
+            $count: 'totalOrders'
+          }]);
+        case 9:
+          countResult = _context24.sent;
+          total = countResult.length > 0 ? countResult[0].totalOrders : 0;
+          _context24.next = 13;
+          return _Order["default"].aggregate([{
+            $lookup: {
+              from: 'users',
+              localField: 'user_id',
+              foreignField: '_id',
+              as: 'user'
+            }
+          }, {
+            $lookup: {
+              from: 'checkouts',
+              localField: 'checkout_id',
+              foreignField: '_id',
+              as: 'checkout'
+            }
+          }, {
+            $unwind: {
+              path: '$user',
+              preserveNullAndEmptyArrays: true
+            }
+          }, {
+            $unwind: {
+              path: '$checkout',
+              preserveNullAndEmptyArrays: true
+            }
+          }, {
+            $match: matchQuery
+          }, {
+            $sort: {
+              _id: -1
+            }
+          }, {
+            $skip: skip
+          }, {
+            $limit: limit
+          }, {
+            $project: {
+              _id: '$_id',
+              name: '$user.name',
+              email: '$user.email',
+              phoneNumber: '$user.phoneNumber',
+              delivery_address: '$checkout.delivery_address',
+              delivery_date: '$checkout.delivery_date',
+              delivery_instruction: '$checkout.delivery_instruction',
+              promo_code: '$checkout.promo_code',
+              promo_code_type: '$checkout.promo_code_type',
+              cart_items: '$checkout.cart_items',
+              subtotal: '$checkout.subtotal',
+              delivery_fee: '$checkout.delivery_fee',
+              service_charge: '$checkout.service_charge',
+              total: '$checkout.total'
+            }
+          }]);
+        case 13:
+          orders = _context24.sent;
+          return _context24.abrupt("return", res.status(200).json({
+            message: 'Paginated orders',
+            page: page,
+            limit: limit,
+            total: total,
+            pages: Math.ceil(total / limit),
+            orders: orders // The `orders` array is now already in the desired format
+          }));
+        case 17:
+          _context24.prev = 17;
+          _context24.t0 = _context24["catch"](0);
+          next(_context24.t0);
+        case 20:
+        case "end":
+          return _context24.stop();
+      }
+    }, _callee24, null, [[0, 17]]);
+  }));
+  return function (_x72, _x73, _x74) {
+    return _ref24.apply(this, arguments);
+  };
+}());
+adminRoute.get('/admin/order/details', /*#__PURE__*/function () {
+  var _ref25 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee25(req, res, next) {
+    var orderId, order, cart_items, productIds, orderItems, enrichedItems;
+    return _regeneratorRuntime().wrap(function _callee25$(_context25) {
+      while (1) switch (_context25.prev = _context25.next) {
+        case 0:
+          _context25.prev = 0;
+          orderId = req.query.orderId;
+          _context25.next = 4;
+          return _Order["default"].findOne({
+            _id: orderId
+          }).populate({
+            path: 'checkout_id',
+            select: 'delivery_address delivery_date phone_number cart_items subtotal delivery_fee service_charge total created_at'
+          }).populate({
+            path: 'user_id',
+            select: 'email name phoneNumber'
+          }).lean();
+        case 4:
+          order = _context25.sent;
+          cart_items = order.checkout_id.cart_items;
+          productIds = Object.keys(cart_items);
+          console.log(productIds, productIds.length);
+          _context25.next = 10;
+          return _ProductVariant["default"].find({
+            _id: {
+              $in: productIds
+            }
+          }).populate({
+            path: 'productId'
+          }).lean();
+        case 10:
+          orderItems = _context25.sent;
+          enrichedItems = orderItems.map(function (p) {
+            return _objectSpread(_objectSpread({}, p), {}, {
+              amount: cart_items[p._id.toString()]
+            });
+          });
+          res.status(200).json({
+            message: 'Orders found',
+            orderItems: enrichedItems
+          });
+          _context25.next = 18;
+          break;
+        case 15:
+          _context25.prev = 15;
+          _context25.t0 = _context25["catch"](0);
+          next(_context25.t0);
+        case 18:
+        case "end":
+          return _context25.stop();
+      }
+    }, _callee25, null, [[0, 15]]);
+  }));
+  return function (_x75, _x76, _x77) {
+    return _ref25.apply(this, arguments);
+  };
+}());
+adminRoute.get('/admin/coupons', /*#__PURE__*/function () {
+  var _ref26 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee26(req, res, next) {
+    var page, limit, search, skip, query, searchQuery, totalCoupons, totalPages, coupons;
+    return _regeneratorRuntime().wrap(function _callee26$(_context26) {
+      while (1) switch (_context26.prev = _context26.next) {
+        case 0:
+          _context26.prev = 0;
+          page = parseInt(req.query.page) || 1;
+          limit = parseInt(req.query.limit) || 10;
+          search = req.query.search || '';
+          skip = (page - 1) * limit; // Start with a base query that checks for the existence of the expiresAt field
+          query = {
+            expiresAt: {
+              $exists: true
+            }
+          };
+          if (search) {
+            // Create a case-insensitive search query across multiple fields
+            searchQuery = {
+              $or: [{
+                name: {
+                  $regex: new RegExp(search, 'i')
+                }
+              }, {
+                affiliateKey: {
+                  $regex: new RegExp(search, 'i')
+                }
+              }, {
+                code: {
+                  $regex: new RegExp(search, 'i')
+                }
+              }, {
+                singleUse: {
+                  $regex: new RegExp(search, 'i')
+                }
+              }]
+            }; // Combine the base query with the search query using $and
+            query = _objectSpread(_objectSpread({}, query), searchQuery);
+          }
+
+          // Get the total count of documents that match the combined query
+          _context26.next = 9;
+          return _Coupon["default"].countDocuments(query);
+        case 9:
+          totalCoupons = _context26.sent;
+          totalPages = Math.ceil(totalCoupons / limit); // Find the coupons with pagination and the search query
+          _context26.next = 13;
+          return _Coupon["default"].find(query).skip(skip).limit(limit).lean();
+        case 13:
+          coupons = _context26.sent;
+          // Respond with the list of coupons and pagination information
+          res.status(200).json({
+            coupons: coupons,
+            currentPage: page,
+            totalPages: totalPages,
+            totalCoupons: totalCoupons
+          });
+          _context26.next = 20;
+          break;
+        case 17:
+          _context26.prev = 17;
+          _context26.t0 = _context26["catch"](0);
+          // Pass any errors to the Express error-handling middleware
+          next(_context26.t0);
+        case 20:
+        case "end":
+          return _context26.stop();
+      }
+    }, _callee26, null, [[0, 17]]);
+  }));
+  return function (_x78, _x79, _x80) {
+    return _ref26.apply(this, arguments);
+  };
+}());
+var generateCouponCode = function generateCouponCode() {
+  return crypto.randomBytes(5).toString('hex').toUpperCase();
+};
+adminRoute.post('/admin/coupons', /*#__PURE__*/function () {
+  var _ref27 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee27(req, res, next) {
+    var _req$body11, _id, couponData, finalCouponData, newCoupon, savedCoupon;
+    return _regeneratorRuntime().wrap(function _callee27$(_context27) {
+      while (1) switch (_context27.prev = _context27.next) {
+        case 0:
+          _context27.prev = 0;
+          _req$body11 = req.body, _id = _req$body11._id, couponData = _objectWithoutProperties(_req$body11, _excluded3);
+          finalCouponData = _objectSpread(_objectSpread({}, couponData), {}, {
+            code: generateCouponCode()
+          });
+          newCoupon = new _Coupon["default"](finalCouponData);
+          _context27.next = 6;
+          return newCoupon.save();
+        case 6:
+          savedCoupon = _context27.sent;
+          res.status(201).json({
+            message: 'Coupon created successfully',
+            coupon: savedCoupon
+          });
+          _context27.next = 13;
+          break;
+        case 10:
+          _context27.prev = 10;
+          _context27.t0 = _context27["catch"](0);
+          next(_context27.t0);
+        case 13:
+        case "end":
+          return _context27.stop();
+      }
+    }, _callee27, null, [[0, 10]]);
+  }));
+  return function (_x81, _x82, _x83) {
+    return _ref27.apply(this, arguments);
+  };
+}());
+adminRoute.put('/admin/coupons/:id', /*#__PURE__*/function () {
+  var _ref28 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee28(req, res, next) {
+    var id, updatedCoupon;
+    return _regeneratorRuntime().wrap(function _callee28$(_context28) {
+      while (1) switch (_context28.prev = _context28.next) {
+        case 0:
+          _context28.prev = 0;
+          id = req.params.id;
+          _context28.next = 4;
+          return _Coupon["default"].findByIdAndUpdate(id, req.body, {
+            "new": true,
+            runValidators: true
+          });
+        case 4:
+          updatedCoupon = _context28.sent;
+          if (updatedCoupon) {
+            _context28.next = 7;
+            break;
+          }
+          return _context28.abrupt("return", res.status(404).json({
+            message: 'Coupon not found.'
+          }));
+        case 7:
+          res.status(200).json({
+            message: 'Coupon updated successfully',
+            coupon: updatedCoupon
+          });
+          _context28.next = 13;
+          break;
+        case 10:
+          _context28.prev = 10;
+          _context28.t0 = _context28["catch"](0);
+          next(_context28.t0);
+        case 13:
+        case "end":
+          return _context28.stop();
+      }
+    }, _callee28, null, [[0, 10]]);
+  }));
+  return function (_x84, _x85, _x86) {
+    return _ref28.apply(this, arguments);
+  };
+}());
+adminRoute["delete"]('/admin/coupons/:id', /*#__PURE__*/function () {
+  var _ref29 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee29(req, res, next) {
+    var id, deletedCoupon;
+    return _regeneratorRuntime().wrap(function _callee29$(_context29) {
+      while (1) switch (_context29.prev = _context29.next) {
+        case 0:
+          _context29.prev = 0;
+          id = req.params.id;
+          _context29.next = 4;
+          return _Coupon["default"].findByIdAndDelete(id);
+        case 4:
+          deletedCoupon = _context29.sent;
+          if (deletedCoupon) {
+            _context29.next = 7;
+            break;
+          }
+          return _context29.abrupt("return", res.status(404).json({
+            message: 'Coupon not found.'
+          }));
+        case 7:
+          res.status(200).json({
+            message: 'Coupon deleted successfully',
+            deletedCoupon: deletedCoupon
+          });
+          _context29.next = 13;
+          break;
+        case 10:
+          _context29.prev = 10;
+          _context29.t0 = _context29["catch"](0);
+          next(_context29.t0);
+        case 13:
+        case "end":
+          return _context29.stop();
+      }
+    }, _callee29, null, [[0, 10]]);
+  }));
+  return function (_x87, _x88, _x89) {
+    return _ref29.apply(this, arguments);
+  };
+}());
 var _default = exports["default"] = adminRoute;

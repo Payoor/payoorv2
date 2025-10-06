@@ -1,67 +1,72 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    trim: true,
-    lowercase: true
-  }, 
-  email: {
-    type: String, 
-    trim: true,
-    lowercase: true,
-    unique: true,
-    sparse: true,
-    validate: {
-      validator: function (v) {
-        return !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
-      },
-      message: props => `${props.value} is not a valid email!`
-    }
-  },
-  phoneNumber: {
-    type: String,
-    trim: true,
-    unique: true,
-    sparse: true,
-    /*validate: {
+const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
+      lowercase: true
+    },
+    email: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      unique: true,
+      sparse: true,
+      validate: {
+        validator: function (v) {
+          return !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
+        },
+        message: props => `${props.value} is not a valid email!`
+      }
+    },
+    phoneNumber: {
+      type: String,
+      trim: true,
+      unique: true,
+      sparse: true
+      /*validate: {
       validator: function (v) {
         return !v || /^\+?[1-9]\d{1,14}$/.test(v)
       },
       message: props => `${props.value} is not a valid phone number!`
     }*/
-  },
-  tokens: [
-    {
-      access: {
-        type: String,
-        required: true
-      },
-      token: {
-        type: String,
-        required: true
+    },
+    tokens: [
+      {
+        access: {
+          type: String,
+          required: true
+        },
+        token: {
+          type: String,
+          required: true
+        }
       }
+    ],
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true
+    },
+    authMethods: {
+      type: [String],
+      default: ['otp']
+    },
+    profilePicture: {
+      type: String,
+      default: null
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
     }
-  ],
-  googleId: {
-    type: String,
-    unique: true,
-    sparse: true
   },
-  authMethods: {
-    type: [String],
-    default: ['otp']
-  },
-  profilePicture: {
-    type: String,
-    default: null
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  {
+    timestamps: true
   }
-})
+)
 
 UserSchema.methods.generateAuthToken = function () {
   let user = this
@@ -84,7 +89,7 @@ UserSchema.methods.removeToken = function (token) {
 
   return user.updateOne({
     $pull: {
-      tokens: { token } 
+      tokens: { token }
     }
   })
 }

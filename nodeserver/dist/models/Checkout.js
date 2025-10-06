@@ -89,5 +89,7 @@ var CheckoutSchema = new mongoose.Schema({
     type: Date,
     "default": Date.now
   }
+}, {
+  timestamps: true
 });
 module.exports = mongoose.model('Checkout', CheckoutSchema);

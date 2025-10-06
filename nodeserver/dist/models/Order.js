@@ -12,5 +12,8 @@ var OrderSchema = new mongoose.Schema({
     ref: 'Checkout',
     required: true
   }
+}, {
+  timestamps: true,
+  collection: 'orders'
 });
 module.exports = mongoose.model('Order', OrderSchema);
