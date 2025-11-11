@@ -42,6 +42,8 @@ export default {
     mounted() {
         const previousPage = this.$route.query.prevpage;
         const currentProduct = this.$route.query.currentproduct;
+
+        console.log(this.product)
     },
     computed: {
         name() {
@@ -51,7 +53,7 @@ export default {
             return this.product.image || 'https://payoorimages.s3.ap-southeast-2.amazonaws.com/products/1739230188359-4hi1261thmy.webp';
         },
         options() {
-            return this.product.variantCount || 0;
+            return this.product.variantCount;
         },
         tags() {
             return typeof this.product.metadata === 'string'
@@ -67,7 +69,7 @@ export default {
             this.loading = true;
 
             try {
-               // await this.$store.dispatch("cart/syncCartToServer");
+                // await this.$store.dispatch("cart/syncCartToServer");
             } catch (error) {
                 console.error("Error syncing cart to server:", error);
             } finally {

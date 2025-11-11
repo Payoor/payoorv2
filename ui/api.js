@@ -15,7 +15,7 @@ export async function handleFetchError (response) {
     let errorData;
 
     try {
-      errorData = await response.json()
+      errorData = await response.json() 
     } catch (e) {
       console.log(e)
       console.log(errorData, 'error data herer')

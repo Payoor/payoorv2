@@ -198,6 +198,7 @@ export default {
           // console.log(this.currentVariants)
             this.closeDropdown();
         },
+        
         viewItem(item) {
            // console.log(item, 'item here')
             this.fetchProductVariants(item._id);

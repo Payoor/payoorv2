@@ -131,7 +131,6 @@ export default {
                         acc[key] = 'YES';
                     } else if (key === 'productId') {
                         acc[key] = this.parentItem._id;
-                       // console.log('fond the prif', this.parentItem)
                     } else if (['createdAt', 'updatedAt'].includes(key)) {
                         acc[key] = new Date().toISOString();
                     } else if (key === 'variants') {
@@ -143,7 +142,23 @@ export default {
                 }, {});
 
                 itemsWithNew.unshift(newItem);
+
+            } else if (itemsWithNew.length === 0 && !this.currentItem) {
+                // Use hardcoded object if itemsWithNew is empty
+                const newItem = {
+                    _id: '0',
+                    image: null,
+                    price: 0,
+                    availability: 'YES',
+                    productId: this.parentItem._id,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    variants: [],
+                };
+
+                itemsWithNew.unshift(newItem);
             }
+
 
             const seenIds = new Set();
             const uniqueItems = itemsWithNew.filter(item => {
@@ -154,6 +169,7 @@ export default {
 
             this.localItems = uniqueItems;
         },
+
         async deleteItem(itemId) {
             if (!confirm('Are you sure you want to delete this variant?')) return;
 
@@ -195,8 +211,11 @@ export default {
             //console.log(updatedItem);
             this.saveItemToDB(updatedItem);
         },
+
         async saveItemToDB(itemToSave) {
             try {
+                console.log(serverurl, 'serverurl here');
+                
                 const res = await fetch(`${serverurl}/admin/update-variant/${itemToSave._id}`, {
                     method: 'PUT',
                     headers: this.getAuthHeaders(),
@@ -227,7 +246,7 @@ export default {
                     unit: draft.unit,
                     price: draft.price,
                     availability: draft.availability,
-                    image: draft.image
+                    image: draft.image 
                 }
 
                 if (!payload.unit || !payload.price || !payload.availability || !payload.image) {
