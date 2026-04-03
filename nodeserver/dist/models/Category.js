@@ -1,7 +1,7 @@
 "use strict";
 
-var mongoose = require('mongoose');
-var CategorySchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+const CategorySchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Category name is required'],
@@ -28,5 +28,5 @@ var CategorySchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
-var Category = mongoose.model('Category', CategorySchema);
+const Category = mongoose.model('Category', CategorySchema);
 module.exports = Category;

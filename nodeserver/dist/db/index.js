@@ -1,21 +1,21 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 var _mongoose = _interopRequireDefault(require("mongoose"));
-function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
-_mongoose["default"].connect(process.env.MONGO_URL, {
+_mongoose.default.connect(process.env.MONGO_URL, {
   useNewUrlParser: true
   //useUnifiedTopology: true
-}).then(function () {
-  console.log("database connection on ".concat(process.env.MONGO_URL));
+}).then(() => {
+  console.log(`database connection on ${process.env.MONGO_URL}`);
   // dropIndex('filepath_1');
-})["catch"](function (error) {
+}).catch(error => {
   console.error('Error connecting to MongoDB:', error);
 });
 require('../models/Product');
@@ -25,4 +25,4 @@ require('../models/Checkout');
 require('../models/Order');
 require('../models/User');
 require('../models/UserCart');
-var _default = exports["default"] = _mongoose["default"];
+var _default = exports.default = _mongoose.default;

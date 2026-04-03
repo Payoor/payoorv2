@@ -1,7 +1,7 @@
 "use strict";
 
-var mongoose = require('mongoose');
-var OrderSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+const OrderSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

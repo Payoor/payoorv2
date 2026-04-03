@@ -1,9 +1,9 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 var _mongoose = _interopRequireDefault(require("mongoose"));
 var _Category = _interopRequireDefault(require("./Category"));
-function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
-var ProductSchema = new _mongoose["default"].Schema({
+const ProductSchema = new _mongoose.default.Schema({
   image: {
     type: String,
     required: true
@@ -15,11 +15,11 @@ var ProductSchema = new _mongoose["default"].Schema({
   },
   generatedCategories: {
     type: [String],
-    "default": []
+    default: []
   },
   synced_to_algolia: {
     type: Boolean,
-    "default": false
+    default: false
   },
   name: {
     type: String,
@@ -29,7 +29,7 @@ var ProductSchema = new _mongoose["default"].Schema({
   },
   variantCount: {
     type: Number,
-    "default": 0,
+    default: 0,
     min: 0
   },
   metadata: {
@@ -39,16 +39,16 @@ var ProductSchema = new _mongoose["default"].Schema({
   description: {
     type: String,
     trim: true,
-    "default": ''
+    default: ''
   },
   // Array of ObjectIds referencing the 'Category' model
   categories: [{
-    type: _mongoose["default"].Schema.Types.ObjectId,
+    type: _mongoose.default.Schema.Types.ObjectId,
     ref: 'Category'
   }]
 }, {
   timestamps: true,
   collection: 'newproducts'
 });
-var Product = _mongoose["default"].model('Product', ProductSchema);
+const Product = _mongoose.default.model('Product', ProductSchema);
 module.exports = Product;

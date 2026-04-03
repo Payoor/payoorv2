@@ -1,8 +1,8 @@
 "use strict";
 
-var mongoose = require('mongoose');
-var jwt = require('jsonwebtoken');
-var UserSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
@@ -15,12 +15,10 @@ var UserSchema = new mongoose.Schema({
     unique: true,
     sparse: true,
     validate: {
-      validator: function validator(v) {
+      validator: function (v) {
         return !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
       },
-      message: function message(props) {
-        return "".concat(props.value, " is not a valid email!");
-      }
+      message: props => `${props.value} is not a valid email!`
     }
   },
   phoneNumber: {
@@ -52,50 +50,50 @@ var UserSchema = new mongoose.Schema({
   },
   authMethods: {
     type: [String],
-    "default": ['otp']
+    default: ['otp']
   },
   profilePicture: {
     type: String,
-    "default": null
+    default: null
   },
   createdAt: {
     type: Date,
-    "default": Date.now
+    default: Date.now
   }
 }, {
   timestamps: true
 });
 UserSchema.methods.generateAuthToken = function () {
-  var user = this;
-  var access = 'auth';
-  var token = jwt.sign({
+  let user = this;
+  let access = 'auth';
+  let token = jwt.sign({
     _id: user._id.toHexString(),
-    access: access
+    access
   }, process.env.JWT_SECRET).toString();
   user.tokens.push({
-    access: access,
-    token: token
+    access,
+    token
   });
-  return user.save().then(function () {
+  return user.save().then(() => {
     return token;
   });
 };
 UserSchema.methods.removeToken = function (token) {
-  var user = this;
+  let user = this;
 
   //console.log(user, 'test for user')
 
   return user.updateOne({
     $pull: {
       tokens: {
-        token: token
+        token
       }
     }
   });
 };
 UserSchema.statics.findByToken = function (token) {
-  var User = this;
-  var decoded;
+  let User = this;
+  let decoded;
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (e) {
@@ -108,7 +106,7 @@ UserSchema.statics.findByToken = function (token) {
   });
 };
 UserSchema.statics.findByIdentifier = function (identifier) {
-  var User = this;
+  const User = this;
   return User.findOne({
     $or: [{
       email: identifier.toLowerCase().trim()
@@ -117,5 +115,5 @@ UserSchema.statics.findByIdentifier = function (identifier) {
     }]
   });
 };
-var User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
 module.exports = User;

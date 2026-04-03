@@ -1,7 +1,7 @@
 "use strict";
 
-var Redis = require('ioredis');
-var redisClient = new Redis({
+const Redis = require('ioredis');
+const redisClient = new Redis({
   port: 6379,
   // Redis port
   host: "redisdb",
@@ -33,20 +33,20 @@ async function connectRedis () {
 } */
 
 // Event listeners for better visibility
-redisClient.on('connect', function () {
+redisClient.on('connect', () => {
   console.log('✅ Redis client connected');
 });
-redisClient.on('ready', function () {
+redisClient.on('ready', () => {
   console.log('✅ Redis client is ready');
 });
-redisClient.on('reconnecting', function () {
+redisClient.on('reconnecting', () => {
   console.log('🔄 Redis client reconnecting...');
 });
-redisClient.on('error', function (err) {
+redisClient.on('error', err => {
   console.error('❌ Redis Client Error:', err);
 });
 module.exports = {
-  redisClient: redisClient
+  redisClient
 };
 
 //docker exec -it b3e983938e8a bash

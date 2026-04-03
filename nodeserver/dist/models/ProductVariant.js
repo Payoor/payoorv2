@@ -1,10 +1,10 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 var _mongoose = _interopRequireDefault(require("mongoose"));
-function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
-var ProductVariantSchema = new _mongoose["default"].Schema({
+const ProductVariantSchema = new _mongoose.default.Schema({
   productId: {
-    type: _mongoose["default"].Schema.Types.ObjectId,
+    type: _mongoose.default.Schema.Types.ObjectId,
     ref: 'Product',
     required: true
   },
@@ -24,14 +24,14 @@ var ProductVariantSchema = new _mongoose["default"].Schema({
   },
   availability: {
     type: String,
-    "enum": ['YES', 'NO'],
-    "default": 'YES'
+    enum: ['YES', 'NO'],
+    default: 'YES'
   }
 }, {
   timestamps: true,
   collection: 'productvariants'
 });
-var ProductVariant = _mongoose["default"].model('ProductVariant', ProductVariantSchema);
+const ProductVariant = _mongoose.default.model('ProductVariant', ProductVariantSchema);
 module.exports = ProductVariant;
 
 /*Example: For your variantsCollection.find({ productId: productId }), 

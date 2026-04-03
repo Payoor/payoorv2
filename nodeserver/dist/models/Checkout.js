@@ -1,7 +1,7 @@
 "use strict";
 
-var mongoose = require('mongoose');
-var DeliveryDateSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+const DeliveryDateSchema = new mongoose.Schema({
   day: String,
   date: Number,
   month: String,
@@ -9,7 +9,7 @@ var DeliveryDateSchema = new mongoose.Schema({
 }, {
   _id: false
 });
-var CheckoutSchema = new mongoose.Schema({
+const CheckoutSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -23,23 +23,23 @@ var CheckoutSchema = new mongoose.Schema({
     type: {
       coupon_code: {
         type: String,
-        "default": null
+        default: null
       },
       coupon_type: {
         type: String,
-        "default": null
+        default: null
       },
       percentage: {
         type: Number,
-        "default": null
+        default: null
       },
       flat: {
         type: Number,
-        "default": null
+        default: null
       },
       freeDelivery: {
         type: Boolean,
-        "default": false
+        default: false
       }
     },
     required: false
@@ -50,19 +50,19 @@ var CheckoutSchema = new mongoose.Schema({
   },
   delivery_instruction: {
     type: String,
-    "default": ''
+    default: ''
   },
   promo_code_type: {
     type: String,
-    "default": ''
+    default: ''
   },
   promo_code: {
     type: String,
-    "default": ''
+    default: ''
   },
   phone_number: {
     type: String,
-    "default": ''
+    default: ''
   },
   cart_items: {
     type: Map,
@@ -87,7 +87,7 @@ var CheckoutSchema = new mongoose.Schema({
   },
   created_at: {
     type: Date,
-    "default": Date.now
+    default: Date.now
   }
 }, {
   timestamps: true
