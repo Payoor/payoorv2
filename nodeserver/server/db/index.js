@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 mongoose
-  .connect(process.env.MONGO_URL, { 
+  .connect(process.env.MONGO_URL, {  
     useNewUrlParser: true
     //useUnifiedTopology: true
   })

@@ -53,8 +53,9 @@ var GoogleApiController = /*#__PURE__*/function () {
             case 9:
               _context.prev = 9;
               _context.t0 = _context["catch"](0);
+              console.log(_context.t0);
               next(_context.t0);
-            case 12:
+            case 13:
             case "end":
               return _context.stop();
           }
@@ -115,13 +116,14 @@ var GoogleApiController = /*#__PURE__*/function () {
               };
               return _context2.abrupt("return", res.status(200).json(_response));
             case 14:
-              _context2.next = 19;
+              _context2.next = 20;
               break;
             case 16:
               _context2.prev = 16;
               _context2.t0 = _context2["catch"](0);
+              console.log(_context2.t0);
               next(_context2.t0);
-            case 19:
+            case 20:
             case "end":
               return _context2.stop();
           }

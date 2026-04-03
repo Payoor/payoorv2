@@ -30,6 +30,9 @@ require('./db');
 
 var port = process.env.PORT;
 app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 app.get('/health', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res, next) {
     return _regeneratorRuntime().wrap(function _callee$(_context) {

@@ -42,15 +42,24 @@
                         </div>
                     </div>
 
-                    <div class="landing__animation mobile">
-                        <div class="landing__animation--content">
-                            <figure class="hand-receiver">
-                                <img src="/svg/handreceiver.svg" />
-                            </figure>
+                    <!--<GoogleButton />-->
 
-                            <figure class="hand-giver">
-                                <img src="/svg/handgiver.svg" />
-                            </figure>
+                    <div class="landing__emailbtn">
+                        <button @click="$router.push('/authp')">Continue with Email</button>
+                    </div>
+
+
+                    <div class="landing__animation__area">
+                        <div class="landing__animation mobile">
+                            <div class="landing__animation--content">
+                                <figure class="hand-receiver">
+                                    <img src="/svg/handreceiver.svg" />
+                                </figure>
+
+                                <figure class="hand-giver">
+                                    <img src="/svg/handgiver.svg" />
+                                </figure>
+                            </div>
                         </div>
                     </div>
 
@@ -219,6 +228,21 @@ export default {
         justify-content: center;
         align-items: center;
         z-index: 4;
+
+        &__area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 8;
+
+            position: absolute;
+            top: 39rem;
+            left: 0;
+            z-index: 8;
+            background: red;
+            height: auto;
+            width: 100vw;
+        }
 
         &.mobile {
             display: none;
@@ -424,6 +448,65 @@ export default {
             color: $white;
             cursor: pointer;
             padding: 1rem 4rem;
+        }
+    }
+
+    &__emailbtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+
+        position: relative;
+        z-index: 10;
+
+        @media screen and (max-width: 720px) {
+            margin-bottom: 16px;
+        }
+
+
+        & button {
+            width: 39.5rem;
+            height: 3rem;
+            max-width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+
+            font-size: 1.6rem;
+            font-weight: 600;
+            padding: 2.5rem;
+            background: #000;
+            color: #fff;
+            border-radius: 1rem;
+            border: none;
+
+            font-family: Roboto, Arial, sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+
+            cursor: pointer;
+
+            padding: 0 1rem;
+
+            box-shadow: 0 0.0625rem 0.125rem rgba(60, 64, 67, 0.1);
+            transition: all 0.2s ease;
+
+            animation: fadeInUp 0.5s ease-out forwards;
+
+            @media (max-width: 30rem) {
+                width: 39.5rem;
+                height: 3rem;
+                font-size: 1.6rem;
+                font-weight: 600;
+                padding: 2.5rem;
+                background: $white;
+                color: $black;
+                border-radius: 1rem;
+                border: none;
+            }
         }
     }
 

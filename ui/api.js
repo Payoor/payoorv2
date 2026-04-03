@@ -7,10 +7,10 @@ export const serverurl = (() => {
     }
   }
 
-  return 'http://192.168.0.196'
+  return 'http://localhost/api'
 })()
 
-export async function handleFetchError (response) {
+export async function handleFetchError (response) { 
   if (!response.ok) {
     let errorData;
 

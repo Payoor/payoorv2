@@ -28,6 +28,7 @@ import redisManager from './RedisManager'
 const port = process.env.PORT
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/health', async (req, res, next) => {
   try {

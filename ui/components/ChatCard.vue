@@ -43,7 +43,7 @@ export default {
         const previousPage = this.$route.query.prevpage;
         const currentProduct = this.$route.query.currentproduct;
 
-        console.log(this.product)
+       // console.log(this.product)
     },
     computed: {
         name() {

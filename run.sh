@@ -2,10 +2,10 @@
 
 set -e  # Exit if any command fails
 
-sudo docker system prune -af --volumes
+#sudo docker system prune -af --volumes
 
 echo "Starting containers..."
-docker-compose up --build -d
+docker compose up --build -d
 
 echo "Waiting for Elasticsearch..."
 
@@ -27,7 +27,7 @@ echo "✅ Node server is ready!"
 
 echo "🚀 Running Node scripts inside 'nodeserver' container..."
 
-docker exec -it nodeserver node server/scripts/createProductsIndex.js
+#docker exec -it nodeserver node server/scripts/createProductsIndex.js
 
 docker exec -it nodeserver node server/scripts/createMetadataIndex.js
 

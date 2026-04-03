@@ -7,7 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
     require("dotenv").config();
 }
 
-class GoogleApiController {
+class GoogleApiController { 
     async searchPlaces(req, res, next) {
         try {
             const placesResponse = await axios.get(
@@ -19,7 +19,7 @@ class GoogleApiController {
                 icon: place.icon
             }));
 
-            const response = {
+            const response = { 
                 success: true,
                 data: {
                     placesResponse: filteredResults
@@ -27,6 +27,7 @@ class GoogleApiController {
             }
             return res.status(200).json(response);
         } catch (error) {
+            console.log(error);
             next(error)
         }
     }
@@ -69,6 +70,7 @@ class GoogleApiController {
             }
 
         } catch (error) {
+            console.log(error); 
             next(error)
         }
     }

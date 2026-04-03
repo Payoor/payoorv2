@@ -9,8 +9,9 @@ export default {
       { charset: 'utf-8' },
       {
         name: 'viewport',
-        content: 'width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
-      },      
+        content:
+          'width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
+      },
       {
         hid: 'description',
         name: 'description',
@@ -41,9 +42,6 @@ export default {
       },
       {
         src: '/scripts/index.js'
-      },
-      {
-        src: '/scripts/firebase.js'
       }
     ]
   },
@@ -60,7 +58,61 @@ export default {
   buildModules: ['@nuxtjs/style-resources'],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
+
+  axios: {
+    proxy: true
+  },
+
+  watchers: {
+    webpack: {
+      ignored: [
+        '**/node_modules/**',
+        '**/.git/**',
+        '**/.nuxt/**',
+        '**/dist/**',
+        '**/coverage/**'
+      ]
+      // If file events are flaky in Docker, enable polling:
+      // poll: 1000
+    }
+  },
+
+  auth: {
+    redirect: {
+      login: '/', // where to go if not logged in
+      logout: '/',
+      callback: '/auth/callback', // callback page you’ll create
+      home: '/'
+    },
+    strategies: {
+      // We’ll use a custom scheme to do redirect OAuth (Google)
+      google: {
+        scheme: 'oauth2',
+        endpoints: {
+          authorization: 'https://accounts.google.com/o/oauth2/v2/auth',
+          token: '/api/shopper/auth/google/token',
+          userInfo: '/api/shopper/auth/google/user',
+          logout: false
+        },
+        token: {
+          property: 'access_token',
+          type: 'Bearer',
+          maxAge: 60 * 60
+        },
+        user: {
+          property: false, // ✅ user object is the whole response
+          autoFetch: true
+        },
+        responseType: 'code',
+        grantType: 'authorization_code',
+        clientId: '845190882138-9pr7hgfgeidb7f90qom56r810mf7vnes.apps.googleusercontent.com',
+        scope: ['openid', 'profile', 'email'],
+        codeChallengeMethod: 'S256'
+      }
+    }
+  },
+
   styleResources: {
     scss: [
       '~/assets/scss/variables.scss',
@@ -69,12 +121,12 @@ export default {
       '~/assets/scss/animations.scss',
       '~/assets/scss/classes.scss',
       '~/assets/scss/landing.scss',
-      '~/assets/scss/admintable.scss',
+      '~/assets/scss/admintable.scss'
       //'~/assets/scss/index.scss',
     ],
     hoistUseStatements: true
   },
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+
   build: {
     transpile: [({ isLegacy }) => isLegacy && 'axios']
   }

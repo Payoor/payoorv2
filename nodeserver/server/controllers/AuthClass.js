@@ -3,11 +3,11 @@ import { Resend } from 'resend'
 import speakeasy from 'speakeasy'
 import crypto from 'crypto'
 
-const resend = new Resend(`${process.env.RESEND_API_KEY}`);
+const resend = new Resend(`${process.env.RESEND_API_KEY}`)
 
-import redisManager from '../RedisManager';
+import redisManager from '../RedisManager'
 
-import User from '../models/User';
+import User from '../models/User'
 
 class AuthClass {
   static async genOtp (identifier) {
@@ -117,7 +117,7 @@ class AuthClass {
       }
 
       const key = `otp:code:${hashOtp(otp)}`
-      const expirationSeconds = 600;
+      const expirationSeconds = 600
 
       await redisManager.setItem({
         key,
@@ -128,7 +128,7 @@ class AuthClass {
       console.log(`Mapped hashed OTP to identifier. Key: ${key}`)
       return true
     } catch (error) {
-      console.error('[saveOtpToIdentifier] Error:', error);
+      console.error('[saveOtpToIdentifier] Error:', error)
       next(error)
     }
   }
@@ -148,7 +148,7 @@ class AuthClass {
       let identifier
       try {
         console.time('[verifyOtp] Redis GET')
-        
+
         identifier = await redisManager.getItem(hashedKey)
         console.timeEnd('[verifyOtp] Redis GET')
       } catch (redisErr) {
@@ -193,28 +193,28 @@ class AuthClass {
         }
       }
 
-      let token;
-      
+      let token
+
       try {
         console.time('[verifyOtp] Generate Token')
         token = await user.generateAuthToken()
         console.timeEnd('[verifyOtp] Generate Token')
       } catch (tokenErr) {
         return next(tokenErr)
-      }
+      } 
 
       try {
         console.time('[verifyOtp] Redis SETEX')
-       
+
         await redisManager.setItem({
           key: `auth:session:${token}`,
           item: user._id.toString(),
-          expiration: 2592000 
+          expiration: 2592000
         })
         console.timeEnd('[verifyOtp] Redis SETEX')
 
-        console.log('[verifyOtp] Cleaning up OTP key')
-        
+        console.log('[verifyOtp] Cleaning up OTP key') 
+
         await redisManager.deleteItem(hashedKey)
       } catch (redisWriteErr) {
         console.error('[verifyOtp] Redis SETEX/DEL failed:', redisWriteErr)
@@ -235,6 +235,49 @@ class AuthClass {
     } catch (error) {
       console.error('[verifyOtp] Uncaught error:', error)
       return next(error)
+    }
+  }
+
+  static async authGoogleToken (req, res, next) {
+    try {
+      const code = req.body?.code || req.query?.code
+
+      if (!code) {
+        return res.status(400).json({
+          error: 'Missing authorization code',
+          contentType: req.headers['content-type'] || null
+        })
+      }
+
+      console.log('Received code:', code)
+
+      // TEMP: prove Nuxt auth flow works
+      return res.json({
+        access_token: 'test-token',
+        token_type: 'Bearer',
+        expires_in: 3600
+      })
+    } catch (error) {
+      console.error('[googleAuth] Error:', error)
+      next(error)
+    }
+  }
+
+  static async authGoogleUser (req, res, next) {
+    try {
+      const auth = req.headers.authorization || ''
+      const token = auth.startsWith('Bearer ') ? auth.slice(7) : null
+
+      if (!token) return res.status(401).json({ error: 'Missing bearer token' })
+
+      // TEMP: always return a user
+      return res.json({
+        id: '1',
+        name: 'Test User',
+        email: 'test@example.com'
+      })
+    } catch (error) {
+      next(error)
     }
   }
 
@@ -287,7 +330,6 @@ class AuthClass {
 
       const token = await user.generateAuthToken()
 
-     
       await redisManager.setItem({
         key: `auth:session:${token}`,
         item: user._id.toString(),
@@ -312,7 +354,7 @@ class AuthClass {
         }
       })
     } catch (error) {
-      console.error('[googleAuth] Error:', error) 
+      console.error('[googleAuth] Error:', error)
       next(error)
     }
   }
@@ -321,7 +363,7 @@ class AuthClass {
     try {
       const { jwttoken } = req.query
 
-      const userId = await redisManager.getItem(`auth:session:${jwttoken}`);
+      const userId = await redisManager.getItem(`auth:session:${jwttoken}`)
 
       if (userId) {
         const user = await User.findByToken(jwttoken)
@@ -348,7 +390,7 @@ class AuthClass {
           }
         })
       } else {
-        const user = await User.findByToken(jwttoken) 
+        const user = await User.findByToken(jwttoken)
 
         if (user) {
           await user.removeToken(jwttoken)
@@ -360,7 +402,7 @@ class AuthClass {
         })
       }
     } catch (error) {
-      console.error('[getValidUser] Error:', error) 
+      console.error('[getValidUser] Error:', error)
       next(error)
     }
   }
@@ -368,7 +410,7 @@ class AuthClass {
   static async updateDetails (req, res, next) {
     try {
       const { phoneNumber, name } = req.body
-      const userId = req.userId 
+      const userId = req.userId
 
       if (!userId) {
         return res.status(401).json({
@@ -407,7 +449,7 @@ class AuthClass {
   static async updatePhoneNumber (req, res, next) {
     try {
       const { phoneNumber } = req.body
-      const userId = req.userId 
+      const userId = req.userId
 
       if (!userId) {
         return res.status(401).json({
@@ -439,7 +481,7 @@ class AuthClass {
         }
       })
     } catch (error) {
-      console.error('[updatePhoneNumber] Error:', error) 
+      console.error('[updatePhoneNumber] Error:', error)
       next(error)
     }
   }
@@ -447,7 +489,7 @@ class AuthClass {
   static async updateName (req, res, next) {
     try {
       const { name } = req.body
-      const userId = req.userId 
+      const userId = req.userId
 
       if (!userId) {
         return res.status(401).json({
@@ -479,7 +521,7 @@ class AuthClass {
         }
       })
     } catch (error) {
-      console.error('[updateName] Error:', error) 
+      console.error('[updateName] Error:', error)
       next(error)
     }
   }
@@ -497,7 +539,6 @@ class AuthClass {
       const user = await User.findByToken(token)
 
       if (!user) {
-      
         console.warn(
           `User not found for token: ${token}, attempting Redis cleanup.`
         )
@@ -510,14 +551,14 @@ class AuthClass {
       }
 
       await user.removeToken(token)
-      
+
       await redisManager.deleteItem(`auth:session:${token}`)
 
       return res
         .status(200)
         .json({ success: true, userMessage: 'Signed out successfully' })
     } catch (error) {
-      console.error('[signOut] Error:', error);
+      console.error('[signOut] Error:', error)
       next(error)
     }
   }
@@ -529,7 +570,7 @@ function hashOtp (otp) {
 
 function identifierType (input) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  const phoneRegex = /^(\+?[1-9]\d{1,14}|0\d{10})$/ 
+  const phoneRegex = /^(\+?[1-9]\d{1,14}|0\d{10})$/
 
   if (emailRegex.test(input.trim().toLowerCase())) {
     return 'email'

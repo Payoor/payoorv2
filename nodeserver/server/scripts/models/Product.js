@@ -1,0 +1,58 @@
+import mongoose from 'mongoose'
+
+const ProductSchema = new mongoose.Schema(
+  {
+    image: {
+      type: String,
+      required: true
+    },
+    generatedDescription: {
+      type: String,
+      // required: true,
+      trim: true
+    },
+    generatedCategories: {
+      type: [String],
+      default: []
+    },
+    synced_to_algolia: {
+      type: Boolean,
+      default: false
+    },
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true
+    },
+    variantCount: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    metadata: {
+      type: String,
+      trim: true
+    },
+    description: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    // Array of ObjectIds referencing the 'Category' model
+    categories: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
+      }
+    ]
+  },
+  {
+    timestamps: true,
+    collection: 'newproducts'
+  }
+)
+
+const Product = mongoose.model('Product', ProductSchema)
+
+export default Product
