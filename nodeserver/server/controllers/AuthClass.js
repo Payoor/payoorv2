@@ -396,6 +396,8 @@ class AuthClass {
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
       const user = await User.findById(decoded._id)
 
+      console.log('user here', user)
+
       if (!user) {
         return res
           .status(401)

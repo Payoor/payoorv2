@@ -370,6 +370,7 @@ class AuthClass {
       }
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await _User.default.findById(decoded._id);
+      console.log('user here', user);
       if (!user) {
         return res.status(401).json({
           error: 'Invalid token or user not found'
