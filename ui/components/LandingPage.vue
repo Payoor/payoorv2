@@ -42,7 +42,7 @@
                         </div>
                     </div>
 
-                    <!--<GoogleButton />-->
+                    <GoogleButton />
 
                     <div class="landing__emailbtn">
                         <button @click="$router.push('/authp')">Continue with Email</button>

@@ -12,7 +12,7 @@
 
         <div class="pleasewait" v-if="!checkedValidUser">
             <ChatHeader :logovisible="true" :green="true" />
-            Please hold your horses...
+            Please hold your horses, buddy…
         </div>
     </div>
 </template>

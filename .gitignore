@@ -28,3 +28,4 @@ docker-compose.yml
 production_files/
 development_files/
 run.sh
+nginx/dev

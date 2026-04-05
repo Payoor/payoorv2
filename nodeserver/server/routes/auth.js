@@ -18,7 +18,7 @@ authRoute.post('/shopper/auth/google', AuthClass.googleAuth)
 
 authRoute.post('/shopper/auth/google/token', AuthClass.authGoogleToken)
 
-authRoute.get('/shopper/auth/google/user', AuthClass.authGoogleUser)
+authRoute.get('/shopper/auth/google/user', AuthClass.authGoogleUser);  
 
 authRoute.get('/shopper/auth/test', async (req, res) => {
   

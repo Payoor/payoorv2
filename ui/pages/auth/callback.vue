@@ -1,36 +1,34 @@
 <template>
   <main style="padding:16px">
-    <p>Signing you in…</p>
+    <p>Signing you in, buddy…</p>
   </main>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  // IMPORTANT: force auth middleware on this route so it processes ?code&state
   middleware: ['auth'],
   auth: false,
 
   mounted() {
-    // Quick visibility
-    console.log('[callback] query:', this.$route.query)
-    console.log('[callback] initially loggedIn:', this.$auth.loggedIn)
-
-    const stop = this.$watch(
-      () => this.$auth.loggedIn,
-      (loggedIn) => {
-        console.log('[callback] watch loggedIn:', loggedIn)
-        if (loggedIn) {
-          stop()
-          this.$router.replace(this.$auth.options.redirect.home || '/')
-        }
-      },
-      { immediate: true }
-    )
-
     setTimeout(() => {
-      console.log('[callback] token:', this.$auth.strategy.token.get())
-      console.log('[callback] user:', this.$auth.user)
-    }, 1500)
+      const fullToken = this.$auth.strategy.token.get()
+      const rawToken = fullToken?.replace(/^Bearer\s+/i, '')
+      const user = this.$auth.user
+
+      console.log('loggedIn:', this.$auth.loggedIn)
+      console.log('full token:', fullToken)
+      console.log('raw token:', rawToken)
+      console.log('user:', user)
+
+      this.$store.dispatch('user/setJwtToken', rawToken)
+      this.$store.dispatch('user/addCurrentUser', user)
+
+      if (this.$auth.loggedIn) {
+        this.$router.replace('/')
+      }
+    }, 1000)
   }
 }
 </script>

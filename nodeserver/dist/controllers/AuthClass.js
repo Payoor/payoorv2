@@ -11,6 +11,8 @@ var _crypto = _interopRequireDefault(require("crypto"));
 var _RedisManager = _interopRequireDefault(require("../RedisManager"));
 var _User = _interopRequireDefault(require("../models/User"));
 require('dotenv').config();
+const axios = require('axios');
+const jwt = require('jsonwebtoken');
 const resend = new _resend.Resend(`${process.env.RESEND_API_KEY}`);
 class AuthClass {
   static async genOtp(identifier) {
@@ -226,25 +228,134 @@ class AuthClass {
       return next(error);
     }
   }
+
+  // '/shopper/auth/google/token'
+
   static async authGoogleToken(req, res, next) {
     try {
-      const code = req.body?.code || req.query?.code;
+      console.log('Incoming body:', req.body);
+      const code = req.body?.code;
+      const clientId = req.body?.client_id;
+      const redirectUri = req.body?.redirect_uri;
+      const codeVerifier = req.body?.code_verifier;
       if (!code) {
         return res.status(400).json({
-          error: 'Missing authorization code',
-          contentType: req.headers['content-type'] || null
+          error: 'Missing authorization code'
         });
       }
-      console.log('Received code:', code);
+      if (!clientId) {
+        return res.status(400).json({
+          error: 'Missing client_id'
+        });
+      }
+      if (!redirectUri) {
+        return res.status(400).json({
+          error: 'Missing redirect_uri'
+        });
+      }
+      if (!codeVerifier) {
+        return res.status(400).json({
+          error: 'Missing code_verifier'
+        });
+      }
+      const params = new URLSearchParams();
+      params.append('code', code);
+      params.append('client_id', clientId);
+      params.append('client_secret', process.env.GOOGLE_CLIENT_SECRET || '');
+      params.append('redirect_uri', redirectUri);
+      params.append('grant_type', 'authorization_code');
+      params.append('code_verifier', codeVerifier);
+      const googleTokenRes = await axios.post('https://oauth2.googleapis.com/token', params.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
+      console.log('Google token response:', googleTokenRes.data);
+      const {
+        id_token
+      } = googleTokenRes.data;
+      if (!id_token) {
+        return res.status(500).json({
+          error: 'Missing id_token from Google'
+        });
+      }
+      const decoded = JSON.parse(Buffer.from(id_token.split('.')[1], 'base64').toString('utf8'));
+      console.log('Decoded Google payload:', decoded);
+      const email = decoded.email?.toLowerCase().trim();
+      const name = decoded.name?.trim() || '';
+      const picture = decoded.picture || null;
+      const googleId = decoded.sub;
+      if (!email) {
+        return res.status(500).json({
+          error: 'Google account email not found'
+        });
+      }
+      if (!googleId) {
+        return res.status(500).json({
+          error: 'Google account id not found'
+        });
+      }
+      let user = null;
 
-      // TEMP: prove Nuxt auth flow works
-      return res.json({
-        access_token: 'test-token',
+      // 1) Prefer direct googleId match
+      user = await _User.default.findOne({
+        googleId
+      });
+
+      // 2) Otherwise merge by email
+      if (!user) {
+        user = await _User.default.findOne({
+          email
+        });
+      }
+
+      // 3) Create or update user
+      if (!user) {
+        user = new _User.default({
+          name,
+          email,
+          googleId,
+          authMethods: ['google'],
+          profilePicture: picture
+        });
+      } else {
+        // merge Google into existing user
+        user.googleId = user.googleId || googleId;
+        if (!Array.isArray(user.authMethods)) {
+          user.authMethods = [];
+        }
+        if (!user.authMethods.includes('google')) {
+          user.authMethods.push('google');
+        }
+
+        // only fill missing things, or update if you want Google to be source of truth
+        if (!user.name && name) {
+          user.name = name;
+        }
+        if ((!user.profilePicture || user.profilePicture === null) && picture) {
+          user.profilePicture = picture;
+        }
+
+        // keep email normalized
+        user.email = email;
+      }
+      await user.save();
+      const appToken = await user.generateAuthToken();
+      console.log('Generated app token:', appToken);
+      console.log('user', user);
+      await _RedisManager.default.setItem({
+        key: `auth:session:${appToken}`,
+        item: user._id.toString(),
+        expiration: 2592000
+      });
+      return res.status(200).json({
+        access_token: appToken,
         token_type: 'Bearer',
-        expires_in: 3600
+        expires_in: 3600,
+        token: appToken
       });
     } catch (error) {
-      console.error('[googleAuth] Error:', error);
+      console.error('[googleAuthToken] Error:', error.response?.data || error.message);
       next(error);
     }
   }
@@ -252,20 +363,51 @@ class AuthClass {
     try {
       const auth = req.headers.authorization || '';
       const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
-      if (!token) return res.status(401).json({
-        error: 'Missing bearer token'
-      });
-
-      // TEMP: always return a user
-      return res.json({
-        id: '1',
-        name: 'Test User',
-        email: 'test@example.com'
+      if (!token) {
+        return res.status(401).json({
+          error: 'Missing bearer token'
+        });
+      }
+      const user = await _User.default.findByToken(token);
+      if (!user) {
+        return res.status(401).json({
+          error: 'Invalid token or user not found'
+        });
+      }
+      return res.status(200).json({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber || null,
+        googleId: user.googleId || null,
+        authMethods: user.authMethods || [],
+        profilePicture: user.profilePicture || null
       });
     } catch (error) {
+      console.error('[googleAuthUser] Error:', error.message);
       next(error);
     }
   }
+
+  /*static async authGoogleUser(req, res, next) {
+    try {
+      const auth = req.headers.authorization || ''
+      const token = auth.startsWith('Bearer ') ? auth.slice(7) : null
+       if (!token) {
+        return res.status(401).json({ error: 'Missing bearer token' })
+      }
+       const decoded = jwt.verify(token, process.env.JWT_SECRET)
+       return res.json({
+        id: decoded.uid,
+        email: decoded.email,
+        name: decoded.name
+      })
+    } catch (error) {
+      console.error('[googleAuthUser] Error:', error.message)
+      next(error)
+    }
+  }*/
+
   static async googleAuth(req, res, next) {
     try {
       const {

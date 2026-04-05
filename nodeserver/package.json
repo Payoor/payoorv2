@@ -24,7 +24,7 @@
     "clean": "rimraf dist",
     "build": "npm-run-all clean transpile",
     "dev": "npm-run-all build start",
-    "watch:dev": "nodemon"
+    "watch:dev": "nodemon --watch server --ext js,json --exec \"npm run dev\""
   },
   "nodemonConfig": {
     "exec": "npm run dev",

@@ -58,10 +58,23 @@ export default {
   buildModules: ['@nuxtjs/style-resources'],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/proxy', '@nuxtjs/auth-next'],
 
   axios: {
     proxy: true
+  },
+
+  proxy: {
+    '/api/': {
+      target:
+        process.env.NODE_ENV === 'production'
+          ? 'https://api.payoor.store'
+          : 'http://nodeserver:3001',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api/': '/'
+      }
+    }
   },
 
   watchers: {
@@ -83,7 +96,7 @@ export default {
       login: '/', // where to go if not logged in
       logout: '/',
       callback: '/auth/callback', // callback page you’ll create
-      home: '/'
+      home: false // '/'
     },
     strategies: {
       // We’ll use a custom scheme to do redirect OAuth (Google)
@@ -93,6 +106,7 @@ export default {
           authorization: 'https://accounts.google.com/o/oauth2/v2/auth',
           token: '/api/shopper/auth/google/token',
           userInfo: '/api/shopper/auth/google/user',
+          user: '/api/shopper/auth/google/user',
           logout: false
         },
         token: {
@@ -106,7 +120,8 @@ export default {
         },
         responseType: 'code',
         grantType: 'authorization_code',
-        clientId: '845190882138-9pr7hgfgeidb7f90qom56r810mf7vnes.apps.googleusercontent.com',
+        clientId:
+          '845190882138-9pr7hgfgeidb7f90qom56r810mf7vnes.apps.googleusercontent.com',
         scope: ['openid', 'profile', 'email'],
         codeChallengeMethod: 'S256'
       }
@@ -122,7 +137,6 @@ export default {
       '~/assets/scss/classes.scss',
       '~/assets/scss/landing.scss',
       '~/assets/scss/admintable.scss'
-      //'~/assets/scss/index.scss',
     ],
     hoistUseStatements: true
   },
