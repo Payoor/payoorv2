@@ -368,7 +368,8 @@ class AuthClass {
           error: 'Missing bearer token'
         });
       }
-      const user = await _User.default.findByToken(token);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await _User.default.findById(decoded._id);
       if (!user) {
         return res.status(401).json({
           error: 'Invalid token or user not found'

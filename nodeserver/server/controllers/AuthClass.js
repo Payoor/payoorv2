@@ -203,19 +203,19 @@ class AuthClass {
         console.timeEnd('[verifyOtp] Generate Token')
       } catch (tokenErr) {
         return next(tokenErr)
-      } 
+      }
 
       try {
         console.time('[verifyOtp] Redis SETEX')
 
         await redisManager.setItem({
           key: `auth:session:${token}`,
-          item: user._id.toString(), 
+          item: user._id.toString(),
           expiration: 2592000
         })
         console.timeEnd('[verifyOtp] Redis SETEX')
 
-        console.log('[verifyOtp] Cleaning up OTP key') 
+        console.log('[verifyOtp] Cleaning up OTP key')
 
         await redisManager.deleteItem(hashedKey)
       } catch (redisWriteErr) {
@@ -242,7 +242,7 @@ class AuthClass {
 
   // '/shopper/auth/google/token'
 
-  static async authGoogleToken(req, res, next) {
+  static async authGoogleToken (req, res, next) {
     try {
       console.log('Incoming body:', req.body)
 
@@ -359,9 +359,9 @@ class AuthClass {
       await user.save()
 
       const appToken = await user.generateAuthToken()
-      console.log('Generated app token:', appToken); 
+      console.log('Generated app token:', appToken)
 
-      console.log('user', user);
+      console.log('user', user)
 
       await redisManager.setItem({
         key: `auth:session:${appToken}`,
@@ -373,7 +373,7 @@ class AuthClass {
         access_token: appToken,
         token_type: 'Bearer',
         expires_in: 3600,
-        token: appToken,
+        token: appToken
       })
     } catch (error) {
       console.error(
@@ -384,7 +384,7 @@ class AuthClass {
     }
   }
 
-  static async authGoogleUser(req, res, next) {
+  static async authGoogleUser (req, res, next) {
     try {
       const auth = req.headers.authorization || ''
       const token = auth.startsWith('Bearer ') ? auth.slice(7) : null
@@ -393,10 +393,13 @@ class AuthClass {
         return res.status(401).json({ error: 'Missing bearer token' })
       }
 
-      const user = await User.findByToken(token)
+      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      const user = await User.findById(decoded._id)
 
       if (!user) {
-        return res.status(401).json({ error: 'Invalid token or user not found' })
+        return res
+          .status(401)
+          .json({ error: 'Invalid token or user not found' })
       }
 
       return res.status(200).json({
