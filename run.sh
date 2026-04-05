@@ -6,7 +6,7 @@ echo "Stopping old containers and removing volumes..."
 docker compose down -v
 
 echo "Building containers..."
-docker compose build --no-cache nodeserver nodeserver2 nodeserver3 telegbot
+docker compose build --no-cache nodeserver nodeserver2 nodeserver3 telegbot shopui
 
 echo "Starting containers..."
 docker compose up -d

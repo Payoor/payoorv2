@@ -29,3 +29,4 @@ production_files/
 development_files/
 run.sh
 nginx/dev
+nginx/certs/*.pem"
