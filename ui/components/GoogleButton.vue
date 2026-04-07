@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { startGoogleLogin } from '~/utils/googleAuth'
+
 export default {
     data() {
         return {
@@ -32,16 +34,24 @@ export default {
     },
     methods: {
         async startGoogle() {
-            if (this.busy) return;
+            /* if (this.busy) return;
+ 
+             this.busy = true;
+             this.statusType = "loading";
+             this.statusText = "Redirecting with Google...";
+ 
+             // Redirect-based OAuth login
+             // This triggers the auth strategy "google"
+             await this.$auth.loginWith("google");
+             // After callback, Nuxt auth will redirect to /dashboard (auth.redirect.home)
+             // 
+             */
 
-            this.busy = true;
-            this.statusType = "loading";
-            this.statusText = "Redirecting with Google...";
-
-            // Redirect-based OAuth login
-            // This triggers the auth strategy "google"
-            await this.$auth.loginWith("google");
-            // After callback, Nuxt auth will redirect to /dashboard (auth.redirect.home)
+            try {
+                await startGoogleLogin();
+            } catch (error) {
+                console.error('Google login start failed:', error)
+            }
         },
     }
 };

@@ -1,7 +1,7 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const fs = require('fs')
-
 //import { connectProducer } from './kafkaclient/producer.js'
 
 import cron from 'node-cron'
@@ -9,10 +9,27 @@ import updateProductsVariantCounts from './utils/updateProductsVariantCounts.js'
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
+
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:8082',
+    'https://byo3w5nm4wfv.shares.zrok.io'
+  ]
+
+  app.use(
+    cors({
+      origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+          return callback(null, true)
+        }
+        return callback(new Error('Not allowed by CORS'))
+      },
+      credentials: true
+    })
+  )
 }
 
 require('./db')
-
 //import { runKafka } from './services/kafka-service'
 
 import authRoute from './routes/auth'
@@ -28,7 +45,7 @@ import redisManager from './RedisManager'
 const port = process.env.PORT
 
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }))
 
 app.get('/health', async (req, res, next) => {
   try {

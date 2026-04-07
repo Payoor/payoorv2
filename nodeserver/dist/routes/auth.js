@@ -14,7 +14,6 @@ if (process.env.NODE_ENV !== 'production') {
 const authRoute = (0, _express.default)();
 authRoute.post('/shopper/auth/mail', _AuthClass.default.sendEmailOtp);
 authRoute.post('/shopper/auth/verifyotp', _AuthClass.default.verifyOtp);
-authRoute.post('/shopper/auth/google', _AuthClass.default.googleAuth);
 authRoute.post('/shopper/auth/google/token', _AuthClass.default.authGoogleToken);
 authRoute.get('/shopper/auth/google/user', _AuthClass.default.authGoogleUser);
 authRoute.get('/shopper/auth/test', async (req, res) => {

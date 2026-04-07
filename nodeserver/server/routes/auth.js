@@ -14,8 +14,6 @@ authRoute.post('/shopper/auth/mail', AuthClass.sendEmailOtp)
 
 authRoute.post('/shopper/auth/verifyotp', AuthClass.verifyOtp)
 
-authRoute.post('/shopper/auth/google', AuthClass.googleAuth) 
-
 authRoute.post('/shopper/auth/google/token', AuthClass.authGoogleToken)
 
 authRoute.get('/shopper/auth/google/user', AuthClass.authGoogleUser);  

@@ -30,14 +30,13 @@ class AuthClass {
       const {
         identifier
       } = req.body;
-      console.log('Received identifier:', identifier);
       if (!identifier) {
         return res.status(400).json({
           userMessage: 'Identifier is required'
         });
       }
       const otp = await AuthClass.genOtp(identifier);
-      await AuthClass.saveOtpToIdentifier(otp, identifier, next);
+      await AuthClass.saveOtpToIdentifier(otp, identifier);
       const data = await resend.emails.send({
         from: 'Payoor <hello@otp.payoor.store>',
         to: [`${identifier}`],
@@ -55,14 +54,9 @@ class AuthClass {
             <tr>
               <td align="center">
                 <table role="presentation" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                  <!-- Header -->
                   <tr>
-                    <td style="background-color: rgba(36, 155, 72, 1); padding: 30px 0; text-align: center;">
-                      
-                    </td>
+                    <td style="background-color: rgba(36, 155, 72, 1); padding: 30px 0; text-align: center;"></td>
                   </tr>
-                  
-                  <!-- Content -->
                   <tr>
                     <td style="padding: 40px 30px;">
                       <h1 style="margin: 0 0 20px; color: #333333; font-size: 24px; font-weight: bold;">
@@ -84,8 +78,6 @@ class AuthClass {
                       </p>
                     </td>
                   </tr>
-                  
-                  <!-- Footer -->
                   <tr>
                     <td style="padding: 20px 30px; background-color: #f8f8f8; text-align: center;">
                       <p style="margin: 0; color: #999999; font-size: 14px;">
@@ -105,31 +97,26 @@ class AuthClass {
     `
       });
       console.log(data, 'email send data');
-      res.status(200).json({
+      return res.status(200).json({
         message: 'Authentication successful'
       });
     } catch (error) {
-      next(error);
+      return next(error);
     }
   }
-  static async saveOtpToIdentifier(otp, identifier, next) {
-    try {
-      if (!otp || !identifier) {
-        throw new Error('OTP and identifier are required');
-      }
-      const key = `otp:code:${hashOtp(otp)}`;
-      const expirationSeconds = 600;
-      await _RedisManager.default.setItem({
-        key,
-        item: identifier.toLowerCase().trim(),
-        expiration: expirationSeconds
-      });
-      console.log(`Mapped hashed OTP to identifier. Key: ${key}`);
-      return true;
-    } catch (error) {
-      console.error('[saveOtpToIdentifier] Error:', error);
-      next(error);
+  static async saveOtpToIdentifier(otp, identifier) {
+    if (!otp || !identifier) {
+      throw new Error('OTP and identifier are required');
     }
+    const key = `otp:code:${hashOtp(otp)}`;
+    const expirationSeconds = 600;
+    await _RedisManager.default.setItem({
+      key,
+      item: identifier.toLowerCase().trim(),
+      expiration: expirationSeconds
+    });
+    console.log(`Mapped hashed OTP to identifier. Key: ${key}`);
+    return true;
   }
   static async verifyOtp(req, res, next) {
     try {
@@ -169,15 +156,14 @@ class AuthClass {
       }
       if (!user) {
         const type = identifierType(identifier);
-        console.log('[verifyOtp] Creating new user of type:', type);
         try {
           if (type === 'email') {
             user = await _User.default.create({
-              email: identifier
+              email: identifier.toLowerCase().trim()
             });
           } else if (type === 'phone') {
             user = await _User.default.create({
-              phoneNumber: identifier
+              phoneNumber: identifier.trim()
             });
           } else {
             return res.status(400).json({
@@ -206,7 +192,6 @@ class AuthClass {
           expiration: 2592000
         });
         console.timeEnd('[verifyOtp] Redis SETEX');
-        console.log('[verifyOtp] Cleaning up OTP key');
         await _RedisManager.default.deleteItem(hashedKey);
       } catch (redisWriteErr) {
         console.error('[verifyOtp] Redis SETEX/DEL failed:', redisWriteErr);
@@ -230,7 +215,6 @@ class AuthClass {
   }
 
   // '/shopper/auth/google/token'
-
   static async authGoogleToken(req, res, next) {
     try {
       console.log('Incoming body:', req.body);
@@ -258,10 +242,15 @@ class AuthClass {
           error: 'Missing code_verifier'
         });
       }
+      if (!process.env.GOOGLE_CLIENT_SECRET) {
+        return res.status(500).json({
+          error: 'Missing GOOGLE_CLIENT_SECRET on server'
+        });
+      }
       const params = new URLSearchParams();
       params.append('code', code);
       params.append('client_id', clientId);
-      params.append('client_secret', process.env.GOOGLE_CLIENT_SECRET || '');
+      params.append('client_secret', process.env.GOOGLE_CLIENT_SECRET);
       params.append('redirect_uri', redirectUri);
       params.append('grant_type', 'authorization_code');
       params.append('code_verifier', codeVerifier);
@@ -272,14 +261,22 @@ class AuthClass {
       });
       console.log('Google token response:', googleTokenRes.data);
       const {
-        id_token
+        id_token,
+        access_token
       } = googleTokenRes.data;
       if (!id_token) {
         return res.status(500).json({
           error: 'Missing id_token from Google'
         });
       }
-      const decoded = JSON.parse(Buffer.from(id_token.split('.')[1], 'base64').toString('utf8'));
+      let decoded = null;
+      try {
+        decoded = JSON.parse(Buffer.from(id_token.split('.')[1], 'base64').toString('utf8'));
+      } catch (error) {
+        return res.status(500).json({
+          error: 'Failed to decode Google id_token'
+        });
+      }
       console.log('Decoded Google payload:', decoded);
       const email = decoded.email?.toLowerCase().trim();
       const name = decoded.name?.trim() || '';
@@ -296,20 +293,14 @@ class AuthClass {
         });
       }
       let user = null;
-
-      // 1) Prefer direct googleId match
       user = await _User.default.findOne({
         googleId
       });
-
-      // 2) Otherwise merge by email
       if (!user) {
         user = await _User.default.findOne({
           email
         });
       }
-
-      // 3) Create or update user
       if (!user) {
         user = new _User.default({
           name,
@@ -319,7 +310,6 @@ class AuthClass {
           profilePicture: picture
         });
       } else {
-        // merge Google into existing user
         user.googleId = user.googleId || googleId;
         if (!Array.isArray(user.authMethods)) {
           user.authMethods = [];
@@ -327,16 +317,12 @@ class AuthClass {
         if (!user.authMethods.includes('google')) {
           user.authMethods.push('google');
         }
-
-        // only fill missing things, or update if you want Google to be source of truth
-        if (!user.name && name) {
+        if (name && user.name !== name) {
           user.name = name;
         }
-        if ((!user.profilePicture || user.profilePicture === null) && picture) {
+        if (picture && user.profilePicture !== picture) {
           user.profilePicture = picture;
         }
-
-        // keep email normalized
         user.email = email;
       }
       await user.save();
@@ -352,11 +338,12 @@ class AuthClass {
         access_token: appToken,
         token_type: 'Bearer',
         expires_in: 3600,
-        token: appToken
+        token: appToken,
+        google_access_token: access_token || null
       });
     } catch (error) {
       console.error('[googleAuthToken] Error:', error.response?.data || error.message);
-      next(error);
+      return next(error);
     }
   }
   static async authGoogleUser(req, res, next) {
@@ -369,7 +356,13 @@ class AuthClass {
         });
       }
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await _User.default.findById(decoded._id);
+      let user = await _User.default.findById(decoded._id);
+      if (!user) {
+        const userId = await _RedisManager.default.getItem(`auth:session:${token}`);
+        if (userId) {
+          user = await _User.default.findById(userId);
+        }
+      }
       console.log('user here', user);
       if (!user) {
         return res.status(401).json({
@@ -387,101 +380,7 @@ class AuthClass {
       });
     } catch (error) {
       console.error('[googleAuthUser] Error:', error.message);
-      next(error);
-    }
-  }
-
-  /*static async authGoogleUser(req, res, next) {
-    try {
-      const auth = req.headers.authorization || ''
-      const token = auth.startsWith('Bearer ') ? auth.slice(7) : null
-       if (!token) {
-        return res.status(401).json({ error: 'Missing bearer token' })
-      }
-       const decoded = jwt.verify(token, process.env.JWT_SECRET)
-       return res.json({
-        id: decoded.uid,
-        email: decoded.email,
-        name: decoded.name
-      })
-    } catch (error) {
-      console.error('[googleAuthUser] Error:', error.message)
-      next(error)
-    }
-  }*/
-
-  static async googleAuth(req, res, next) {
-    try {
-      const {
-        email,
-        googleId,
-        picture
-      } = req.body;
-      console.log('Google Auth received:', {
-        email,
-        googleId,
-        picture
-      });
-      console.log('==============================');
-      if (!email || !googleId) {
-        return res.status(400).json({
-          success: false,
-          userMessage: 'Email and Google ID are required'
-        });
-      }
-      let user = await _User.default.findOne({
-        email: email.toLowerCase().trim()
-      });
-      if (user) {
-        let updated = false;
-        if (!user.googleId) {
-          user.googleId = googleId;
-          updated = true;
-        }
-        if (!user.authMethods) user.authMethods = [];
-        if (!user.authMethods.includes('google')) {
-          user.authMethods.push('google');
-          updated = true;
-        }
-        if (!user.profilePicture && picture) {
-          user.profilePicture = picture;
-          updated = true;
-        }
-        if (updated) await user.save();
-      } else {
-        user = new _User.default({
-          email: email.toLowerCase().trim(),
-          googleId,
-          authMethods: ['google'],
-          profilePicture: picture
-        });
-        await user.save();
-      }
-      const token = await user.generateAuthToken();
-      await _RedisManager.default.setItem({
-        key: `auth:session:${token}`,
-        item: user._id.toString(),
-        expiration: 2592000 // 30 days
-      });
-      console.log({
-        id: user._id,
-        email: user.email,
-        token,
-        profilePicture: user.profilePicture
-      });
-      return res.status(200).json({
-        success: true,
-        userMessage: 'Google authentication successful',
-        user: {
-          id: user._id,
-          email: user.email,
-          token,
-          profilePicture: user.profilePicture
-        }
-      });
-    } catch (error) {
-      console.error('[googleAuth] Error:', error);
-      next(error);
+      return next(error);
     }
   }
   static async getValidUser(req, res, next) {
@@ -489,38 +388,37 @@ class AuthClass {
       const {
         jwttoken
       } = req.query;
-      const userId = await _RedisManager.default.getItem(`auth:session:${jwttoken}`);
-      if (userId) {
-        const user = await _User.default.findByToken(jwttoken);
-        let name = '';
-        let email = '';
-        let phoneNumber = '';
-        if (user) {
-          name = user.name;
-          phoneNumber = user.phoneNumber;
-          email = user.email;
-        }
-        return res.status(200).json({
-          success: true,
-          userMessage: 'User found here now',
-          user: {
-            name,
-            email,
-            phoneNumber,
-            detailsAdded: Boolean(phoneNumber && email),
-            deg: 'debug here'
-          }
+      if (!jwttoken) {
+        return res.status(400).json({
+          success: false,
+          userMessage: 'JWT token is required'
         });
-      } else {
-        const user = await _User.default.findByToken(jwttoken);
-        if (user) {
-          await user.removeToken(jwttoken);
-        }
+      }
+      let userId = await _RedisManager.default.getItem(`auth:session:${jwttoken}`);
+      let user = null;
+      if (userId) {
+        user = await _User.default.findById(userId);
+      }
+      if (!user) {
+        const decoded = jwt.verify(jwttoken, process.env.JWT_SECRET);
+        user = await _User.default.findById(decoded._id);
+      }
+      if (!user) {
         return res.status(404).json({
           success: false,
           userMessage: 'User not found'
         });
       }
+      return res.status(200).json({
+        success: true,
+        userMessage: 'User found here now',
+        user: {
+          name: user.name || '',
+          email: user.email || '',
+          phoneNumber: user.phoneNumber || '',
+          detailsAdded: Boolean(user.phoneNumber && user.email)
+        }
+      });
     } catch (error) {
       console.error('[getValidUser] Error:', error);
       next(error);
@@ -561,7 +459,7 @@ class AuthClass {
       });
     } catch (error) {
       console.error('[updateDetails] Error:', error);
-      next(error);
+      return next(error);
     }
   }
   static async updatePhoneNumber(req, res, next) {
@@ -598,7 +496,7 @@ class AuthClass {
       });
     } catch (error) {
       console.error('[updatePhoneNumber] Error:', error);
-      next(error);
+      return next(error);
     }
   }
   static async updateName(req, res, next) {
@@ -635,7 +533,7 @@ class AuthClass {
       });
     } catch (error) {
       console.error('[updateName] Error:', error);
-      next(error);
+      return next(error);
     }
   }
   static async signOut(req, res, next) {
@@ -649,7 +547,6 @@ class AuthClass {
       }
       const user = await _User.default.findByToken(token);
       if (!user) {
-        console.warn(`User not found for token: ${token}, attempting Redis cleanup.`);
         await _RedisManager.default.deleteItem(`auth:session:${token}`);
         return res.status(404).json({
           success: false,
@@ -664,7 +561,7 @@ class AuthClass {
       });
     } catch (error) {
       console.error('[signOut] Error:', error);
-      next(error);
+      return next(error);
     }
   }
 }
