@@ -2,8 +2,8 @@
 
 set -e
 
-echo "Stopping old containers and removing volumes..."
-docker compose down -v
+echo "Stopping old containers..."
+docker compose down
 
 echo "Building containers..."
 docker compose build --no-cache nodeserver nodeserver2 nodeserver3 telegbot shopui
@@ -13,7 +13,7 @@ docker compose up -d
 
 echo "Waiting for Elasticsearch..."
 ES_RETRIES=60
-until curl -s http://localhost:9200 | grep -q '"cluster_name"'; do
+until docker exec elasticsearchdb curl -s http://localhost:9200 | grep -q '"cluster_name"'; do
   ES_RETRIES=$((ES_RETRIES - 1))
   if [ "$ES_RETRIES" -le 0 ]; then
     echo "❌ Elasticsearch did not become ready in time"
