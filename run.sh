@@ -38,7 +38,6 @@ echo "Starting containers..."
 docker compose up -d
 
 wait_for_healthy elasticsearchdb 90
-wait_for_healthy redisdb 60 || true
 wait_for_healthy nodeserver 90
 wait_for_healthy nodeserver2 90
 wait_for_healthy nodeserver3 90
