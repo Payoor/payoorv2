@@ -2,6 +2,32 @@
 
 set -e
 
+wait_for_healthy() {
+  local container_name="$1"
+  local retries="${2:-60}"
+
+  echo "Waiting for ${container_name} to become healthy..."
+
+  while true; do
+    status=$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$container_name" 2>/dev/null || echo "missing")
+
+    if [ "$status" = "healthy" ]; then
+      echo "✅ ${container_name} is healthy!"
+      break
+    fi
+
+    retries=$((retries - 1))
+    if [ "$retries" -le 0 ]; then
+      echo "❌ ${container_name} did not become healthy in time"
+      docker logs "$container_name" --tail 200 || true
+      exit 1
+    fi
+
+    echo "🔄 ${container_name} status: $status"
+    sleep 2
+  done
+}
+
 echo "Stopping old containers..."
 docker compose down
 
@@ -11,35 +37,12 @@ docker compose build --no-cache nodeserver nodeserver2 nodeserver3 telegbot shop
 echo "Starting containers..."
 docker compose up -d
 
-echo "Waiting for Elasticsearch..."
-ES_RETRIES=60
-until docker exec elasticsearchdb curl -s http://localhost:9200 | grep -q '"cluster_name"'; do
-  ES_RETRIES=$((ES_RETRIES - 1))
-  if [ "$ES_RETRIES" -le 0 ]; then
-    echo "❌ Elasticsearch did not become ready in time"
-    docker logs elasticsearchdb --tail 100 || true
-    exit 1
-  fi
-  echo "Elasticsearch not ready yet..."
-  sleep 2
-done
-
-echo "✅ Elasticsearch is ready!"
-
-echo "Waiting for Node server..."
-NODE_RETRIES=60
-until [ "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3001/health)" = "200" ]; do
-  NODE_RETRIES=$((NODE_RETRIES - 1))
-  if [ "$NODE_RETRIES" -le 0 ]; then
-    echo "❌ Node server did not become ready in time"
-    docker logs nodeserver --tail 200 || true
-    exit 1
-  fi
-  echo "🔄 Node server not ready yet..."
-  sleep 2
-done
-
-echo "✅ Node server is ready!"
+wait_for_healthy elasticsearchdb 90
+wait_for_healthy redisdb 60 || true
+wait_for_healthy nodeserver 90
+wait_for_healthy nodeserver2 90
+wait_for_healthy nodeserver3 90
+wait_for_healthy telegbot 90
 
 echo "Running Node scripts inside 'nodeserver' container..."
 docker exec nodeserver node server/scripts/addProducts.js
