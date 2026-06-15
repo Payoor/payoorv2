@@ -7,7 +7,7 @@ const fs = require('fs')
 import cron from 'node-cron'
 import updateProductsVariantCounts from './utils/updateProductsVariantCounts.js'
 
-if (process.env.NODE_ENV !== 'production') {
+/*if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 
   const allowedOrigins = [
@@ -27,7 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
       credentials: true
     })
   )
-}
+}*/
 
 require('./db')
 //import { runKafka } from './services/kafka-service'

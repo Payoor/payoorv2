@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 import express from 'express'
-import https from 'https'
+import https from 'https';
 
 import Checkout from '../models/Checkout'
-import User from '../models/User'
+import User from '../models/User';
 import Order from '../models/Order'
 import UserCart from '../models/UserCart'
 import Product from '../models/Product'

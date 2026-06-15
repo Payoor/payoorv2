@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+
+class AppLayout extends StatelessWidget {
+  final Widget child;
+
+  const AppLayout({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      bottom: false,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: child,
+      ),
+    );
+  }
+}
+
+/*
+$grey: #f4f4f4;
+$grey2: #d9d9d9;
+$white: #ffffff;
+$font-color: #000000;
+$svg-color: #6a6a6a;
+$primary-color: #249b48;
+$red: #ff0000;
+$grey-black: #666666;
+$faint-green: #3a6648;
+$grey-background: #e4e4e4;
+$black: #000000;
+$white2: rgba(255, 255, 255, 0.9); // ARGB 230 ≈ 90% opacity
+$background-color: #121212;
+$blue1: #c8eef4;
+$twitter-color: #000000;
+$instagram-color: purple; // using the name since Colors.purple maps to material purple
+$custom-green: #65d587;
+$primary-color-dark: #fafafa;
+$green-dark: #001f14;
+$primary-background-white: #e0e7e2;
+$app-sky-blue: #a8d1f0;
+$input-black: #333333;
+
+$faint-primary-color: rgba(101, 213, 135, 1);
+$landing-side-padding: 10rem;
+$sky-blue: rgba(200, 238, 244, 1);
+$sky-blue-lite: rgba(168, 209, 240, 1.0);
+
+$sky-blue-3: #B6EDF2;
+*/

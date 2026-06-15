@@ -1,6 +1,7 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _dotenv = _interopRequireDefault(require("dotenv"));
 var _mongoose = _interopRequireDefault(require("mongoose"));
 var _Product = _interopRequireDefault(require("./models/Product.js"));
 var _axios = _interopRequireDefault(require("axios"));
@@ -8,9 +9,8 @@ var _axios = _interopRequireDefault(require("axios"));
 //const axios = require('axios')
 
 // getProducts.js
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
+
+_dotenv.default.config();
 const MONGO_URL = process.env.MONGO_URL;
 const ELASTICSEARCHURL = process.env.ELASTICSEARCHURL;
 const INDEX_NAME = 'products';

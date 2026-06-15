@@ -2,9 +2,9 @@
 //const axios = require('axios')
 
 // getProducts.js
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 import mongoose from 'mongoose'
 import Product from './models/Product.js'
