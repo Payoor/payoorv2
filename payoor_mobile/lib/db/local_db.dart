@@ -12,10 +12,10 @@ class LocalDb {
 
     _db = await openDatabase(
       path,
-      version: 1,
+      version: 4,
       onCreate: (database, version) async {
         await database.execute('''
-          CREATE TABLE users (
+          CREATE TABLE IF NOT EXISTS users (
             id TEXT PRIMARY KEY,
             email TEXT,
             phoneNumber TEXT,
@@ -23,6 +23,32 @@ class LocalDb {
             token TEXT NOT NULL
           )
         ''');
+
+        await database.execute('''
+          CREATE TABLE IF NOT EXISTS cart_items (
+            variantId TEXT PRIMARY KEY,
+            quantity INTEGER NOT NULL,
+            price REAL NOT NULL DEFAULT 0
+          )
+        ''');
+      },
+      onUpgrade: (database, oldVersion, newVersion) async {
+        if (oldVersion < 3) {
+          await database.execute('''
+            CREATE TABLE IF NOT EXISTS cart_items (
+              variantId TEXT PRIMARY KEY,
+              quantity INTEGER NOT NULL,
+              price REAL NOT NULL DEFAULT 0
+            )
+          ''');
+        }
+
+        if (oldVersion < 4) {
+          await database.execute('''
+            ALTER TABLE cart_items 
+            ADD COLUMN price REAL NOT NULL DEFAULT 0
+          ''');
+        }
       },
     );
 

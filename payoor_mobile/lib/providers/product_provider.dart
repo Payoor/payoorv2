@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/api.dart';
 import '../models/product.dart';
-import '../models/product_variants.dart';
+import '../models/product_variant.dart';
 
 class ProductsProvider extends ChangeNotifier {
   bool _isDisposed = false;

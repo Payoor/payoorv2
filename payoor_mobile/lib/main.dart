@@ -10,6 +10,7 @@ import './screens/user_screen.dart';
 import '../models/user.dart';
 
 import './providers/product_provider.dart';
+import './providers/cart_provider.dart';
 
 import './db/local_db.dart';
 
@@ -24,8 +25,11 @@ void main() async {
   final user = await userRepository.getUser();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ProductsProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProductsProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+      ],
       child: MyApp(initialUser: user),
     ),
   );
@@ -40,7 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: initialUser != null ? const LandingScreen() : const LandingScreen(),
+      home: initialUser != null ? const UserScreen() : const LandingScreen(),
     );
   }
 }

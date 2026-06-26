@@ -7,6 +7,7 @@ import '../repositories/user_repository.dart';
 import '../screens/home_screen.dart';
 import '../screens/auth_screen.dart';
 import '../screens/onboarding_screen.dart';
+import '../widgets/menu_layout.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
@@ -40,14 +41,18 @@ class _UserScreenState extends State<UserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (user != null) {
-      if (user?.name == null) {
-        return OnboardingScreen();
-      }
+    Widget currentPage;
 
-      return HomeScreen();
+    if (user != null) {
+      if (user?.name == null || user?.phoneNumber == null) {
+        currentPage = const OnboardingScreen();
+      } else {
+        currentPage = HomeScreen(authToken: user!.token);
+      }
+    } else {
+      currentPage = const AuthScreen();
     }
 
-    return AuthScreen();
+    return MenuLayout(page: currentPage);
   }
 }

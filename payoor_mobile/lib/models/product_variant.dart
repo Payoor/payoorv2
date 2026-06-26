@@ -19,19 +19,34 @@ class ProductVariant {
     this.updatedAt,
   });
 
+  static String _parseId(dynamic value) {
+    if (value == null) return '';
+
+    if (value is String) return value;
+
+    if (value is Map<String, dynamic>) {
+      return value['_id']?.toString() ??
+          value[r'$oid']?.toString() ??
+          value['id']?.toString() ??
+          '';
+    }
+
+    return value.toString();
+  }
+
   factory ProductVariant.fromJson(Map<String, dynamic> json) {
     return ProductVariant(
-      id: json['_id'],
-      productId: json['productId'] ?? '',
+      id: _parseId(json['_id']),
+      productId: _parseId(json['productId']),
       image: json['image'] ?? '',
       unit: json['unit'] ?? '',
-      price: (json['price'] ?? 0).toDouble(),
+      price: double.tryParse(json['price'].toString()) ?? 0,
       availability: json['availability'] ?? 'YES',
       createdAt: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'])
+          ? DateTime.parse(json['createdAt'].toString())
           : null,
       updatedAt: json['updatedAt'] != null
-          ? DateTime.parse(json['updatedAt'])
+          ? DateTime.parse(json['updatedAt'].toString())
           : null,
     );
   }

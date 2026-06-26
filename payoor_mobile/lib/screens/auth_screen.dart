@@ -4,11 +4,8 @@ import '../widgets/app_layout.dart';
 import '../widgets/chat_header.dart';
 import '../widgets/auth_input.dart';
 import '../widgets/otp_input.dart';
-import '../widgets/side_navi.dart';
 
 import '../models/user.dart';
-
-import '../db/local_db.dart';
 
 import '../repositories/user_repository.dart';
 
@@ -186,7 +183,7 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
           ),
 
-          Positioned(child: SideNavi()),
+          //Positioned(child: SideNavi()),
         ],
       ),
     );

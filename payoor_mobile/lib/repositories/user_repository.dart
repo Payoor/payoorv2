@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
 import '../db/local_db.dart';
+
 import '../models/user.dart';
 
 class UserRepository {

@@ -33,7 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
 
-          Positioned(child: SideNavi()),
+          //Positioned(child: SideNavi()),
         ],
       ),
     );

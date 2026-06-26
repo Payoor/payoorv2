@@ -5,14 +5,19 @@ import '../widgets/app_layout.dart';
 import '../widgets/chat_header.dart';
 import '../widgets/category_slide.dart';
 import '../widgets/chat_input.dart';
-import '../widgets/side_navi.dart';
+
+import '../screens/product_screen.dart';
+import '../screens/cart_screen.dart';
 
 import '../providers/product_provider.dart';
+import '../providers/cart_provider.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String authToken;
+
+  const HomeScreen({super.key, required this.authToken});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -51,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final productsProvider = context.watch<ProductsProvider>();
+    final cartProvider = context.watch<CartProvider>();
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
@@ -182,8 +188,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 alignment: Alignment.centerLeft,
                                                 child: ElevatedButton(
                                                   onPressed: () {
-                                                    print(
-                                                      'View options for ${product.name}',
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            ProductScreen(
+                                                              productId:
+                                                                  product.id,
+                                                              productName:
+                                                                  product.name,
+                                                              productImage:
+                                                                  product.image,
+                                                              productMetadata:
+                                                                  product
+                                                                      .metadata,
+                                                              productDescription:
+                                                                  product
+                                                                      .description,
+                                                              authToken: widget
+                                                                  .authToken,
+                                                            ),
+                                                      ),
                                                     );
                                                   },
                                                   style: ElevatedButton.styleFrom(
@@ -331,25 +356,36 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF249B48),
-                              borderRadius: BorderRadius.circular(100),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color.fromRGBO(0, 0, 0, 0.15),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 4),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      CartScreen(authToken: widget.authToken),
                                 ),
-                              ],
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.shopping_bag_outlined,
-                                color: Colors.white,
-                                size: 24,
+                              );
+                            },
+                            child: Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF249B48),
+                                borderRadius: BorderRadius.circular(100),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(0, 0, 0, 0.15),
+                                    blurRadius: 10,
+                                    offset: Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Icons.shopping_bag_outlined,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
                               ),
                             ),
                           ),
@@ -368,11 +404,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 2,
                                 ),
                               ),
-                              child: const Center(
+                              child: Center(
                                 child: Text(
-                                  '3',
-                                  style: TextStyle(
-                                    color: const Color(0xFF249B48),
+                                  '${cartProvider.items.length}',
+                                  style: const TextStyle(
+                                    color: Color(0xFF249B48),
                                     fontSize: 10,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -391,7 +427,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
 
-          Positioned(child: SideNavi()),
+          //Positioned(child: SideNavi()),
         ],
       ),
     );
