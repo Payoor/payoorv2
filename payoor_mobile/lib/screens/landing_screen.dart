@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/app_layout.dart';
 import '../widgets/chat_header.dart';
 import '../widgets/menu_layout.dart';
+import '../widgets/google_auth_button.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -245,39 +246,7 @@ class _LandingScreenState extends State<LandingScreen> {
 
                               SizedBox(height: 10),
 
-                              Container(
-                                width: double.infinity,
-                                decoration: const BoxDecoration(
-                                  color: Colors.black87,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        'assets/svgs/google.svg',
-                                        width: 18,
-                                        height: 18,
-                                      ),
-
-                                      const SizedBox(width: 8),
-
-                                      const Text(
-                                        "Continue with Google",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              const GoogleAuthButton(),
 
                               SizedBox(height: 10),
 
