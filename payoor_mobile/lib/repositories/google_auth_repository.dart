@@ -10,7 +10,7 @@ class GoogleAuthRepository {
   final String googleClientId =
       'YOUR_MOBILE_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
 
-  final String redirectUri = 'com.payoor.mobile:/oauthredirect';
+  final String redirectUri = 'com.payoor.payoormobile:/oauthredirect';
 
   Future<User> signInWithGoogle() async {
     final result = await appAuth.authorize(
