@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../utils/api.dart';
-
 import '../repositories/cart_repository.dart';
 
 class CartProvider extends ChangeNotifier {
@@ -13,7 +12,7 @@ class CartProvider extends ChangeNotifier {
   int get itemCount {
     return items.fold<int>(
       0,
-      (sum, item) => sum + ((item['quantity'] as int?) ?? 0),
+      (sum, item) => sum + (int.tryParse(item['quantity'].toString()) ?? 0),
     );
   }
 
@@ -22,31 +21,35 @@ class CartProvider extends ChangeNotifier {
 
     if (matches.isEmpty) return 0;
 
-    return matches.first['quantity'] as int;
+    return int.tryParse(matches.first['quantity'].toString()) ?? 0;
   }
 
   void calculateTotal() {
-    total = items.fold<double>(
-      0,
-      (sum, item) =>
-          sum + ((item['price'] as num).toDouble() * (item['quantity'] as int)),
-    );
+    total = items.fold<double>(0, (sum, item) {
+      final price = double.tryParse(item['price'].toString()) ?? 0;
+      final quantity = int.tryParse(item['quantity'].toString()) ?? 0;
+
+      return sum + (price * quantity);
+    });
+  }
+
+  Future<void> refreshCart() async {
+    final rows = await cartRepository.getItems();
+
+    items = rows.map((item) => Map<String, dynamic>.from(item)).toList();
+
+    calculateTotal();
   }
 
   Future<void> loadCart() async {
-    items = await cartRepository.getItems();
-
-    calculateTotal();
-
+    await refreshCart();
     notifyListeners();
   }
 
   Future<void> addItem(String variantId, double price) async {
     await cartRepository.addItem(variantId, price);
 
-    items = await cartRepository.getItems();
-
-    calculateTotal();
+    await refreshCart();
 
     notifyListeners();
   }
@@ -54,9 +57,7 @@ class CartProvider extends ChangeNotifier {
   Future<void> decreaseItem(String variantId) async {
     await cartRepository.decreaseQuantity(variantId);
 
-    items = await cartRepository.getItems();
-
-    calculateTotal();
+    await refreshCart();
 
     notifyListeners();
   }
@@ -64,9 +65,7 @@ class CartProvider extends ChangeNotifier {
   Future<void> removeItem(String variantId) async {
     await cartRepository.removeItem(variantId);
 
-    items = await cartRepository.getItems();
-
-    calculateTotal();
+    await refreshCart();
 
     notifyListeners();
   }
@@ -74,7 +73,8 @@ class CartProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> createCheckout(String authToken) async {
     final Map<String, int> checkoutItems = {
       for (final item in items)
-        item['variantId'].toString(): item['quantity'] as int,
+        item['variantId'].toString():
+            int.tryParse(item['quantity'].toString()) ?? 0,
     };
 
     final data = await requestServerPost(
@@ -89,7 +89,7 @@ class CartProvider extends ChangeNotifier {
   Future<void> clearCart() async {
     await cartRepository.clearCart();
 
-    items.clear();
+    items = [];
     total = 0;
 
     notifyListeners();
