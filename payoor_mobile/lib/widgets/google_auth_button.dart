@@ -24,20 +24,16 @@ class _GoogleAuthButtonState extends State<GoogleAuthButton> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) => const UserScreen(),
-        ),
+        MaterialPageRoute(builder: (_) => const UserScreen()),
       );
     } catch (e) {
       debugPrint('Google auth error: $e');
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Google sign-in failed: $e'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Google sign-in failed: $e')));
     } finally {
       if (mounted) {
         setState(() => isLoading = false);
@@ -48,14 +44,14 @@ class _GoogleAuthButtonState extends State<GoogleAuthButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isLoading ? null : handleGoogleSignIn,
+      onTap: () async {
+        await GoogleAuthRepository().signInWithGoogle();
+      },
       child: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
           color: Colors.black87,
-          borderRadius: BorderRadius.all(
-            Radius.circular(5),
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
         child: Padding(
           padding: const EdgeInsets.all(10),
