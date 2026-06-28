@@ -4,8 +4,10 @@ import 'package:http/http.dart' as http;
 
 //String serverUrl = 'http://localhost/api';
 
-String serverUrl = 'http://10.0.2.2:3001';
+//String serverUrl = 'http://10.0.2.2:3001';
 // Android emulator uses 10.0.2.2 to reach your laptop localhost
+
+String serverUrl = 'http://192.168.0.181:3001';
 
 Uri buildUri(String endpoint, {Map<String, dynamic>? queryParams}) {
   final uri = Uri.parse('$serverUrl$endpoint');
