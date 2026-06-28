@@ -12,6 +12,7 @@ import '../models/user.dart';
 import './providers/product_provider.dart';
 import './providers/cart_provider.dart';
 import './providers/checkout_provider.dart';
+import './providers/auth_provider.dart';
 
 import './db/local_db.dart';
 
@@ -22,31 +23,54 @@ void main() async {
 
   await LocalDb.db;
 
-  final userRepository = UserRepository();
-  final user = await userRepository.getUser();
-
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductsProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => CheckoutProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()..init()),
       ],
-      child: MyApp(initialUser: user),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  final User? initialUser;
-
-  const MyApp({super.key, this.initialUser});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: initialUser != null ? const UserScreen() : const LandingScreen(),
+
+      home: authProvider.isLoggedIn
+          ? const UserScreen()
+          : const LandingScreen(),
+
+      onGenerateRoute: (settings) {
+        final uri = Uri.parse(settings.name ?? '');
+
+        if (uri.path == '/callback') {
+          final token = uri.queryParameters['token'];
+
+          if (token != null && token.isNotEmpty) {
+            Future.microtask(() {
+              context.read<AuthProvider>().handleGoogleCallbackToken(token);
+            });
+          }
+
+          return MaterialPageRoute(builder: (_) => const LandingScreen());
+        }
+
+        return null;
+      },
+
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (_) => const LandingScreen());
+      },
     );
   }
 }

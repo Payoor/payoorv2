@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import '../repositories/google_auth_repository.dart';
 import '../screens/user_screen.dart';
+
+import '../providers/auth_provider.dart';
 
 class GoogleAuthButton extends StatefulWidget {
   const GoogleAuthButton({super.key});
@@ -18,22 +21,9 @@ class _GoogleAuthButtonState extends State<GoogleAuthButton> {
     try {
       setState(() => isLoading = true);
 
-      await GoogleAuthRepository().signInWithGoogle();
-
-      if (!mounted) return;
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const UserScreen()),
-      );
+      await context.read<AuthProvider>().signInWithGoogle();
     } catch (e) {
-      debugPrint('Google auth error: $e');
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Google sign-in failed: $e')));
+      print('Google auth error: $e');
     } finally {
       if (mounted) {
         setState(() => isLoading = false);
@@ -45,7 +35,7 @@ class _GoogleAuthButtonState extends State<GoogleAuthButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await GoogleAuthRepository().signInWithGoogle();
+        await handleGoogleSignIn();
       },
       child: Container(
         width: double.infinity,

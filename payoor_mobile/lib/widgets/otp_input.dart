@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/api.dart';
 
 import '../models/user.dart';
+
+import '../providers/auth_provider.dart';
 
 class OtpInput extends StatefulWidget {
   final ValueChanged<User>? onContinue;
@@ -128,13 +131,19 @@ class _OtpInputState extends State<OtpInput> {
       Map<String, dynamic> data = await verifyOtp();
 
       if (data['success'] && data['user'] != null) {
-        final user = User.fromJson(data['user']);
+        /* final user = User.fromJson(data['user']);
 
-        widget.onContinue?.call(user);
+        widget.onContinue?.call(user);*/
 
         /*if (widget.onContinue != null) {
           widget.onContinue!(data['user']);
         }*/
+
+        final user = await context.read<AuthProvider>().verifyOtp(otpString!);
+
+        if (user != null) {
+          widget.onContinue?.call(user);
+        }
       }
     } catch (e) {
       print('Error $e');
