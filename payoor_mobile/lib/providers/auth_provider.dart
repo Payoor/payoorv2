@@ -68,7 +68,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> signInWithGoogle() async {
     final loginUrl = Uri.parse(
-      'https://api.payoor.store/shopper/auth/google/login?platform=mobile',
+      'https://751f-45-129-56-158.ngrok-free.app/shopper/auth/google/login?platform=mobile',
     );
 
     await launchUrl(loginUrl, mode: LaunchMode.externalApplication);
