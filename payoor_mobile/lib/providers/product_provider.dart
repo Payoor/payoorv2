@@ -119,4 +119,24 @@ class ProductsProvider extends ChangeNotifier {
       append: true,
     );
   }
+
+  void clear() {
+    _isLoading = false;
+    _isLoadingMore = false;
+    _error = null;
+
+    _products = [];
+    _currentProduct = null;
+    _productVariants = [];
+
+    _lastSearchQuery = '';
+    _lastMessage = '';
+
+    _page = 1;
+    _size = 10;
+    _hasMore = true;
+    _total = 0;
+
+    safeNotifyListeners();
+  }
 }

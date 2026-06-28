@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:app_links/app_links.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,6 +6,10 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/user.dart';
 import '../repositories/user_repository.dart';
 import '../utils/api.dart';
+
+import '../providers/product_provider.dart';
+import '../providers/cart_provider.dart';
+import '../providers/checkout_provider.dart';
 
 class AuthProvider extends ChangeNotifier {
   final UserRepository userRepository = UserRepository();
@@ -113,10 +116,28 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> signOut() async {
-    await userRepository.deleteUser();
-    user = null;
+  Future<void> signOut({
+    required CartProvider cartProvider,
+    required CheckoutProvider checkoutProvider,
+    required ProductsProvider productsProvider,
+  }) async {
+    isLoading = true;
     notifyListeners();
+
+    try {
+      await userRepository.deleteUser();
+
+      await cartProvider.clearCart();
+
+      await checkoutProvider.clear();
+
+      productsProvider.clear();
+
+      user = null;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 
   @override

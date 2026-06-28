@@ -211,8 +211,13 @@ class CheckoutProvider extends ChangeNotifier {
   }
 
   Future<void> clearCheckout() async {
+    await clear();
+  }
+
+  Future<void> clear() async {
     checkoutData = null;
     cartHash = null;
+    isLoading = false;
 
     await checkoutRepository.clearCheckout();
 

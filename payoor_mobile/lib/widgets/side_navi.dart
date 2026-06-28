@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/user.dart';
 
@@ -7,8 +8,12 @@ import '../repositories/user_repository.dart';
 import '../screens/cart_screen.dart';
 import '../screens/orders_screen.dart';
 
-import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
+import '../providers/auth_provider.dart';
+import '../providers/checkout_provider.dart';
+import '../providers/product_provider.dart';
+
+import '../screens/landing_screen.dart';
 
 class SideNavi extends StatefulWidget {
   const SideNavi({super.key});
@@ -154,8 +159,19 @@ class _SideNaviState extends State<SideNavi> {
                   icon: Icons.logout_rounded,
                   title: 'Sign Out',
                   color: Colors.redAccent,
-                  onTap: () {
-                    // TODO: Sign out
+                  onTap: () async {
+                    await context.read<AuthProvider>().signOut(
+                      cartProvider: context.read<CartProvider>(),
+                      checkoutProvider: context.read<CheckoutProvider>(),
+                      productsProvider: context.read<ProductsProvider>(),
+                    );
+
+                    if (!mounted) return;
+
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (_) => const LandingScreen()),
+                      (route) => false,
+                    );
                   },
                 ),
 
