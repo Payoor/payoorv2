@@ -13,9 +13,8 @@ import '../models/product_variant.dart';
 
 import '../utils/api.dart';
 
-import '../repositories/cart_repository.dart';
-
 import '../providers/cart_provider.dart';
+import '../providers/checkout_provider.dart';
 
 class ProductScreen extends StatefulWidget {
   final String? productId;
@@ -243,7 +242,16 @@ class _ProductScreenState extends State<ProductScreen> {
                       const SizedBox(height: 20),
 
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          final cartProvider = context.read<CartProvider>();
+                          final checkoutProvider = context
+                              .read<CheckoutProvider>();
+
+                          await checkoutProvider.getOrCreateCheckout(
+                            authToken: widget.authToken,
+                            cartProvider: cartProvider,
+                          );
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(

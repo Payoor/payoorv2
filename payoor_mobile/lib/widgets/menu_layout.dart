@@ -32,39 +32,54 @@ class _MenuLayoutState extends State<MenuLayout> {
   }
 
   @override
+  void dispose() {
+    dragX = 0;
+    isMenuOpen = false;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final slideAmount = screenWidth * menuWidthFactor;
 
-    return Scaffold(
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onHorizontalDragUpdate: (details) {
-          setState(() {
-            dragX += details.delta.dx;
-            dragX = dragX.clamp(-slideAmount, 0);
-          });
-        },
-        onHorizontalDragEnd: (details) {
-          final shouldOpen = dragX.abs() > slideAmount * 0.35;
+    return PopScope(
+      canPop: !isMenuOpen,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop && isMenuOpen) {
+          closeMenu();
+        }
+      },
+      child: Scaffold(
+        body: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onHorizontalDragUpdate: (details) {
+            setState(() {
+              dragX += details.delta.dx;
+              dragX = dragX.clamp(-slideAmount, 0);
+            });
+          },
+          onHorizontalDragEnd: (details) {
+            final shouldOpen = dragX.abs() > slideAmount * 0.35;
 
-          if (shouldOpen) {
-            openMenu(slideAmount);
-          } else {
-            closeMenu();
-          }
-        },
-        child: Stack(
-          children: [
-            const Positioned(right: 0, top: 0, bottom: 0, child: SideNavi()),
+            if (shouldOpen) {
+              openMenu(slideAmount);
+            } else {
+              closeMenu();
+            }
+          },
+          child: Stack(
+            children: [
+              const Positioned(right: 0, top: 0, bottom: 0, child: SideNavi()),
 
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 220),
-              curve: Curves.easeOutCubic,
-              transform: Matrix4.translationValues(dragX, 0, 0),
-              child: SizedBox.expand(child: widget.page ?? const SizedBox()),
-            ),
-          ],
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeOutCubic,
+                transform: Matrix4.translationValues(dragX, 0, 0),
+                child: SizedBox.expand(child: widget.page ?? const SizedBox()),
+              ),
+            ],
+          ),
         ),
       ),
     );

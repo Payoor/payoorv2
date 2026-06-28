@@ -10,6 +10,7 @@ import '../widgets/menu_layout.dart';
 import '../widgets/option_card.dart';
 
 import '../providers/cart_provider.dart';
+import '../providers/checkout_provider.dart';
 
 class CartScreen extends StatefulWidget {
   final String authToken;
@@ -106,7 +107,16 @@ class _CartScreenState extends State<CartScreen> {
                       const SizedBox(height: 20),
 
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          final cartProvider = context.read<CartProvider>();
+                          final checkoutProvider = context
+                              .read<CheckoutProvider>();
+
+                          await checkoutProvider.getOrCreateCheckout(
+                            authToken: widget.authToken,
+                            cartProvider: cartProvider,
+                          );
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(

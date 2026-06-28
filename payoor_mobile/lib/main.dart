@@ -11,6 +11,7 @@ import '../models/user.dart';
 
 import './providers/product_provider.dart';
 import './providers/cart_provider.dart';
+import './providers/checkout_provider.dart';
 
 import './db/local_db.dart';
 
@@ -29,6 +30,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => ProductsProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => CheckoutProvider()),
       ],
       child: MyApp(initialUser: user),
     ),
@@ -83,3 +85,5 @@ MultiProvider(
   child: const MyApp(),
 )
 */
+
+//<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>

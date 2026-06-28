@@ -45,6 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
         provider.loadMoreProducts();
       }
     });
+
+    Future.microtask(() {
+      context.read<CartProvider>().loadCart();
+    });
   }
 
   @override
@@ -57,6 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final productsProvider = context.watch<ProductsProvider>();
     final cartProvider = context.watch<CartProvider>();
+
+    final query = context.watch<ProductsProvider>().lastSearchQuery;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
@@ -81,9 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Color(0xFF249B48),
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
-                        child: const Text(
-                          "Here's what I found for protein-packed goodness",
-                          style: TextStyle(
+                        child: Text(
+                          "Here's what I found for ${query.isEmpty ? 'you' : query}",
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
@@ -105,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       crossAxisCount: 2,
                                       crossAxisSpacing: 12,
                                       mainAxisSpacing: 12,
-                                      childAspectRatio: 0.7,
+                                      childAspectRatio: 0.58,
                                     ),
                                 itemCount:
                                     productsProvider.products.length +
@@ -123,6 +129,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   final product =
                                       productsProvider.products[index];
+                                  final tags = (product.metadata ?? '')
+                                      .split(',')
+                                      .map((item) => item.trim())
+                                      .where((item) => item.isNotEmpty)
+                                      .toList();
 
                                   return Container(
                                     clipBehavior: Clip.hardEdge,
@@ -134,17 +145,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.stretch,
                                       children: [
-                                        Expanded(
+                                        SizedBox(
+                                          height: 165,
+                                          width: double.infinity,
                                           child: CachedNetworkImage(
                                             imageUrl: product.image,
                                             fit: BoxFit.cover,
-
                                             placeholder: (context, url) =>
                                                 Image.asset(
                                                   'assets/images/loading.jpg',
                                                   fit: BoxFit.cover,
                                                 ),
-
                                             errorWidget:
                                                 (
                                                   context,
@@ -157,36 +168,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         ),
 
-                                        Container(
-                                          padding: const EdgeInsets.all(12),
-                                          decoration: const BoxDecoration(
-                                            color: Color.fromRGBO(
-                                              168,
-                                              209,
-                                              240,
-                                              0.6,
-                                            ),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                product.name,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  color: Colors.black87,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
+                                        Expanded(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: const BoxDecoration(
+                                              color: Color.fromRGBO(
+                                                168,
+                                                209,
+                                                240,
+                                                0.6,
                                               ),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  product.name,
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color: Colors.black87,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
 
-                                              const SizedBox(height: 8),
+                                                const SizedBox(height: 8),
 
-                                              Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: ElevatedButton(
+                                                ElevatedButton(
                                                   onPressed: () {
                                                     Navigator.push(
                                                       context,
@@ -217,18 +228,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     foregroundColor:
                                                         Colors.white,
                                                     elevation: 0,
-
                                                     minimumSize: Size.zero,
                                                     tapTargetSize:
                                                         MaterialTapTargetSize
                                                             .shrinkWrap,
-
                                                     padding:
                                                         const EdgeInsets.symmetric(
                                                           horizontal: 12,
                                                           vertical: 6,
                                                         ),
-
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -245,64 +253,63 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              const SizedBox(height: 8),
+                                                const SizedBox(height: 8),
 
-                                              Wrap(
-                                                spacing: 6,
-                                                runSpacing: 6,
-                                                children: (product.metadata ?? '')
-                                                    .split(',')
-                                                    .map((item) => item.trim())
-                                                    .where(
-                                                      (item) => item.isNotEmpty,
-                                                    )
-                                                    .map(
-                                                      (item) => GestureDetector(
-                                                        onTap: () {
-                                                          print(
-                                                            'Clicked metadata: $item',
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          padding:
-                                                              const EdgeInsets.symmetric(
-                                                                horizontal: 8,
-                                                                vertical: 4,
+                                                Expanded(
+                                                  child: SingleChildScrollView(
+                                                    child: Wrap(
+                                                      spacing: 6,
+                                                      runSpacing: 6,
+                                                      children: tags.map((
+                                                        item,
+                                                      ) {
+                                                        return GestureDetector(
+                                                          onTap: () {
+                                                            print(
+                                                              'Clicked metadata: $item',
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets.symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 4,
+                                                                ),
+                                                            decoration: BoxDecoration(
+                                                              color: Colors
+                                                                  .white
+                                                                  .withOpacity(
+                                                                    0.75,
+                                                                  ),
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    20,
+                                                                  ),
+                                                            ),
+                                                            child: Text(
+                                                              item,
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: const TextStyle(
+                                                                color: Colors
+                                                                    .black87,
+                                                                fontSize: 10,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
                                                               ),
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.white
-                                                                .withOpacity(
-                                                                  0.75,
-                                                                ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  20,
-                                                                ),
+                                                            ),
                                                           ),
-                                                          child: Text(
-                                                            item,
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style:
-                                                                const TextStyle(
-                                                                  color: Colors
-                                                                      .black87,
-                                                                  fontSize: 10,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                    .toList(),
-                                              ),
-                                            ],
+                                                        );
+                                                      }).toList(),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -357,7 +364,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         clipBehavior: Clip.none,
                         children: [
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

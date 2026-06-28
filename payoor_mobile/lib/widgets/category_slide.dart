@@ -55,10 +55,20 @@ class _CategorySlideState extends State<CategorySlide> {
 
       final List rawCategories = data['categories'] ?? [];
 
+      final parsedCategories = rawCategories
+          .map((item) => Category.fromJson(item))
+          .toList();
+
       setState(() {
-        categories = rawCategories
-            .map((item) => Category.fromJson(item))
-            .toList();
+        categories = parsedCategories;
+
+        if (parsedCategories.isNotEmpty) {
+          selectedCategoryId = parsedCategories.first.id;
+
+          context.read<ProductsProvider>().sendShopperMessage(
+            message: parsedCategories.first.description,
+          );
+        }
       });
     } catch (e) {
       setState(() {
@@ -107,7 +117,9 @@ class _CategorySlideState extends State<CategorySlide> {
                     selectedCategoryId = category.id;
                   });
 
-                  productsProvider.sendShopperMessage(message: category.description);
+                  productsProvider.sendShopperMessage(
+                    message: category.description,
+                  );
                 },
                 child: Container(
                   width: cardWidth,

@@ -13,6 +13,8 @@ class ProductsProvider extends ChangeNotifier {
   Product? _currentProduct;
   List<ProductVariant> _productVariants = [];
 
+  String _lastSearchQuery = '';
+
   int _page = 1;
   int _size = 10;
   bool _hasMore = true;
@@ -27,6 +29,8 @@ class ProductsProvider extends ChangeNotifier {
   List<ProductVariant> get productVariants => _productVariants;
   bool get hasMore => _hasMore;
   int get total => _total;
+
+  String get lastSearchQuery => _lastSearchQuery;
 
   String _lastMessage = '';
 
@@ -52,6 +56,8 @@ class ProductsProvider extends ChangeNotifier {
     if (!append && _isLoading) return;
     if (append && _isLoadingMore) return;
     if (append && !_hasMore) return;
+
+    _lastSearchQuery = message;
 
     try {
       if (append) {

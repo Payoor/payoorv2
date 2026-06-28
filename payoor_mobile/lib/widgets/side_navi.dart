@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../models/user.dart';
 
+import '../repositories/user_repository.dart';
+
+import '../screens/cart_screen.dart';
 import '../screens/orders_screen.dart';
 
-import '../repositories/user_repository.dart';
+import 'package:provider/provider.dart';
+import '../providers/cart_provider.dart';
 
 class SideNavi extends StatefulWidget {
   const SideNavi({super.key});
@@ -19,7 +23,6 @@ class _SideNaviState extends State<SideNavi> {
   @override
   void initState() {
     super.initState();
-
     loadUser();
   }
 
@@ -28,8 +31,7 @@ class _SideNaviState extends State<SideNavi> {
 
     final userAvailable = await userRepository.getUser();
 
-    if (!mounted)
-      return; //mounted is a property that already exists on every State object in Flutter.
+    if (!mounted) return;
 
     setState(() {
       user = userAvailable;
@@ -44,8 +46,34 @@ class _SideNaviState extends State<SideNavi> {
     );
   }
 
+  Widget menuItem({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+    Color? color,
+  }) {
+    final itemColor = color ?? const Color(0xFF249B48);
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          children: [
+            Icon(icon, size: 22, color: itemColor),
+            const SizedBox(width: 14),
+            Text(title, style: renderTextStyle(textColor: itemColor)),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final cartProvider = context.watch<CartProvider>();
+    final cartItemCount = cartProvider.itemCount;
     final double menuBottomSpacing = MediaQuery.of(context).size.height * 0.04;
 
     return Container(
@@ -66,9 +94,8 @@ class _SideNaviState extends State<SideNavi> {
           ),
         ],
       ),
-
       child: Padding(
-        padding: EdgeInsetsGeometry.only(
+        padding: EdgeInsets.only(
           top: MediaQuery.of(context).size.height * 0.084,
           left: 16,
           right: 16,
@@ -76,49 +103,64 @@ class _SideNaviState extends State<SideNavi> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset('assets/images/logo.png', height: 30),
-                    ],
-                  ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset('assets/images/logo.png', height: 30),
 
-                  SizedBox(height: menuBottomSpacing),
+                SizedBox(height: menuBottomSpacing),
 
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => OrdersScreen(authToken: user!.token),
-                        ),
-                      );
-                    },
-                    child: Row(
-                      children: [Text('Orders', style: renderTextStyle())],
-                    ),
-                  ),
+                menuItem(
+                  icon: Icons.receipt_long_rounded,
+                  title: 'Orders',
+                  onTap: () {
+                    if (user == null) return;
 
-                  SizedBox(height: menuBottomSpacing),
-                ],
-              ),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => OrdersScreen(authToken: user!.token),
+                      ),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 8),
+
+                menuItem(
+                  icon: Icons.shopping_cart_outlined,
+                  title: 'Cart ($cartItemCount)',
+                  onTap: () {
+                    if (user == null) return;
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CartScreen(authToken: user!.token),
+                      ),
+                    );
+                  },
+                ),
+
+                SizedBox(height: menuBottomSpacing),
+              ],
             ),
 
-            Container(
-              child: Column(
-                children: [
-                  GestureDetector(
-                    child: Row(
-                      children: [Text('Signout', style: renderTextStyle())],
-                    ),
-                  ),
+            Column(
+              children: [
+                const Divider(),
 
-                  SizedBox(height: menuBottomSpacing),
-                ],
-              ),
+                menuItem(
+                  icon: Icons.logout_rounded,
+                  title: 'Sign Out',
+                  color: Colors.redAccent,
+                  onTap: () {
+                    // TODO: Sign out
+                  },
+                ),
+
+                SizedBox(height: menuBottomSpacing),
+              ],
             ),
           ],
         ),

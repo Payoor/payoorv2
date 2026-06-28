@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/app_layout.dart';
 import '../widgets/chat_header.dart';
 import '../widgets/menu_layout.dart';
 
-import '../utils/api.dart';
+import '../screens/useraddress_screen.dart';
+import '../screens/userphonenumber_screen.dart';
+import '../screens/deliveryinstruction_screen.dart';
+import '../screens/promocode_screen.dart';
+import '../screens/order_preview_screen.dart';
+
+import '../providers/checkout_provider.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final String authToken;
@@ -16,57 +23,6 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  final List<Map<String, dynamic>> checkoutSections = [
-    {
-      'type': 'text',
-      'header': 'Delivery Address',
-      'required': true,
-      'content': '10 Samuel Edosa St, Ikosi Ketu, Lagos 105102, Lagos, Nigeria',
-      'buttonLabel': 'Change',
-      'onTap': (BuildContext context) {},
-    },
-    {
-      'type': 'text',
-      'header': 'Phone Number',
-      'required': true,
-      'content': '09067873118',
-      'buttonLabel': 'Add Phone Number',
-      'onTap': (BuildContext context) {},
-    },
-    {
-      'type': 'dates',
-      'header': 'Delivery Date',
-      'required': true,
-      'onTap': (BuildContext context) {},
-    },
-    {
-      'type': 'text',
-      'header': 'Delivery Instruction',
-      'required': false,
-      'content': 'None',
-      'buttonLabel': 'Specify',
-      'onTap': (BuildContext context) {},
-    },
-    {
-      'type': 'text',
-      'header': 'Promo Code or Coupon',
-      'required': false,
-      'content': 'None',
-      'buttonLabel': 'Use Promo Code',
-      'onTap': (BuildContext context) {},
-    },
-  ];
-
-  final List<Map<String, dynamic>> deliveryDates = [
-    {'day': 'Friday', 'number': '26', 'month': 'June', 'selected': false},
-    {'day': 'Saturday', 'number': '27', 'month': 'June', 'selected': false},
-    {'day': 'Sunday', 'number': '28', 'month': 'June', 'selected': true},
-    {'day': 'Monday', 'number': '29', 'month': 'June', 'selected': false},
-    {'day': 'Tuesday', 'number': '30', 'month': 'June', 'selected': false},
-    {'day': 'Wednesday', 'number': '1', 'month': 'July', 'selected': false},
-    {'day': 'Thursday', 'number': '2', 'month': 'July', 'selected': false},
-  ];
-
   BoxDecoration renderBorder({
     Color backgroundColor = Colors.white,
     double radius = 12,
@@ -122,8 +78,110 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
+  String money(dynamic value) {
+    final amount = double.tryParse(value?.toString() ?? '0') ?? 0;
+    return '₦${amount.toStringAsFixed(0)}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final checkoutProvider = context.watch<CheckoutProvider>();
+    final checkoutData = checkoutProvider.checkoutData ?? {};
+    final checkout = checkoutData['checkout'] ?? {};
+
+    final deliveryAddress = (checkout['delivery_address'] ?? '').toString();
+    final phoneNumber = (checkout['phone_number'] ?? '').toString();
+    final deliveryInstruction = (checkout['delivery_instruction'] ?? '')
+        .toString();
+    final promoCode = (checkout['promo_code'] ?? '').toString();
+
+    final selectedDeliveryDate =
+        checkout['delivery_date'] is Map<String, dynamic>
+        ? checkout['delivery_date'] as Map<String, dynamic>
+        : <String, dynamic>{};
+
+    final deliveryDates = checkout['deliveryDates'] is List
+        ? checkout['deliveryDates'] as List
+        : [];
+
+    final checkoutSections = [
+      {
+        'type': 'text',
+        'header': 'Delivery Address',
+        'required': true,
+        'content': deliveryAddress.isEmpty
+            ? 'Add a valid delivery address'
+            : deliveryAddress,
+        'buttonLabel': deliveryAddress.isEmpty ? 'Add Address' : 'Change',
+        'missing': deliveryAddress.isEmpty,
+        'onTap': (BuildContext context) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => UserAddressScreen(authToken: widget.authToken),
+            ),
+          );
+        },
+      },
+      {
+        'type': 'text',
+        'header': 'Phone Number',
+        'required': true,
+        'content': phoneNumber.isEmpty ? 'Add a phone number' : phoneNumber,
+        'buttonLabel': phoneNumber.isEmpty ? 'Add Phone Number' : 'Change',
+        'missing': phoneNumber.isEmpty,
+        'onTap': (BuildContext context) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  UserphonenumberScreen(authToken: widget.authToken),
+            ),
+          );
+        },
+      },
+      {
+        'type': 'dates',
+        'header': 'Delivery Date',
+        'required': true,
+        'dates': deliveryDates,
+        'selectedDate': selectedDeliveryDate,
+      },
+      {
+        'type': 'text',
+        'header': 'Delivery Instruction',
+        'required': false,
+        'content': deliveryInstruction.isEmpty ? '' : deliveryInstruction,
+        'buttonLabel': deliveryInstruction.isEmpty ? 'Specify' : 'Change',
+        'missing': false,
+        'onTap': (BuildContext context) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  DeliveryInstructionScreen(authToken: widget.authToken),
+            ),
+          );
+        },
+      },
+      {
+        'type': 'text',
+        'header': 'Promo Code or Coupon',
+        'required': false,
+        'content': promoCode.isEmpty ? '' : promoCode,
+        'buttonLabel': promoCode.isEmpty ? 'Use Promo Code' : 'Change',
+        'missing': false,
+        'onTap': (BuildContext context) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => PromoCodeScreen(authToken: widget.authToken),
+            ),
+          );
+        },
+      },
+    ];
+
     return MenuLayout(
       page: Scaffold(
         backgroundColor: const Color(0xFFFFFFFF),
@@ -138,6 +196,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: ListView(
                     children: checkoutSections.map((section) {
                       if (section['type'] == 'dates') {
+                        final dates = section['dates'] is List
+                            ? section['dates'] as List
+                            : [];
+
+                        final selectedDate =
+                            section['selectedDate'] is Map<String, dynamic>
+                            ? section['selectedDate'] as Map<String, dynamic>
+                            : <String, dynamic>{};
+
                         return Column(
                           children: [
                             Container(
@@ -151,7 +218,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     Row(
                                       children: [
                                         Text(
-                                          section['header'],
+                                          section['header'].toString(),
                                           style: sectionHeader(),
                                         ),
                                         if (section['required'] == true)
@@ -169,19 +236,33 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       child: ListView.separated(
                                         scrollDirection: Axis.horizontal,
                                         clipBehavior: Clip.none,
-                                        itemCount: deliveryDates.length,
+                                        itemCount: dates.length,
                                         separatorBuilder: (context, index) =>
                                             const SizedBox(width: 10),
                                         itemBuilder: (context, index) {
-                                          final date = deliveryDates[index];
-                                          final bool selected =
-                                              date['selected'] == true;
+                                          final rawDate = dates[index];
+
+                                          final date =
+                                              rawDate is Map<String, dynamic>
+                                              ? rawDate
+                                              : <String, dynamic>{};
+
+                                          final day =
+                                              date['day']?.toString() ?? '';
+                                          final number =
+                                              date['date']?.toString() ?? '';
+                                          final month =
+                                              date['month']?.toString() ?? '';
+
+                                          final selected =
+                                              date['dateid'] ==
+                                              selectedDate['dateid'];
 
                                           return GestureDetector(
                                             onTap: () {
-                                              print(
-                                                'Selected date: ${date['day']} ${date['number']}',
-                                              );
+                                              context
+                                                  .read<CheckoutProvider>()
+                                                  .updateDeliveryDate(date);
                                             },
                                             child: Container(
                                               width: 82,
@@ -210,7 +291,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    date['day'],
+                                                    day,
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -228,7 +309,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                   ),
                                                   const SizedBox(height: 4),
                                                   Text(
-                                                    date['number'],
+                                                    number,
                                                     style: TextStyle(
                                                       color: selected
                                                           ? Colors.white
@@ -243,7 +324,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                   ),
                                                   const SizedBox(height: 3),
                                                   Text(
-                                                    date['month'],
+                                                    month,
                                                     style: TextStyle(
                                                       color: selected
                                                           ? Colors.white
@@ -284,7 +365,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   Row(
                                     children: [
                                       Text(
-                                        section['header'],
+                                        section['header'].toString(),
                                         style: sectionHeader(),
                                       ),
                                       if (section['required'] == true)
@@ -298,19 +379,28 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   const SizedBox(height: 5),
 
                                   Text(
-                                    section['content'],
-                                    style: sectionContent(),
+                                    section['content'].toString(),
+                                    style: sectionContent(
+                                      color: section['missing'] == true
+                                          ? Colors.red
+                                          : Colors.black,
+                                    ),
                                   ),
 
                                   const SizedBox(height: 10),
 
                                   GestureDetector(
-                                    onTap: () => section['onTap'](context),
+                                    onTap: () {
+                                      final onTap = section['onTap'];
+                                      if (onTap is Function) {
+                                        onTap(context);
+                                      }
+                                    },
                                     child: Container(
                                       decoration: buttonStyle(),
                                       padding: buttonPadding(),
                                       child: Text(
-                                        section['buttonLabel'],
+                                        section['buttonLabel'].toString(),
                                         style: buttonTextStyle(),
                                       ),
                                     ),
@@ -329,11 +419,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 const SizedBox(height: 16),
 
                 Column(
-                  children: const [
+                  children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Sub-total',
                           style: TextStyle(
                             color: Color(0xFF249B48),
@@ -342,8 +432,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                         ),
                         Text(
-                          '₦52941',
-                          style: TextStyle(
+                          money(checkout['subtotal']),
+                          style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -352,12 +442,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ],
                     ),
 
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Delivery Fee',
                           style: TextStyle(
                             color: Color(0xFF249B48),
@@ -366,8 +456,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                         ),
                         Text(
-                          '₦5000',
-                          style: TextStyle(
+                          money(checkout['delivery_fee']),
+                          style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -376,12 +466,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ],
                     ),
 
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Final Total',
                           style: TextStyle(
                             color: Color(0xFF249B48),
@@ -390,8 +480,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                         ),
                         Text(
-                          '₦57941',
-                          style: TextStyle(
+                          money(checkout['total']),
+                          style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -402,35 +492,35 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ],
                 ),
 
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            OrderPreviewScreen(authToken: widget.authToken),
+                      ),
+                    );
+                  },
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: const Color(0xFF249B48),
-                      border: Border.all(
-                        color: const Color(0xFF249B48),
-                        width: 1.5,
-                      ),
                       borderRadius: BorderRadius.circular(12),
                     ),
-
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 14,
-                        horizontal: 16,
-                      ),
-
-                      child: Center(
-                        child: Text(
-                          'Confirm Order',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 16,
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Confirm Order',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),

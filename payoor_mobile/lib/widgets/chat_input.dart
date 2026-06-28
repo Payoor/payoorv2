@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/product_provider.dart';
 
 class ChatInput extends StatefulWidget {
   final String hintText;
@@ -80,7 +83,19 @@ class _ChatInputState extends State<ChatInput> {
                 child: IgnorePointer(
                   ignoring: !hasText,
                   child: GestureDetector(
-                    onTap: widget.onSend,
+                    onTap: () {
+                      final message = _controller.text.trim();
+
+                      if (message.isEmpty) return;
+
+                      context.read<ProductsProvider>().sendShopperMessage(
+                        message: message,
+                      );
+
+                      widget.onSend?.call();
+
+                      _controller.clear();
+                    },
                     child: Container(
                       width: 42,
                       height: 42,
