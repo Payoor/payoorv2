@@ -62,14 +62,20 @@ class MyApp extends StatelessWidget {
             });
           }
 
-          return MaterialPageRoute(builder: (_) => const LandingScreen());
+          return MaterialPageRoute(builder: (_) => const UserScreen());
         }
 
         return null;
       },
 
       onUnknownRoute: (settings) {
-        return MaterialPageRoute(builder: (_) => const LandingScreen());
+        final authProvider = context.read<AuthProvider>();
+
+        return MaterialPageRoute(
+          builder: (_) => authProvider.isLoggedIn
+              ? const UserScreen()
+              : const LandingScreen(),
+        );
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/user.dart';
 
@@ -9,6 +10,8 @@ import '../screens/auth_screen.dart';
 import '../screens/onboarding_screen.dart';
 import '../widgets/menu_layout.dart';
 
+import '../providers/auth_provider.dart';
+
 class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
 
@@ -17,16 +20,16 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-  User? user;
+  //User? user;
 
   @override
   void initState() {
     super.initState();
 
-    loadUser();
+    //loadUser();
   }
 
-  Future<void> loadUser() async {
+  /*Future<void> loadUser() async {
     final userRepository = UserRepository();
 
     final userAvailable = await userRepository.getUser();
@@ -37,17 +40,19 @@ class _UserScreenState extends State<UserScreen> {
     setState(() {
       user = userAvailable;
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<AuthProvider>().user;
+
     Widget currentPage;
 
     if (user != null) {
-      if (user?.name == null || user?.phoneNumber == null) {
+      if (user.name == null || user.phoneNumber == null) {
         currentPage = const OnboardingScreen();
       } else {
-        currentPage = HomeScreen(authToken: user!.token);
+        currentPage = HomeScreen(authToken: user.token);
       }
     } else {
       currentPage = const AuthScreen();
