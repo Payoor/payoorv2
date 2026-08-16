@@ -19,6 +19,7 @@ var _Product = _interopRequireDefault(require("../models/Product.js"));
 var _ProductVariant = _interopRequireDefault(require("../models/ProductVariant"));
 var _Category = _interopRequireDefault(require("../models/Category.js"));
 var _Coupon = _interopRequireDefault(require("../models/Coupon.js"));
+var _User = _interopRequireDefault(require("../models/User"));
 var _payoordb = _interopRequireDefault(require("../payoordb"));
 var _orderconfirmEmail = _interopRequireDefault(require("../utils/orderconfirmEmail"));
 var _process = require("process");
@@ -328,7 +329,7 @@ adminRoute.post('/admin/paystack/payment-response', async (req, res, next) => {
      * been redeemed.
      */
     if (checkout.lemon_discount_applied === true && checkout.promo_code?.trim().toLowerCase() === 'lemon') {
-      await User.updateOne({
+      await _User.default.updateOne({
         _id: new ObjectId(userId),
         /*
          * Don't overwrite if already used.

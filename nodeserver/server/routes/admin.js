@@ -30,6 +30,7 @@ import Product from '../models/Product.js'
 import ProductVariant from '../models/ProductVariant'
 import Category from '../models/Category.js'
 import Coupon from '../models/Coupon.js'
+import User from '../models/User'
 
 //import '../scripts/createCoupons.js'
 
