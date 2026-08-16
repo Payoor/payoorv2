@@ -19,6 +19,7 @@ class GoogleApiController {
         formatted_address: place.formatted_address,
         icon: place.icon
       }));
+      console.log(filteredResults);
       const response = {
         success: true,
         data: {
@@ -71,7 +72,8 @@ class GoogleApiController {
       }
     } catch (error) {
       console.log(error);
-      next(error);
+      res.status(400);
+      //next(error)
     }
   }
 }

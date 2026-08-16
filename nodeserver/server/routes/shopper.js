@@ -8,6 +8,7 @@ import Order from '../models/Order'
 import UserCart from '../models/UserCart'
 import Product from '../models/Product'
 import ProductVariant from '../models/ProductVariant'
+import Category from '../models/Category'
 
 import authMiddleware from '../middleware/authMiddleware'
 import CouponClass from '../CouponClass'
@@ -32,7 +33,7 @@ const shopperRoute = express();
 
 shopperRoute.post(
   '/shopper/message',
-  authMiddleware,
+  /*authMiddleware,*/
   async (req, res, next) => {
     try {
       const { message } = req.body
@@ -97,18 +98,30 @@ shopperRoute.get(
     try {
       const { mongooseid } = req.query
 
-      //console.log('this is the mongoose Id', mongooseid)
+      if (
+        !mongooseid ||
+        !mongoose.Types.ObjectId.isValid(mongooseid)
+      ) {
+        return res.status(400).json({
+          userMessage: 'Invalid product ID'
+        })
+      }
 
-      const productId = new ObjectId(mongooseid)
+      const productId =
+        new mongoose.Types.ObjectId(mongooseid)
 
       const variantsCollection =
-        payoorDBConnection.db.collection('productvariants')
+        payoorDBConnection.db.collection(
+          'productvariants'
+        )
 
       const variants = await variantsCollection
-        .find({ productId: productId })
+        .find({
+          productId
+        })
         .toArray()
 
-      res.status(200).json({
+      return res.status(200).json({
         message: 'Variants found',
         variants
       })
@@ -116,7 +129,7 @@ shopperRoute.get(
       next(error)
     }
   }
-);
+)
 
 shopperRoute.get(
   '/shopper/getproduct',
@@ -220,7 +233,7 @@ shopperRoute.get(
   }
 )
 
-shopperRoute.post(
+/*shopperRoute.post(
   '/shopper/update/checkout',
   authMiddleware,
   async (req, res, next) => {
@@ -300,9 +313,121 @@ shopperRoute.post(
       next(error)
     }
   }
+)*/
+
+shopperRoute.post(
+  '/shopper/update/checkout',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { checkoutId } = req.query
+      const userId = req.userId
+      const { checkout } = req.body
+
+      if (!checkoutId || !userId || !checkout) {
+        return res.status(400).json({
+          userMessage:
+            'Missing required parameters: checkoutId, checkout data, or user ID.'
+        })
+      }
+
+      const validUser = await User.findById(
+        new ObjectId(userId)
+      )
+
+      if (!validUser) {
+        return res.status(401).json({
+          userMessage: 'Unauthorized: User not found.'
+        })
+      }
+
+      console.log('found a valid user')
+
+      const allowedUpdateFields = [
+        'delivery_address',
+        'delivery_date',
+        'delivery_instruction',
+        'promo_code',
+        'phone_number'
+      ]
+
+      const updateData = {}
+
+      for (const key of allowedUpdateFields) {
+        if (checkout.hasOwnProperty(key)) {
+          updateData[key] = checkout[key]
+        }
+      }
+
+      /*
+       * Coupon validation
+       */
+      if (
+        updateData.promo_code &&
+        typeof updateData.promo_code === 'string'
+      ) {
+        const promoCode = updateData.promo_code
+          .trim()
+          .toLowerCase()
+
+        // For now, lemon is our only valid coupon.
+        if (promoCode !== 'lemon') {
+          return res.status(400).json({
+            userMessage: 'Invalid or expired coupon code'
+          })
+        }
+
+        // User has already used lemon.
+        if (validUser.usedLemonCoupon === true) {
+          return res.status(400).json({
+            userMessage: 'Coupon already used by you'
+          })
+        }
+
+        // Store normalized coupon.
+        updateData.promo_code = 'lemon'
+        updateData.promo_code_type = 'lemon'
+      } else if (updateData.promo_code === '') {
+        updateData.promo_code_type = ''
+      }
+
+      const updatedCheckout = await Checkout.findOneAndUpdate(
+        {
+          _id: new ObjectId(checkoutId),
+          user_id: new ObjectId(validUser._id)
+        },
+        {
+          $set: updateData
+        },
+        {
+          new: true,
+          runValidators: true
+        }
+      )
+
+      if (!updatedCheckout) {
+        return res.status(404).json({
+          userMessage:
+            'Checkout not found or you do not have permission to update it.'
+        })
+      }
+
+      return res.status(200).json({
+        message: 'Checkout data updated successfully',
+        updatedCheckout
+      })
+    } catch (error) {
+      console.error(
+        'Error in /shopper/update/checkout route:',
+        error
+      )
+
+      next(error)
+    }
+  }
 )
 
-shopperRoute.get(
+/*shopperRoute.get(
   '/shopper/paystack/generate-paystack-link',
   authMiddleware,
   async (req, res, next) => {
@@ -404,6 +529,283 @@ shopperRoute.get(
       next(error)
     }
   }
+)*/
+
+shopperRoute.get(
+  '/shopper/paystack/generate-paystack-link',
+  authMiddleware,
+  async (req, res, next) => {
+    const { checkout_id } = req.query
+    const userId = req.userId
+
+    if (!checkout_id || !userId) {
+      return res.status(400).json({
+        error: 'Checkout ID and user ID are required'
+      })
+    }
+
+    try {
+      const [checkoutWithUser] = await Checkout.aggregate([
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(checkout_id),
+            user_id: new mongoose.Types.ObjectId(userId)
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user'
+          }
+        },
+        {
+          $unwind: '$user'
+        },
+        {
+          $project: {
+            delivery_address: 1,
+            total: 1,
+            promo_code: 1,
+            user_id: 1,
+
+            email: '$user.email',
+            usedLemonCoupon: '$user.usedLemonCoupon'
+          }
+        }
+      ])
+
+      if (!checkoutWithUser) {
+        return res.status(404).json({
+          error: 'Checkout not found or does not belong to this user'
+        })
+      }
+
+      const {
+        email,
+        user_id,
+        total,
+        promo_code,
+        usedLemonCoupon
+      } = checkoutWithUser
+
+      const originalTotal = Number(total)
+
+      if (!Number.isFinite(originalTotal) || originalTotal <= 0) {
+        return res.status(400).json({
+          error: 'Invalid checkout total'
+        })
+      }
+
+      let paymentTotal = originalTotal
+
+      let discountApplied = false
+      let discountPercentage = 0
+      let discountAmount = 0
+
+      /*
+       * Lemon coupon
+       *
+       * We CHECK usedLemonCoupon here,
+       * but DO NOT mark it as used.
+       */
+      if (
+        typeof promo_code === 'string' &&
+        promo_code.trim().toLowerCase() === 'lemon'
+      ) {
+        if (usedLemonCoupon === true) {
+          return res.status(400).json({
+            userMessage: 'Coupon already used by you'
+          })
+        }
+
+        discountPercentage = 15
+
+        discountAmount =
+          originalTotal * (discountPercentage / 100)
+
+        paymentTotal =
+          originalTotal - discountAmount
+
+        discountApplied = true
+      }
+
+      /*
+       * Paystack expects amount in kobo
+       */
+      const amountInKobo = Math.round(
+        paymentTotal * 100
+      )
+
+      const params = JSON.stringify({
+        email,
+
+        amount: amountInKobo,
+
+        channels: ['bank_transfer'],
+
+        metadata: {
+          userId: user_id.toString(),
+
+          checkoutId: checkout_id,
+
+          promoCode:
+            discountApplied
+              ? 'lemon'
+              : null,
+
+          originalTotal,
+
+          discountApplied,
+
+          discountPercentage,
+
+          discountAmount,
+
+          amountCharged: paymentTotal
+        }
+      })
+
+      const options = {
+        hostname: 'api.paystack.co',
+        port: 443,
+        path: '/transaction/initialize',
+        method: 'POST',
+
+        headers: {
+          Authorization:
+            `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+
+          'Content-Type': 'application/json'
+        }
+      }
+
+      const paystackRes = await new Promise(
+        (resolve, reject) => {
+          const request = https.request(
+            options,
+            paystackResponse => {
+              let data = ''
+
+              paystackResponse.on(
+                'data',
+                chunk => {
+                  data += chunk
+                }
+              )
+
+              paystackResponse.on(
+                'end',
+                () => {
+                  try {
+                    resolve(JSON.parse(data))
+                  } catch (error) {
+                    reject(
+                      new Error(
+                        'Failed to parse Paystack response'
+                      )
+                    )
+                  }
+                }
+              )
+            }
+          )
+
+          request.on('error', reject)
+
+          request.write(params)
+
+          request.end()
+        }
+      )
+
+      if (!paystackRes.status) {
+        return res.status(400).json({
+          error: paystackRes.message,
+
+          userMessage:
+            'Error while generating Paystack link. Please try again in a minute'
+        })
+      }
+
+      /*
+       * Paystack successfully initialized.
+       *
+       * NOW label the checkout with exactly what
+       * we sent to Paystack.
+       *
+       * Still DO NOT mark the USER coupon as used.
+       */
+      await Checkout.updateOne(
+        {
+          _id: new mongoose.Types.ObjectId(checkout_id),
+          user_id: new mongoose.Types.ObjectId(userId)
+        },
+        {
+          $set: {
+            lemon_discount_applied: discountApplied,
+
+            discount_percentage:
+              discountPercentage,
+
+            discount_amount:
+              discountAmount,
+
+            discounted_total:
+              paymentTotal,
+
+            paystack_reference:
+              paystackRes.data.reference,
+
+            payment_status:
+              'pending',
+
+            coupon_redeemed:
+              false
+          }
+        }
+      )
+
+      return res.status(200).json({
+        success: true,
+
+        data: {
+          authorizationUrl:
+            paystackRes.data.authorization_url,
+
+          reference:
+            paystackRes.data.reference,
+
+          accessCode:
+            paystackRes.data.access_code,
+
+          originalTotal,
+
+          amountToPay:
+            paymentTotal,
+
+          discountApplied,
+
+          discountPercentage,
+
+          discountAmount,
+
+          promoCode:
+            discountApplied
+              ? 'lemon'
+              : null
+        }
+      })
+    } catch (error) {
+      console.error(
+        'Error generating Paystack payment link:',
+        error
+      )
+
+      next(error)
+    }
+  }
 )
 
 shopperRoute.get(
@@ -467,7 +869,7 @@ shopperRoute.get(
         orders: enrichedOrders
       })
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 )
@@ -546,13 +948,14 @@ shopperRoute.get(
   '/shopper/google/search-places',
   authMiddleware,
   GoogleApiController.searchPlaces
-)
+);
 
 shopperRoute.get(
   '/shopper/google/use-current-location',
   authMiddleware,
   GoogleApiController.reverseGeocode
-)
+);
+
 
 shopperRoute.post(
   '/shopper/apply-coupon',
@@ -955,7 +1358,7 @@ shopperRoute.post(
   authMiddleware,
   async (req, res, next) => {
     try {
-      const userId = req.userId
+      const userId = req.userId;
 
       if (!userId) {
         return res
@@ -1152,6 +1555,37 @@ shopperRoute.get(
     }
   }
 )
+
+shopperRoute.get('/shop/categories', async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
+    const search = req.query.search || ''
+    const skip = (page - 1) * limit
+
+    let query = {}
+    if (search) {
+      query = { name: { $regex: new RegExp(search, 'i') } }
+    }
+
+    const totalCategories = await Category.countDocuments(query)
+    const totalPages = Math.ceil(totalCategories / limit)
+
+    const categories = await Category.find(query).skip(skip).limit(limit)
+
+    //console.log(categories)
+
+    res.status(200).json({
+      categories,
+      currentPage: page,
+      totalPages,
+      totalCategories
+    })
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
 
 function getNext7Days () {
   const daysOfWeek = [

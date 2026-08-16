@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+
 const DeliveryDateSchema = new mongoose.Schema(
   {
     day: String,
@@ -10,6 +11,7 @@ const DeliveryDateSchema = new mongoose.Schema(
   { _id: false }
 )
 
+
 const CheckoutSchema = new mongoose.Schema(
   {
     user_id: {
@@ -17,10 +19,12 @@ const CheckoutSchema = new mongoose.Schema(
       ref: 'User',
       required: true
     },
+
     delivery_address: {
       type: String,
       required: true
     },
+
     discount_applied: {
       type: {
         coupon_code: {
@@ -46,47 +50,93 @@ const CheckoutSchema = new mongoose.Schema(
       },
       required: false
     },
+
+    lemon_discount_applied: {
+      type: Boolean,
+      default: false
+    },
+
+    coupon_redeemed: {
+      type: Boolean,
+      default: false
+    },
+
+    discount_percentage: {
+      type: Number,
+      default: 0
+    },
+
+    discount_amount: {
+      type: Number,
+      default: 0
+    },
+
+    discounted_total: {
+      type: Number,
+      default: null
+    },
+
+    paystack_reference: {
+      type: String,
+      default: null
+    },
+
+    payment_status: {
+      type: String,
+      default: 'pending'
+    },
+
     delivery_date: {
       type: DeliveryDateSchema,
       required: true
     },
+
     delivery_instruction: {
       type: String,
       default: ''
     },
+
     promo_code_type: {
       type: String,
       default: ''
     },
+
     promo_code: {
       type: String,
       default: ''
     },
+
     phone_number: {
       type: String,
       default: ''
     },
+
     cart_items: {
       type: Map,
       of: Number,
       required: true
     },
+
     subtotal: {
       type: Number,
       required: true
     },
+
     delivery_fee: {
       type: Number,
       required: true
     },
+
     service_charge: {
       type: Number,
       required: true
     },
+
     total: {
       type: Number,
       required: true
     },
+
     created_at: {
       type: Date,
       default: Date.now
@@ -96,5 +146,6 @@ const CheckoutSchema = new mongoose.Schema(
     timestamps: true
   }
 )
+
 
 module.exports = mongoose.model('Checkout', CheckoutSchema)

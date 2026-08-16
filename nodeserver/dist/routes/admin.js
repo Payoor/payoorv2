@@ -185,6 +185,57 @@ adminRoute.get('/admin/orders/reference', async (req, res, next) => {
     next(error);
   }
 });
+
+/*adminRoute.post('/admin/paystack/payment-response', async (req, res, next) => {
+  try {
+    const signature = req.headers['x-paystack-signature']
+
+    const computedHash = crypto
+      .createHmac('sha512', process.env.PAYSTACK_SECRET_KEY)
+      .update(JSON.stringify(req.body))
+      .digest('hex')
+
+    if (computedHash !== signature) {
+      return res.status(401).json({ message: 'Unauthorized' })
+    }
+
+    const { event, data } = req.body
+
+    if (event === 'charge.success') {
+      const { metadata } = data
+      const { checkoutId, userId } = metadata
+
+      const newOrder = new Order({
+        user_id: userId,
+        checkout_id: checkoutId
+      })
+
+      await newOrder.save()
+
+      await orderconfirmEmail(
+        userId,
+        `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`
+      )
+
+      telegramBot.callBot(
+        `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
+      )
+
+      const telegbotUrl = 'http://telegbot:3001/neworder'
+
+      await axios.post(telegbotUrl, {
+        orderId: newOrder._id
+      })
+
+      return res.sendStatus(200)
+    }
+
+    return res.sendStatus(200)
+  } catch (error) {
+    next(error)
+  }
+})*/
+
 adminRoute.post('/admin/paystack/payment-response', async (req, res, next) => {
   try {
     const signature = req.headers['x-paystack-signature'];
@@ -198,33 +249,120 @@ adminRoute.post('/admin/paystack/payment-response', async (req, res, next) => {
       event,
       data
     } = req.body;
-    if (event === 'charge.success') {
-      const {
-        metadata
-      } = data;
-      const {
-        checkoutId,
-        userId
-      } = metadata;
-      const newOrder = new _Order.default({
-        user_id: userId,
-        checkout_id: checkoutId
-      });
-      await newOrder.save();
-      await (0, _orderconfirmEmail.default)(userId, `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`);
-
-      /*telegramBot.callBot(
-        `new order ${process.env.PAYOOR_URL}/admin/order?reference=${newOrder._id}`
-      )*/
-
-      const telegbotUrl = 'http://telegbot:3001/neworder';
-      await axios.post(telegbotUrl, {
-        orderId: newOrder._id
-      });
+    if (event !== 'charge.success') {
       return res.sendStatus(200);
     }
+    const {
+      metadata
+    } = data;
+    const {
+      checkoutId,
+      userId
+    } = metadata;
+    if (!checkoutId || !userId) {
+      return res.status(400).json({
+        message: 'Missing payment metadata'
+      });
+    }
+
+    /*
+     * Load the checkout that generated
+     * this payment.
+     */
+    const checkout = await _Checkout.default.findOne({
+      _id: new ObjectId(checkoutId),
+      user_id: new ObjectId(userId)
+    });
+    if (!checkout) {
+      console.error('Paystack webhook checkout not found:', checkoutId);
+      return res.status(404).json({
+        message: 'Checkout not found'
+      });
+    }
+
+    /*
+     * IMPORTANT:
+     *
+     * Prevent duplicate order creation if
+     * Paystack retries the webhook.
+     */
+    const existingOrder = await _Order.default.findOne({
+      checkout_id: checkout._id
+    });
+    if (existingOrder) {
+      console.log('Order already exists for checkout:', checkoutId);
+      return res.sendStatus(200);
+    }
+
+    /*
+     * Optional but strongly recommended:
+     *
+     * Make sure Paystack actually charged
+     * the amount we expected.
+     *
+     * Paystack amount is in kobo.
+     */
+    const expectedAmountInKobo = Math.round(Number(checkout.discounted_total ?? checkout.total) * 100);
+    if (Number(data.amount) !== expectedAmountInKobo) {
+      console.error('Paystack amount mismatch', {
+        checkoutId,
+        expectedAmountInKobo,
+        receivedAmount: data.amount
+      });
+      return res.status(400).json({
+        message: 'Payment amount mismatch'
+      });
+    }
+
+    /*
+     * Create the actual order.
+     */
+    const newOrder = new _Order.default({
+      user_id: userId,
+      checkout_id: checkoutId
+    });
+    await newOrder.save();
+
+    /*
+     * NOW the Lemon coupon has actually
+     * been redeemed.
+     */
+    if (checkout.lemon_discount_applied === true && checkout.promo_code?.trim().toLowerCase() === 'lemon') {
+      await User.updateOne({
+        _id: new ObjectId(userId),
+        /*
+         * Don't overwrite if already used.
+         */
+        usedLemonCoupon: {
+          $ne: true
+        }
+      }, {
+        $set: {
+          usedLemonCoupon: true
+        }
+      });
+    }
+
+    /*
+     * Mark the checkout as paid/redeemed.
+     */
+    await _Checkout.default.updateOne({
+      _id: checkout._id
+    }, {
+      $set: {
+        payment_status: 'paid',
+        coupon_redeemed: checkout.lemon_discount_applied === true,
+        paystack_reference: data.reference
+      }
+    });
+    await (0, _orderconfirmEmail.default)(userId, `${process.env.PAYOOR_URL}/userorder/${newOrder._id}`);
+    const telegbotUrl = 'http://telegbot:3001/neworder';
+    await axios.post(telegbotUrl, {
+      orderId: newOrder._id
+    });
     return res.sendStatus(200);
   } catch (error) {
+    console.error('Paystack webhook processing error:', error);
     next(error);
   }
 });

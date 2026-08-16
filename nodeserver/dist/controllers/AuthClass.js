@@ -98,6 +98,7 @@ class AuthClass {
       });
       console.log(data, 'email send data');
       return res.status(200).json({
+        otpSent: true,
         message: 'Authentication successful'
       });
     } catch (error) {
@@ -383,6 +384,100 @@ class AuthClass {
       return next(error);
     }
   }
+  static async authGoogleLogin(req, res, next) {
+    try {
+      const platform = req.query.platform || 'web';
+      const state = Buffer.from(JSON.stringify({
+        platform,
+        nonce: _crypto.default.randomBytes(16).toString('hex')
+      })).toString('base64url');
+      const params = new URLSearchParams({
+        client_id: process.env.GOOGLE_WEB_CLIENT_ID,
+        redirect_uri: `${process.env.API_BASE_URL}/shopper/auth/google/callback`,
+        response_type: 'code',
+        scope: 'openid profile email',
+        access_type: 'offline',
+        prompt: 'select_account',
+        state
+      });
+      return res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async authGoogleCallback(req, res, next) {
+    try {
+      const {
+        code,
+        state
+      } = req.query;
+      if (!code) {
+        return res.status(400).send('Missing Google code');
+      }
+      const parsedState = JSON.parse(Buffer.from(state, 'base64url').toString('utf8'));
+      const tokenRes = await axios.post('https://oauth2.googleapis.com/token', new URLSearchParams({
+        code,
+        client_id: process.env.GOOGLE_WEB_CLIENT_ID,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+        redirect_uri: `${process.env.API_BASE_URL}/shopper/auth/google/callback`,
+        grant_type: 'authorization_code'
+      }).toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
+      const {
+        id_token,
+        access_token
+      } = tokenRes.data;
+      const decoded = JSON.parse(Buffer.from(id_token.split('.')[1], 'base64').toString('utf8'));
+      const email = decoded.email?.toLowerCase().trim();
+      const name = decoded.name?.trim() || '';
+      const picture = decoded.picture || null;
+      const googleId = decoded.sub;
+      let user = await _User.default.findOne({
+        googleId
+      });
+      if (!user) {
+        user = await _User.default.findOne({
+          email
+        });
+      }
+      if (!user) {
+        user = new _User.default({
+          name,
+          email,
+          googleId,
+          authMethods: ['google'],
+          profilePicture: picture
+        });
+      } else {
+        user.googleId = user.googleId || googleId;
+        user.email = email;
+        user.name = name || user.name;
+        user.profilePicture = picture || user.profilePicture;
+        if (!Array.isArray(user.authMethods)) {
+          user.authMethods = [];
+        }
+        if (!user.authMethods.includes('google')) {
+          user.authMethods.push('google');
+        }
+      }
+      await user.save();
+      const appToken = await user.generateAuthToken();
+      await _RedisManager.default.setItem({
+        key: `auth:session:${appToken}`,
+        item: user._id.toString(),
+        expiration: 2592000
+      });
+      if (parsedState.platform === 'mobile') {
+        return res.redirect(`com.payoor.payoormobile://auth/callback?token=${appToken}`);
+      }
+      return res.redirect(`${process.env.WEB_BASE_URL}/auth/callback?token=${appToken}`);
+    } catch (error) {
+      next(error);
+    }
+  }
   static async getValidUser(req, res, next) {
     try {
       const {
@@ -401,6 +496,7 @@ class AuthClass {
       }
       if (!user) {
         const decoded = jwt.verify(jwttoken, process.env.JWT_SECRET);
+        console.log(decoded);
         user = await _User.default.findById(decoded._id);
       }
       if (!user) {

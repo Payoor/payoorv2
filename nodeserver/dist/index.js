@@ -13,30 +13,20 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const fs = require('fs');
+require('dotenv').config();
 //import { connectProducer } from './kafkaclient/producer.js'
 
-/*if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-
-  const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:8082',
-    'https://byo3w5nm4wfv.shares.zrok.io'
-  ]
-
-  app.use(
-    cors({
-      origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-          return callback(null, true)
-        }
-        return callback(new Error('Not allowed by CORS'))
-      },
-      credentials: true
-    })
-  )
-}*/
-
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:8082', 'https://byo3w5nm4wfv.shares.zrok.io'];
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    console.error('Blocked CORS origin:', origin);
+    return callback(new Error(`Origin ${origin} not allowed by CORS`));
+  },
+  credentials: true
+}));
 require('./db');
 //import { runKafka } from './services/kafka-service'
 

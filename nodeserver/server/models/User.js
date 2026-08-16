@@ -5,8 +5,9 @@ const UserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      trim: true,
+      trim: true
     },
+
     email: {
       type: String,
       trim: true,
@@ -20,18 +21,14 @@ const UserSchema = new mongoose.Schema(
         message: props => `${props.value} is not a valid email!`
       }
     },
+
     phoneNumber: {
       type: String,
       trim: true,
       unique: true,
       sparse: true
-      /*validate: {
-      validator: function (v) {
-        return !v || /^\+?[1-9]\d{1,14}$/.test(v)
-      },
-      message: props => `${props.value} is not a valid phone number!`
-    }*/
     },
+
     tokens: [
       {
         access: {
@@ -44,19 +41,29 @@ const UserSchema = new mongoose.Schema(
         }
       }
     ],
+
     googleId: {
       type: String,
       unique: true,
       sparse: true
     },
+
     authMethods: {
       type: [String],
       default: ['otp']
     },
+
     profilePicture: {
       type: String,
       default: null
     },
+
+    // Coupon usage
+    usedLemonCoupon: {
+      type: Boolean,
+      default: false
+    },
+
     createdAt: {
       type: Date,
       default: Date.now
@@ -67,18 +74,34 @@ const UserSchema = new mongoose.Schema(
   }
 )
 
-UserSchema.methods.generateAuthToken = function () {
-  let user = this
-  let access = 'auth'
-  let token = jwt
-    .sign({ _id: user._id.toHexString(), access }, process.env.JWT_SECRET)
+UserSchema.methods.generateAuthToken = async function () {
+  const user = this
+  const access = 'auth'
+
+  const token = jwt
+    .sign(
+      { _id: user._id.toHexString(), access },
+      process.env.JWT_SECRET
+    )
     .toString()
 
+  await user.constructor.updateOne(
+    { _id: user._id },
+    {
+      $push: {
+        tokens: {
+          access,
+          token
+        }
+      }
+    }
+  )
+
+  // Keep this in-memory document consistent in case
+  // something later in the request uses user.tokens.
   user.tokens.push({ access, token })
 
-  return user.save().then(() => {
-    return token
-  })
+  return token
 }
 
 UserSchema.methods.removeToken = function (token) {

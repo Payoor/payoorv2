@@ -44,6 +44,34 @@ const CheckoutSchema = new mongoose.Schema({
     },
     required: false
   },
+  lemon_discount_applied: {
+    type: Boolean,
+    default: false
+  },
+  coupon_redeemed: {
+    type: Boolean,
+    default: false
+  },
+  discount_percentage: {
+    type: Number,
+    default: 0
+  },
+  discount_amount: {
+    type: Number,
+    default: 0
+  },
+  discounted_total: {
+    type: Number,
+    default: null
+  },
+  paystack_reference: {
+    type: String,
+    default: null
+  },
+  payment_status: {
+    type: String,
+    default: 'pending'
+  },
   delivery_date: {
     type: DeliveryDateSchema,
     required: true

@@ -16,6 +16,8 @@ authRoute.post('/shopper/auth/mail', _AuthClass.default.sendEmailOtp);
 authRoute.post('/shopper/auth/verifyotp', _AuthClass.default.verifyOtp);
 authRoute.post('/shopper/auth/google/token', _AuthClass.default.authGoogleToken);
 authRoute.get('/shopper/auth/google/user', _AuthClass.default.authGoogleUser);
+authRoute.get('/shopper/auth/google/login', _AuthClass.default.authGoogleLogin);
+authRoute.get('/shopper/auth/google/callback', _AuthClass.default.authGoogleCallback);
 authRoute.get('/shopper/auth/test', async (req, res) => {
   res.send('hello therre');
 });
