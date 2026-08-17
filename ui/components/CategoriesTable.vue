@@ -188,7 +188,7 @@ export default {
         },
         async saveNewItemToDB(item) {
             try {
-                console.log(item)
+               // console.log(item)
                 const res = await fetch(`${serverurl}/admin/create-category`, {
                     method: 'POST',
                     headers: this.getAuthHeaders(),

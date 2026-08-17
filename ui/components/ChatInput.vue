@@ -221,7 +221,7 @@ export default {
                 this.userinput = "";
                 this.$nextTick(() => this.autoResize());
             } catch (error) {
-                console.log(error, 'error catcher needs to be placed here');
+               // console.log(error, 'error catcher needs to be placed here');
             }
         },
         async postMessageFromQuery(message) {

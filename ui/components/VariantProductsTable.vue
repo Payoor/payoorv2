@@ -214,7 +214,7 @@ export default {
 
         async saveItemToDB(itemToSave) {
             try {
-                console.log(serverurl, 'serverurl here');
+               // console.log(serverurl, 'serverurl here');
                 
                 const res = await fetch(`${serverurl}/admin/update-variant/${itemToSave._id}`, {
                     method: 'PUT',

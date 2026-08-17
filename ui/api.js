@@ -7,7 +7,7 @@ export const serverurl = (() => {
     }
   }
 
-  return 'http://localhost/api'
+  return 'http://localhost:3001'; //http://localhost/api'
 })()
 
 export async function handleFetchError (response) { 
@@ -17,8 +17,8 @@ export async function handleFetchError (response) {
     try {
       errorData = await response.json() 
     } catch (e) {
-      console.log(e)
-      console.log(errorData, 'error data herer')
+      //console.log(e)
+      //console.log(errorData, 'error data herer')
       errorData = {
         userMessage: 'Unknown error',
         raw: await response.text()

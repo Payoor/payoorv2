@@ -425,7 +425,117 @@ shopperRoute.post(
       next(error)
     }
   }
-)
+);
+
+shopperRoute.post(
+  '/shopper/coupon/lemon',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { checkoutId } = req.query
+      const userId = req.userId
+
+      if (!checkoutId) {
+        return res.status(400).json({
+          success: false,
+          userMessage: 'Checkout ID is required'
+        })
+      }
+
+      if (!mongoose.Types.ObjectId.isValid(checkoutId)) {
+        return res.status(400).json({
+          success: false,
+          userMessage: 'Invalid checkout ID'
+        })
+      }
+
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(401).json({
+          success: false,
+          userMessage: 'Invalid user'
+        })
+      }
+
+      const user = await User.findById(
+        new mongoose.Types.ObjectId(userId)
+      ).lean()
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          userMessage: 'User not found'
+        })
+      }
+
+      /*
+       * Lemon can only be used once.
+       *
+       * We are NOT updating this flag here.
+       * We're only checking it.
+       */
+      if (user.usedLemonCoupon === true) {
+        return res.status(400).json({
+          success: false,
+          userMessage: 'Lemon coupon has already been used'
+        })
+      }
+
+      /*
+       * Make sure this checkout belongs to
+       * the authenticated user.
+       */
+      const checkout = await Checkout.findOne({
+        _id: new mongoose.Types.ObjectId(checkoutId),
+        user_id: new mongoose.Types.ObjectId(userId)
+      }).lean()
+
+      if (!checkout) {
+        return res.status(404).json({
+          success: false,
+          userMessage:
+            'Checkout not found or does not belong to this user'
+        })
+      }
+
+      const originalTotal = Number(checkout.total)
+
+      if (
+        !Number.isFinite(originalTotal) ||
+        originalTotal <= 0
+      ) {
+        return res.status(400).json({
+          success: false,
+          userMessage: 'Invalid checkout total'
+        })
+      }
+
+      const discountPercentage = 15
+
+      const discountAmount =
+        originalTotal * (discountPercentage / 100)
+
+      const finalTotal =
+        originalTotal - discountAmount
+
+      return res.status(200).json({
+        success: true,
+        userMessage: 'Lemon coupon applied',
+
+        originalTotal,
+        discountPercentage,
+        discountAmount,
+        finalTotal
+      })
+    } catch (error) {
+      console.error(
+        'Error using lemon coupon',
+        error
+      )
+
+      next(error)
+    }
+  }
+) 
 
 /*shopperRoute.get(
   '/shopper/paystack/generate-paystack-link',

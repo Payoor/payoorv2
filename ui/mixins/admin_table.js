@@ -66,7 +66,7 @@ export default {
 
         this.focusedItem = this.localItems[0]
 
-        console.log(this.localItems, 'these are the local items')
+       // console.log(this.localItems, 'these are the local items')
       } else {
         this.localItems = JSON.parse(JSON.stringify(this.visibleItems))
       }
@@ -148,11 +148,11 @@ export default {
     },
 
     openNewItemForm () {
-      console.log('open for new item')
+     // console.log('open for new item')
       //this.closeItem();
       this.newItemFormOpen = true
 
-      console.log(this.newItemFormOpen, 'opened')
+     // console.log(this.newItemFormOpen, 'opened')
     },
 
     closeNewItemForm () {

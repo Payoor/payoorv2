@@ -131,6 +131,8 @@ export default {
         async getOptions() {
             this.loading = true;
 
+           // console.log('this route is loading for the options')
+
             try {
                 const optionsId = `${this.$route.query.currentproduct}`.trim().toLowerCase();
 

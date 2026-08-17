@@ -22,7 +22,7 @@ import { mapState } from "vuex";
 
 export default {
     mounted() {
-        console.log(this.currentUser)
+        //console.log(this.currentUser)
     },
     computed: {
         ...mapState("user", {

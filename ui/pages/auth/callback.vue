@@ -28,12 +28,12 @@ export default {
         '845190882138-9pr7hgfgeidb7f90qom56r810mf7vnes.apps.googleusercontent.com'
       const redirectUri = `${window.location.origin}/auth/callback`
 
-      console.log('callback code:', code)
+     /* console.log('callback code:', code)
       console.log('callback state:', state)
       console.log('saved state:', savedState)
       console.log('callback codeVerifier:', codeVerifier)
       console.log('callback redirectUri:', redirectUri)
-      console.log('last exchanged code:', lastExchangedCode)
+      console.log('last exchanged code:', lastExchangedCode)*/
 
       if (!code) {
         throw new Error('Missing Google authorization code')
