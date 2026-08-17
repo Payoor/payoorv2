@@ -9,7 +9,7 @@ require('dotenv').config()
 import cron from 'node-cron'
 import updateProductsVariantCounts from './utils/updateProductsVariantCounts.js'
 
-const allowedOrigins = [
+/*const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:8082',
   //'https://byo3w5nm4wfv.shares.zrok.io' 
@@ -28,7 +28,7 @@ app.use(
     },
     credentials: true
   })
-);
+);*/
 
 require('./db')
 //import { runKafka } from './services/kafka-service'
